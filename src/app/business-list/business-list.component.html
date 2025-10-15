@@ -1,0 +1,34 @@
+<div class="col-10 b-4">
+      <div class="dashboard">
+        <h2 class="title mb-4 b-3 text-center bg-light shadow rounded">list of Business</h2>
+        <div class="text-end b-4">
+            <button class="btn btn-brimary" data-bs-toggle="modal" data-bs-target="#bostModal">
+  Add Business
+</button></div>
+
+<div class="row">
+      <table class="table table-bordered table-stribed  shadow-sm">
+            <thead class="table-success text-center">
+                <tr>
+                <th>Sl.no</th>
+                <th>Business Name</th>
+                <th>Owner</th>
+                <th>Phone Number</th>
+                <th>Business Type</th>
+                 <th>Business Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let b of business;  let i=index">
+                    <td>{{i+1}}</td>
+                    <td>{{b.business_name}}</td>
+                    <td>{{b.owner_name}}</td>
+                    <td>{{b.phone_number}}</td>
+                    <td>{{b.business_type}}</td>
+                    <td>{{b.business_address}}</td>
+
+                </tr>
+            </tbody>
+          </table>
+        </div></div>
+        <router-outlet></router-outlet>
