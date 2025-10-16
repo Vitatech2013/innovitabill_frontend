@@ -1,8 +1,25 @@
-<div class="col-10 b-4">
+  <div class="position-fixed top-1 end-0 p-5" style="z-index: 1080;">
+      <div *ngIf="toastMessage"
+           class="toast align-items-center text-bg-success border-0 fade show"
+           role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            {{ toastMessage }}
+          </div>
+          <button type="button"
+                  class="btn-close btn-close-white me-2 m-auto"
+                  (click)="toastMessage = null"
+                  aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+
+
+<div class="col-10 p-4">
       <div class="dashboard">
         <h2 class="title mb-4 p-3 text-center bg-light shadow rounded">list of Business</h2>
         <div class="text-end p-4">
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#bostModal">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#postModal">
   Add Business
 </button>
 </div>
@@ -14,9 +31,8 @@
                 <th>Sl.no</th>
                 <th>Business Name</th>
                 <th>Owner</th>
-                <th>Phone Number</th>
-                <th>Business Type</th>
-                 <th>Business Address</th>
+                 <th>Phone Number </th>
+                 <th>Business Type</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,10 +42,47 @@
                     <td>{{b.owner_name}}</td>
                     <td>{{b.phone_number}}</td>
                     <td>{{b.business_type}}</td>
-                    <td>{{b.business_address}}</td>
 
                 </tr>
             </tbody>
           </table>
         </div></div>
-        <router-outlet></router-outlet>
+
+<div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form [formGroup]="BusinesForm" (ngSubmit)="addbusiness()">
+        <div class="modal-header">
+          <h5 class="modal-title" id="postModalLabel"> Add Business </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Business Name</label>
+            <input type="text" formControlName="business_name" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Owner Name</label>
+            <input type="text" formControlName="owner_name" class="form-control"  required>
+          </div>
+          
+           <div class="mb-3">
+            <label class="form-label">Phone Number</label>
+            <input type="text" formControlName="phone_number" class="form-control"  required>
+          </div>
+           <div class="mb-3">
+            <label class="form-label">Business Type</label>
+            <input type="text" formControlName="business_type" class="form-control"  required>
+           </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="BusinesForm.invalid" data-bs-dismiss="modal">Save</button>
+        </div>
+    </div></form>
+    </div>
+  </div>
+</div>
+

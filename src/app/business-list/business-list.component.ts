@@ -1,28 +1,63 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router,  RouterOutlet } from '@angular/router';
 import { BillingService } from '../billing.service';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-business-list',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, FormsModule,ReactiveFormsModule],
   templateUrl: './business-list.component.html',
   styleUrl: './business-list.component.css'
 })
 export class BusinessListComponent  implements OnInit{
 
-business: any[]=[];
+
+toastMessage:string | null=null;
+business: any;
+BusinesForm!: FormGroup;
 
 constructor(private api:BillingService,private fb:FormBuilder,private router:Router){}
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.loadBusiness()
+this.BusinesForm=this.fb.group({
 
-this.loadbusiness()
+})
+
+
+this.toastMessage=history.state?.toast  || null;
+     if (this.toastMessage) {
+      
+      setTimeout(() => this.toastMessage = null, 3000);
+    }
+
   }
-  loadbusiness() {
-    throw new Error('Method not implemented.');
+  loadBusiness() {
+    this.api.getBusiness().subscribe({
+      next:(res:any[])=>{
+        this.business=res||[];
+        console.log("business lists:",this.business);
+      },
+      error:(err:any)=>{
+        console.error("Error fetching business list:",err);
+      }
+    })
   }
+ addbusiness() {
+  if(this.BusinesForm.invalid)return;
+  const newBusiness=this.BusinesForm.value;
+  this.api.addBusiness(newBusiness).subscribe({
+    next:(res: any)=>{
+      console.log('business added:',res);
+      this.loadBusiness();
+      this.BusinesForm.reset();
+    },
+    error:(err: any)=>{
+      console.error('Error in Adding business',err);
+    }
+  });
+}
 
 }

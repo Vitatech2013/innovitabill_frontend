@@ -14,7 +14,7 @@ import { BillingService } from '../billing.service';
 export class SuperAdminLoginComponent implements OnInit {
 superAdminForm!:FormGroup;
 toastMessage: string|null=null;
-  // toastType:  undefined;
+  toastType: string | undefined;
 
 constructor(private fb:FormBuilder, private router:Router, private api:BillingService){}
 
@@ -46,7 +46,8 @@ constructor(private fb:FormBuilder, private router:Router, private api:BillingSe
   }
   showToast(message:string,type:string) {
     this.toastMessage=message;
-    // this.toastType=type;
+    this.toastType=type;
+    setTimeout(()=>this.toastMessage=null,3000);
   }
 
 }
