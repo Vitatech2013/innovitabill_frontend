@@ -8,13 +8,14 @@
   
 }
 .custom_navbar {
-  background-color: #ffffffba;
+  /* background-color: #ffffffba; */
+  background-color: #f0f9f2;
   
 }
 
 
 .logo {
-  width: 90px;
+  width: 70px;
   height: auto;
     margin-top: 3px;
 }
@@ -29,8 +30,16 @@
 }
 
 
+
+/*  */
+
+
+
+
+
+
 .main-body {
-    background-image: url('/assets/images/bgimg1.png');
+    /* background-image: url('/assets/images/bgimg1.png'); */
   min-height: 100vh; 
   display: flex;
   justify-content: center; 
@@ -39,6 +48,7 @@
   background-size: cover;
   background-position: center;
   padding: 20px;
+  background-color:  #f0f9f2;
 }
 
 .main-body .description {
@@ -95,6 +105,18 @@
       height: 90px;
       margin-right: 15px;
     }
+
+    /*  */
+    .feature-section {
+  background-color: #f8f9fa;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  transition: 0.3s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
 
     /* feacture section */
      .feature-section {
@@ -154,6 +176,70 @@
       font-weight: 600;
       font-size: 1rem;
     }
+
+/*  */
+.step-text h5 {
+  font-size: 1.1rem;
+}
+
+.step-text p {
+  color: #555;
+  margin: 0;
+  line-height: 1.6;
+}
+
+
+
+
+
+
+/* reviwes */
+.review-card {
+border: 0;
+background: transparent;
+text-align: center;
+padding: 1.25rem;
+
+}
+
+
+.review-img {
+width: 140px;
+height: 140px;
+object-fit: cover;
+border-radius: 50%; 
+display: block;
+margin: 0 auto 1rem auto;
+box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+transition: transform 0.25s ease;
+}
+
+
+.review-img:hover {
+transform: translateY(-6px) scale(1.03);
+}
+
+
+.review-name {
+font-weight: 600;
+margin-bottom: .25rem;
+}
+
+
+.review-stars {
+color: #f6c84c;
+margin-bottom: .5rem;
+}
+
+
+.review-text {
+color: #555;
+font-size: 0.95rem;
+}
+
+@media (max-width: 575px) {
+.review-img { width: 110px; height: 110px; }
+}
 
     /* footer */
     footer a:hover {
