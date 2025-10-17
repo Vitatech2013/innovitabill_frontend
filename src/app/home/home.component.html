@@ -31,10 +31,10 @@
 
   
 <!-- Maim Section -->
-<div class="main-body text-center">
+<!-- <div class="main-body text-center ">
   <div class="b">
     <h1 class="mb-3 fw-bold">Welcome to Billing Software</h1>
-    <p class="mb-3 text-secondary fs-5">
+    <p class="mb-3 text-secondary ">
       Manage your business efficiently with our dashboard.
     </p>
 
@@ -52,11 +52,93 @@
         data-bs-toggle="modal"
         data-bs-target="#demoModal"
       >
-        Get Started Demo
+        Book Free Demo
+      </button>
+    </div>
+  </div>
+</div> -->
+
+
+
+<div id="schoolCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+
+    <!-- Slide 1 -->
+  <div class="carousel-item active position-relative">
+  <img src="/assets/images/sliderimg2.png" class="d-block w-100" alt="Slide 1" style="height: 70vh; object-fit: cover;">
+
+  <!-- Overlay content directly on image -->
+  <div class="position-absolute top-50 start-50 translate-middle text-center text-white px-3">
+    <h1 class="mb-3 fw-bold ">Welcome to Billing Software</h1>
+    <p class="mb-3">
+      Manage your business efficiently with our dashboard.
+    </p>
+
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      <a href="/get-started" class="btn btn-primary btn-lg px-4 py-2 rounded-pill shadow-sm">
+        Get Started
+      </a>
+
+      <button type="button" class="btn btn-outline-light btn-lg px-4 py-2 rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#demoModal">
+        Book Free Demo
       </button>
     </div>
   </div>
 </div>
+
+    <!-- Slide 2 -->
+   <div class="carousel-item active">
+  <img src="/assets/images/softbg2.png" class="d-block w-100" alt="Slide 2" style="height: 70vh; object-fit: cover;">
+
+  <!-- Overlay content split into two sides -->
+  <div class="position-absolute top-50 start-50 translate-middle w-100 px-5">
+    <div class="row align-items-center text-white">
+      
+      <!-- Left Side Image -->
+      <div class="col-md-6 text-center w-2 h-2">
+        <img src="/assets/images/screenimg1.png" class="img-fluid" alt="Side Image" style="max-height: 300px;">
+      </div>
+
+      <!-- Right Side Text -->
+      <div class="col-md-6">
+        <h2 class="fw-bold">Our Approach</h2>
+        <p class="fs-5">
+          Billing software saves time and money by improving the user experience,
+          reducing errors, and clarifying complex processes.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <!-- Slide 3 -->
+    <div class="carousel-item active position-relative">
+  <img src="/assets/images/softbg4.png" class="d-block w-100" alt="Slide 3" style="height: 70vh; object-fit: cover;">
+
+  <!-- Centered content -->
+  <div class="position-absolute top-50 start-50 translate-middle text-center text-white px-3">
+    <h2 class="fw-bold text">All-Round Education</h2>
+    <p class="fs-5">
+      Fostering academic, cultural, and extracurricular excellence.
+    </p>
+  </div>
+</div>
+
+
+  </div>
+
+  <!-- Carousel controls -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#schoolCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#schoolCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
 
 <!-- Modal Box -->
 <div
@@ -100,14 +182,7 @@
             />
           </div>
 
-          <div class="mb-3 text-start">
-            <label class="form-label">Phonenumber</label>
-            <input
-              type="Phonenumber"
-              class="form-control"
-              placeholder="Enter your email"
-            />
-          </div>
+          
 
           <div class="mb-3 text-start">
             <label class="form-label">Message</label>
@@ -142,8 +217,9 @@
       <div class="col-lg-6 col-md-12">
         <div class="mb-4 d-flex">
           <div class="me-3 step-number">1</div>
-          <div>
-            <div class="step-title">Select Customer</div>
+          <div class="margin-right: 8px; 
+  vertical-align: middle; fw-bold">
+            <div class="step-title fw-bold"><i class="bi bi-person-fill-check"></i>Select Customer</div>
             <div class="step-text">
               Select contact from your phone or create a new Customer or upload Customer list 
               with details like GST, PAN, address etc.
@@ -154,7 +230,7 @@
         <div class="mb-4 d-flex">
           <div class="me-3 step-number">2</div>
           <div>
-            <div class="step-title">Add Items</div>
+            <div class="step-title fw-bold me-2"><i class="bi bi-clipboard-plus-fill"></i>Add Items</div>
             <div class="step-text">
               Create and add a new Item or upload Item list with details like 
               sales price, discount, category etc.
@@ -165,7 +241,7 @@
         <div class="mb-4 d-flex">
           <div class="me-3 step-number">3</div>
           <div>
-            <div class="step-title">Share Invoice</div>
+            <div class="step-title fw-boldb  margin-right: 8px;   vertical-align: middle;"><i class="bi bi-envelope-paper-fill"></i>Share Invoice</div>
             <div class="step-text">
               Print, download and share the invoices to your customers in PDF 
               format over WhatsApp/SMS.
@@ -194,7 +270,7 @@
       <div class="col-md-4">
         <div class="card h-100 border-0 shadow-sm text-center p-4 rounded-4">
           <div class="card-body">
-            <h5 class="card-title text-primary fw-semibold">
+            <h5 class="card-title text-primary fw-bold">
               Reduce Overdue Payments by 3x
             </h5>
             <p class="card-text text-muted">
@@ -207,7 +283,7 @@
       <div class="col-md-4">
         <div class="card h-100 border-0 shadow-sm text-center p-4 rounded-4">
           <div class="card-body">
-            <h5 class="card-title text-primary fw-semibold">
+            <h5 class="card-title text-primary fw-bold">
               Share Error-Free Bills Instantly
             </h5>
             <p class="card-text text-muted">
@@ -220,7 +296,7 @@
       <div class="col-md-4">
         <div class="card h-100 border-0 shadow-sm text-center p-4 rounded-4">
           <div class="card-body">
-            <h5 class="card-title text-primary fw-semibold">
+            <h5 class="card-title text-primary fw-bold">
               Smart Payment Tracking
             </h5>
             <p class="card-text text-muted">
@@ -522,6 +598,13 @@ Access your business from anywhere</h5>
 
 
 <router-outlet></router-outlet>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 
 
 

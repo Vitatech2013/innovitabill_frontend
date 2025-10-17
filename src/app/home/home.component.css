@@ -9,7 +9,7 @@
 }
 .custom_navbar {
   /* background-color: #ffffffba; */
-  background-color: #f0f9f2;
+  background-color: #f9ffe6e3;
   
 }
 
@@ -32,15 +32,40 @@
 
 
 /*  */
+.carousel-item {
+  height: 70vh; /* set height to 70% of viewport */
+}
 
+.carousel-item img {
+  object-fit: cover; /* ensures image covers the container */
+  width: 100%;       /* full width */
+  height: 100%;      /* full height of carousel item */
+}
+
+.carousel-caption {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 55%;
+  text-align: left;
+}
+
+.carousel-caption h2 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.carousel-caption p {
+  font-size: 1.1rem;
+}
 
 
 
 
 
 .main-body {
-    /* background-image: url('/assets/images/bgimg1.png'); */
-  min-height: 100vh; 
+    background-image: url('/assets/images/bgimg1.png');
+  min-height: 50vh; 
   display: flex;
   justify-content: center; 
   align-items: center; 
