@@ -10,9 +10,9 @@ import { ManagersComponent } from './managers/managers.component';
 export const routes: Routes = [
     {path:'SuperAdminLogin',component:SuperAdminLoginComponent},
     {path:'SuperAdminView',component:SuperadminViewComponent,children:[
-        {path:'',component:BusinessListComponent},
-        {path:'Business',component:BusinessListComponent},
+        {path:'',component:AdminsComponent},
         {path:'admins',component:AdminsComponent},
+        {path:'Business',component:BusinessListComponent},
         {path:'roles',component:RolesComponent},
         {path:'cashiers',component:CashiersComponent},
         {path:'managers',component:ManagersComponent},

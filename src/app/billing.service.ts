@@ -5,6 +5,10 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class BillingService {
+  getManager() {
+    throw new Error('Method not implemented.');
+  }
+ 
   private baseUrl='http://localhost:1001';
 
   constructor(private http:HttpClient) { }
@@ -18,10 +22,22 @@ export class BillingService {
   getBusiness() {
     return this.http.get<any[]>(`${this.baseUrl}/business/businessget`)
     }
-  updateBusiness(businessid:string, value: any) {
-    return this.http.put(`${this.baseUrl}/business/businessupdate/${businessid}`,value)
+  updateBusiness(id:string, value: any) {
+    return this.http.put(`${this.baseUrl}/business/businessupdate/${id}`,value)
   }
-  deleteBusiness(deleteBusinessId: string) {
-    return this.http.delete(`${this.baseUrl}/business/businessdelete/${deleteBusinessId}`)
+  deleteBusiness(Id: string) {
+    return this.http.delete(`${this.baseUrl}/business/businessdelete/${Id}`)
+  }
+
+   deleteAdmin(id: string) {
+    return this.http.delete(`${this.baseUrl}/admin/admindelete/${id}`)
+  }
+  updateAdmin(id: string, value: any) {
+return this.http.put(`${this.baseUrl}/admin/adminupdate/${id}`,value)
+  }
+  addAdmins(data: any) {
+return this.http.post(`${this.baseUrl}/admin/adminregistration`,data)  }
+  getAdmins() {
+    return this.http.get<any[]>(`${this.baseUrl}/admin/adminget`)
   }
 }

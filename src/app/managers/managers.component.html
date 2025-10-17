@@ -1,1 +1,31 @@
-<p>managers works!</p>
+ <div class="dashboard">
+        <h2 class="title mb-4 p-3 text-center bg-light shadow rounded">list of Managers</h2>
+       
+
+<div class="row">
+      <table class="table table-bordered table-stribed  shadow-sm">
+            <thead class="table-success text-center">
+                <tr>
+                <th>Sl.no</th>
+                <th> Name</th>
+                <th>Email</th>
+                 <th>Phone Number </th>
+                 <th>Address</th>
+                 <th>Image</th>
+                 <th>Business ID</th>
+                 <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let m of manager;  let i=index">
+                    <td>{{i+1}}</td>
+                    <td>{{m.full_name}}</td>
+                    <td>{{m.email}}</td>
+                    <td>{{m.phone_number}}</td>
+                    <td>{{m.address}}</td>
+                    <td>{{m.image}}</td>
+                    <td>{{m.business_id}}</td>
+                    <td>{{m.status}}</td>
+                </tr>
+            </tbody>
+                   

@@ -1,6 +1,5 @@
-<div class="col-10 p-4">
    <div class="text-end p-4">
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#postModal">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#businessModal">
   Add Business
 </button>
 </div>
@@ -36,7 +35,7 @@
                 </button>
                 <button
                   class="btn btn-danger btn-sm"
-                  (click)="openBusinessModal(business._id)"
+                  (click)="openDeleteModal(b._id)"
                 >
                   Delete
                 </button>
@@ -47,12 +46,12 @@
           </table>
         </div></div>
 
-<div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+<div class="modal fade" id="businessModal" tabindex="-1" aria-labelledby="businessModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <form [formGroup]="BusinesForm" (ngSubmit)="addbusiness()">
         <div class="modal-header">
-          <h5 class="modal-title" id="postModalLabel"> Add Business </h5>
+          <h5 class="modal-title" id="businessModalLabel"> Add Business </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
@@ -152,8 +151,7 @@
     </div>
   </div>
 </div>
-<div
-  class="modal fade"
+<div class="modal fade"
   id="deleteBusinessModal"
   tabindex="-1"
   aria-labelledby="deleteBusinessModalLabel"
