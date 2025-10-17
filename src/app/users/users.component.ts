@@ -8,9 +8,10 @@ import { BusinessService } from '../business.service';
   standalone: true,
   imports: [CommonModule,ReactiveFormsModule],
   templateUrl: './users.component.html',
-  styleUrl: './users.component.css'
+  styleUrls: ['./users.component.css'],
 })
 export class UsersComponent implements OnInit {
+
   usersForm!: FormGroup;
   users: any[] = [];
   selectedUserId: string | null = null;
@@ -23,24 +24,31 @@ export class UsersComponent implements OnInit {
     this.getAllUsers();
   }
 
-  // Initialize reactive form
   initForm() {
-    this.usersForm = this.fb.group({
-      business_name: ['', Validators.required],
-      owner_name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-    });
-  }
+  this.usersForm = this.fb.group({
+    business_name: ['', Validators.required],
+    owner_name: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    phone_number: ['', Validators.required],
+    business_type: ['', Validators.required],
+    business_address: ['', Validators.required],
+    registration_number: ['', Validators.required],
+    gst_number: ['', Validators.required],
+    password: ['', Validators.required],
+    
+    superadmin_id: ['', Validators.required]
+  });
+}
 
-  // Get all users from backend
+
   getAllUsers() {
     this.service.getUsers().subscribe({
       next: (res: any) => {
         this.users = res;
       },
-      error: (err:any) => {
+      error: (err: any) => {
         console.error('Error fetching users', err);
-      },
+      }
     });
   }
 edit(user: any) {
@@ -49,35 +57,39 @@ edit(user: any) {
       business_name: user.business_name,
       owner_name: user.owner_name,
       email: user.email,
+      phone_number: user.phone_number,
+      business_type: user.business_type,
+      registration_number: user.registration_number,
+      gst_number: user.gst_number,
+      password: user.password,
+      superadmin_id: user.superadmin_id,
+
     });
 
-    // manually open modal (if not using data-bs-toggle)
-    const modal = document.getElementById('postModal');
-    if (modal) {
-      const modalInstance = new (window as any).bootstrap.Modal(modal);
-      modalInstance.show();
-    }
+
   }
 
-  // Create or Update user
   createuser() {
     if (this.usersForm.invalid) return;
 
     const userData = this.usersForm.value;
 
     if (this.selectedUserId) {
-      // Update existing user
+     
       this.service.updateUser(this.selectedUserId, userData).subscribe({
         next: (res:any) => {
           this.getAllUsers();
           this.resetForm();
+          
         },
-        error: (err:any) => {
-          console.error(err);
+        error: (err: any) => {
+          console.error(' Server error:', err);
+          alert(err.error?.message || 'Something went wrong on the server!');
         },
+
       });
     } else {
-      // Create new user
+    
       this.service.createUser(userData).subscribe({
         next: (res:any) => {
           this.getAllUsers();
@@ -90,21 +102,24 @@ edit(user: any) {
     }
   }
 
-  // Delete user
   delete(id: string) {
     if (confirm('Are you sure you want to delete this user?')) {
       this.service.deleteUser(id).subscribe({
-        next: (res:any) => {
+        next: (res: any) => {
+          console.log(' User deleted:', res);
+          alert('user deleted successful')
+            this.users = this.users.filter(u => u._id !== id);
           this.getAllUsers();
         },
-        error: (err:any) => {
-          console.error('Error deleting user', err);
+        error: (err: any) => {
+          console.error(' Delete error:', err);
+          alert('Server error while deleting user');
         },
       });
+    
+  
     }
   }
-
-  // Reset form after save/update
   resetForm() {
     this.usersForm.reset();
     this.selectedUserId = null;

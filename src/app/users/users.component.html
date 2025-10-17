@@ -1,18 +1,17 @@
 <div class="container-fluid">
-  <!-- Header Row -->
   <div class="row">
     <div class="text-end p-4">
       <button
         class="btn btn-success w-25"
         data-bs-toggle="modal"
         data-bs-target="#postModal"
+        
       >
         Add User
       </button>
     </div>
   </div>
 
-  <!-- Table Row -->
   <div class="row">
     <div class="container p-5">
       <h2 class="title mb-4 p-3 text-center bg-light shadow rounded">
@@ -26,7 +25,16 @@
             <th>Business Name</th>
             <th>Owner Name</th>
             <th>Email</th>
+            <th>Phone Number</th>
+            <th>Business Type</th>
+            <th>Business Address</th>
+            <th>Registration Number</th>
+            <th>GST Number</th>
+            
+
+            <th>Superadmin ID</th>
             <th>Action</th>
+
           </tr>
         </thead>
 
@@ -36,25 +44,14 @@
             <td>{{ u.business_name }}</td>
             <td>{{ u.owner_name }}</td>
             <td>{{ u.email }}</td>
-
-            <!-- <td>
-              <div class="dropdown">
-                <button
-                  class="btn btn-sm btn-secondary dropdown-toggle"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Roles
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item">abc</a></li>
-                  <li><a class="dropdown-item">def</a></li>
-                  <li><a class="dropdown-item">ghi</a></li>
-                </ul>
-              </div>
-            </td> -->
-
+            <td>{{ u.phone_number }}</td>
+            <td>{{ u.business_type }}</td>
+            <td>{{ u.business_address }}</td>
+            <td>{{ u.registration_number }}</td>
+            <td>{{ u.gst_number }}</td>
+           
+            <td>{{ u.superadmin_id }}</td>
+           
             <td>
               <button
                 class="btn btn-primary btn-sm me-2"
@@ -66,7 +63,7 @@
                 class="btn btn-danger btn-sm"
                 (click)="delete(u._id)"
               >
-                Delete
+                Del
               </button>
             </td>
           </tr>
@@ -76,7 +73,6 @@
   </div>
 </div>
 
-<!-- Modal -->
 <div
   class="modal fade"
   id="postModal"
@@ -183,7 +179,7 @@
               required
             />
           </div>
-          <div class="mb-3">
+          <!-- <div class="mb-3">
             <label class="form-label">logo_image</label>
             <input
               type="file"
@@ -218,7 +214,7 @@
               class="form-control"
               required
             />
-          </div>
+          </div> -->
           <div class="mb-3">
             <label class="form-label">superadmin_id</label>
             <input
@@ -238,16 +234,14 @@
           >
             Cancel
           </button>
-          <button
-            type="submit"
-            class="btn btn-primary"
-            [disabled]="usersForm.invalid"
-            data-bs-dismiss="modal"
-          >
+          <button type="submit" class="btn btn-primary" [disabled]="usersForm.invalid">
             Save
           </button>
+
         </div>
       </form>
     </div>
   </div>
 </div>
+
+
