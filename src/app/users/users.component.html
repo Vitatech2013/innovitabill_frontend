@@ -1,9 +1,9 @@
 <div class="container-fluid">
+  <!-- Header Row -->
   <div class="row">
     <div class="text-end p-4">
-      <!-- Button to open modal -->
       <button
-        class="w-25 btn btn-success"
+        class="btn btn-success w-25"
         data-bs-toggle="modal"
         data-bs-target="#postModal"
       >
@@ -12,45 +12,66 @@
     </div>
   </div>
 
+  <!-- Table Row -->
   <div class="row">
     <div class="container p-5">
-      <h2 class="title mb-4 p-3 text-center bg-light shadow-rounded">
+      <h2 class="title mb-4 p-3 text-center bg-light shadow rounded">
         List of Users
       </h2>
 
-      <!-- Posts Table -->
       <table class="table table-bordered table-striped table-hover shadow-sm">
-        <thead class="table-secondary ">
+        <thead class="table-secondary">
           <tr>
-            <th>SL.no</th>
-            <th>business_name</th>
-            <th>owner_name</th>
-            <th>email</th>
+            <th>SL. No</th>
+            <th>Business Name</th>
+            <th>Owner Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Action</th>
           </tr>
         </thead>
-        <tbody>
-        <tr *ngFor="let b of businesses; let i = index">
-            <td>{{ i + 1 }}</td>
-            <td>{{ b.business_name }}</td>
-            <td>{{ b.owner_name }}</td>
-            <td>{{ b.email }}</td>
-            <td>
-          <div class="dropdown">
-            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-              Actions
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#" (click)="editBusiness(b)">Edit</a></li>
-              <li><a class="dropdown-item" href="#" (click)="deleteBusiness(b)">Delete</a></li>
-              <li><a class="dropdown-item" href="#" (click)="viewBusiness(b)">View</a></li>
-            </ul>
-          </div>
-        </td>
-        </tr>  
 
+        <tbody>
+          <tr *ngFor="let u of users; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ u.business_name }}</td>
+            <td>{{ u.owner_name }}</td>
+            <td>{{ u.email }}</td>
+
+            <td>
+              <div class="dropdown">
+                <button
+                  class="btn btn-sm btn-secondary dropdown-toggle"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Roles
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item">abc</a></li>
+                  <li><a class="dropdown-item">def</a></li>
+                  <li><a class="dropdown-item">ghi</a></li>
+                </ul>
+              </div>
+            </td>
+
+            <td>
+              <button
+                class="btn btn-primary btn-sm me-2"
+                (click)="edit(u)"
+              >
+                Edit
+              </button>
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="delete(u._id)"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
         </tbody>
-        
       </table>
     </div>
   </div>
@@ -66,7 +87,7 @@
 >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form [formGroup]="BusinessForm" (ngSubmit)="createuser()">
+      <form [formGroup]="usersForm" (ngSubmit)="createuser()">
         <div class="modal-header">
           <h5 class="modal-title" id="postModalLabel">Add User</h5>
           <button
@@ -79,33 +100,33 @@
 
         <div class="modal-body">
           <div class="mb-3">
-            <label class="form-label">business_name</label>
+            <label class="form-label">Business Name</label>
             <input
               type="text"
-              formControlName="title"
+              formControlName="business_name"
               class="form-control"
               required
             />
           </div>
 
           <div class="mb-3">
-            <label class="form-label">owner_name</label>
+            <label class="form-label">Owner Name</label>
             <input
               type="text"
-              formControlName="title"
+              formControlName="owner_name"
               class="form-control"
               required
             />
           </div>
 
           <div class="mb-3">
-            <label class="form-label">email</label>
+            <label class="form-label">Email</label>
             <input
-              formControlName="content"
+              type="email"
+              formControlName="email"
               class="form-control"
-              rows="3"
               required
-            >
+            />
           </div>
         </div>
 
@@ -120,7 +141,7 @@
           <button
             type="submit"
             class="btn btn-primary"
-            [disabled]="BusinessForm.invalid"
+            [disabled]="usersForm.invalid"
             data-bs-dismiss="modal"
           >
             Save
