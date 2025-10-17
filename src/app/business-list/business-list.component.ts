@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router,  RouterOutlet } from '@angular/router';
 import { BillingService } from '../billing.service';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-business-list',
@@ -14,16 +16,22 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 export class BusinessListComponent  implements OnInit{
 
 
+
 toastMessage:string | null=null;
 business: any;
 BusinesForm!: FormGroup;
+  businessid: any;
+ 
 
 constructor(private api:BillingService,private fb:FormBuilder,private router:Router){}
 
   ngOnInit() {
     this.loadBusiness()
 this.BusinesForm=this.fb.group({
-
+  business_name:['',Validators.required],
+  owner_name:['',Validators.required],
+  phone_number:['',Validators.required],
+  business_type:['',Validators.required]
 })
 
 
@@ -58,6 +66,20 @@ this.toastMessage=history.state?.toast  || null;
       console.error('Error in Adding business',err);
     }
   });
+}
+updateBusiness() {
+
+}
+
+openBusinessModal(business:any) {
+this.businessid=business._id;
+this.BusinesForm.patchValue({
+  business_name:business.name,
+  owner_name:business.number,
+ phone_number:business.email
+});
+const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
+modal.show();
 }
 
 }
