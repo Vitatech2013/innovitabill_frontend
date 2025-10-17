@@ -5,19 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class BusinessService {
-  createUser(userData: any) {
-    throw new Error('Method not implemented.');
-  }
-  deleteUser(id: string) {
-    throw new Error('Method not implemented.');
-  }
-  updateUser(selectedUserId: string, userData: any) {
-    throw new Error('Method not implemented.');
-  }
-  getUsers() {
-    throw new Error('Method not implemented.');
-  }
- 
+
   
   private baseUrl = 'http://localhost:1001/business';
 
@@ -27,7 +15,19 @@ export class BusinessService {
     return this.http.post(`${this.baseUrl}/businesslogin`,data)
   }
 
-  
+  createUser(userData: any) {
+    return this.http.post(`${this.baseUrl}/businessregistration`, userData)
+  }
+  deleteUser(id: string) {
+    return this.http.delete(`${this.baseUrl}/businessdelete/${id}`,)
+  }
+  updateUser(id: string, data: any) {
+    return this.http.put(`${this.baseUrl}/businessupdate/${id}`,data)
+  }
+  getUsers() {
+    return this.http.get(`${this.baseUrl}/businessget`);
+  }
+ 
 
   
 }
