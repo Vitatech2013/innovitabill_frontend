@@ -14,13 +14,11 @@ declare var bootstrap: any;
   styleUrl: './business-list.component.css'
 })
 export class BusinessListComponent  implements OnInit{
-
-
-
 toastMessage:string | null=null;
 business: any;
 BusinesForm!: FormGroup;
-  businessid: any;
+  businessid: string='';
+  deleteBusinessId: string='';
  
 
 constructor(private api:BillingService,private fb:FormBuilder,private router:Router){}
@@ -67,10 +65,6 @@ this.toastMessage=history.state?.toast  || null;
     }
   });
 }
-updateBusiness() {
-
-}
-
 openBusinessModal(business:any) {
 this.businessid=business._id;
 this.BusinesForm.patchValue({
@@ -78,8 +72,48 @@ this.BusinesForm.patchValue({
   owner_name:business.number,
  phone_number:business.email
 });
-const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
+const modal = new bootstrap.Modal(document.getElementById('editbusinessModal'));
 modal.show();
 }
 
+updateBusiness() {
+  if(!this.BusinesForm.valid)return;
+this.api.updateBusiness(this.businessid,this.BusinesForm.value).subscribe({
+  next:()=>{
+    const modalEl = document.getElementById('editBusinessModal');
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    modal.hide();
+    this.getBusiness();
+  },
+  error:(err: any)=> {
+    console.error('Error updating Businesses:',err);
+  },
+})
+
+}
+  getBusiness() {
+this.api.getBusiness().subscribe((res:any)=>{
+  this.business=res;
+});
+  }
+openDeleteModal(id:string) {
+this.deleteBusinessId = id;
+const modal = new bootstrap.Modal(document.getElementById('deleteBusinessModal'));
+modal.show();
+}
+deleteBusiness() {
+  this.api.deleteBusiness(this.deleteBusinessId).subscribe({
+  next:()=>{
+    const modalEl=document.getElementById('deleteBusinessModal');
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    modal.hide();
+    this.getBusiness();
+  },
+  error:(err: any)=>{
+    console.error(' deleting BUsinesses:',err);
+  }
+});
+
+}
+  
 }
