@@ -13,6 +13,8 @@ import { BusinessService } from '../business.service';
 })
 export class BusinessLoginComponent implements OnInit {
   businessForm!: FormGroup;
+  toastMessage: string | null = null;
+  toastType: 'success' | 'error' | 'warning' = 'success';
 
   constructor(private fb: FormBuilder, private router: Router,private service: BusinessService) {}
 
@@ -23,20 +25,39 @@ export class BusinessLoginComponent implements OnInit {
     });
   }
 
-  login(){
-    if(this.businessForm.invalid) {
-      return;
-    }
-    this.service.login(this.businessForm.value).subscribe({
-      next: (res: any)=> {
-        console.log(res, 'Login successfull');
-        this.router.navigateByUrl(('/business-Dashboard')); 
-      },
-      error:(err: any)=> {
-        console.error('Login failed',err);
-      }
-    })
-
+login() {
+  if (this.businessForm.invalid) {
+    this.businessForm.markAllAsTouched();
+    this.showToast('❌ Please fill all required fields correctly!', 'warning');
+    return;
   }
+
+  this.service.login(this.businessForm.value).subscribe({
+    next: (res: any) => {
+      console.log('Login successful', res);
+
+      if (res.token) {
+        localStorage.setItem('businessToken', res.token);
+      }
+
+      this.router.navigateByUrl('/business-Dashboard', {
+        state: { toast: 'User login successful!' }
+      });
+
+      this.showToast('✅ User login successful!', 'success');
+    },
+    error: (err: any) => {
+      console.error('Login failed:', err);
+      this.showToast(err.error?.message || 'Invalid email or password', 'error');
+    }
+  });
+}
+
+showToast(message: string, type: 'success' | 'error' | 'warning') {
+  this.toastMessage = message;
+  this.toastType = type;
+  setTimeout(() => (this.toastMessage = null), 3000);
+}
+
 
 }

@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class BusinessService {
+ 
+  
   private baseUrl = 'http://localhost:1001/business';
 
   constructor(private http: HttpClient) { }
@@ -12,4 +14,10 @@ export class BusinessService {
   login(data: any){
     return this.http.post(`${this.baseUrl}/businesslogin`,data)
   }
+
+  adduser() {
+throw new Error('Method not implemented.');
+}
+
+  
 }
