@@ -11,8 +11,10 @@ import { Router, RouterLink,  RouterOutlet } from '@angular/router';
 })
 export class BusinessDashboardComponent  implements OnInit{
 
+
   toastMessage:  string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
+isSidebarOpen: any;
 
   constructor(private router: Router) {}
 
@@ -30,7 +32,12 @@ export class BusinessDashboardComponent  implements OnInit{
     setTimeout(() => (this.toastMessage = null), 3000);
   }
 
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+}
+
   logout(): void {
+    console.log('Logout clicked');
     localStorage.removeItem('token');
     sessionStorage.clear();
     this.router.navigate(['/businesslogin']);

@@ -36,8 +36,8 @@ login() {
     next: (res: any) => {
       console.log('Login successful', res);
 
-      if (res.token) {
-        localStorage.setItem('businessToken', res.token);
+      if (res) {
+        localStorage.setItem('businessToken', JSON.stringify(res.data));
       }
 
       this.router.navigateByUrl('/business-Dashboard', {
