@@ -1,1 +1,23 @@
-<p>roles works!</p>
+ <div class="dashboard">
+        <h2 class="title mb-4 p-3 text-center bg-light shadow rounded">list of Roles</h2>
+       
+
+<div class="row">
+      <table class="table table-bordered table-stribed  shadow-sm">
+            <thead class="table-success text-center">
+                <tr>
+                <th>Sl.no</th>
+                <th> Name</th>
+                 <th>Phone Number </th>
+                 <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let r of Roles;  let i=index">
+                    <td>{{i+1}}</td>
+                    <td>{{r.role_name}}</td>
+                    <td>{{r.role_number}}</td>
+                    <td>{{r.status}}</td>
+                </tr>
+            </tbody>
+                   
