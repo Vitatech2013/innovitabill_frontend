@@ -9,7 +9,7 @@
 }
 .custom_navbar {
   /* background-color: #ffffffba; */
-  background-color: #f9ffe6e3;
+ background:  #fefdff;
   
 }
 
@@ -33,13 +33,13 @@
 
 /*  */
 .carousel-item {
-  height: 70vh; /* set height to 70% of viewport */
+  height: 70vh; 
 }
 
 .carousel-item img {
-  object-fit: cover; /* ensures image covers the container */
-  width: 100%;       /* full width */
-  height: 100%;      /* full height of carousel item */
+  object-fit: cover; 
+  width: 100%;       
+  height: 100%;     
 }
 
 .carousel-caption {
