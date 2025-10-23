@@ -46,6 +46,12 @@ this.api.getAdmins().subscribe({
   }
 })
 }
+  openAddModal() {
+    this.adminId = '';
+    this.adminsFrom.reset(); 
+    const modal = new bootstrap.Modal(document.getElementById('adminModal'));
+    modal.show();
+  }
 addAdmins() {
 if(this.adminsFrom.invalid)return;
 const newAdmins=this.adminsFrom.value;
