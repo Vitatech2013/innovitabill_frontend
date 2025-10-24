@@ -1,0 +1,31 @@
+ <div class="dashboard">
+        <h2 class="title mb-4 p-3 text-center bg-light shadow rounded">list of Cashiers</h2>
+       
+
+<div class="row">
+      <table class="table table-bordered table-stribed  shadow-sm">
+            <thead class="table-success text-center">
+                <tr>
+                <th>Sl.no</th>
+                <th> Name</th>
+                <th>Email</th>
+                 <th>Phone Number </th>
+                 <th>Address</th>
+                 <th>Image</th>
+                 <th>Business ID</th>
+                 <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let c of cashiers;  let i=index">
+                    <td>{{i+1}}</td>
+                    <td>{{c.full_name}}</td>
+                    <td>{{c.email}}</td>
+                    <td>{{c.phone_number}}</td>
+                    <td>{{c.address}}</td>
+                    <td>{{c.image}}</td>
+                    <td>{{c.business_id}}</td>
+                    <td>{{c.status}}</td>
+                </tr>
+            </tbody>
+                   
