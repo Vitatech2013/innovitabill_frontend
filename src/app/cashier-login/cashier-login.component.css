@@ -1,0 +1,35 @@
+.custom_navbar{
+  height: 100px;
+  background: linear-gradient(90deg, rgb(228, 218, 218), rgb(174, 226,241), rgb(193, 215, 233));
+}
+.company-name{
+  font-size: 50px;
+}
+
+a{
+    padding-left: 250px;
+}
+ul{
+    padding-right: 150px;
+}
+ .card {
+  background-color: rgba(255, 255, 255, 0.2); 
+  /* backdrop-filter: blur(10px);                 */
+  border-radius: 12px;
+  padding:2rem;
+  transition: all 0.4s ease;
+  
+}
+
+ .btn-login {
+      background: linear-gradient(to right, #00d2ff, #f900d5);
+      border: none;
+      color: white;
+      border-radius: 30px;
+      padding: 10px;
+      font-weight: bold;
+    }
+
+
+  
+  

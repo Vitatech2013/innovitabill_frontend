@@ -12,4 +12,12 @@ export const routes: Routes = [
         {path:'',component:UsersComponent},
         {path: 'users', component:UsersComponent}
     ]},
+import { HomeComponent } from './home/home.component';
+import { CashierLoginComponent } from './cashier-login/cashier-login.component';
+
+
+export const routes: Routes = [
+    {path:'', component:HomeComponent},
+    {path:'cashier_login', component:CashierLoginComponent}
+    
 ];
