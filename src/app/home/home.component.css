@@ -9,7 +9,7 @@
 }
 .custom_navbar {
   /* background-color: #ffffffba; */
-  background-color: #f0f9f2;
+ background:  #fefdff;
   
 }
 
@@ -32,15 +32,40 @@
 
 
 /*  */
+.carousel-item {
+  height: 70vh; 
+}
 
+.carousel-item img {
+  object-fit: cover; 
+  width: 100%;       
+  height: 100%;     
+}
+
+.carousel-caption {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 55%;
+  text-align: left;
+}
+
+.carousel-caption h2 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.carousel-caption p {
+  font-size: 1.1rem;
+}
 
 
 
 
 
 .main-body {
-    /* background-image: url('/assets/images/bgimg1.png'); */
-  min-height: 100vh; 
+    background-image: url('/assets/images/bgimg1.png');
+  min-height: 50vh; 
   display: flex;
   justify-content: center; 
   align-items: center; 
