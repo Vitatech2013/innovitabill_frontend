@@ -36,12 +36,8 @@ isSidebarOpen: any;
     this.isSidebarOpen = !this.isSidebarOpen;
 }
 
-  logout(): void {
-    console.log('Logout clicked');
+  logout(){
     localStorage.removeItem('token');
-    sessionStorage.clear();
-    this.router.navigate(['/businesslogin']);
+     this.router.navigate(['/businesslogin'])
   }
-
-
 }

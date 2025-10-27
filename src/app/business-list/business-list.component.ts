@@ -29,7 +29,10 @@ this.BusinesForm=this.fb.group({
   business_name:['',Validators.required],
   owner_name:['',Validators.required],
   phone_number:['',Validators.required],
-  business_type:['',Validators.required]
+  business_type:['',Validators.required],
+  business_address:['',Validators.required],
+  registration_number:['',Validators.required],
+  gst_number:['',Validators.required]
 })
 
 
@@ -71,7 +74,10 @@ this.BusinesForm.patchValue({
   business_name:business.business_name,
   owner_name:business.owner_name,
  phone_number:business.phone_number,
- business_type:business.business_type
+ business_type:business.business_type,
+ business_address:business.business_address,
+ registration_number:business.registration_number,
+ gst_number:business.gst_number
 });
 const modal = new bootstrap.Modal(document.getElementById('editBusinessModal'));
 modal.show();

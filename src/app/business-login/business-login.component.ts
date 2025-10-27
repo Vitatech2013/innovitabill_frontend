@@ -12,6 +12,7 @@ import { BusinessService } from '../business.service';
   styleUrl: './business-login.component.css'
 })
 export class BusinessLoginComponent implements OnInit {
+
   businessForm!: FormGroup;
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
@@ -21,7 +22,7 @@ export class BusinessLoginComponent implements OnInit {
    ngOnInit(): void {
     this.businessForm = this.fb.group({
       email:['',[Validators.required, Validators.email]],
-      password:['',[Validators.required, Validators.minLength(6)]]
+      password:['',Validators.required]
     });
   }
 
@@ -40,7 +41,7 @@ login() {
         localStorage.setItem('businessToken', JSON.stringify(res.data));
       }
 
-      this.router.navigateByUrl('/business-Dashboard', {
+      this.router.navigateByUrl('business-Dashboard', {
         state: { toast: 'User login successful!' }
       });
 
@@ -58,6 +59,9 @@ showToast(message: string, type: 'success' | 'error' | 'warning') {
   this.toastType = type;
   setTimeout(() => (this.toastMessage = null), 3000);
 }
+logout() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/home']);}
 
 
 }

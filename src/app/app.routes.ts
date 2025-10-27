@@ -30,6 +30,7 @@ export const routes: Routes = [
         {path: 'users', component:UsersComponent}
     ]},
     {path:'', component:HomeComponent},
+    {path:'home',component:HomeComponent},
     {path:'cashier_login', component:CashierLoginComponent}
     
 ]
