@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-success px-3">
-    <nav class="navbar-brand">Billing Software</nav>
+    <nav class="navbar-brand" routerLink="/home">Billing Software</nav>
      <div class="ms-auto">
     <button class="btn btn-outline-light" (click)="logout()">Logout</button>
   </div>
@@ -11,7 +11,7 @@
       <h4 class="text-center text-success mb-4">Super Admin Panel</h4>
       <ul class="list-group">
         
-        <li class="list-group-item p-2 mb-2">
+        <li class="list-group p-2 ">
           <a routerLink="Business"
              routerLinkActive="active"
              class="text-decoration-none d-block fw-semibold">
@@ -19,28 +19,28 @@
           </a>
         </li>
 
-          <li class="list-group-item p-2">
+          <li class="list-group p-2">
           <a routerLink="admins"
              routerLinkActive="active"
              class="text-decoration-none d-block fw-semibold">
             Admins
           </a>
         </li>
-          <li class="list-group-item p-2">
+          <li class="list-group p-2">
           <a routerLink="managers"
              routerLinkActive="active"
              class="text-decoration-none d-block fw-semibold">
             Managers
           </a>
         </li>  
-        <li class="list-group-item p-2">
+        <li class="list-group p-2">
           <a routerLink="cashiers"
              routerLinkActive="active"
              class="text-decoration-none d-block fw-semibold">
             Cashiers
           </a>
         </li>
-         <li class="list-group-item p-2">
+         <li class="list-group p-2">
           <a routerLink="roles"
              routerLinkActive="active"
              class="text-decoration-none d-block fw-semibold">

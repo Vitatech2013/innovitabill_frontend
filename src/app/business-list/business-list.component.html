@@ -4,18 +4,22 @@
 </button>
 </div>
       <div class="dashboard">
-        <h2 class="title mb-4 p-3 text-center bg-light shadow rounded">list of Business</h2>
+        <h2 class="title mb-4 p-3 text-center  ">list of Business</h2>
        
 
 <div class="row">
-      <table class="table table-bordered table-stribed  shadow-sm">
-            <thead class="table-success text-center">
+      <table class="table table-bordered  shadow-sm">
+            <thead class="table-success ">
                 <tr>
                 <th>Sl.no</th>
                 <th>Business Name</th>
                 <th>Owner</th>
+                <th>Email</th>
                  <th>Phone Number </th>
                  <th>Business Type</th>
+                 <th>Business address</th>
+                 <th>Registeration No</th>
+                 <th>GST </th>
                  <th>Actions</th>
                 </tr>
             </thead>
@@ -24,20 +28,24 @@
                     <td>{{i+1}}</td>
                     <td>{{b.business_name}}</td>
                     <td>{{b.owner_name}}</td>
+                    <td>{{b.email}}</td>
                     <td>{{b.phone_number}}</td>
                     <td>{{b.business_type}}</td>
+                    <td>{{b.business_address}}</td>
+                    <td>{{b.registration_number}}</td>
+                    <td>{{b.gst_number}}</td>
                     <td>
                 <button
                   class="btn btn-primary btn-sm me-2"
                   (click)="openBusinessModal(b)"
                 >
-                  Edit
+                  <i class="bi bi-pencil-square"></i>
                 </button>
                 <button
                   class="btn btn-danger btn-sm"
                   (click)="openDeleteModal(b._id)"
                 >
-                  Delete
+                <i class="bi bi-trash"></i>
                 </button>
               </td>
 
@@ -74,6 +82,18 @@
             <label class="form-label">Business Type</label>
             <input type="text" formControlName="business_type" class="form-control"  required>
            </div>
+            <div class="mb-3">
+            <label class="form-label">Business Address</label>
+            <input type="text" formControlName="business_address" class="form-control"  required>
+          </div>
+           <div class="mb-3">
+            <label class="form-label">Registration Number</label>
+            <input type="text" formControlName="registration_number" class="form-control"  required>
+          </div>
+           <div class="mb-3">
+            <label class="form-label">GST Number</label>
+            <input type="text" formControlName="gst_number" class="form-control"  required>
+          </div>
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -127,6 +147,30 @@
               type="text"
               class="form-control"
               formControlName="business_type"
+            />
+          </div>
+          <div class="mb-3">
+            <label>Business Address</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="business_address"
+            />
+          </div>
+          <div class="mb-3">
+            <label>Registeration Number</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="registration_number"
+            />
+          </div>
+          <div class="mb-3">
+            <label>GST </label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="gst_number"
             />
           </div>
         </form>

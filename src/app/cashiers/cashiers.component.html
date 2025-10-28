@@ -1,16 +1,21 @@
  <div class="dashboard">
-        <h2 class="title mb-4 p-3 text-center bg-light shadow rounded">list of Cashiers</h2>
+        <h2 class="title mb-4 p-3 text-center ">list of Cashiers</h2>
        
 
 <div class="row">
-      <table class="table table-bordered table-stribed  shadow-sm">
-            <thead class="table-success text-center">
+      <table class="table table-bordered table-stribed  ">
+            <thead class="table-success ">
                 <tr>
                 <th>Sl.no</th>
                 <th> Name</th>
+                <th>Date of Birth</th>
                 <th>Email</th>
                  <th>Phone Number </th>
                  <th>Address</th>
+                 <th>Branch</th>
+                 <th>Date of Joining</th>
+                 <th>Bank Details</th>
+                 <th>Gender</th>
                  <th>Image</th>
                  <th>Business ID</th>
                  <th>Status</th>
@@ -20,9 +25,14 @@
                 <tr *ngFor="let c of cashiers;  let i=index">
                     <td>{{i+1}}</td>
                     <td>{{c.full_name}}</td>
+                    <td>{{c.dob}}</td>
                     <td>{{c.email}}</td>
-                    <td>{{c.phone_number}}</td>
+                    <td>{{c.mobile_number}}</td>
                     <td>{{c.address}}</td>
+                    <td>{{c.assigned_branch}}</td>
+                    <td>{{c.date_of_joining}}</td>
+                    <td>{{c.bank_details}}</td>
+                    <td>{{c.gender}}</td>
                     <td>{{c.image}}</td>
                     <td>{{c.business_id}}</td>
                     <td>{{c.status}}</td>

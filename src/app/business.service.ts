@@ -6,12 +6,12 @@ import { Injectable } from '@angular/core';
 })
 export class BusinessService {
   
-  private baseUrl = 'http://localhost:3003/admin';
+  private baseUrl = 'http://localhost:3003';
 
   constructor(private http: HttpClient) {}
 
   login(data: any) {
-    return this.http.post(`${this.baseUrl}/`, data);
+    return this.http.post(`${this.baseUrl}/business/businesslogin`, data);
   }
 
   createUser(userData: any) {
