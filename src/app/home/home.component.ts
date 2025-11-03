@@ -1,24 +1,41 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-
+import { BillingService } from '../billing.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, RouterOutlet, FormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    RouterOutlet,
+    FormsModule,
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-getstarteddemo() {
-throw new Error('Method not implemented.');
-}
+  getstarteddemo() {
+    throw new Error('Method not implemented.');
+  }
   demoForm!: FormGroup;
-  
 
-  constructor(private fb: FormBuilder, private router:Router) {}
+  roles: any;
+
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private api: BillingService
+  ) {}
 
   ngOnInit(): void {
     this.demoForm = this.fb.group({
@@ -27,12 +44,22 @@ throw new Error('Method not implemented.');
       email: ['', [Validators.required, Validators.email]],
       message: ['', Validators.required],
     });
+  }
+
+    // this.api.getRoles().subscribe((res: any) => {
+    //   this.roles = res;
+    //   console.log(res, "roles");
+      
+    // });
+
+
+
 
     // const modalElement = document.getElementById('demoModal');
     // if (modalElement) {
     //   this.demoModal = new bootstrap.Modal(modalElement);
     // }
-  }
+  
 
   // getstarteddemo() {
   //   if (this.demoModal) {

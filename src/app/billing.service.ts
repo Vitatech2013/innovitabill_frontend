@@ -47,4 +47,10 @@ return this.http.post(`${this.baseUrl}/admin/adminregistration`,data)
  getRoles() {
 return this.http.get<any[]>(`${this.baseUrl}/role/getrole`)
 }
+
+// casher_login
+cashierlogin(value?: any){
+  return this.http.get<any[]>(`${this.baseUrl}/cashier/cashierlogin`)
 }
+}
+
