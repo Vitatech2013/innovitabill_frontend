@@ -52,20 +52,20 @@ this.api.getAdmins().subscribe({
     const modal = new bootstrap.Modal(document.getElementById('adminModal'));
     modal.show();
   }
-addAdmins() {
-if(this.adminsFrom.invalid)return;
-const newAdmins=this.adminsFrom.value;
-this.api.addAdmins(newAdmins).subscribe({
-  next:(res:any)=>{
-    console.log("Admin Added:",res);
-    this.loadAdmins();
-    this.adminsFrom.reset();
-  },
-  error:(err:any)=>{
-    console.error("error in adding Admin",err);
-  }
-});
-}
+// addAdmins() {
+// if(this.adminsFrom.invalid)return;
+// const newAdmins=this.adminsFrom.value;
+// this.api.addAdmins(newAdmins).subscribe({
+//   next:(res:any)=>{
+//     console.log("Admin Added:",res);
+//     this.loadAdmins();
+//     this.adminsFrom.reset();
+//   },
+//   error:(err:any)=>{
+//     console.error("error in adding Admin",err);
+//   }
+// });
+// }
 openAdminModal(admins:any) {
 this.adminId = admins._id;
 this.adminsFrom.patchValue({

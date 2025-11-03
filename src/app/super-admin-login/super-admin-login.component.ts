@@ -33,6 +33,9 @@ constructor(private fb:FormBuilder, private router:Router, private api:BillingSe
     this.api.SuperAdminLogin(this.superAdminForm.value).subscribe({
       next:(res:any)=>{
         console.log(res,"Super Admin Login Sucess");
+        const superadmin=localStorage.setItem("superAdmin",JSON.stringify(res.data),)
+       const sa_token= localStorage.setItem("sa_token",JSON.stringify(res.token),)
+        console.log(superadmin,sa_token )
         this.showToast("Super Admin Login Success","success");
         this.router.navigate(['/SuperAdminView'],{
           state:{toast:"Super Admin login success"}

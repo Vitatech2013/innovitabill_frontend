@@ -67,6 +67,17 @@
               <label class="form-label">Phone Number</label>
               <input type="text" formControlName="phone_number" class="form-control" />
             </div>
+            
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Role</label>
+            <select class="form-select">
+              <option value="">Select a Role</option>
+              
+              <option *ngFor="let r of roles" [value]="r.id">
+                {{r.role_name}}
+              </option>
+            </select>
+            </div>
 
              <div formGroupName="address">
                     <h5 class="text-dark mt-3 mb-2">Address Details</h5>
