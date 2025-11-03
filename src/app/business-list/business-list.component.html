@@ -1,12 +1,13 @@
-   <div class="text-end p-4">
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#businessModal">
+   <div class="text-start p-4">
+           <button class="btn btn-success" >
   Add Business
 </button>
+
 </div>
       <div class="dashboard">
-        <h2 class="title mb-4 p-3 text-center  ">list of Business</h2>
        
-
+       
+<!-- 
 <div class="row">
       <table class="table table-bordered  shadow-sm">
             <thead class="table-success ">
@@ -20,6 +21,10 @@
                  <th>Business address</th>
                  <th>Registeration No</th>
                  <th>GST </th>
+                 <th>Logo Image</th>
+                 <th>Pan Image</th>
+                 <th>Aadhar Image</th>
+                 <th>incorporation_certificate</th>
                  <th>Actions</th>
                 </tr>
             </thead>
@@ -52,9 +57,164 @@
                 </tr>
             </tbody>
           </table>
-        </div></div>
+        </div></div> -->
 
-<div class="modal fade" id="businessModal" tabindex="-1" aria-labelledby="businessModalLabel" aria-hidden="true">
+<div class="row">
+  <table class="table table-bordered shadow-sm">
+    <thead class="table-success">
+      <tr>
+        <th>Sl. No</th>
+        <th>Business Name</th>
+        <th>Owner</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Business Type</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let b of business; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ b.business_name }}</td>
+        <td>{{ b.owner_name }}</td>
+        <td>{{ b.email }}</td>
+        <td>{{ b.phone_number }}</td>
+        <td>{{ b.business_type }}</td>
+        <td>
+          <button
+            class="btn btn-info btn-sm me-2"
+            (click)="openViewModal(b)"
+          >
+            <i class="bi bi-eye"></i> View
+          </button>
+
+          <button
+            class="btn btn-primary btn-sm me-2"
+            (click)="openBusinessModal(b)"
+          >
+            <i class="bi bi-pencil-square"></i>
+          </button>
+
+          <button
+            class="btn btn-danger btn-sm"
+            (click)="openDeleteModal(b._id)"
+          >
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- VIEW MODAL -->
+<div
+  class="modal fade"
+  id="viewModal"
+  tabindex="-1"
+  aria-labelledby="viewModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="viewModalLabel">Business Details</h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <table class="table table-bordered shadow-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Business Name</th>
+              <th>Owner</th>
+              <th>Email</th>
+              <th>Phone Number</th>
+              <th>Business Type</th>
+              <th>Business Address</th>
+              <th>Registration No</th>
+              <th>GST</th>
+              <th>Logo</th>
+              <th>PAN</th>
+              <th>Aadhar</th>
+              <th>Incorporation Certificate</th>
+            </tr>
+          </thead>
+
+          <tbody *ngIf="selectedBusiness">
+            <tr>
+              <td>{{ selectedBusiness.business_name }}</td>
+              <td>{{ selectedBusiness.owner_name }}</td>
+              <td>{{ selectedBusiness.email }}</td>
+              <td>{{ selectedBusiness.phone_number }}</td>
+              <td>{{ selectedBusiness.business_type }}</td>
+              <td>{{ selectedBusiness.business_address }}</td>
+              <td>{{ selectedBusiness.registration_number }}</td>
+              <td>{{ selectedBusiness.gst_number }}</td>
+              <td>
+                <img
+                  [src]="selectedBusiness.logo_image"
+                  alt="Logo"
+                  width="60"
+                  height="60"
+                />
+              </td>
+              <td>
+                <img
+                  [src]="selectedBusiness.pan_image"
+                  alt="PAN"
+                  width="60"
+                  height="60"
+                />
+              </td>
+              <td>
+                <img
+                  [src]="selectedBusiness.aadhar_image"
+                  alt="Aadhar"
+                  width="60"
+                  height="60"
+                />
+              </td>
+              <td>
+                <img
+                  [src]="selectedBusiness.incorporation_certificate"
+                  alt="Incorporation"
+                  width="60"
+                  height="60"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- <div class="modal fade" id="businessModal" tabindex="-1" aria-labelledby="businessModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <form [formGroup]="BusinesForm" (ngSubmit)="addbusiness()">
@@ -102,7 +262,7 @@
     </div></form>
     </div>
   </div>
-</div>
+</div> -->
 
 <div class="modal fade" id="editBusinessModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
@@ -173,6 +333,38 @@
               formControlName="gst_number"
             />
           </div>
+           <div class="mb-3">
+            <label>logo </label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="logo_image"
+            />
+          </div>
+           <div class="mb-3">
+            <label>PAN</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="pan_image"
+            />
+          </div>
+           <div class="mb-3">
+            <label>Aadhar</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="aadhar_image"
+            />
+          </div>
+          <div class="mb-3">
+            <label>Incorporation Certificate</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="incorporation_certificate"
+            />
+          </div>
         </form>
       </div>
       <div class="modal-footer">
@@ -187,7 +379,7 @@
           type="button"
           class="btn btn-success"
           (click)="updateBusiness()"
-          [disabled]="!BusinesForm.valid"
+          [disabled]="BusinesForm.valid"
         >
           Save
         </button>
@@ -227,7 +419,7 @@
         <button
           type="button"
           class="btn btn-danger"
-          (click)="deleteBusiness()"
+          (click)="deletebusiness()"
         >
           Delete
         </button>

@@ -1,127 +1,124 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BillingService } from '../billing.service';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-business-list',
   standalone: true,
-  imports: [CommonModule, FormsModule,ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './business-list.component.html',
   styleUrl: './business-list.component.css'
 })
-export class BusinessListComponent  implements OnInit{
-toastMessage:string | null=null;
-business: any;
-BusinesForm!: FormGroup;
-businessid: string='';
-deleteBusinessId: string='';
- 
+export class BusinessListComponent implements OnInit {
+  business: any[] = [];
+  BusinesForm!: FormGroup;
+  selectedBusiness: any = null;
+  isEditing = false;
+  deleteId: string | null = null;
 
-constructor(private api:BillingService,private fb:FormBuilder,private router:Router){}
+  constructor(private fb: FormBuilder, private api: BillingService) {}
 
-  ngOnInit() {
-    this.loadBusiness()
-this.BusinesForm=this.fb.group({
-  business_name:['',Validators.required],
-  owner_name:['',Validators.required],
-  phone_number:['',Validators.required],
-  business_type:['',Validators.required],
-  business_address:['',Validators.required],
-  registration_number:['',Validators.required],
-  gst_number:['',Validators.required]
-})
+  ngOnInit(): void {
+    this.loadBusiness();
 
-
-this.toastMessage=history.state?.toast  || null;
-     if (this.toastMessage) {
-      
-      setTimeout(() => this.toastMessage = null, 3000);
-    }
-
+    this.BusinesForm = this.fb.group({
+      business_name: ['', Validators.required],
+      owner_name: ['', Validators.required],
+      email: ['', Validators.email],
+      phone_number: ['', Validators.required],
+      business_type: ['', Validators.required],
+      business_address: ['', Validators.required],
+      registration_number: ['', Validators.required],
+      gst_number: ['', Validators.required],
+      logo_image: [''],
+      pan_image: [''],
+      aadhar_image: [''],
+      incorporation_certificate: ['']
+    });
   }
+
+  // ✅ Load all businesses
   loadBusiness() {
     this.api.getBusiness().subscribe({
-      next:(res:any[])=>{
-        this.business=res||[];
-        console.log("business lists:",this.business);
-      },
-      error:(err:any)=>{
-        console.error("Error fetching business list:",err);
-      }
-    })
+      next: (res: any) => (this.business = res || []),
+      error: (err) => console.error('Error loading business:', err)
+    });
   }
- addbusiness() {
-  if(this.BusinesForm.invalid)return;
-  const newBusiness=this.BusinesForm.value;
-  this.api.addBusiness(newBusiness).subscribe({
-    next:(res: any)=>{
-      console.log('business added:',res);
-      this.loadBusiness();
-      this.BusinesForm.reset();
-    },
-    error:(err: any)=>{
-      console.error('Error in Adding business',err);
+
+  // ✅ Open Add Modal
+  openAddModal() {
+    this.isEditing = false;
+    this.BusinesForm.reset();
+    const modal = new bootstrap.Modal(document.getElementById('editBusinessModal'));
+    modal.show();
+  }
+
+  // ✅ Open View Modal
+  openViewModal(b: any) {
+    this.selectedBusiness = b;
+    const modal = new bootstrap.Modal(document.getElementById('viewModal'));
+    modal.show();
+  }
+
+  // ✅ Open Edit Modal
+  openBusinessModal(b: any) {
+    this.isEditing = true;
+    this.selectedBusiness = b;
+    this.BusinesForm.patchValue(b);
+    const modal = new bootstrap.Modal(document.getElementById('editBusinessModal'));
+    modal.show();
+  }
+
+  // ✅ Open Delete Modal
+  openDeleteModal(id: string) {
+    this.deleteId = id;
+    const modal = new bootstrap.Modal(document.getElementById('deleteBusinessModal'));
+    modal.show();
+  }
+
+  // ✅ Add or Update Business
+  updateBusiness() {
+    if (this.BusinesForm.invalid) return;
+    const data = this.BusinesForm.value;
+
+    if (this.isEditing && this.selectedBusiness?._id) {
+      this.api.updateBusiness(this.selectedBusiness._id, data).subscribe({
+        next: () => {
+          this.closeModal('editBusinessModal');
+          this.loadBusiness();
+        },
+        error: (err) => console.error('Update failed:', err)
+      });
+    } else {
+      this.api.addBusiness(data).subscribe({
+        next: () => {
+          this.closeModal('editBusinessModal');
+          this.loadBusiness();
+        },
+        error: (err) => console.error('Add failed:', err)
+      });
     }
-  });
-}
-openBusinessModal(business:any) {
-this.businessid=business._id;
-this.BusinesForm.patchValue({
-  business_name:business.business_name,
-  owner_name:business.owner_name,
- phone_number:business.phone_number,
- business_type:business.business_type,
- business_address:business.business_address,
- registration_number:business.registration_number,
- gst_number:business.gst_number
-});
-const modal = new bootstrap.Modal(document.getElementById('editBusinessModal'));
-modal.show();
-}
+  }
 
-updateBusiness() {
-  if(!this.BusinesForm.valid)return;
-this.api.updateBusiness(this.businessid,this.BusinesForm.value).subscribe({
-  next:()=>{
-    const modalEl = document.getElementById('editBusinessModal');
+  // ✅ Delete Business
+  deletebusiness() {
+    if (!this.deleteId) return;
+    this.api.deleteBusiness(this.deleteId).subscribe({
+      next: () => {
+        this.closeModal('deleteBusinessModal');
+        this.loadBusiness();
+      },
+      error: (err) => console.error('Delete failed:', err)
+    });
+  }
+
+  // ✅ Close modal helper
+  closeModal(id: string) {
+    const modalEl = document.getElementById(id);
     const modal = bootstrap.Modal.getInstance(modalEl);
     modal.hide();
-    this.getBusiness();
-  },
-  error:(err: any)=> {
-    console.error('Error updating Businesses:',err);
-  },
-})
-
-}
-  getBusiness() {
-this.api.getBusiness().subscribe((res:any)=>{
-  this.business=res;
-});
   }
-openDeleteModal(id:string) {
-  console.log('Deleting Business ID:', id); 
-this.deleteBusinessId = id;
-const modal = new bootstrap.Modal(document.getElementById('deleteBusinessModal'));
-modal.show();
-}
-deleteBusiness() {
-  this.api.deleteBusiness(this.deleteBusinessId).subscribe({
-  next:()=>{
-    const modalEl=document.getElementById('deleteBusinessModal');
-    const modal = bootstrap.Modal.getInstance(modalEl);
-    modal.hide();
-    this.getBusiness();
-  },
-  error:(err: any)=>{
-    console.error(' deleting Businesses:',err);
-  }
-});
-
-}
-  
 }

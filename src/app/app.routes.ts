@@ -12,12 +12,14 @@ import { BusinessRegisterComponent } from './business-register/business-register
 import { UsersComponent } from './users/users.component';
 import { HomeComponent } from './home/home.component';
 import { CashierLoginComponent } from './cashier-login/cashier-login.component';
+import { AddBusinessComponent } from './add-business/add-business.component';
 
 export const routes: Routes = [
     {path:'SuperAdminLogin',component:SuperAdminLoginComponent},
     {path:'SuperAdminView',component:SuperadminViewComponent,children:[
         {path:'',component:BusinessListComponent},
         {path:'Business',component:BusinessListComponent},
+        {path:"add_business", component:AddBusinessComponent},
         {path:'admins',component:AdminsComponent},
         {path:'roles',component:RolesComponent},
         {path:'cashiers',component:CashiersComponent},
