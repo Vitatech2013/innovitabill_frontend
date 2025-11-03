@@ -14,7 +14,7 @@ export class BillingService {
     return this.http.post(`${this.baseUrl}/superadmin/superadminlogin`,data)
     }
   addBusiness(data:any) {
-    return this.http.post(`${this.baseUrl}/business/businessadd`,data);
+    return this.http.post(`${this.baseUrl}/business/businessregistration`,data);
     }
   getBusiness() {
     return this.http.get<any[]>(`${this.baseUrl}/business/businessget`)
@@ -32,9 +32,7 @@ export class BillingService {
   updateAdmin(id: string, value: any) {
 return this.http.put(`${this.baseUrl}/admin/adminupdate/${id}`,value)
   }
-  addAdmins(data: any) {
-return this.http.post(`${this.baseUrl}/admin/adminregistration`,data)  
-}
+ 
   getAdmins() {
     return this.http.get<any[]>(`${this.baseUrl}/admin/adminget`)
   }

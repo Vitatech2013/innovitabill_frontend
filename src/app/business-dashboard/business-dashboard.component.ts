@@ -36,8 +36,8 @@ isSidebarOpen: any;
     this.isSidebarOpen = !this.isSidebarOpen;
 }
 
-  logout(){
+  logout() {
     localStorage.removeItem('token');
-     this.router.navigate(['/businesslogin'])
+    this.router.navigate(['/SuperAdminLogin']);
   }
 }

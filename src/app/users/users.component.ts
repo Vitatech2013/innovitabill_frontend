@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BusinessService } from '../business.service';
+import { BillingService } from '../billing.service';
 
 @Component({
   selector: 'app-users',
@@ -17,11 +18,11 @@ export class UsersComponent implements OnInit {
   selectedUserId: string | null = null;
   title: string = 'Add User';
 
-  // Individual file variables
   logoFile: File | null = null;
+roles: any;
   
 
-  constructor(private fb: FormBuilder, private service: BusinessService) {}
+  constructor(private fb: FormBuilder, private service: BusinessService, private api:BillingService) {}
 
   ngOnInit(): void {
     this.usersForm = this.fb.group({
@@ -37,6 +38,11 @@ export class UsersComponent implements OnInit {
       superadmin_id: ['', Validators.required],
     });
     this.getAllUsers();
+
+    this.api.getRoles().subscribe((res:any)=>{
+      this.roles=res;
+      console.log(res,"Roles")
+    })
   }
 
 
