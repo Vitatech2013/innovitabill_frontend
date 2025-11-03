@@ -26,16 +26,19 @@ roles: any;
 
   ngOnInit(): void {
     this.usersForm = this.fb.group({
-      business_name: ['', Validators.required],
-      owner_name: ['', Validators.required],
+      full_name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', Validators.required],
-      business_type: ['', Validators.required],
-      business_address: ['', Validators.required],
-      registration_number: ['', Validators.required],
-      gst_number: ['', Validators.required],
+      address: this.fb.group({
+        house_No: ['', Validators.required],
+        town_Name: ['', Validators.required],
+        mandal_Name: ['', Validators.required],
+        district_Name: ['', Validators.required],
+        state: ['', Validators.required],
+        pincode: ['', Validators.required],
+      }),
       password: ['', Validators.required],
-      superadmin_id: ['', Validators.required],
+     
     });
     this.getAllUsers();
 
@@ -94,16 +97,25 @@ getAllUsers() {
     this.selectedUserId = user._id;
     this.title = 'Edit User';
 
-    this.usersForm.controls['business_name'].setValue(user.business_name);
-    this.usersForm.controls['owner_name'].setValue(user.owner_name);
+    this.usersForm.controls['full_name'].setValue(user.full_name);
     this.usersForm.controls['email'].setValue(user.email);
     this.usersForm.controls['phone_number'].setValue(user.phone_number);
-    this.usersForm.controls['business_type'].setValue(user.business_type);
-    this.usersForm.controls['business_address'].setValue(user.business_address);
-    this.usersForm.controls['registration_number'].setValue(user.registration_number);
-    this.usersForm.controls['gst_number'].setValue(user.gst_number);
+    this.usersForm.patchValue({
+      full_name: user.full_name,
+      email: user.email,
+      phone_number: user.phone_number,
+      password: '',
+      business_id: user.business_id,
+      address: {
+        house_No: user.address?.house_No || '',
+        town_Name: user.address?.town_Name || '',
+        mandal_Name: user.address?.mandal_Name || '',
+        district_Name: user.address?.district_Name || '',
+        state: user.address?.state || '',
+        pincode: user.address?.pincode || '',
+      }
+    });
     this.usersForm.controls['password'].setValue(''); // blank for security
-    this.usersForm.controls['superadmin_id'].setValue(user.superadmin_id);
 
     // Reset files for edit
     this.logoFile = null;
@@ -118,18 +130,13 @@ getAllUsers() {
     if (this.usersForm.invalid) return;
 
     const formData = new FormData();
-    formData.append('business_name', this.usersForm.get('business_name')?.value);
-    formData.append('owner_name', this.usersForm.get('owner_name')?.value);
+    formData.append('full_name', this.usersForm.get('full_name')?.value);
     formData.append('email', this.usersForm.get('email')?.value);
     formData.append('phone_number', this.usersForm.get('phone_number')?.value);
-    formData.append('business_type', this.usersForm.get('business_type')?.value);
-    formData.append('business_address', this.usersForm.get('business_address')?.value);
-    formData.append('registration_number', this.usersForm.get('registration_number')?.value);
-    formData.append('gst_number', this.usersForm.get('gst_number')?.value);
+    formData.append('address', this.usersForm.get('address')?.value);
     formData.append('password', this.usersForm.get('password')?.value);
-    formData.append('superadmin_id', this.usersForm.get('superadmin_id')?.value);
 
-    if (this.logoFile) formData.append('logo_image', this.logoFile);
+    if (this.logoFile) formData.append('image', this.logoFile);
    
     if (this.selectedUserId) {
       // Update

@@ -25,23 +25,31 @@ export class BillingService {
   deleteBusiness(Id: string) {
     return this.http.delete(`${this.baseUrl}/business/businessdelete/${Id}`)
   }
-
-   deleteAdmin(id: string) {
-    return this.http.delete(`${this.baseUrl}/admin/admindelete/${id}`)
+//Admins
+  deleteAdmin(id: string) {
+    return this.http.delete(`${this.baseUrl}/admindelete/${id}`);
   }
   updateAdmin(id: string, value: any) {
-return this.http.put(`${this.baseUrl}/admin/adminupdate/${id}`,value)
+    return this.http.put(`${this.baseUrl}/admin/adminupdate/${id}`,value)
   }
  
   getAdmins() {
     return this.http.get<any[]>(`${this.baseUrl}/admin/adminget`)
   }
+
+//managers
    getManager() {
     return this.http.get<any[]>(`${this.baseUrl}/manager/managerget`)
   }
+
+//cashiers
   getCashiers() {
   return this.http.get<any[]>(`${this.baseUrl}/cashier/cashierget`)
   }
+
+
+//Roles  
+
  getRoles() {
 return this.http.get<any[]>(`${this.baseUrl}/role/getrole`)
 }

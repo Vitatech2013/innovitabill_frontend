@@ -11,6 +11,9 @@ import { BillingService } from '../billing.service';
   styleUrl: './roles.component.css'
 })
 export class RolesComponent  implements OnInit{
+openAddModal() {
+throw new Error('Method not implemented.');
+}
 
   Roles: any;
 

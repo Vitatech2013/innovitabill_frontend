@@ -15,16 +15,16 @@ export class BusinessService {
   }
 
   createUser(userData: any) {
-    return this.http.post(`${this.baseUrl}//adminregistration`, userData);
+    return this.http.post(`${this.baseUrl}/adminregistration`, userData);
   }
   deleteUser(id: string) {
-    return this.http.delete(`${this.baseUrl}//${id}`);
+    return this.http.delete(`${this.baseUrl}/admindelete/${id}`);
   }
   updateUser(id: string, data: any) {
-    return this.http.put(`${this.baseUrl}//${id}`, data);
+    return this.http.put(`${this.baseUrl}/adminupdate/${id}`, data);
   }
   getUsers() {
-    return this.http.get(`${this.baseUrl}/`);
+    return this.http.get(`${this.baseUrl}/adminget`);
   }
   getUsersByBusinessId(businessId: string) {
   return this.http.get(`http://localhost:3003/business/users/${businessId}`);

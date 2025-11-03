@@ -18,16 +18,17 @@ export const routes: Routes = [
     {path:'SuperAdminView',component:SuperadminViewComponent,children:[
         {path:'',component:BusinessListComponent},
         {path:'Business',component:BusinessListComponent},
-        {path:'admins',component:AdminsComponent},
-        {path:'roles',component:RolesComponent},
-        {path:'cashiers',component:CashiersComponent},
-        {path:'managers',component:ManagersComponent},
+        
     ]},
     {path: 'businesslogin',component:BusinessLoginComponent},
     {path: 'businessRegister',component:BusinessRegisterComponent},
     {path: 'business-Dashboard',component:BusinessDashboardComponent, children:[
         {path:'',component:UsersComponent},
-        {path: 'users', component:UsersComponent}
+        {path: 'users', component:UsersComponent},
+        {path:'admins',component:AdminsComponent},
+        {path:'roles',component:RolesComponent},
+        {path:'cashiers',component:CashiersComponent},
+        {path:'managers',component:ManagersComponent},
     ]},
     {path:'', component:HomeComponent},
     {path:'home',component:HomeComponent},

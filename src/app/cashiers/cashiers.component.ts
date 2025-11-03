@@ -11,6 +11,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './cashiers.component.css'
 })
 export class CashiersComponent  implements OnInit{
+openAddModal() {
+throw new Error('Method not implemented.');
+}
   cashiers: any;
   constructor(private api:BillingService){}
 
