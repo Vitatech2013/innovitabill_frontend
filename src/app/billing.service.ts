@@ -50,9 +50,9 @@ export class BillingService {
 
 //Roles  
 
- getRoles() {
-return this.http.get<any[]>(`${this.baseUrl}/role/getrole`)
-}
+getRoles() {
+    return this.http.get(`${this.baseUrl}/role/getrole`);
+  }
 
 // casher_login
 cashierlogin(value?: any){

@@ -15,23 +15,22 @@ openAddModal() {
 throw new Error('Method not implemented.');
 }
 
+
   Roles: any;
 
 constructor(private api:BillingService){}
 
   ngOnInit(): void {
-    this.loadRoles()
+    this.getAllRoles()
   }
-  loadRoles() {
-this.api.getRoles().subscribe({
-  next:(res:any[])=>{
-    this.Roles=res||[];
-    console.log("Roles list:",this.Roles);
-  },
-  error:(err:any)=>{
-    console.error("Error fetching roles list:",err);
-  }
-})
+ getAllRoles() {
+    this.api.getRoles().subscribe({
+      next: (res: any) => {
+        this.Roles = res;
+        console.log('Roles loaded:', res);
+      },
+      error: (err) => console.error('Error loading roles:', err)
+    });
   }
 
 }

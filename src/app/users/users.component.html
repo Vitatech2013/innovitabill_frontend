@@ -9,7 +9,7 @@
   <div class="row">
     <!-- Users Table -->
 <table class="table table-bordered ">
-  <thead class="table-success text-center">
+  <thead class="table-success ">
     <tr>
       <th>SL.No</th>
       <th>Full Name</th>
@@ -18,8 +18,7 @@
       <th>Phone</th>
 
       <th>Address</th>
-      
-    
+      <th>status</th>
      
       <th>Actions</th>
     </tr>
@@ -31,12 +30,15 @@
     
       <td>{{u.email}}</td>
       <td>{{u.phone_number}}</td>
-      <div *ngIf="u.address">
+      <td>
+        <div *ngIf="u.address">
         {{ u.address.house_No }}, {{ u.address.town_Name }}<br>
         {{ u.address.mandal_Name }}, {{ u.address.district_Name }}<br>
         {{ u.address.state }} - {{ u.address.pincode }}
       </div>
+      </td>
       
+      <td>{{u.status}}</td>
       
       
       <td>
@@ -75,16 +77,14 @@
               <input type="text" formControlName="phone_number" class="form-control" />
             </div>
             
-            <div class="col-md-6 mb-2">
+             <div class="col-md-6 mb-2">
               <label class="form-label">Role</label>
-            <select class="form-select">
-              <option value="">Select a Role</option>
-              
-              <option *ngFor="let r of roles" [value]="r.id">
-                {{r.role_name}}
-              </option>
-            </select>
+              <select class="form-select" formControlName="role">
+                
+                <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+              </select>
             </div>
+
 
              <div formGroupName="address">
                     <h5 class="text-dark mt-3 mb-2">Address Details</h5>
@@ -119,7 +119,7 @@
                         <input type="text" formControlName="pincode" class="form-control" />
                       </div>
                     </div>
-                </div>
+              </div>
            
             <div class="col-md-6 mb-2">
               <label class="form-label">Password</label>

@@ -11,9 +11,7 @@ import { BillingService } from '../billing.service';
   styleUrl: './managers.component.css'
 })
 export class ManagersComponent implements OnInit {
-openAddModal() {
-throw new Error('Method not implemented.');
-}
+
 manager: any;
  
 constructor(private api:BillingService){}

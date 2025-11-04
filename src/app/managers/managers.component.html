@@ -1,6 +1,4 @@
-<button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#userModal" (click)="openAddModal()">
-  Add Manager
-</button> 
+
  
  <div class="dashboard">
         <h2 class="title mb-4 p-3 text-center  ">List of Managers</h2>
@@ -11,13 +9,14 @@
             <thead class="table-success ">
                 <tr>
                 <th>Sl.no</th>
-                <th> Name</th>
+                <th>Full Name</th>
                 <th>Email</th>
-                 <th>Phone Number </th>
-                 <th>Address</th>
-                 <th>Image</th>
-                 <th>Business ID</th>
-                 <th>Status</th>
+                <th>Phone Number </th>
+                <th>Address</th>
+               
+                <th>Business ID</th>
+                <th>Status</th>
+               
                 </tr>
             </thead>
             <tbody>
@@ -25,11 +24,17 @@
                     <td>{{i+1}}</td>
                     <td>{{m.full_name}}</td>
                     <td>{{m.email}}</td>
-                    <td>{{m.phone_number}}</td>
-                    <td>{{m.address}}</td>
-                    <td>{{m.image}}</td>
+                    <td>{{m.phon}}</td>
+                    <div *ngIf="m.address">
+                        {{m.address.house_No}}, {{m.address.town_Name}} <br>
+                        {{m.address.mandal_Name}},{{m.address.district_Name}} <br>
+                        {{m.address.state}}, {{m.address.pincode}}
+                    </div>
+                   
                     <td>{{m.business_id}}</td>
                     <td>{{m.status}}</td>
+
+
                 </tr>
             </tbody>
                    
