@@ -5,6 +5,9 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class BillingService {
+  getAllBusiness() {
+    throw new Error('Method not implemented.');
+  }
  
   private baseUrl='http://localhost:3003';
 
@@ -22,7 +25,7 @@ export class BillingService {
   updateBusiness(id:string, value: any) {
     return this.http.put(`${this.baseUrl}/business/businessupdate/${id}`,value)
   }
-  deleteBusiness(Id: string) {
+  deletebusiness(Id: string) {
     return this.http.delete(`${this.baseUrl}/business/businessdelete/${Id}`)
   }
 //Admins

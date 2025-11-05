@@ -12,16 +12,28 @@ import { BusinessRegisterComponent } from './business-register/business-register
 import { UsersComponent } from './users/users.component';
 import { HomeComponent } from './home/home.component';
 import { CashierLoginComponent } from './cashier-login/cashier-login.component';
+<<<<<<< HEAD
 import { CategoriesComponent } from './categories/categories.component';
 import { UnitsComponent } from './units/units.component';
 import { ItemsComponent } from './items/items.component';
+=======
+import { AddBusinessComponent } from './add-business/add-business.component';
+>>>>>>> f75029af8a891d60dfeb82945ffac0b8e2f1bb2d
 
 export const routes: Routes = [
     {path:'SuperAdminLogin',component:SuperAdminLoginComponent},
     {path:'SuperAdminView',component:SuperadminViewComponent,children:[
         {path:'',component:BusinessListComponent},
         {path:'Business',component:BusinessListComponent},
+<<<<<<< HEAD
         
+=======
+        {path:"add_business", component:AddBusinessComponent},
+        {path:'admins',component:AdminsComponent},
+        {path:'roles',component:RolesComponent},
+        {path:'cashiers',component:CashiersComponent},
+        {path:'managers',component:ManagersComponent},
+>>>>>>> f75029af8a891d60dfeb82945ffac0b8e2f1bb2d
     ]},
     {path: 'businesslogin',component:BusinessLoginComponent},
     {path: 'businessRegister',component:BusinessRegisterComponent},
