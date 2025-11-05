@@ -1,100 +1,90 @@
+
 <div class="text-start p-4">
   <button class="btn btn-success" (click)="toggleAddForm()">
     <i class="bi bi-plus-circle me-2"></i> Add Business
   </button>
 </div>
 
-<!-- ✅ Add Business Form (shown only when addFormVisible = true) -->
-<div *ngIf="addFormVisible" class="card shadow-sm p-4 mb-4">
-  <h5 class="text-success mb-3">Add Business</h5>
 
-  <form [formGroup]="addBusinesForm" (ngSubmit)="addbusiness()">
-    <div class="row">
-      <div class="col-md-4 mb-3">
-        <label class="form-label">Business Name</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="business_name"
-          required
-        />
+<div *ngIf="addFormVisible" class="card shadow-sm p-4 mb-4 border-0">
+  <h5 class="text-success fw-bold mb-4">
+    <i class="bi bi-building me-2"></i> Add Business
+  </h5>
+
+  <form [formGroup]="addBusinessForm" (ngSubmit)="addbusiness()" enctype="multipart/form-data">
+    <div class="row g-3">
+      
+     
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Business Name</label>
+        <input type="text" class="form-control" formControlName="business_name" placeholder="Enter business name" required />
       </div>
 
-      <div class="col-md-4 mb-3">
-        <label class="form-label">Owner Name</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="owner_name"
-          required
-        />
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Owner Name</label>
+        <input type="text" class="form-control" formControlName="owner_name" placeholder="Enter owner name" required />
       </div>
 
-      <div class="col-md-4 mb-3">
-        <label class="form-label">Phone Number</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="phone_number"
-          required
-        />
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Phone Number</label>
+        <input type="text" class="form-control" formControlName="phone_number" placeholder="Enter phone number" required />
       </div>
 
-      <div class="col-md-4 mb-3">
-        <label class="form-label">Business Type</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="business_type"
-          required
-        />
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Business Type</label>
+        <input type="text" class="form-control" formControlName="business_type" placeholder="e.g. Retail, IT Services" required />
       </div>
 
-      <div class="col-md-4 mb-3">
-        <label class="form-label">Business Address</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="business_address"
-          required
-        />
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Business Address</label>
+        <input type="text" class="form-control" formControlName="business_address" placeholder="Enter address" required />
       </div>
 
-      <div class="col-md-4 mb-3">
-        <label class="form-label">Registration Number</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="registration_number"
-          required
-        />
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Registration Number</label>
+        <input type="text" class="form-control" formControlName="registration_number" placeholder="Enter registration number" required />
       </div>
 
-      <div class="col-md-4 mb-3">
-        <label class="form-label">GST Number</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="gst_number"
-          required
-        />
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">GST Number</label>
+        <input type="text" class="form-control" formControlName="gst_number" placeholder="Enter GST number" required />
+      </div>
+
+    
+      <div class="col-12 mt-3">
+        <h6 class="text-primary fw-semibold border-bottom pb-2">
+          <i class="bi bi-upload me-2"></i> Upload Documents
+        </h6>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Logo</label>
+        <input type="file" class="form-control" (change)="onFileChange($event, 'logo_image')" accept="image/*" />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">PAN</label>
+        <input type="file" class="form-control" (change)="onFileChange($event, 'pan_image')" accept="image/*" />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Aadhar</label>
+        <input type="file" class="form-control" (change)="onFileChange($event, 'aadhar_image')" accept="image/*" />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Incorporation Certificate</label>
+        <input type="file" class="form-control" (change)="onFileChange($event, 'incorporation_certificate')" accept="image/*" />
       </div>
     </div>
 
-    <div class="text-end mt-3">
-      <button
-        type="button"
-        class="btn btn-secondary me-2"
-        (click)="cancelAdd()"
-      >
-        Cancel
+    <!-- Buttons -->
+    <div class="text-end mt-4">
+      <button type="button" class="btn btn-secondary me-2 px-4" (click)="cancelAdd()">
+        <i class="bi bi-x-circle me-1"></i> Cancel
       </button>
-      <button
-        type="submit"
-        class="btn btn-success"
-        [disabled]="addBusinesForm.invalid"
-      >
-        Save
+      <button type="submit" class="btn btn-success px-4" [disabled]="addBusinessForm.invalid">
+        <i class="bi bi-save me-1"></i> Save
       </button>
     </div>
   </form>

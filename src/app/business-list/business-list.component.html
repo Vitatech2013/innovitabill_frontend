@@ -1,5 +1,5 @@
    <div class="text-start p-4">
-           <button class="btn btn-success" >
+           <button class="btn btn-success"  routerLink="add_business">
   Add Business
 </button>
 
@@ -69,6 +69,7 @@
         <th>Email</th>
         <th>Phone</th>
         <th>Business Type</th>
+        <th>status</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -81,17 +82,18 @@
         <td>{{ b.email }}</td>
         <td>{{ b.phone_number }}</td>
         <td>{{ b.business_type }}</td>
+        <td>{{b.status}}</td>
         <td>
           <button
             class="btn btn-info btn-sm me-2"
             (click)="openViewModal(b)"
           >
-            <i class="bi bi-eye"></i> View
+            <i class="bi bi-eye"></i> 
           </button>
 
           <button
             class="btn btn-primary btn-sm me-2"
-            (click)="openBusinessModal(b)"
+            (click)="editBusiness(b)"
           >
             <i class="bi bi-pencil-square"></i>
           </button>
@@ -139,6 +141,7 @@
               <th>Business Type</th>
               <th>Business Address</th>
               <th>Registration No</th>
+              <th>Status</th>
               <th>GST</th>
               <th>Logo</th>
               <th>PAN</th>
@@ -156,6 +159,7 @@
               <td>{{ selectedBusiness.business_type }}</td>
               <td>{{ selectedBusiness.business_address }}</td>
               <td>{{ selectedBusiness.registration_number }}</td>
+              <td>{{selectedBusiness.status}}</td>
               <td>{{ selectedBusiness.gst_number }}</td>
               <td>
                 <img
@@ -276,7 +280,7 @@
         ></button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="BusinesForm">
+        <form [formGroup]="BusinessForm">
           <div class="mb-3">
             <label>Business Name</label>
             <input
@@ -379,7 +383,7 @@
           type="button"
           class="btn btn-success"
           (click)="updateBusiness()"
-          [disabled]="BusinesForm.valid"
+          [disabled]="!BusinessForm.valid"
         >
           Save
         </button>
@@ -419,7 +423,7 @@
         <button
           type="button"
           class="btn btn-danger"
-          (click)="deletebusiness()"
+          (click)="deleteBusiness(deleteId)"
         >
           Delete
         </button>
