@@ -1,25 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink,  RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-business-dashboard',
   standalone: true,
-  imports: [RouterOutlet,CommonModule,RouterLink],
+  imports: [RouterOutlet, CommonModule, RouterLink],
   templateUrl: './business-dashboard.component.html',
-  styleUrl: './business-dashboard.component.css'
+  styleUrl: './business-dashboard.component.css',
 })
-export class BusinessDashboardComponent  implements OnInit{
-
-
-  toastMessage:  string | null = null;
+export class BusinessDashboardComponent implements OnInit {
+  toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
-isSidebarOpen: any;
+  isSidebarOpen: any;
 
   constructor(private router: Router) {}
 
-    ngOnInit(): void {
-       const message = history.state?.toast || null;
+  ngOnInit(): void {
+    const message = history.state?.toast || null;
     const type = history.state?.toastType || 'success';
 
     if (message) {
@@ -34,10 +32,12 @@ isSidebarOpen: any;
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
-}
+  }
 
   logout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('userToken');
+
     this.router.navigate(['/SuperAdminLogin']);
   }
 }

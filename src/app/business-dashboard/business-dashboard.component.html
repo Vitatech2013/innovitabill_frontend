@@ -1,5 +1,4 @@
 <div class="container-fluid vh-100 d-flex flex-column p-0">
-
   <nav class="navbar navbar-expand-lg navbar-light bg-success px-3 shadow-sm">
     <div class="d-flex align-items-center">
       <button
@@ -15,54 +14,70 @@
       </a>
     </div>
 
-     <div class="dropdown ms-auto ">
-    <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown"     aria-expanded="false"
- ><i class="bi bi-person"></i>
-</button>
-<ul class="dropdown-menu dropdown-menu-end">
-  <li><a class="dropdown-item" routerLink="">profile</a></li>
-  <li><a class="dropdown-item" (click)="logout()">logout</a></li>
-</ul>
-  </div>
+    <div class="dropdown ms-auto">
+      <button
+        class="btn btn-outline-light dropdown-toggle"
+        type="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        <i class="bi bi-person"></i>
+      </button>
+      <button type="submit">
+        <a class="" (click)="logout()">logout</a>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" routerLink="">profile</a></li>
+        <li><a class="dropdown-item" (click)="logout()">logout</a></li>
+      </ul>
+    </div>
   </nav>
 
   <div class="row flex-grow-1 m-0 position-relative">
-    
-
     <div
       class="col-sm-2 p-0 sidebar bg-light border-end"
-      [ngClass]="{'show-sidebar': isSidebarOpen}"
+      [ngClass]="{ 'show-sidebar': isSidebarOpen }"
     >
       <div class="card shadow-sm border-0 rounded-0 vh-100">
         <div class="card-body p-4 d-flex flex-column">
           <ul class="list-unstyled flex-grow-1">
             <li class="mb-3 px-3">
-              <a routerLink="users" class="text-decoration-none fw-semibold text-success">
+              <a
+                routerLink="users"
+                class="text-decoration-none fw-semibold text-success"
+              >
                 Users
               </a>
             </li>
             <li class="mb-3 px-3">
-              <a routerLink="roles" class="text-decoration-none fw-semibold text-success">
+              <a
+                routerLink="roles"
+                class="text-decoration-none fw-semibold text-success"
+              >
                 Roles
               </a>
             </li>
             <li class="mb-3 px-3">
-              <a routerLink="categories" class="text-decoration-none fw-semibold text-success">
+              <a
+                routerLink="categories"
+                class="text-decoration-none fw-semibold text-success"
+              >
                 Categories
               </a>
             </li>
-            
+
             <li class="mb-3 px-3">
-              <a routerLink="units" class="text-decoration-none fw-semibold text-success">
+              <a
+                routerLink="units"
+                class="text-decoration-none fw-semibold text-success"
+              >
                 Units
               </a>
             </li>
-            
           </ul>
         </div>
       </div>
     </div>
-
 
     <div
       class="sidebar-overlay"
@@ -70,22 +85,28 @@
       (click)="toggleSidebar()"
     ></div>
 
- 
     <div class="col-sm-10 p-3 position-relative content-area">
-      <div class="position-fixed top-0 end-0 p-5" style="z-index: 1080;">
-        <div *ngIf="toastMessage"
-             class="toast align-items-center text-white border-0 fade show"
-             [ngClass]="{
-               'bg-success': toastType === 'success',
-               'bg-danger': toastType === 'error',
-               'bg-warning text-dark': toastType === 'warning'
-             }"
-             role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="position-fixed top-0 end-0 p-5" style="z-index: 1080">
+        <div
+          *ngIf="toastMessage"
+          class="toast align-items-center text-white border-0 fade show"
+          [ngClass]="{
+            'bg-success': toastType === 'success',
+            'bg-danger': toastType === 'error',
+            'bg-warning text-dark': toastType === 'warning'
+          }"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
           <div class="d-flex">
             <div class="toast-body">{{ toastMessage }}</div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                    (click)="toastMessage = null"
-                    aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close btn-close-white me-2 m-auto"
+              (click)="toastMessage = null"
+              aria-label="Close"
+            ></button>
           </div>
         </div>
       </div>

@@ -1,1 +1,105 @@
-<p>categories works!</p>
+<div class="dashboard">
+  <h2 class="title mb-4 text-center">List of Categories</h2>
+</div>
+
+<div class="row">
+  <table class="table table-bordered table-stribed">
+    <thead class="table-success">
+      <tr>
+        <th>Sl.No</th>
+        <th>Categories Name</th>
+        <th>Categories Code</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of categories; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ c.categories_name }}</td>
+        <td>{{ c.categories_code }}</td>
+        <td>{{ c.status }}</td>
+        <td>
+          <button
+            class="btn btn-primary btn-sm me-1"
+            (click)="edit(r)"
+            data-bs-toggle="modal"
+            data-bs-target="#categoryModal"
+          >
+            Edit
+          </button>
+          <button
+            class="btn btn-danger btn-sm me-1"
+            (click)="delete(r._id)"
+            data-bs-toggle="modal"
+            data-bs-target="#categoryModal"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Category Modal -->
+<div
+  class="modal fade"
+  #roleModal
+  id="CategoryModal"
+  tabindex="-1"
+  aria-labelledby="CategoryModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form [formGroup]="categoryForm" (ngSubmit)="createOrUpdateRole()">
+        <div class="modal-header">
+          <h5 class="modal-title" id="roleModalLabel">{{ title }}</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            (click)="closeModal()"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Role Name</label>
+            <input
+              type="text"
+              formControlName="role_name"
+              class="form-control"
+              placeholder="Enter role name"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Role Number</label>
+            <input
+              type="text"
+              formControlName="role_number"
+              class="form-control"
+              placeholder="Enter role number"
+            />
+          </div>
+          
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            (click)="closeModal()"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
