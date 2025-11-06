@@ -1,0 +1,104 @@
+.business-table-container {
+  background-color: #ffffff;
+  border-radius: 12px;
+  transition: 0.3s ease;
+}
+
+.business-table {
+  border-collapse: separate !important;
+  border-spacing: 0 10px;
+}
+
+.business-table thead th {
+  background-color: #a6e9a6 !important;
+  color: #222;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.business-table tbody tr {
+  background-color: #f9fff9;
+  border-radius: 10px;
+  transition: all 0.2s ease-in-out;
+}
+
+.business-table tbody tr:hover {
+  background-color: #eaffea;
+  transform: scale(1.01);
+  box-shadow: 0 0 8px rgba(0, 128, 0, 0.15);
+}
+
+.business-table td,
+.business-table th {
+  vertical-align: middle !important;
+  padding: 12px;
+}
+
+.business-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.business-logo:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
+}
+
+.btn-outline-info i,
+.btn-outline-primary i,
+.btn-outline-danger i {
+  font-size: 16px;
+}
+
+.table-row {
+  border: 1px solid #d9f2d9;
+  border-radius: 8px;
+}
+
+.badge {
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  font-weight: 500; 
+  color: #333 !important; 
+}
+
+/* view modal  */
+.table1 th,
+.table1 td {
+  vertical-align: middle !important;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+.table1 th {
+  font-weight: 600;
+  background-color: #eafbea !important;
+  color: #333;
+}
+
+.business-logo {
+  width: 55px;
+  height: 55px;
+  border-radius: 6px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.business-logo:hover {
+  transform: scale(1.08);
+}
+
+.modal-body {
+  background-color: #ffffff;
+}
+
+.table td a {
+  font-weight: 500;
+}

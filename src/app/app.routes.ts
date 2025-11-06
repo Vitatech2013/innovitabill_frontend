@@ -20,8 +20,9 @@ export const routes: Routes = [
     {path:'SuperAdminLogin',component:SuperAdminLoginComponent},
     {path:'SuperAdminView',component:SuperadminViewComponent,children:[
         {path:'',component:BusinessListComponent},
-        {path:'Business',component:BusinessListComponent},
-
+        {path:'view-business',component:BusinessListComponent,},
+        {path:"add-business", component:AddBusinessComponent},
+       
     ]},
     {path: 'businesslogin',component:BusinessLoginComponent},
     {path: 'businessRegister',component:BusinessRegisterComponent},
