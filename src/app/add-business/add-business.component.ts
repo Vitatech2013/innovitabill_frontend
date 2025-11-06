@@ -37,8 +37,10 @@ certificate_pdf: File | null = null;
 
   ngOnInit(): void {
    
-const sid = JSON.parse(localStorage.getItem('superadmin') || '{}');
-  this.superadmin_id = sid.data?._id;
+const sid = JSON.parse(localStorage.getItem('sa') || '{}');
+  console.log(sid, 'sid');
+
+  this.superadmin_id = sid._id;
   console.log(this.superadmin_id, 'superadminid');
      
 
