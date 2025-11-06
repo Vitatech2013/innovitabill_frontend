@@ -1,50 +1,85 @@
-
-
-<div class="card shadow-sm p-4 mb-4 border-0">
-  <h5 class="text-success fw-bold mb-4">
-    <i class="bi bi-building me-2"></i> Add Business
+<div class="card shadow-sm p-3 mb-4 border-0 small-card">
+  <h5 class="text-success fw-bold mb-3">
+    <i class="bi bi-building me-2"></i>
+    {{ selectedBusiness ? 'Update Business' : 'Add Business' }}
   </h5>
 
-  <form [formGroup]="addBusinessForm" (ngSubmit)="addbusiness()" enctype="multipart/form-data">
+  <form
+    [formGroup]="addBusinessForm"
+    (ngSubmit)="saveBusiness()"
+    enctype="multipart/form-data"
+  >
     <div class="row g-3">
-      
-     
       <div class="col-md-4">
         <label class="form-label fw-semibold">Business Name</label>
-        <input type="text" class="form-control" formControlName="business_name" placeholder="Enter business name" required />
+        <input
+          type="text"
+          class="form-control"
+          formControlName="business_name"
+          placeholder="Enter business name"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label fw-semibold">Owner Name</label>
-        <input type="text" class="form-control" formControlName="owner_name" placeholder="Enter owner name" required />
+        <input
+          type="text"
+          class="form-control"
+          formControlName="owner_name"
+          placeholder="Enter owner name"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label fw-semibold">Phone Number</label>
-        <input type="text" class="form-control" formControlName="phone_number" placeholder="Enter phone number" required />
+        <input
+          type="text"
+          class="form-control"
+          formControlName="phone_number"
+          placeholder="Enter phone number"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label fw-semibold">Business Type</label>
-        <input type="text" class="form-control" formControlName="business_type" placeholder="e.g. Retail, IT Services" required />
+        <input
+          type="text"
+          class="form-control"
+          formControlName="business_type"
+          placeholder="e.g. Retail, IT Services"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label fw-semibold">Business Address</label>
-        <input type="text" class="form-control" formControlName="business_address" placeholder="Enter address" required />
+        <input
+          type="text"
+          class="form-control"
+          formControlName="business_address"
+          placeholder="Enter address"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label fw-semibold">Registration Number</label>
-        <input type="text" class="form-control" formControlName="registration_number" placeholder="Enter registration number" required />
+        <input
+          type="text"
+          class="form-control"
+          formControlName="registration_number"
+          placeholder="Enter registration number"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label fw-semibold">GST Number</label>
-        <input type="text" class="form-control" formControlName="gst_number" placeholder="Enter GST number" required />
+        <input
+          type="text"
+          class="form-control"
+          formControlName="gst_number"
+          placeholder="Enter GST number"
+        />
       </div>
 
-    
       <div class="col-12 mt-3">
         <h6 class="text-primary fw-semibold border-bottom pb-2">
           <i class="bi bi-upload me-2"></i> Upload Documents
@@ -53,32 +88,61 @@
 
       <div class="col-md-6">
         <label class="form-label fw-semibold">Logo</label>
-        <input type="file" class="form-control" (change)="onFileChange($event, 'logo_image')" accept="image/*" />
+        <input
+          type="file"
+          class="form-control"
+          (change)="onFileChange($event, 'logo_image')"
+          accept="image/*"
+        />
       </div>
 
       <div class="col-md-6">
         <label class="form-label fw-semibold">PAN</label>
-        <input type="file" class="form-control" (change)="onFileChange($event, 'pan_pdf')" accept="pdf/*" />
+        <input
+          type="file"
+          class="form-control"
+          (change)="onFileChange($event, 'pan_pdf')"
+          accept="application/pdf"
+        />
       </div>
 
       <div class="col-md-6">
         <label class="form-label fw-semibold">Aadhar</label>
-        <input type="file" class="form-control" (change)="onFileChange($event, 'aadhar_pdf')" accept="pdf/*" />
+        <input
+          type="file"
+          class="form-control"
+          (change)="onFileChange($event, 'aadhar_pdf')"
+          accept="application/pdf"
+        />
       </div>
 
       <div class="col-md-6">
         <label class="form-label fw-semibold">Incorporation Certificate</label>
-        <input type="file" class="form-control" (change)="onFileChange($event, 'certificate_pdf')" accept="pdf/*" />
+        <input
+          type="file"
+          class="form-control"
+          (change)="onFileChange($event, 'certificate_pdf')"
+          accept="application/pdf"
+        />
       </div>
     </div>
 
-   
     <div class="text-end mt-4">
-      <button type="button" class="btn btn-secondary me-2 px-4" (click)="cancelAdd()">
+      <button
+        type="button"
+        class="btn btn-secondary me-2 px-4"
+        (click)="cancelAdd()"
+      >
         <i class="bi bi-x-circle me-1"></i> Cancel
       </button>
-      <button type="submit" class="btn btn-success px-4" [disabled]="addBusinessForm.invalid">
-        <i class="bi bi-save me-1"></i> Save
+
+      <button
+        type="submit"
+        class="btn btn-success px-4"
+        [disabled]="addBusinessForm.invalid"
+      >
+        <i class="bi bi-save me-1"></i>
+        {{ selectedBusiness ? 'Update' : 'Save' }}
       </button>
     </div>
   </form>

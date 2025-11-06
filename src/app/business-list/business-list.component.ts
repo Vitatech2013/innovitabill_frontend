@@ -76,7 +76,6 @@ export class BusinessListComponent implements OnInit {
       document.getElementById('imagePreviewModal')
     );
     modal.show();
-    console.log(this.business);
   }
 
   loadBusiness() {
@@ -88,20 +87,15 @@ export class BusinessListComponent implements OnInit {
       error: (err) => console.error('Error loading business:', err),
     });
   }
+  getImageUrl(path: string): string {
+    const cleanPath = path.replace(/\\/g, '/');
 
-getImageUrl(path: string): string {
+    if (cleanPath.includes('business_images/')) {
+      return `http://localhost:3003/${cleanPath}`;
+    }
 
-  // Replace backslashes with forward slashes
-  const cleanPath = path.replace(/\\/g, '/');
-
-  // Remove any leading folder name (if duplicated)
-  if (cleanPath.startsWith('business_images/')) {
-    return `http://localhost:3003/${cleanPath}`;
+    return `http://localhost:3003/business_images/${cleanPath}`;
   }
-
-  // Otherwise, assume it's just a filename
-  return `http://localhost:3003/business_images/${cleanPath}`;
-}
 
   openAddModal() {
     this.isEditing = false;
