@@ -21,6 +21,12 @@ declare var bootstrap: any;
   styleUrl: './business-list.component.css',
 })
 export class BusinessListComponent implements OnInit {
+add() {
+throw new Error('Method not implemented.');
+}
+openBusinessModal(_t378: any) {
+throw new Error('Method not implemented.');
+}
   business: any[] = [];
   BusinessForm!: FormGroup;
   selectedBusiness: any = null;

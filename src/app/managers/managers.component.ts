@@ -11,6 +11,7 @@ import { BillingService } from '../billing.service';
   styleUrl: './managers.component.css'
 })
 export class ManagersComponent implements OnInit {
+
 manager: any;
  
 constructor(private api:BillingService){}

@@ -15,9 +15,8 @@ export class SuperadminViewComponent implements OnInit {
   ngOnInit(): void {}
 
   logout() {
-    localStorage.removeItem('sa');
-    localStorage.removeItem('saToken');
-
+    localStorage.removeItem('superAdmin');
+    localStorage.removeItem('sa_token')
     this.router.navigate(['/SuperAdminLogin']);
   }
 }

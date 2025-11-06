@@ -47,13 +47,14 @@ export class SuperAdminLoginComponent implements OnInit {
       return;
     }
     this.api.SuperAdminLogin(this.superAdminForm.value).subscribe({
-      next: (res: any) => {
-        console.log(res, 'Super Admin Login Sucess');
-        this.showToast('Super Admin Login Success', 'success');
-        localStorage.setItem('sa', JSON.stringify(res.data));
-        localStorage.setItem('saToken', JSON.stringify(res.token));
-        this.router.navigate(['/SuperAdminView'], {
-          state: { toast: 'Super Admin login success' },
+      next:(res:any)=>{
+        console.log(res,"Super Admin Login Sucess");
+        const superadmin=localStorage.setItem("sa",JSON.stringify(res.data),)
+       const sa_token= localStorage.setItem("sa_token",JSON.stringify(res.token),)
+        console.log(superadmin,sa_token )
+        this.showToast("Super Admin Login Success","success");
+        this.router.navigate(['/SuperAdminView'],{
+          state:{toast:"Super Admin login success"}
         });
       },
       error: (err: any) => {

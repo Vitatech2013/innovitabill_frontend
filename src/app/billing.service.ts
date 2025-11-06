@@ -5,6 +5,12 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class BillingService {
+
+ 
+  
+  deleteBusiness(deleteBusinessId: string) {
+    throw new Error('Method not implemented.');
+  }
   getAllBusiness() {
     throw new Error('Method not implemented.');
   }
@@ -25,32 +31,47 @@ export class BillingService {
   updateBusiness(id:string, value: any) {
     return this.http.put(`${this.baseUrl}/business/businessupdate/${id}`,value)
   }
-  deletebusiness(Id: string) {
-    return this.http.delete(`${this.baseUrl}/business/businessdelete/${Id}`)
+  deletebusiness(id: string) {
+    return this.http.delete(`${this.baseUrl}/business/businessdelete/${id}`)
   }
-
-   deleteAdmin(id: string) {
-    return this.http.delete(`${this.baseUrl}/admin/admindelete/${id}`)
+//Admins
+  deleteAdmin(id: string) {
+    return this.http.delete(`${this.baseUrl}/admindelete/${id}`);
   }
   updateAdmin(id: string, value: any) {
-return this.http.put(`${this.baseUrl}/admin/adminupdate/${id}`,value)
+    return this.http.put(`${this.baseUrl}/admin/adminupdate/${id}`,value)
   }
-  addAdmins(data: any) {
-return this.http.post(`${this.baseUrl}/admin/adminregistration`,data)  
-}
+ 
   getAdmins() {
     return this.http.get<any[]>(`${this.baseUrl}/admin/adminget`)
   }
+
+//managers
    getManager() {
     return this.http.get<any[]>(`${this.baseUrl}/manager/managerget`)
   }
+
+//cashiers
   getCashiers() {
   return this.http.get<any[]>(`${this.baseUrl}/cashier/cashierget`)
   }
- getRoles() {
-return this.http.get<any[]>(`${this.baseUrl}/role/getrole`)
-}
 
+
+//Roles  
+
+getRoles() {
+    return this.http.get(`${this.baseUrl}/role/getrole`);
+  }
+  addRole(newRole:any) {
+    return this.http.post(`${this.baseUrl}/role/addrole`,newRole);
+  }
+   deleteRole(id: string) {
+    return this.http.delete(`${this.baseUrl}/role/roledelete/${id}`)
+  }
+//categories
+  getcategories() {
+    return this.http.get(`${this.baseUrl}/categories/categoriesget`)
+  }
 // casher_login
 cashierlogin(value?: any){
   return this.http.get<any[]>(`${this.baseUrl}/cashier/cashierlogin`)
