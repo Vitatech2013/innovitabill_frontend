@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { BillingService } from '../billing.service';
 import { Router } from '@angular/router';
 
@@ -9,21 +15,32 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, FormsModule],
   templateUrl: './add-business.component.html',
-  styleUrl: './add-business.component.css'
+  styleUrl: './add-business.component.css',
 })
 export class AddBusinessComponent implements OnInit {
-  addFormVisible = false;
   addBusinessForm!: FormGroup;
-  sid: any;
-  
   selectedFiles: any = {};
+  sid: any;
+  superadmin_id: any;
+  selectedBusiness: any;
+logo_image: File | null = null;
+pan_pdf: File | null = null;
+aadhar_pdf: File | null = null;
+certificate_pdf: File | null = null;
 
-  constructor(private api: BillingService, private fb: FormBuilder, private router: Router) {}
+
+  constructor(
+    private api: BillingService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    const s = JSON.parse(localStorage.getItem('superadmin_id') || '{}');
-    this.sid = s.data?._id;
-    console.log(this.sid, 'sid');
+   
+const sid = JSON.parse(localStorage.getItem('superadmin') || '{}');
+  this.superadmin_id = sid.data?._id;
+  console.log(this.superadmin_id, 'superadminid');
+     
 
     this.addBusinessForm = this.fb.group({
       business_name: ['', Validators.required],
@@ -35,46 +52,61 @@ export class AddBusinessComponent implements OnInit {
       gst_number: ['', Validators.required],
       logo_image: [''],
       pan_image: [''],
-      aadhar_image: [''],
-      incorporation_certificate: [''],
+      aadhar_pdf: [''],
+      certificate_pdf: [''],
     });
   }
-
-  toggleAddForm() {
-    this.addFormVisible = !this.addFormVisible;
-  }
+  
 
 
-onFileChange(event: any, fieldName: string) {
+
+  onFileChange(event: any, fieldName: string) {
     const file = event.target.files[0];
     if (file) {
       this.selectedFiles[fieldName] = file;
     }
   }
 
-
-
-
-
   cancelAdd() {
-    this.addFormVisible = false;
     this.addBusinessForm.reset();
   }
+saveBusiness() {
+  const superadmin_id = localStorage.getItem("superadmin_id");
+  console.log("stored data:", superadmin_id);
 
-  addbusiness() {
-    if (!this.addBusinessForm.valid) return;
-
-    console.log(this.addBusinessForm.value, "Form submitted");
-
-    this.api.addBusiness(this.addBusinessForm.value).subscribe({
-      next: (res: any) => {
-        console.log('Business added:', res);
-        alert('Business added successfully!');
-        this.cancelAdd(); 
-      },
-      error: (err: any) => {
-        console.error('Error adding business', err);
-      },
-    });
+  if (!superadmin_id) {
+    alert("Superadmin ID missing. Please log in again.");
+    return;
   }
+
+  const formData = new FormData();
+  formData.append("business_name", this.addBusinessForm.get("business_name")?.value);
+  formData.append("owner_name", this.addBusinessForm.get("owner_name")?.value);
+  formData.append("email", this.addBusinessForm.get("email")?.value);
+  formData.append("phone_number", this.addBusinessForm.get("phone_number")?.value);
+  formData.append("business_type", this.addBusinessForm.get("business_type")?.value);
+  formData.append("business_address", this.addBusinessForm.get("business_address")?.value);
+  formData.append("registration_number", this.addBusinessForm.get("registration_number")?.value);
+  formData.append("gst_number", this.addBusinessForm.get("gst_number")?.value);
+  formData.append("password", this.addBusinessForm.get("password")?.value);
+  formData.append("superadmin_id", superadmin_id);  
+
+
+  if (this.logo_image) formData.append("logo_image", this.logo_image);
+  if (this.pan_pdf) formData.append("pan_pdf", this.pan_pdf);
+  if (this.aadhar_pdf) formData.append("aadhar_pdf", this.aadhar_pdf);
+  if (this.certificate_pdf) formData.append("certificate_pdf", this.certificate_pdf);
+
+  this.api.addBusiness(formData).subscribe({
+    next: (res: any) => {
+      console.log("Business registered:", res);
+      alert("Business registered successfully!");
+      this.addBusinessForm.reset();
+    },
+    error: (err) => {
+      console.error("Add failed:", err);
+    },
+  });
+}
+
 }

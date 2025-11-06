@@ -9,14 +9,14 @@ import {
 } from '@angular/forms';
 import { BillingService } from '../billing.service';
 import { AddBusinessComponent } from '../add-business/add-business.component';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-business-list',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './business-list.component.html',
   styleUrl: './business-list.component.css',
 })
@@ -39,7 +39,7 @@ throw new Error('Method not implemented.');
   selectedImage: string | undefined;
   router: any;
   addFormVisible: any;
-  
+  selectedFiles: any = {};
 
   constructor(private fb: FormBuilder, private api: BillingService) {}
 
@@ -65,11 +65,16 @@ throw new Error('Method not implemented.');
       this.business = res.data;
     });
   }
- toggleAddForm() {
+  toggleAddForm() {
     this.addFormVisible = !this.addFormVisible;
   }
 
-
+  onFileChange(event: any, field: string) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFiles[field] = file;
+    }
+  }
 
   openImageModal(imageUrl: string) {
     this.selectedImage = imageUrl || 'assets/default-business.jpg';
@@ -77,19 +82,26 @@ throw new Error('Method not implemented.');
       document.getElementById('imagePreviewModal')
     );
     modal.show();
-    console.log(this.business);
   }
 
   loadBusiness() {
-  this.api.getBusiness().subscribe({
-    next: (res: any) => {
-      console.log('Business fetched:', res);
-      this.business = res.data || [];
-    },
-    error: (err) => console.error('Error loading business:', err),
-  });
-}
+    this.api.getBusiness().subscribe({
+      next: (res: any) => {
+        console.log('Business fetched:', res);
+        this.business = res.data || [];
+      },
+      error: (err) => console.error('Error loading business:', err),
+    });
+  }
+  getImageUrl(path: string): string {
+    const cleanPath = path.replace(/\\/g, '/');
 
+    if (cleanPath.includes('business_images/')) {
+      return `http://localhost:3003/${cleanPath}`;
+    }
+
+    return `http://localhost:3003/business_images/${cleanPath}`;
+  }
 
   openAddModal() {
     this.isEditing = false;
@@ -149,15 +161,38 @@ throw new Error('Method not implemented.');
   }
 
   updateBusiness() {
-    console.log(this.s_id, this.BusinessForm.value);
+    const formData = new FormData();
 
-    this.api
-      .updateBusiness(this.s_id, this.BusinessForm.value)
-      .subscribe((res: any) => {
-        console.log(res, 'Business upadated');
+    Object.keys(this.BusinessForm.controls).forEach((key) => {
+      formData.append(key, this.BusinessForm.get(key)?.value || '');
+    });
+
+    if (this.selectedFiles['logo_image']) {
+      formData.append('logo_image', this.selectedFiles['logo_image']);
+    }
+
+    if (this.selectedFiles['pan_pdf']) {
+      formData.append('pan_pdf', this.selectedFiles['pan_pdf']);
+    }
+    if (this.selectedFiles['aadhar_pdf']) {
+      formData.append('aadhar_pdf', this.selectedFiles['aadhar_pdf']);
+    }
+    if (this.selectedFiles['pan_pdf']) {
+      formData.append('certificate_pdf', this.selectedFiles['certificate_pdf']);
+    }
+
+    console.log(this.s_id, formData);
+
+    this.api.updateBusiness(this.s_id, formData).subscribe({
+      next: (res: any) => {
+        console.log('Business updated:', res);
         this.loadBusiness();
         this.closeModal('editBusinessModal');
-      });
+      },
+      error: (err) => {
+        console.error(' Error updating business:', err);
+      },
+    });
   }
 
   deleteBusiness(id?: string | null) {

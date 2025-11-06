@@ -1,27 +1,46 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-success px-3">
-    <nav class="navbar-brand" routerLink="/home">Billing Software</nav>
-     <div class="ms-auto">
-    <button class="btn btn-outline-light" (click)="logout()">Logout</button>
-  </div>
-</nav>
-
-
 <div class="container-fluid">
-    <div class="row">
-<div class="col-2 bg-light vh-100 p-3 shadow">
-      <h4 class="text-center text-success mb-4">Super Admin Panel</h4>
-      <ul class="list-group">
-        
-        <li class="list-group p-2 ">
-          <a routerLink="Business"
-             routerLinkActive="active"
-             class="text-decoration-none nav-link text-dark d-block fw-semibold ">
-           Business
-          </a>
-        </li>
+  <div class="row">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success px-3">
+      <a class="navbar-brand text-white fw-bold" routerLink="/home">
+        Billing Software
+      </a>
 
-        </ul>
+      <div class="ms-auto d-flex align-items-center">
+        <a
+          class="nav-link text-white me-3"
+          routerLink="emp_profile"
+          style="cursor: pointer"
+          title="Profile"
+        >
+          <i class="bi bi-person-circle" style="font-size: 28px"></i>
+        </a>
+
+        <a
+          class="nav-link text-white"
+          style="cursor: pointer"
+          (click)="logout()"
+          title="Logout"
+        >
+          <i class="bi bi-box-arrow-right" style="font-size: 28px"></i>
+        </a>
+      </div>
+    </nav>
+  </div>
+  <div class="container">
+    <div class="d-flex">
+      <div class="text-start p-4">
+        <button class="btn btn-success" routerLink="add-business">
+          <i class="bi bi-plus-circle me-2"></i> Add Business
+        </button>
+      </div>
+      <div class="text-start p-4">
+        <button class="btn btn-success" routerLink="view-business">
+View Business
+        </button>
+      </div>
     </div>
-<div class="col-10 p-4"> 
+  </div>
+  <div class="row p-4">
     <router-outlet></router-outlet>
-</div></div></div>
+  </div>
+</div>
