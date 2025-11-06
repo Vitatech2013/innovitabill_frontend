@@ -18,7 +18,8 @@ export class SuperadminViewComponent implements OnInit{
   }
 
   logout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('superAdmin');
+    localStorage.removeItem('sa_token')
     this.router.navigate(['/SuperAdminLogin']);
   }
 }

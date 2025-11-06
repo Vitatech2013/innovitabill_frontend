@@ -12,7 +12,9 @@ import { BusinessRegisterComponent } from './business-register/business-register
 import { UsersComponent } from './users/users.component';
 import { HomeComponent } from './home/home.component';
 import { CashierLoginComponent } from './cashier-login/cashier-login.component';
-import { AddBusinessComponent } from './add-business/add-business.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { UnitsComponent } from './units/units.component';
+
 
 export const routes: Routes = [
     {path:'SuperAdminLogin',component:SuperAdminLoginComponent},
@@ -26,7 +28,11 @@ export const routes: Routes = [
     {path: 'businessRegister',component:BusinessRegisterComponent},
     {path: 'business-Dashboard',component:BusinessDashboardComponent, children:[
         {path:'',component:UsersComponent},
-        {path: 'users', component:UsersComponent}
+        {path: 'users', component:UsersComponent},
+        {path:'categories',component:CategoriesComponent},
+        {path:'roles',component:RolesComponent},
+        {path:'units',component:UnitsComponent},
+        
     ]},
     {path:'', component:HomeComponent},
     {path:'home',component:HomeComponent},

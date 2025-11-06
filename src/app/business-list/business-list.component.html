@@ -202,21 +202,15 @@
                     />
                   </td>
                   <td>
-                    <a
-                      [href]="
-                        'http://localhost:3003/' + selectedBusiness.pan_pdf
-                      "
-                      target="_blank"
-                      class="text-primary text-decoration-none small"
-                      >View</a
-                    >
+                   <a [href]="getFileUrl(selectedBusiness.pan_pdf)" target="_blank">View</a>
+
                   </td>
                   <td>
                     <a
                       [href]="
                         'http://localhost:3003/' + selectedBusiness.aadhar_pdf
                       "
-                      target="_blank"
+                      target=""
                       class="text-primary text-decoration-none small"
                       >View</a
                     >
