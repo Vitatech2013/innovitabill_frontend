@@ -267,6 +267,11 @@ font-size: 0.95rem;
 }
 
     /* footer */
-    footer a:hover {
-  color: #0dcaf0 !important;
+footer a {
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #0d6efd; 
 }

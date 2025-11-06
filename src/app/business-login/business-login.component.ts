@@ -36,10 +36,18 @@ login() {
   this.service.login(this.businessForm.value).subscribe({
     next: (res: any) => {
       console.log('Login successful', res);
+      
 
-      if (res) {
-        localStorage.setItem('businessToken', JSON.stringify(res.data));
-      }
+  if (res) {
+  localStorage.setItem('business', JSON.stringify(res.data));
+  localStorage.setItem('businessToken', JSON.stringify(res.token));
+
+  
+  if (res.data.superadmin_id) {
+    localStorage.setItem('superadmin_id', res.data.superadmin_id);
+  }
+}
+   
 
       this.router.navigateByUrl('business-Dashboard', {
         state: { toast: 'User login successful!' }
