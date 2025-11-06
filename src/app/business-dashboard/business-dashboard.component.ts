@@ -5,7 +5,7 @@ import { Router, RouterLink,  RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-business-dashboard',
   standalone: true,
-  imports: [RouterOutlet,CommonModule,RouterLink],
+  imports: [RouterOutlet,CommonModule],
   templateUrl: './business-dashboard.component.html',
   styleUrl: './business-dashboard.component.css'
 })
@@ -39,5 +39,6 @@ isSidebarOpen: any;
   logout(){
     localStorage.removeItem('token');
      this.router.navigate(['/businesslogin'])
+     
   }
 }

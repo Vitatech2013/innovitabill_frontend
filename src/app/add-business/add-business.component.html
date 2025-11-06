@@ -1,12 +1,6 @@
 
-<div class="text-start p-4">
-  <button class="btn btn-success" (click)="toggleAddForm()">
-    <i class="bi bi-plus-circle me-2"></i> Add Business
-  </button>
-</div>
 
-
-<div *ngIf="addFormVisible" class="card shadow-sm p-4 mb-4 border-0">
+<div class="card shadow-sm p-4 mb-4 border-0">
   <h5 class="text-success fw-bold mb-4">
     <i class="bi bi-building me-2"></i> Add Business
   </h5>
@@ -64,21 +58,21 @@
 
       <div class="col-md-6">
         <label class="form-label fw-semibold">PAN</label>
-        <input type="file" class="form-control" (change)="onFileChange($event, 'pan_image')" accept="image/*" />
+        <input type="file" class="form-control" (change)="onFileChange($event, 'pan_pdf')" accept="pdf/*" />
       </div>
 
       <div class="col-md-6">
         <label class="form-label fw-semibold">Aadhar</label>
-        <input type="file" class="form-control" (change)="onFileChange($event, 'aadhar_image')" accept="image/*" />
+        <input type="file" class="form-control" (change)="onFileChange($event, 'aadhar_pdf')" accept="pdf/*" />
       </div>
 
       <div class="col-md-6">
         <label class="form-label fw-semibold">Incorporation Certificate</label>
-        <input type="file" class="form-control" (change)="onFileChange($event, 'incorporation_certificate')" accept="image/*" />
+        <input type="file" class="form-control" (change)="onFileChange($event, 'certificate_pdf')" accept="pdf/*" />
       </div>
     </div>
 
-    <!-- Buttons -->
+   
     <div class="text-end mt-4">
       <button type="button" class="btn btn-secondary me-2 px-4" (click)="cancelAdd()">
         <i class="bi bi-x-circle me-1"></i> Cancel
