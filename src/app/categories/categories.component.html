@@ -1,3 +1,11 @@
+<button
+  class="btn btn-success mb-3"
+  data-bs-toggle="modal"
+  data-bs-target="#categoryModal"
+  (click)="openAddModal()"
+>
+  Add Category
+</button>
 <div class="dashboard">
   <h2 class="title mb-4 text-center">List of Categories</h2>
 </div>
@@ -55,34 +63,34 @@
     <div class="modal-content">
       <form [formGroup]="categoryForm" (ngSubmit)="createOrUpdateRole()">
         <div class="modal-header">
-          <h5 class="modal-title" id="roleModalLabel">{{ title }}</h5>
+          <h5 class="modal-title" id="CategoryModalLabel">{{ title }}</h5>
           <button
             type="button"
             class="btn-close"
             data-bs-dismiss="modal"
             aria-label="Close"
-            (click)="closeModal()"
+            (click)="resetForm()"
           ></button>
         </div>
 
         <div class="modal-body">
           <div class="mb-3">
-            <label class="form-label">Role Name</label>
+            <label class="form-label">Categories Name</label>
             <input
               type="text"
-              formControlName="role_name"
+              formControlName="categories_code"
               class="form-control"
-              placeholder="Enter role name"
+              placeholder="Enter Categories name"
             />
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Role Number</label>
+            <label class="form-label">Categories Code</label>
             <input
               type="text"
-              formControlName="role_number"
+              formControlName="categories_code"
               class="form-control"
-              placeholder="Enter role number"
+              placeholder="Enter Code"
             />
           </div>
           
@@ -93,7 +101,7 @@
             type="button"
             class="btn btn-secondary"
             data-bs-dismiss="modal"
-            (click)="closeModal()"
+            (click)="resetForm()"
           >
             Close
           </button>

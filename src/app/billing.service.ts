@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class BillingService {
 
+
  
   
   deleteBusiness(deleteBusinessId: string) {
@@ -71,6 +72,9 @@ getRoles() {
 //categories
   getcategories() {
     return this.http.get(`${this.baseUrl}/categories/categoriesget`)
+  }
+    deleteCategory(id: string) {
+    return this.http.delete(`${this.baseUrl}/categories/categoriesdelete/${id}`)
   }
 // casher_login
 cashierlogin(value?: any){
