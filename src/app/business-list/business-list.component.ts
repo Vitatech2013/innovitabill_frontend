@@ -96,6 +96,13 @@ export class BusinessListComponent implements OnInit {
 
     return `http://localhost:3003/business_images/${cleanPath}`;
   }
+  getFileUrl(path: string): string {
+    const cleanPath = path.replace(/\\/g, '/');
+    if (cleanPath.includes('business_images/')) {
+      return `http://localhost:3003/${cleanPath}`;
+    }
+    return `http://localhost:3003/business_images/${cleanPath}`;
+  }
 
   openAddModal() {
     this.isEditing = false;

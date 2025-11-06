@@ -5,20 +5,19 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-superadmin-view',
   standalone: true,
-  imports: [CommonModule, RouterOutlet,RouterLink],
+  imports: [CommonModule, RouterOutlet, RouterLink],
   templateUrl: './superadmin-view.component.html',
-  styleUrl: './superadmin-view.component.css'
+  styleUrl: './superadmin-view.component.css',
 })
-export class SuperadminViewComponent implements OnInit{
+export class SuperadminViewComponent implements OnInit {
+  constructor(private router: Router) {}
 
-    constructor(private router:Router){}
-
-  ngOnInit(): void {
-  
-  }
+  ngOnInit(): void {}
 
   logout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('sa');
+    localStorage.removeItem('saToken');
+
     this.router.navigate(['/SuperAdminLogin']);
   }
 }
