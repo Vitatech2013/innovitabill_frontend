@@ -14,6 +14,8 @@ import { HomeComponent } from './home/home.component';
 import { CashierLoginComponent } from './cashier-login/cashier-login.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { UnitsComponent } from './units/units.component';
+import { AddBusinessComponent } from './add-business/add-business.component';
+import { SuperadminProfileComponent } from './superadmin-profile/superadmin-profile.component';
 
 
 export const routes: Routes = [
@@ -22,11 +24,13 @@ export const routes: Routes = [
         {path:'',component:BusinessListComponent},
         {path:'view-business',component:BusinessListComponent,},
         {path:"add-business", component:AddBusinessComponent},
-       
+       {path: 'superadmin_profile', component:SuperadminProfileComponent},
     ]},
+    
     {path: 'businesslogin',component:BusinessLoginComponent},
     {path: 'businessRegister',component:BusinessRegisterComponent},
     {path: 'business-Dashboard',component:BusinessDashboardComponent, children:[
+        
         {path:'',component:UsersComponent},
         {path: 'users', component:UsersComponent},
         {path:'categories',component:CategoriesComponent},
@@ -34,6 +38,7 @@ export const routes: Routes = [
         {path:'units',component:UnitsComponent},
         
     ]},
+    
     {path:'', component:HomeComponent},
     {path:'home',component:HomeComponent},
     {path:'cashier_login', component:CashierLoginComponent}

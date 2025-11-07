@@ -66,12 +66,19 @@
               <th>Phone</th>
               <th>Business Type</th>
               <th>Status</th>
-              <th>Logo</th>
               <th>Actions</th>
             </tr>
           </thead>
 
           <tbody>
+
+            <!-- <tr *ngIf="businessList.length === 0">
+      <td colspan="8" class="text-center text-danger fw-bold">
+        Ravaliiiiiiiiiiiii — No data available!
+      </td>
+    </tr> -->
+
+
             <tr *ngFor="let b of business; let i = index" class="table-row">
               <td class="text-center fw-semibold">{{ i + 1 }}</td>
               <td>{{ b.business_name }}</td>
@@ -91,14 +98,14 @@
                   {{ b.status }}
                 </span>
               </td>
-              <td class="text-center">
+              <!-- <td class="text-center">
                 <img
                   [src]="getImageUrl(b.logo_image)"
                   alt="Business Logo"
                   class="img-thumbnail business-logo"
                   (click)="openImageModal(getImageUrl(b.logo_image))"
                 />
-              </td>
+              </td> -->
               <td class="text-center">
                 <button
                   class="btn btn-sm btn-outline-info me-2"
@@ -125,6 +132,7 @@
       </div>
     </div>
   </div>
+ 
 
   <!-- VIEW MODAL -->
   <div
@@ -202,29 +210,18 @@
                     />
                   </td>
                   <td>
-                   <a [href]="getFileUrl(selectedBusiness.pan_pdf)" target="_blank">View</a>
+                   <a [href]="getFileUrl(selectedBusiness.pan_pdf)" target="_blank">Pancard</a>
 
                   </td>
                   <td>
-                    <a
-                      [href]="
-                        'http://localhost:3003/' + selectedBusiness.aadhar_pdf
-                      "
-                      target=""
-                      class="text-primary text-decoration-none small"
-                      >View</a
-                    >
+                     <a [href]="getFileUrl(selectedBusiness.aadhar_pdf)" target="_blank">Aadharcard</a>
+
+                    
                   </td>
                   <td>
-                    <a
-                      [href]="
-                        'http://localhost:3003/' +
-                        selectedBusiness.certificate_pdf
-                      "
-                      target="_blank"
-                      class="text-primary text-decoration-none small"
-                      >View</a
-                    >
+                     <a [href]="getFileUrl(selectedBusiness.certificate_pdf)" target="_blank">certificate</a>
+
+                    
                   </td>
                 </tr>
               </tbody>
@@ -295,129 +292,96 @@
   </div>
 </div> -->
 
-  <div class="modal fade" id="editBusinessModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editBusinessModalLabel">Edit Business</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <form [formGroup]="BusinessForm">
-            <div class="mb-3">
-              <label>Business Name</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="business_name"
-              />
+ <div class="modal fade" id="editBusinessModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="editBusinessModalLabel">Edit Business</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="BusinessForm">
+          <div class="container-fluid">
+            <div class="row g-3">
+             
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Business Name</label>
+                <input type="text" class="form-control" formControlName="business_name" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Owner Name</label>
+                <input type="text" class="form-control" formControlName="owner_name" />
+              </div>
+
+            
+               <div class="col-md-6">
+                <label class="form-label fw-semibold">Email</label>
+                <input type="text" class="form-control" formControlName="email" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Phone Number</label>
+                <input type="text" class="form-control" formControlName="phone_number" />
+              </div>
+             
+
+             
+                <div class="col-md-6">
+                <label class="form-label fw-semibold">Business Type</label>
+                <input type="text" class="form-control" formControlName="business_type" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Business Address</label>
+                <input type="text" class="form-control" formControlName="business_address" />
+              </div>
+
+           
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Registration Number</label>
+                <input type="text" class="form-control" formControlName="registration_number" />
+              </div>
+              <div class="col-md-4">
+      <label class="form-label fw-semibold">GST Number</label>
+      <input type="text" class="form-control" formControlName="gst_number" placeholder="Enter GST number" />
+      <small *ngIf="isInvalid('gst_number')" class="text-danger">
+        GST Number is required
+      </small>
+    </div>
+
+             
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Logo Image</label>
+                <input type="text" class="form-control" formControlName="logo_image" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">PAN</label>
+                <input type="text" class="form-control" formControlName="pan_pdf" />
+              </div>
+
+              <!-- Row 6 -->
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Aadhar</label>
+                <input type="text" class="form-control" formControlName="aadhar_pdf" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Incorporation Certificate</label>
+                <input type="text" class="form-control" formControlName="certificate_pdf" />
+              </div>
             </div>
-            <div class="mb-3">
-              <label>Owner Name</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="owner_name"
-              />
-            </div>
-            <div class="mb-3">
-              <label>Phone Number</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="phone_number"
-              />
-            </div>
-            <div class="mb-3">
-              <label>Business Type</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="business_type"
-              />
-            </div>
-            <div class="mb-3">
-              <label>Business Address</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="business_address"
-              />
-            </div>
-            <div class="mb-3">
-              <label>Registeration Number</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="registration_number"
-              />
-            </div>
-            <div class="mb-3">
-              <label>GST </label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="gst_number"
-              />
-            </div>
-            <div class="mb-3">
-              <label>logo </label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="logo_image"
-              />
-            </div>
-            <div class="mb-3">
-              <label>PAN</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="pan_pdf"
-              />
-            </div>
-            <div class="mb-3">
-              <label>Aadhar</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="aadhar_pdf"
-              />
-            </div>
-            <div class="mb-3">
-              <label>Incorporation Certificate</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="certificate_pdf"
-              />
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            class="btn btn-success"
-            (click)="updateBusiness()"
-            [disabled]="!BusinessForm.valid"
-          >
-            Save
-          </button>
-        </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" (click)="updateBusiness()" [disabled]="!BusinessForm.valid">
+          Save
+        </button>
       </div>
     </div>
   </div>
+</div>
+
   <div
     class="modal fade"
     id="deleteBusinessModal"
