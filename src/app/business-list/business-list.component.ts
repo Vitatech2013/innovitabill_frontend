@@ -21,12 +21,7 @@ declare var bootstrap: any;
   styleUrl: './business-list.component.css',
 })
 export class BusinessListComponent implements OnInit {
-add() {
-throw new Error('Method not implemented.');
-}
-openBusinessModal(_t378: any) {
-throw new Error('Method not implemented.');
-}
+
   business: any[] = [];
   BusinessForm!: FormGroup;
   selectedBusiness: any = null;
@@ -47,14 +42,15 @@ throw new Error('Method not implemented.');
     this.loadBusiness();
 
     this.BusinessForm = this.fb.group({
-      business_name: ['', Validators.required],
-      owner_name: ['', Validators.required],
-      email: ['', Validators.email],
-      phone_number: ['', Validators.required],
-      business_type: ['', Validators.required],
-      business_address: ['', Validators.required],
-      registration_number: ['', Validators.required],
-      gst_number: ['', Validators.required],
+     business_name: ['', [Validators.required, Validators.minLength(3)]],
+      owner_name: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      phone_number: ['', [Validators.required, Validators.minLength(10)]],
+      business_type: ['', [Validators.required, Validators.minLength(3)]],
+      business_address: ['', [Validators.required, Validators.minLength(3)]],
+      registration_number: ['', [Validators.required, Validators.minLength(3)]],
+      gst_number: ['', [Validators.required, Validators.minLength(3)]],
+      password: ['', [Validators.required, Validators.minLength(3)]],
       logo_image: [''],
       pan_pdf: [''],
       aadhar_pdf: [''],
@@ -64,6 +60,10 @@ throw new Error('Method not implemented.');
       console.log(res);
       this.business = res.data;
     });
+  }
+  isInvalid(controlName: string): boolean {
+    const control = this.BusinessForm.get(controlName);
+    return control ? control.touched && control.invalid : false;
   }
   toggleAddForm() {
     this.addFormVisible = !this.addFormVisible;
@@ -83,6 +83,15 @@ throw new Error('Method not implemented.');
     );
     modal.show();
   }
+
+  onFileSelect(event: any, controlName: string) {
+  const file = event.target.files[0];
+  if (file) {
+    this.BusinessForm.patchValue({ [controlName]: file });
+    this.BusinessForm.get(controlName)?.updateValueAndValidity();
+  }
+}
+
 
   loadBusiness() {
     this.api.getBusiness().subscribe({
@@ -223,4 +232,5 @@ throw new Error('Method not implemented.');
     modal.hide();
     (document.activeElement as HTMLElement)?.blur();
   }
+  
 }

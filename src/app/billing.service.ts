@@ -1,10 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BillingService {
+ 
+  getSuperadminById(superadmin_id: string) {
+    throw new Error('Method not implemented.');
+  }
 
 
 
@@ -40,6 +45,17 @@ export class BillingService {
   deletebusiness(id: string) {
     return this.http.delete(`${this.baseUrl}/business/businessdelete/${id}`)
   }
+profileupdate(formData: FormData, id: string) {
+  return this.http.put(`${this.baseUrl}/superadmin/superadminupdate/${id}`, formData);
+}
+getadminprofile(superadmin_id: any){
+   return this.http.get<any[]>(`${this.baseUrl}/business/businessget`)
+}
+getDataFromBackend(): Observable<any> {
+    // Make sure you return the observable from HttpClient
+    return this.http.get('http://localhost:3003/your-endpoint');
+  }
+
 //Admins
   deleteAdmin(id: string) {
     return this.http.delete(`${this.baseUrl}/admindelete/${id}`);

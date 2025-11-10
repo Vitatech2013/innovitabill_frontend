@@ -15,19 +15,14 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, FormsModule],
   templateUrl: './add-business.component.html',
-  styleUrl: './add-business.component.css',
+  styleUrls: ['./add-business.component.css'],
 })
 export class AddBusinessComponent implements OnInit {
-  addBusinessForm!: FormGroup;
-  selectedFiles: any = {};
-  sid: any;
-  superadmin_id: any;
-  selectedBusiness: any;
-logo_image: File | null = null;
-pan_pdf: File | null = null;
-aadhar_pdf: File | null = null;
-certificate_pdf: File | null = null;
 
+  addBusinessForm!: FormGroup;
+  selectedFiles: { [key: string]: File } = {};
+  superadmin_id: string = '';
+selectedBusiness: any;
 
   constructor(
     private api: BillingService,
@@ -37,30 +32,37 @@ certificate_pdf: File | null = null;
 
   ngOnInit(): void {
    
-const sid = JSON.parse(localStorage.getItem('sa') || '{}');
-  console.log(sid, 'sid');
+    const saData = JSON.parse(localStorage.getItem('sa') || '{}');
+    this.superadmin_id = saData._id;
+    console.log('Superadmin ID:', this.superadmin_id);
 
-  this.superadmin_id = sid._id;
-  console.log(this.superadmin_id, 'superadminid');
-     
+
+    
+    if (!this.superadmin_id) {
+      alert('Superadmin ID missing. Please login again.');
+      this.router.navigate(['SuperAdminLogin']); 
+    }
 
     this.addBusinessForm = this.fb.group({
-      business_name: ['', Validators.required],
-      owner_name: ['', Validators.required],
-      phone_number: ['', Validators.required],
-      business_type: ['', Validators.required],
-      business_address: ['', Validators.required],
-      registration_number: ['', Validators.required],
-      gst_number: ['', Validators.required],
+       business_name: ['', [Validators.required, Validators.minLength(3)]],
+      owner_name: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      phone_number: ['', [Validators.required, Validators.minLength(10)]],
+      business_type: ['', [Validators.required, Validators.minLength(3)]],
+      business_address: ['', [Validators.required, Validators.minLength(3)]],
+      registration_number: ['', [Validators.required, Validators.minLength(3)]],
+      gst_number: ['', [Validators.required, Validators.minLength(3)]],
+      password: ['', [Validators.required, Validators.minLength(3)]],
       logo_image: [''],
-      pan_image: [''],
+      pan_pdf: [''],
       aadhar_pdf: [''],
       certificate_pdf: [''],
     });
   }
-  
-
-
+  isInvalid(controlName: string): boolean {
+    const control = this.addBusinessForm.get(controlName);
+    return control ? control.touched && control.invalid : false;
+  }
 
   onFileChange(event: any, fieldName: string) {
     const file = event.target.files[0];
@@ -69,46 +71,58 @@ const sid = JSON.parse(localStorage.getItem('sa') || '{}');
     }
   }
 
+
   cancelAdd() {
     this.addBusinessForm.reset();
-  }
-saveBusiness() {
-  const superadmin_id = localStorage.getItem("superadmin_id");
-  console.log("stored data:", superadmin_id);
-
-  if (!superadmin_id) {
-    alert("Superadmin ID missing. Please log in again.");
-    return;
+    this.selectedFiles = {};
   }
 
-  const formData = new FormData();
-  formData.append("business_name", this.addBusinessForm.get("business_name")?.value);
-  formData.append("owner_name", this.addBusinessForm.get("owner_name")?.value);
-  formData.append("email", this.addBusinessForm.get("email")?.value);
-  formData.append("phone_number", this.addBusinessForm.get("phone_number")?.value);
-  formData.append("business_type", this.addBusinessForm.get("business_type")?.value);
-  formData.append("business_address", this.addBusinessForm.get("business_address")?.value);
-  formData.append("registration_number", this.addBusinessForm.get("registration_number")?.value);
-  formData.append("gst_number", this.addBusinessForm.get("gst_number")?.value);
-  formData.append("password", this.addBusinessForm.get("password")?.value);
-  formData.append("superadmin_id", superadmin_id);  
+  saveBusiness() {
+    if (!this.superadmin_id) {
+      console.error('Superadmin ID missing. Please login again.');
+      return;
+    }
 
+    if (this.addBusinessForm.invalid) {
+      alert('Please fill all required fields correctly.');
+      return;
+    }
 
-  if (this.logo_image) formData.append("logo_image", this.logo_image);
-  if (this.pan_pdf) formData.append("pan_pdf", this.pan_pdf);
-  if (this.aadhar_pdf) formData.append("aadhar_pdf", this.aadhar_pdf);
-  if (this.certificate_pdf) formData.append("certificate_pdf", this.certificate_pdf);
+    
+    const formData = new FormData();
 
-  this.api.addBusiness(formData).subscribe({
-    next: (res: any) => {
-      console.log("Business registered:", res);
-      alert("Business registered successfully!");
-      this.addBusinessForm.reset();
-    },
-    error: (err) => {
-      console.error("Add failed:", err);
-    },
-  });
-}
+  
+    Object.keys(this.addBusinessForm.value).forEach((key) => {
+      if (this.addBusinessForm.get(key)?.value) {
+        formData.append(key, this.addBusinessForm.get(key)?.value);
+      }
+    });
 
+    
+    formData.append('superadmin_id', this.superadmin_id)
+    
+    for (const key in this.selectedFiles) {
+      formData.append(key, this.selectedFiles[key]);
+    }
+
+    console.log('Sending formData:', formData);
+   
+    this.api.addBusiness(formData).subscribe({
+      next: (res: any) => {
+        console.log('Business added successfully:', res);
+         localStorage.setItem('superadmin', JSON.stringify(res));
+
+   
+    this.router.navigate(['SuperAdminView']);
+  
+        alert('Business registered successfully!');
+        this.addBusinessForm.reset();
+        this.selectedFiles = {};
+      },
+      error: (err) => {
+        console.error('Add failed:', err);
+        alert('Failed to add business. Please check the console.');
+      },
+    });
+  }
 }
