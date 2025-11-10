@@ -17,14 +17,18 @@ import {
   styleUrl: './categories.component.css',
 })
 export class CategoriesComponent implements OnInit {
-  r: any;
+  
   categoryForm!: FormGroup;
-  categories: any;
+  categories: any[] = [];
   business_id: any;
 
   title = 'Add Category';
   selectedCategoryId: any;
   selectedUserId: string | null = null;
+cat: any;
+  
+openModal: boolean = false;
+r: any;
 
   constructor(private api: BillingService, private fb: FormBuilder) {}
 
@@ -52,11 +56,12 @@ export class CategoriesComponent implements OnInit {
 
     openAddModal() {
     this.title = 'Add Category';
+   this.openModal = true;
     this.resetForm();
   }
 
 
-    edit(cat: any) {
+    edit(cat: any): void {
     this.selectedUserId = cat._id;
     this.title = 'Edit Category';
     this.categoryForm.patchValue({
@@ -65,6 +70,7 @@ export class CategoriesComponent implements OnInit {
       // user_id: cat.user_id|| cat.user_id,
       // business_id: cat.business_id || cat.business_id,
     });
+    this.openModal= true;
   }
 
   delete(id: string) {
@@ -131,6 +137,7 @@ export class CategoriesComponent implements OnInit {
 
   resetForm() {
     this.categoryForm.reset();
+    this.openModal = false;
     this.selectedUserId = null;
   }
 }
