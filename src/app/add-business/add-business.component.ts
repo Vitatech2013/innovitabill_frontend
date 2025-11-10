@@ -36,6 +36,8 @@ selectedBusiness: any;
     this.superadmin_id = saData._id;
     console.log('Superadmin ID:', this.superadmin_id);
 
+
+    
     if (!this.superadmin_id) {
       alert('Superadmin ID missing. Please login again.');
       this.router.navigate(['SuperAdminLogin']); 
@@ -97,19 +99,22 @@ selectedBusiness: any;
     });
 
     
-    formData.append('superadmin_id', this.superadmin_id);
-
+    formData.append('superadmin_id', this.superadmin_id)
     
     for (const key in this.selectedFiles) {
       formData.append(key, this.selectedFiles[key]);
     }
 
     console.log('Sending formData:', formData);
-
-  
+   
     this.api.addBusiness(formData).subscribe({
       next: (res: any) => {
         console.log('Business added successfully:', res);
+         localStorage.setItem('superadmin', JSON.stringify(res));
+
+   
+    this.router.navigate(['SuperAdminView']);
+  
         alert('Business registered successfully!');
         this.addBusinessForm.reset();
         this.selectedFiles = {};

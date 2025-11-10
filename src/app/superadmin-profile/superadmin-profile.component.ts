@@ -36,6 +36,8 @@ this.superadminprofileForm = this.fb.group({
   superadmin_number:['', [Validators.required]],
    superadmin_mail: ['', [Validators.required, Validators.email]],
       superadmin_password: ['', Validators.required],
+      image:[''],
+      address:['', [Validators.required]],
 })
  
 this.editForm= this.fb.group({
@@ -43,6 +45,8 @@ this.editForm= this.fb.group({
   superadmin_number:['', [Validators.required]],
    superadmin_mail: ['', [Validators.required, Validators.email]],
       superadmin_password: ['', Validators.required],
+      image:[''],
+      address:['', [Validators.required]],
 })
 
   } 
@@ -53,6 +57,8 @@ profileedit(){
    superadmin_number: this.superadminData.superadmin_number, 
    superadmin_mail: this.superadminData.superadmin_mail,
    superadmin_password: this.superadminData.superadmin_password,
+   image: this.superadminData.image,
+   address: this.superadminData.address,
   })
 }
 
@@ -69,10 +75,13 @@ updateadminprofile() {
   formData.append('superadmin_number', this.editForm.get('superadmin_number')?.value);
   formData.append('superadmin_mail', this.editForm.get('superadmin_mail')?.value);
   formData.append('superadmin_password', this.editForm.get('superadmin_password')?.value);
+  formData.append('image', this.editForm.get('superadmin_password')?.value);
+  formData.append('address', this.editForm.get('superadmin_password')?.value);
+  
 
-  // if (this.selectedImage) {
-  //   formData.append('admin_image', this.selectedImage);
-  // }
+  if (this.selectedImage) {
+    formData.append('image', this.selectedImage);
+  }
 
   this.profileService.profileupdate(formData, this.superadmin_id).subscribe(
     (res: any) => {
@@ -92,28 +101,30 @@ updateadminprofile() {
     },
     (err: any) => {
       console.error('Update failed:', err);
-      alert('❌ Profile update failed! Please try again.');
+      alert(' Profile update failed! Please try again.');
     }
   );
 }
  fetchAdminData() {
   if (!this.superadmin_id) {
-    console.error('❌ Admin ID missing!');
+    console.error(' Admin ID missing!');
     return;
   }
 
   this.profileService.getadminprofile(this.superadmin_id).subscribe(
     (res: any) => {
-      console.log('✅ Admin profile fetched successfully:', res);
+      console.log(' Admin profile fetched successfully:', res);
       this.superadminData = res?.data || res; // store fetched data
 
-      // If using a form, patch values:
+      
       if (this.editForm) {
         this.editForm.patchValue({
           superadmin_name:this.superadminData.superadmin_name,
    superadmin_number: this.superadminData.superadmin_number, 
    superadmin_mail: this.superadminData.superadmin_mail,
    superadmin_password: this.superadminData.superadmin_password,
+   image: this.previewUrl,
+   address: this.superadminData.address,
         });
       }
 
