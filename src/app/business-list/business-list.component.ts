@@ -84,6 +84,15 @@ export class BusinessListComponent implements OnInit {
     modal.show();
   }
 
+  onFileSelect(event: any, controlName: string) {
+  const file = event.target.files[0];
+  if (file) {
+    this.BusinessForm.patchValue({ [controlName]: file });
+    this.BusinessForm.get(controlName)?.updateValueAndValidity();
+  }
+}
+
+
   loadBusiness() {
     this.api.getBusiness().subscribe({
       next: (res: any) => {

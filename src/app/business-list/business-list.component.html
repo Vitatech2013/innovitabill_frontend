@@ -57,7 +57,7 @@
         class="table-responsive business-table-container shadow-lg rounded-3 p-3 bg-white"
       >
         <table class="table table-bordered align-middle business-table">
-          <thead class="table-success text-center align-middle">
+          <thead class="table-success file-center align-middle">
             <tr>
               <th>Sl. No</th>
               <th>Business Name</th>
@@ -73,14 +73,14 @@
           <tbody>
 
             <!-- <tr *ngIf="businessList.length === 0">
-      <td colspan="8" class="text-center text-danger fw-bold">
-        Ravaliiiiiiiiiiiii — No data available!
+      <td colspan="8" class="file-center file-danger fw-bold">
+     — No data available!
       </td>
     </tr> -->
 
 
             <tr *ngFor="let b of business; let i = index" class="table-row">
-              <td class="text-center fw-semibold">{{ i + 1 }}</td>
+              <td class="file-center fw-semibold">{{ i + 1 }}</td>
               <td>{{ b.business_name }}</td>
               <td>{{ b.owner_name }}</td>
               <td>{{ b.email }}</td>
@@ -88,7 +88,7 @@
               <td>{{ b.business_type }}</td>
               <td>
                 <span
-                  class="badge text-dark"
+                  class="badge file-dark"
                   [ngClass]="{
                     'bg-success': b.status === 'Active',
                     'bg-warning': b.status === 'Pending',
@@ -98,7 +98,7 @@
                   {{ b.status }}
                 </span>
               </td>
-              <!-- <td class="text-center">
+              <!-- <td class="file-center">
                 <img
                   [src]="getImageUrl(b.logo_image)"
                   alt="Business Logo"
@@ -106,7 +106,7 @@
                   (click)="openImageModal(getImageUrl(b.logo_image))"
                 />
               </td> -->
-              <td class="text-center">
+              <td class="file-center">
                 <button
                   class="btn btn-sm btn-outline-info me-2"
                   (click)="openViewModal(b)"
@@ -144,7 +144,7 @@
   >
     <div class="modal-dialog modal-xl modal-dialog-centered">
       <div class="modal-content border-0 shadow-sm rounded-3">
-        <div class="modal-header bg-success text-white py-2 px-3">
+        <div class="modal-header bg-success file-white py-2 px-3">
           <h5 class="modal-title fw-semibold" id="viewModalLabel">
             Business Details
           </h5>
@@ -158,7 +158,7 @@
 
         <div class="modal-body p-3">
           <div class="table-responsive">
-            <table class="table1 table-bordered align-middle text-center mb-0">
+            <table class="table1 table-bordered align-middle file-center mb-0">
               <thead class="table-success">
                 <tr>
                   <th>Business Name</th>
@@ -188,7 +188,7 @@
                   <td>{{ selectedBusiness.registration_number }}</td>
                   <td>
                     <span
-                      class="badge text-dark"
+                      class="badge file-dark"
                       [ngClass]="{
                         'bg-success': selectedBusiness.status === 'Active',
                         'bg-warning': selectedBusiness.status === 'Pending',
@@ -254,33 +254,33 @@
         <div class="modal-body">
           <div class="mb-3">
             <label class="form-label">Business Name</label>
-            <input type="text" formControlName="business_name" class="form-control" required>
+            <input type="file" formControlName="business_name" class="form-control" required>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Owner Name</label>
-            <input type="text" formControlName="owner_name" class="form-control"  required>
+            <input type="file" formControlName="owner_name" class="form-control"  required>
           </div>
           
            <div class="mb-3">
             <label class="form-label">Phone Number</label>
-            <input type="text" formControlName="phone_number" class="form-control"  required>
+            <input type="file" formControlName="phone_number" class="form-control"  required>
           </div>
            <div class="mb-3">
             <label class="form-label">Business Type</label>
-            <input type="text" formControlName="business_type" class="form-control"  required>
+            <input type="file" formControlName="business_type" class="form-control"  required>
            </div>
             <div class="mb-3">
             <label class="form-label">Business Address</label>
-            <input type="text" formControlName="business_address" class="form-control"  required>
+            <input type="file" formControlName="business_address" class="form-control"  required>
           </div>
            <div class="mb-3">
             <label class="form-label">Registration Number</label>
-            <input type="text" formControlName="registration_number" class="form-control"  required>
+            <input type="file" formControlName="registration_number" class="form-control"  required>
           </div>
            <div class="mb-3">
             <label class="form-label">GST Number</label>
-            <input type="text" formControlName="gst_number" class="form-control"  required>
+            <input type="file" formControlName="gst_number" class="form-control"  required>
           </div>
 
         <div class="modal-footer">
@@ -295,7 +295,7 @@
  <div class="modal fade" id="editBusinessModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
-      <div class="modal-header bg-success text-white">
+      <div class="modal-header bg-success file-white">
         <h5 class="modal-title" id="editBusinessModalLabel">Edit Business</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
@@ -307,43 +307,43 @@
              
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Business Name</label>
-                <input type="text" class="form-control" formControlName="business_name" />
+                <input type="file" class="form-control" formControlName="business_name" />
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Owner Name</label>
-                <input type="text" class="form-control" formControlName="owner_name" />
+                <input type="file" class="form-control" formControlName="owner_name" />
               </div>
 
             
                <div class="col-md-6">
                 <label class="form-label fw-semibold">Email</label>
-                <input type="text" class="form-control" formControlName="email" />
+                <input type="file" class="form-control" formControlName="email" />
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Phone Number</label>
-                <input type="text" class="form-control" formControlName="phone_number" />
+                <input type="file" class="form-control" formControlName="phone_number" />
               </div>
              
 
              
                 <div class="col-md-6">
                 <label class="form-label fw-semibold">Business Type</label>
-                <input type="text" class="form-control" formControlName="business_type" />
+                <input type="file" class="form-control" formControlName="business_type" />
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Business Address</label>
-                <input type="text" class="form-control" formControlName="business_address" />
+                <input type="file" class="form-control" formControlName="business_address" />
               </div>
 
            
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Registration Number</label>
-                <input type="text" class="form-control" formControlName="registration_number" />
+                <input type="file" class="form-control" formControlName="registration_number" />
               </div>
               <div class="col-md-4">
       <label class="form-label fw-semibold">GST Number</label>
-      <input type="text" class="form-control" formControlName="gst_number" placeholder="Enter GST number" />
-      <small *ngIf="isInvalid('gst_number')" class="text-danger">
+      <input type="file" class="form-control" formControlName="gst_number" placeholder="Enter GST number" />
+      <small *ngIf="isInvalid('gst_number')" class="file-danger">
         GST Number is required
       </small>
     </div>
@@ -351,20 +351,21 @@
              
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Logo Image</label>
-                <input type="text" class="form-control" formControlName="logo_image" />
+                <input type="file" class="form-control" formControlName="logo_image" />
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold">PAN</label>
-                <input type="text" class="form-control" formControlName="pan_pdf" />
+                <input type="file" class="form-control" formControlName="pan_pdf" />
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Aadhar</label>
-                <input type="text" class="form-control" formControlName="aadhar_pdf" />
+                <input type="file" class="form-control" formControlName="aadhar_pdf" />
               </div>
               <div class="col-md-6">
                 <label class="form-label fw-semibold">Incorporation Certificate</label>
-                <input type="text" class="form-control" formControlName="certificate_pdf" />
+                <input type="file" class="form-control" formControlName="certificate_pdf" />
               </div>
+              
 
             </div>
           </div>
@@ -390,7 +391,7 @@
   >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header bg-danger text-white">
+        <div class="modal-header bg-danger file-white">
           <h5 class="modal-title" id="deleteBusinessModalLabel">
             Confirm Delete
           </h5>
