@@ -256,14 +256,16 @@ export class UsersComponent implements OnInit {
       user_name: user.user_name || user.full_name,
       user_email: user.user_email || user.email,
       phone_number: user.phone_number,
-      password: '',
-      role_id: user.role_id || '',
+      image: user.image|| user.image,
+      id_proof:user.id_proof|| user.id_proof,
+      password: user.password || '',
+      role_id: user.role_id?._id || user.role_id || '',
+     
     });
+    
   }
 
-  onLogoChange(event: any) {
-    this.logoFile = event.target.files[0];
-  }
+  
 
   delete(id: string) {
     if (!confirm('Are you sure you want to delete this user?')) return;

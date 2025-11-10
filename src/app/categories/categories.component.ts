@@ -1,59 +1,136 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { BillingService } from '../billing.service';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CommonModule,FormsModule,ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.css',
 })
 export class CategoriesComponent implements OnInit {
   r: any;
   categoryForm!: FormGroup;
-
   categories: any;
-
   business_id: any;
-  selectedUserId: any;
-title= 'Add Category';
- 
 
-  constructor(private api: BillingService,private fb:FormBuilder) {}
+  title = 'Add Category';
+  selectedCategoryId: any;
+  selectedUserId: string | null = null;
+
+  constructor(private api: BillingService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     const bid = JSON.parse(localStorage.getItem('bid') || '{}');
     console.log('Stored bid:', bid);
     this.business_id = bid._id;
     console.log(this.business_id, 'business_id');
-    this.categoryForm= this.fb.group({
 
-    })
+    this.categoryForm = this.fb.group({
+      categories_name:['',Validators.required],
+      categories_code:['',Validators.required],
+    });
     this.getAllCategories();
   }
   getAllCategories() {
     this.api.getcategories().subscribe({
       next: (res: any) => {
-        this.categories = res.data;
-        console.log('Categories Loaded:', res.data);
+        this.categories = Array.isArray(res) ? res : res.data || [];
+        console.log('Categories Loaded:', res.categories);
       },
       error: (err) => console.error('Error Loading:', err),
     });
   }
-  createOrUpdateRole() {
-    throw new Error('Method not implemented.');
+
+    openAddModal() {
+    this.title = 'Add Category';
+    this.resetForm();
   }
 
-  edit(cat: any) {
+
+    edit(cat: any) {
     this.selectedUserId = cat._id;
-  }
-  delete(arg0: any) {
-    throw new Error('Method not implemented.');
+    this.title = 'Edit Category';
+    this.categoryForm.patchValue({
+      categories_name: cat.categories_name || cat.categories_name,
+      categories_code: cat.categories_code || cat.categories_code,
+      // user_id: cat.user_id|| cat.user_id,
+      // business_id: cat.business_id || cat.business_id,
+    });
   }
 
-  closeModal() {
-    throw new Error('Method not implemented.');
+  delete(id: string) {
+    if (!confirm('Are you sure you want to delete this user?')) return;
+    this.api.deleteCategory(id).subscribe({
+      next: () => {
+        alert('User deleted successfully');
+        this.getAllCategories();
+      },
+      error: (err) => console.error('Delete error', err),
+    });
+  }
+
+ createOrUpdateCategory(): void {
+  if (this.categoryForm.invalid) {
+      alert('Please fill all required fields correctly');
+      return;
+    }
+
+  const formData = new FormData();
+  formData.append('category_name', this.categoryForm.get('category_name')?.value);
+  formData.append('categories_code', this.categoryForm.get('categories_code')?.value);
+  formData.append('user_id', this.categoryForm.get('user_id')?.value);
+  formData.append('business_id', this.categoryForm.get('business_id')?.value);
+
+  if (this.selectedCategoryId) {
+  
+    this.api.updateCategory(this.selectedCategoryId, formData).subscribe({
+      next: (res: any) => {
+        console.log('Update success', res);
+        this.getAllCategories();
+        this.resetForm()
+      },
+      error: (err: any) => console.error('Update error', err),
+    });
+  } else {
+    
+    this.api.addCategory(formData).subscribe({
+      next: (res: any) => {
+        console.log('Create success', res);
+        this.getAllCategories();
+        this.resetForm();
+      },
+      error: (err: any) => console.error('Create error', err),
+    });
+  }
+}
+
+ 
+
+
+
+
+  
+  // getCategory() {
+  //   this.api.getcategories().subscribe({
+  //     next: (res: any) => {
+  //       this.categories = Array.isArray(res) ? res : res.data || [];
+  //       console.log('Users list:', this.categories);
+  //     },
+  //     error: (err) => console.error('Get users error:', err),
+  //   });
+  // }
+
+  resetForm() {
+    this.categoryForm.reset();
+    this.selectedUserId = null;
   }
 }

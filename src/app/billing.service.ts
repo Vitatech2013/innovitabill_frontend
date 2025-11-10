@@ -11,6 +11,12 @@ export class BillingService {
     throw new Error('Method not implemented.');
   }
 
+
+
+
+
+
+
  
   
   deleteBusiness(deleteBusinessId: string) {
@@ -88,9 +94,33 @@ getRoles() {
   getcategories() {
     return this.http.get(`${this.baseUrl}/categories/categoriesget`)
   }
+    deleteCategory(id: string) {
+    return this.http.delete(`${this.baseUrl}/categories/categoriesdelete/${id}`)
+  }
+    addCategory(formData: FormData) {
+    return this.http.post(`${this.baseUrl}/categories/categoriesadd`,formData);
+  }
+  updateCategory(id: string, value: any) {
+    return this.http.put(`${this.baseUrl}/categories/categoriesupdate/${id}`,value)
+  }
+
 // casher_login
 cashierlogin(value?: any){
   return this.http.get<any[]>(`${this.baseUrl}/cashier/cashierlogin`)
 }
+//units
+  addUnit(formData: FormData) {
+    return this.http.post(`${this.baseUrl}/units/unitsadd`,formData);
+  }
+  getUnits(value: any) {
+    return this.http.get<any[]>(`${this.baseUrl}/units/unitsget`)
+  }
+    updateUnit(id: string, data: any) {
+    return this.http.put(`${this.baseUrl}/units/unitsupdate/${id}`,data)
+  }
+    deleteUnit(id: string) {
+    return this.http.delete(`${this.baseUrl}/units/unitsdelete/${id}`)
+  }
 }
+
 
