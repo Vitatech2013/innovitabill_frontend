@@ -85,7 +85,7 @@ export class RolesComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error saving:', err);
-        if (err.status === 401) alert('Unauthorized! Please log in again.');
+        if (err.status - 401) alert('Unauthorized! Please log in again.');
       },
     });
   }
@@ -100,7 +100,7 @@ export class RolesComponent implements OnInit {
     this.openModel = true;
   }
 
- 
+  // ✅ Delete role
   delete(id: string): void {
     if (!confirm('Are you sure you want to delete this role?')) return;
 
@@ -115,7 +115,7 @@ export class RolesComponent implements OnInit {
     });
   }
 
-
+  // ✅ Reset form
   resetForm(): void {
     this.roleForm.reset();
     this.selectedUserId = null;
