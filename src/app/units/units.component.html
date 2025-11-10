@@ -1,1 +1,115 @@
-<p>units works!</p>
+<button
+  class="btn btn-success  mb-2"
+  data-bs-toggle="modal"
+  data-bs-target="#unitModel"
+  (click)="openAddModal()"
+>
+  Add Unit
+</button>
+
+<div class="dashboard">
+  <h2 class="title mb-4 p-3 text-center">List of Units</h2>
+  <div class="row">
+    <!-- Users Table -->
+    <table class="table table-bordered">
+      <thead class="table-success">
+        <tr>
+          <th>SL.No</th>
+          <th>Unit Name</th>
+          <th>Unit</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of units; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ u.units_name }}</td>
+          <td>{{ u.unit }}</td>
+          <td>{{ u.status }}</td>
+          <td>
+            <button
+              class="btn btn-primary btn-sm me-1"
+              (click)="edit(u)"
+              data-bs-toggle="modal"
+              data-bs-target="#unitModel"
+            >
+              Edit
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="delete(u._id)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="unitModel"
+  tabindex="-1"
+  aria-labelledby="unitModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+
+      <form [formGroup]="UnitForm" (ngSubmit)="createOrUpdateUnit()">
+        <div class="modal-header">
+          <h5 class="modal-title" id="unitModel">{{ title }}</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            (click)="resetForm()"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+         <div class="row g-3">
+          <div class="col-md-6 mb-2">
+            <label class="form-label">Unit Name</label>
+            <input
+              type="text"
+              formControlName="units_name"
+              class="form-control"
+              placeholder="Enter name"
+            />
+          </div>
+          <div class="col-md-6 mb-2">
+            <label class="form-label">Unit</label>
+            <input
+              type="text"
+              formControlName="unit"
+              class="form-control"
+              placeholder="Enter unit"
+            />
+          </div>
+         </div>
+        </div>
+
+       
+        <div class="modal-footer">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="UnitForm.invalid"
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            (click)="resetForm()"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

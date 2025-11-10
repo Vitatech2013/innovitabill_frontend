@@ -14,6 +14,7 @@ import { HomeComponent } from './home/home.component';
 import { CashierLoginComponent } from './cashier-login/cashier-login.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { UnitsComponent } from './units/units.component';
+import { AddBusinessComponent } from './add-business/add-business.component';
 
 
 export const routes: Routes = [
