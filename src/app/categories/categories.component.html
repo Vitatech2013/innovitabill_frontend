@@ -1,22 +1,24 @@
 <button
-  class="btn btn-success  mb-2"
+  class="btn btn-success mb-2"
   data-bs-toggle="modal"
   data-bs-target="#CategoryModal"
   (click)="openAddModal()"
 >
+<i class="bi bi-plus-circle"></i>
   Add Category
 </button>
+
 <div class="dashboard">
-  <h2 class="title mb-4 text-center">List of Categories</h2>
+  <h2 class="title  mb-2 p-1  text-center">List of Categories</h2>
 </div>
 
 <div class="row">
-  <table class="table table-bordered table-stribed">
+  <table class="table table-bordered ">
     <thead class="table-success">
       <tr>
         <th>Sl.No</th>
-        <th>Categories Name</th>
-        <th>Categories Code</th>
+        <th>Category Name</th>
+        <th>Category Code</th>
         <th>Status</th>
         <th>Actions</th>
       </tr>
@@ -28,21 +30,20 @@
         <td>{{ c.categories_code }}</td>
         <td>{{ c.status }}</td>
         <td>
+         
           <button
             class="btn btn-primary btn-sm me-1"
-            (click)="edit(r)"
+            (click)="edit(c)"
             data-bs-toggle="modal"
-            data-bs-target="#categoryModal"
+            data-bs-target="#CategoryModal"
           >
-            Edit
+            <i class="bi bi-pencil-square"></i>
           </button>
           <button
-            class="btn btn-danger btn-sm me-1"
-            (click)="delete(r._id)"
-            data-bs-toggle="modal"
-            data-bs-target="#categoryModal"
+            class="btn btn-danger btn-sm"
+            (click)="delete(c._id)"
           >
-            Delete
+            <i class="bi bi-trash"></i>
           </button>
         </td>
       </tr>
@@ -50,10 +51,9 @@
   </table>
 </div>
 
-<!-- Category Modal -->
+
 <div
   class="modal fade"
-  #CategoryModal
   id="CategoryModal"
   tabindex="-1"
   aria-labelledby="CategoryModalLabel"
@@ -69,31 +69,46 @@
             class="btn-close"
             data-bs-dismiss="modal"
             aria-label="Close"
-            (click)="resetForm()"
+            (click)="closeModal()"
           ></button>
         </div>
 
         <div class="modal-body">
           <div class="mb-3">
-            <label class="form-label">Categories Name</label>
+            <label class="form-label">Category Name</label>
             <input
               type="text"
-              formControlName="categories_code"
+              formControlName="categories_name"
               class="form-control"
-              placeholder="Enter Categories name"
+              placeholder="Enter Category Name"
             />
+             <div
+            *ngIf="categoryForm.controls['categories_name']?.touched && categoryForm.controls['categories_name']?.invalid"
+          > 
+          <small
+              *ngIf="categoryForm.controls['categories_name']?.errors?.['required']"
+              class="text-danger"
+              > Category Name is required </small
+            ></div>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Categories Code</label>
+            <label class="form-label">Category Code</label>
             <input
               type="text"
               formControlName="categories_code"
               class="form-control"
-              placeholder="Enter Code"
+              placeholder="Enter Category Code"
             />
+             <div
+            *ngIf="categoryForm.controls['categories_code']?.touched && categoryForm.controls['categories_code']?.invalid"
+          > 
+          <small
+              *ngIf="categoryForm.controls['categories_code']?.errors?.['required']"
+              class="text-danger"
+              > Code is required </small
+            ></div>
           </div>
-          
         </div>
 
         <div class="modal-footer">
@@ -101,11 +116,17 @@
             type="button"
             class="btn btn-secondary"
             data-bs-dismiss="modal"
-            (click)="resetForm()"
+            (click)="closeModal()"
           >
             Close
           </button>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+           
+          >
+            Save
+          </button>
         </div>
       </form>
     </div>

@@ -4,6 +4,7 @@
   data-bs-target="#roleModal"
   (click)="openAddModal()"
 >
+  <i class="bi bi-plus-circle"></i>
   Add Role
 </button>
 
@@ -34,7 +35,7 @@
               data-bs-toggle="modal"
               data-bs-target="#roleModal"
             >
-              Edit
+              <i class="bi bi-pencil-square"></i>
             </button>
             <button
               class="btn btn-danger btn-sm me-1"
@@ -42,7 +43,7 @@
               data-bs-toggle="modal"
               data-bs-target="#roleModal"
             >
-              Delete
+              <i class="bi bi-trash"></i>
             </button>
           </td>
         </tr>
@@ -89,6 +90,19 @@
               class="form-control"
               placeholder="Enter role name"
             />
+            <div
+              *ngIf="
+                roleForm.controls['role_name']?.touched &&
+                roleForm.controls['role_name']?.invalid
+              "
+            >
+              <small
+                *ngIf="roleForm.controls['role_name']?.errors?.['required']"
+                class="text-danger"
+              >
+                Role Name is required and must be at least 3 letters</small
+              >
+            </div>
           </div>
 
           <div class="mb-3">
@@ -99,8 +113,19 @@
               class="form-control"
               placeholder="Enter role number"
             />
+            <div
+              *ngIf="
+                roleForm.controls['role_number']?.touched &&
+                roleForm.controls['role_number']?.invalid
+              "
+            >
+              <small
+                *ngIf="roleForm.controls['role_number']?.errors?.['required']"
+                class="text-danger"
+                >Role Number is required</small
+              >
+            </div>
           </div>
-          
         </div>
 
         <div class="modal-footer">

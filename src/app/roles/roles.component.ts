@@ -14,7 +14,7 @@ import { BillingService } from '../billing.service';
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './roles.component.html',
-  styleUrls: ['./roles.component.css'], 
+  styleUrls: ['./roles.component.css'],
 })
 export class RolesComponent implements OnInit {
   selectedUserId: string | null = null;
@@ -40,7 +40,6 @@ export class RolesComponent implements OnInit {
     this.getAllRoles();
   }
 
-
   getAllRoles(): void {
     this.api.getRoles().subscribe({
       next: (res: any) => {
@@ -51,18 +50,15 @@ export class RolesComponent implements OnInit {
     });
   }
 
-  
   openAddModal(): void {
     this.title = 'Add Role';
     this.resetForm();
     this.openModel = true;
   }
 
-  
   closeModal(): void {
     this.openModel = false;
   }
-
 
   createOrUpdateRole(): void {
     if (this.roleForm.invalid) {
@@ -100,7 +96,6 @@ export class RolesComponent implements OnInit {
     this.openModel = true;
   }
 
-  // ✅ Delete role
   delete(id: string): void {
     if (!confirm('Are you sure you want to delete this role?')) return;
 
@@ -115,10 +110,8 @@ export class RolesComponent implements OnInit {
     });
   }
 
-  // ✅ Reset form
   resetForm(): void {
     this.roleForm.reset();
     this.selectedUserId = null;
   }
 }
-

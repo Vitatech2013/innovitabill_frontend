@@ -1,15 +1,15 @@
-<!-- Add User Button -->
 <button
   class="btn btn-success mb-2"
   data-bs-toggle="modal"
   data-bs-target="#userModal"
   (click)="openAddModal()"
 >
+  <i class="bi bi-plus-circle"></i>
   Add User
 </button>
 
 <div class="dashboard">
-  <h2 class="title mb-4 p-3 text-center">List of Users</h2>
+  <h2 class="title mb-2 p-1 text-center">List of Users</h2>
   <div class="row">
     <!-- Users Table -->
     <table class="table table-bordered">
@@ -37,10 +37,10 @@
               data-bs-toggle="modal"
               data-bs-target="#userModal"
             >
-              Edit
+              <i class="bi bi-pencil-square"></i>
             </button>
             <button class="btn btn-danger btn-sm" (click)="delete(u._id)">
-              Delete
+              <i class="bi bi-trash"></i>
             </button>
           </td>
         </tr>
@@ -49,7 +49,7 @@
   </div>
 </div>
 
-<!-- User Modal -->
+
 <div
   class="modal fade"
   id="userModal"
@@ -81,6 +81,19 @@
                 class="form-control"
                 placeholder="Enter user name"
               />
+              <div
+                *ngIf="
+                  usersForm.controls['user_name']?.touched &&
+                  usersForm.controls['user_name']?.invalid
+                "
+              >
+                <small
+                  *ngIf="usersForm.controls['user_name']?.errors?.['required']"
+                  class="text-danger"
+                >
+                  User Name is required and must be at least 3 letters</small
+                >
+              </div>
             </div>
 
             <div class="col-md-6 mb-2">
@@ -91,6 +104,23 @@
                 class="form-control"
                 placeholder="Enter email"
               />
+              <div
+                *ngIf="
+                  usersForm.controls['user_email']?.touched &&
+                  usersForm.controls['user_email']?.invalid
+                "
+              >
+                <small
+                  *ngIf="usersForm.controls['user_email']?.errors?.['required']"
+                  class="text-danger"
+                  >Email is required</small
+                >
+                <small
+                  *ngIf="usersForm.controls['user_email']?.errors?.['user_email']"
+                  class="text-danger"
+                  >Invalid email format</small
+                >
+              </div>
             </div>
 
             <div class="col-md-6 mb-2">
@@ -101,9 +131,20 @@
                 class="form-control"
                 placeholder="Enter phone number"
               />
+              <div
+                *ngIf="
+                  usersForm.controls['phone_number']?.touched &&
+                  usersForm.controls['phone_number']?.invalid
+                "
+              >
+                <small
+                  *ngIf="usersForm.controls['phone_number']?.errors?.['required']"
+                  class="text-danger"
+                  >Phone Number is required</small
+                >
+              </div>
             </div>
 
-            <!-- Password -->
             <div class="col-md-6 mb-2">
               <label class="form-label">Password</label>
               <input
@@ -112,6 +153,23 @@
                 class="form-control"
                 placeholder="Enter password"
               />
+              <div
+                *ngIf="
+                  usersForm.controls['password']?.touched &&
+                  usersForm.controls['password']?.invalid
+                "
+              >
+                <small
+                  *ngIf="usersForm.controls['password']?.errors?.['required']"
+                  class="text-danger"
+                  >Password is required</small
+                >
+                <small
+                  *ngIf="usersForm.controls['password']?.errors?.['minlength']"
+                  class="text-danger"
+                  >Minimum 6 characters</small
+                >
+              </div>
             </div>
 
             <div class="col-md-6 mb-2">
@@ -122,6 +180,19 @@
                   {{ role.role_name }}
                 </option>
               </select>
+              <div
+                *ngIf="
+                  usersForm.controls['role_id']?.touched &&
+                  usersForm.controls['role_id']?.invalid
+                "
+              >
+                <small
+                  *ngIf="usersForm.controls['role_id']?.errors?.['required']"
+                  class="text-danger"
+                >
+                  Role is required</small
+                >
+              </div>
             </div>
 
             <div class="col-md-6 mb-2">
@@ -135,12 +206,11 @@
           </div>
         </div>
 
-        <!-- ✅ Footer Buttons -->
         <div class="modal-footer">
           <button
             type="submit"
             class="btn btn-primary"
-            [disabled]="usersForm.invalid"
+            
           >
             Save
           </button>

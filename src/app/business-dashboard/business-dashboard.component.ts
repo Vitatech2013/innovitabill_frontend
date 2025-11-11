@@ -37,7 +37,6 @@ export class BusinessDashboardComponent implements OnInit {
   logout() {
     localStorage.removeItem('user');
     localStorage.removeItem('userToken');
-
-    this.router.navigate(['/SuperAdminLogin']);
+    this.router.navigate(['/businesslogin']);
   }
 }
