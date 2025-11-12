@@ -13,12 +13,6 @@ export class BillingService {
 
 
 
-
-
-
-
- 
-  
   deleteBusiness(deleteBusinessId: string) {
     throw new Error('Method not implemented.');
   }
@@ -51,7 +45,14 @@ profileupdate(formData: FormData, id: string) {
 getadminprofile(id: string) {
   return this.http.get(`${this.baseUrl}/superadmin/superadminprofile/${id}`);
 }
+getBusinessTypes() {
+    return this.http.get(`${this.baseUrl}/btypes/getbtypes`);
+  }
 
+
+getStatuses() {
+    return this.http.get(`${this.baseUrl}/status/getstatus`);
+  }
 
 
 getDataFromBackend(): Observable<any> {

@@ -1,5 +1,7 @@
 <div class="container mt-4">
+   <h5 class="text-center text-success mb-3">Superadmin Profile</h5>
   <div class="card shadow-lg border-0 p-4">
+
     <div class="row align-items-center">
       <div class="col-md-4 text-center mb-3 mb-md-0">
         <img
@@ -26,68 +28,78 @@
         </button>
       </div>
 
-      <!-- Profile Details -->
+      
       <div class="col-md-8">
-        <form [formGroup]="profileForm">
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label fw-semibold">Name</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="superadmin_name"
-                readonly
-              />
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label fw-semibold">Phone Number</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="superadmin_number"
-                readonly
-              />
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label fw-semibold">Email</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="superadmin_mail"
-                readonly
-              />
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label fw-semibold">Password</label>
-              <input
-                type="password"
-                class="form-control"
-                formControlName="superadmin_password"
-                readonly
-              />
-            </div>
-          </div>
+  <form [formGroup]="profileForm">
+    <div class="row">
+      <div class="col-md-6 border-end">
+        <h6 class="fw-bold text-primary mb-3">Profile Information</h6>
 
-          <!-- Address -->
-          <h6 class="fw-bold mt-3">Address</h6>
-          <div formGroupName="address" class="row">
-            <div class="col-md-4 mb-2" *ngFor="let field of addressFields">
-              <label class="form-label">{{ field.label }}</label>
-              <input
-                type="text"
-                class="form-control"
-                [formControlName]="field.name"
-                readonly
-              />
-            </div>
-          </div>
-        </form>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="superadmin_name"
+            readonly
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Phone Number</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="superadmin_number"
+            readonly
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Email</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="superadmin_mail"
+            readonly
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            formControlName="superadmin_password"
+            readonly
+          />
+        </div>
       </div>
+
+    
+      <div class="col-md-6 ps-md-4">
+        <h6 class="fw-bold text-primary mb-3">Address Details</h6>
+        <div formGroupName="address" class="row">
+          <div class="col-md-6 mb-3" *ngFor="let field of addressFields">
+            <label class="form-label fw-semibold">{{ field.label }}</label>
+            <input
+              type="text"
+              class="form-control"
+              [formControlName]="field.name"
+              readonly
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
     </div>
   </div>
 </div>
 
-<!-- Edit Modal -->
+
 <div
   class="modal fade"
   id="editProfileModal"

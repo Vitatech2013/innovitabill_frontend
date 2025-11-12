@@ -29,10 +29,18 @@ export class BusinessListComponent implements OnInit {
   selectedFiles: Record<string, File> = {};
   logofile: File | null= null;
 
+  businessTypes: any[] = [];
+  statusList: any;
+
   constructor(private fb: FormBuilder, private api: BillingService) {}
 
   ngOnInit(): void {
-    this.loadBusiness();
+      const businesslist=localStorage.getItem('satoken');
+      if(businesslist){
+        const bid= JSON.parse(businesslist);
+        this. business= bid._id|| '';
+        console.log('businessID:', this.business);
+      }
 
     this.BusinessForm = this.fb.group({
       business_name: ['', [Validators.required, Validators.minLength(3)]],
@@ -50,6 +58,8 @@ export class BusinessListComponent implements OnInit {
       aadhar_pdf: [''],
       certificate_pdf: [''],
     });
+    this.loadBusinessTypes();
+    this.loadBusiness();
   }
 
  
@@ -125,7 +135,27 @@ export class BusinessListComponent implements OnInit {
     }
   }
 
- 
+ loadBusinessTypes() {
+    this.api.getBusinessTypes().subscribe({
+      next: (res: any) => {
+        this.businessTypes = res.data || [];
+        console.log('Business Types:', this.businessTypes);
+      },
+      error: (err: any) => console.error('Error fetching business types:', err),
+    });
+    console.log('Business Types:', this.businessTypes);
+
+  }
+
+  loadStatuses() {
+    this.api.getStatuses().subscribe({
+      next: (res: any) => {
+        this.statusList = res.data || [];
+        console.log('Statuses:', this.statusList);
+      },
+      error: (err: any) => console.error('Error fetching statuses:', err),
+    });
+  }
   getImageUrl(path: string): string {
     if (!path) return 'assets/default-business.jpg';
     const cleanPath = path.replace(/\\/g, '/');

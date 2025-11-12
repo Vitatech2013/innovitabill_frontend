@@ -304,9 +304,9 @@
     <div class="modal-content border-0 shadow-lg rounded-4">
       
     
-      <div class="modal-header bg-light text-white">
+      <div class="modal-header bg-light text-dark">
         <h5 class="modal-title fw-bold" id="editBusinessModalLabel">Edit Business</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"></button>
       </div>
 
      
@@ -340,19 +340,34 @@
           
           <h6 class="fw-bold text-success mb-3 mt-4">Business Details</h6>
           <div class="row g-3 mb-3">
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Business Type</label>
-              <input type="text" class="form-control" formControlName="business_type" />
-            </div>
+ 
+<div class="col-md-6">
+  <label class="form-label fw-semibold">Business Type</label>
+  <select class="form-select" formControlName="business_type">
+    <option value="">Select Business Type</option>
+    <option *ngFor="let type of businessTypes" [value]="type.business_id">
+  {{ type.business_type }}
+</option>
 
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Status</label>
-              <select class="form-select" formControlName="status">
-                <option value="Active">Active</option>
-                <option value="Pending">Pending</option>
-                <option value="Inactive">Inactive</option>
-              </select>
-            </div>
+
+  </select>
+</div>
+
+
+
+
+<div class="col-md-6">
+  <label class="form-label fw-semibold">Status</label>
+  <select class="form-select" formControlName="status">
+    <option value="">Select Status</option>
+    <option *ngFor="let s of statusList" [value]="s._id">
+      {{ s.status_name }}
+    </option>
+  </select>
+</div>
+
+
+
 
             <div class="col-md-6">
               <label class="form-label fw-semibold">Business Address</label>
