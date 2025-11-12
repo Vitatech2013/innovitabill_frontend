@@ -18,7 +18,7 @@ export class BusinessService {
     return this.http.post(`${this.baseUrl}/user/userregistration`, userData);
   }
   deleteUser(id: string) {
-    return this.http.delete(`${this.baseUrl}/user/userdelete//${id}`);
+    return this.http.delete(`${this.baseUrl}/user/userdelete/${id}`);
   }
   updateUser(id: string, data: any) {
     return this.http.put(`${this.baseUrl}/user/updateuser/${id}`, data);

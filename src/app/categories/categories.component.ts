@@ -141,7 +141,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { HttpErrorResponse } from '@angular/common/http';
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-categories',
@@ -157,6 +157,9 @@ export class CategoriesComponent implements OnInit {
   user_id: string = '';
   title = 'Add Category';
   selectedCategoryId: string | null = null;
+toastMessage: any;
+toastType: any;
+  selectedId: any;
 
   constructor(private api: BillingService, private fb: FormBuilder) {}
 
@@ -214,20 +217,20 @@ export class CategoriesComponent implements OnInit {
   }
 
 
-  delete(id: string) {
-    if (!confirm('Are you sure you want to delete this category?')) return;
-    this.api.deleteCategory(id).subscribe({
-      next: () => {
-        alert('Category deleted successfully');
-        this.getAllCategories();
-      },
-      error: (err) => console.error('Delete error', err),
-    });
-  }
+  // delete(id: string) {
+  //   if (!confirm('Are you sure you want to delete this category?')) return;
+  //   this.api.deleteCategory(id).subscribe({
+  //     next: () => {
+  //       alert('Category deleted successfully');
+  //       this.getAllCategories();
+  //     },
+  //     error: (err) => console.error('Delete error', err),
+  //   });
+  // }
 
   createOrUpdateCategory() {
     if (this.categoryForm.invalid) {
-      alert('Please fill all required fields');
+      this.showToast('Please fill all required fields','warning');
       return;
     }
     this.categoryForm.patchValue({
@@ -239,26 +242,60 @@ export class CategoriesComponent implements OnInit {
       // update
       this.api.updateCategory(this.selectedCategoryId, this.categoryForm.value).subscribe({
         next: (res) => {
-          alert('Category updated successfully');
+          this.showToast('Category updated successfully','success');
           this.getAllCategories();
           this.closeModal();
+          const modal = bootstrap.Modal.getInstance(document.getElementById('CategoryModal'));
+        modal.hide();
         },
         error: (err) => {
           console.error('Update error', err);
+          this.showToast('Failed to update ', 'error');
         },
       });
     } else {
       // create
       this.api.addCategory(this.categoryForm.value).subscribe({
         next: (res) => {
-          alert('Category added successfully');
+          this.showToast('Category added successfully','success');
           this.getAllCategories();
           this.closeModal();
+          const modal = bootstrap.Modal.getInstance(document.getElementById('CategoryModal'));
+        modal.hide();
+        
         },
         error: (err) => {
           console.error('Create error', err);
+       this.showToast('Failed to add category', 'error');
+
         },
       });
     }
+  }
+  openDeleteModal(cats: any) {
+    this.selectedId = cats;
+    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    modal.show();
+  }
+  confirmDelete() {
+    if (!this.selectedId) return;
+    this.api.deleteCategory(this.selectedId._id).subscribe({
+      next: () => {
+                this.showToast(' Soft deleted successfully', 'success');
+
+        this.getAllCategories();
+        const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+        modal.hide();
+      },
+      error: (err) =>{ 
+        console.error('Delete error', err);
+         this.showToast('Failed to delete unit', 'error');
+      },
+    });
+  }
+   showToast(message: string, type: 'success' | 'error' | 'warning') {
+    this.toastMessage = message;
+    this.toastType = type;
+    setTimeout(() => (this.toastMessage = null), 3000);
   }
 }

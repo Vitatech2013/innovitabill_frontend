@@ -8,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { BillingService } from '../billing.service';
-
+declare var bootstrap: any;
 @Component({
   selector: 'app-roles',
   standalone: true,
@@ -17,12 +17,16 @@ import { BillingService } from '../billing.service';
   styleUrls: ['./roles.component.css'],
 })
 export class RolesComponent implements OnInit {
+
   selectedUserId: string | null = null;
   openModel = false;
   roleForm!: FormGroup;
   title = 'Add Role';
   business_id: any;
   roles: any[] = [];
+toastMessage: any;
+toastType: any;
+  selectedRole: any;
 
   constructor(private api: BillingService, private fb: FormBuilder) {}
 
@@ -62,7 +66,7 @@ export class RolesComponent implements OnInit {
 
   createOrUpdateRole(): void {
     if (this.roleForm.invalid) {
-      alert('Please fill all required fields!');
+      this.showToast('Please fill all required fields!','warning');
       return;
     }
 
@@ -74,14 +78,14 @@ export class RolesComponent implements OnInit {
     this.api.addRole(newRole).subscribe({
       next: (res) => {
         console.log('Role saved:', res);
-        alert('Role saved successfully!');
+        this.showToast('Role saved successfully!','success');
         this.roleForm.reset();
         this.getAllRoles();
         this.closeModal();
       },
       error: (err) => {
         console.error('Error saving:', err);
-        if (err.status - 401) alert('Unauthorized! Please log in again.');
+        if (err.status - 401) this.showToast('Unauthorized! Please log in again.','error');
       },
     });
   }
@@ -96,22 +100,50 @@ export class RolesComponent implements OnInit {
     this.openModel = true;
   }
 
-  delete(id: string): void {
-    if (!confirm('Are you sure you want to delete this role?')) return;
+  // delete(id: string): void {
+  //   if (!confirm('Are you sure you want to delete this role?')) return;
 
-    this.api.deleteRole(id).subscribe({
-      next: () => {
-        alert('Role deleted successfully');
-        this.getAllRoles();
-      },
-      error: (err) => {
-        console.error('Delete error:', err);
-      },
-    });
-  }
+  //   this.api.deleteRole(id).subscribe({
+  //     next: () => {
+  //       alert('Role deleted successfully');
+  //       this.getAllRoles();
+  //     },
+  //     error: (err) => {
+  //       console.error('Delete error:', err);
+  //     },
+  //   });
+  // }
 
   resetForm(): void {
     this.roleForm.reset();
     this.selectedUserId = null;
   }
+  openDeleteModal(roles: any) {
+this.selectedRole = roles;
+    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    modal.show();
+  }
+  confirmDelete() {
+    if (!this.selectedRole) return;
+    this.api.deleteRole(this.selectedRole._id).subscribe({
+      next: () => {
+                this.showToast('User soft deleted successfully', 'success');
+
+        this.getAllRoles();
+        const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+        modal.hide();
+      },
+      error: (err) =>{ 
+        console.error('Delete error', err);
+         this.showToast('Failed to delete unit', 'error');
+      },
+    });
+  }
+  showToast(message: string, type: 'success' | 'error' | 'warning') {
+    this.toastMessage = message;
+    this.toastType = type;
+    setTimeout(() => (this.toastMessage = null), 3000);
+  }
+
+
 }

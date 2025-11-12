@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { BusinessService } from '../business.service';
 import { BillingService } from '../billing.service';
-
+declare var bootstrap: any;
 @Component({
   selector: 'app-users',
   standalone: true,
@@ -17,14 +17,17 @@ import { BillingService } from '../billing.service';
   styleUrls: ['./users.component.css'],
 })
 export class UsersComponent implements OnInit {
+
   users: any[] = [];
   roles: any[] = [];
   usersForm!: FormGroup;
   title: string = '';
-  selectedUserId: string | null = null;
+  selectedUser: any = null;
   logoFile: File | null = null;
   business_id: string = '';
   openModel = false;
+toastType: any;
+toastMessage: any;
 
   constructor(
     private service: BusinessService,
@@ -67,24 +70,35 @@ export class UsersComponent implements OnInit {
       next: (res: any) => {
         this.users = Array.isArray(res) ? res : res.data || [];
         console.log('Users list:', this.users);
+        
       },
-      error: (err) => console.error('Get users error:', err),
+      error: (err) => {
+        console.error('Get users error:', err);
+        this.showToast('Failed to load units','error');
+      },
+      
     });
+  }
+ showToast(message: string, type: 'success' | 'error' | 'warning') {
+    this.toastMessage = message;
+    this.toastType = type;
+    setTimeout(() => (this.toastMessage = null), 3000);
   }
   openAddModal() {
     this.title = 'Add User';
     this.resetForm();
-    this.openModel = true;
+    (document.getElementById('UserModal') as any)?.classList.add('show');
   }
 
   resetForm() {
     this.usersForm.reset();
-    this.selectedUserId = null;
+    this.selectedUser = null;
     this.logoFile = null;
   }
+  
 
   edit(user: any) {
-    this.selectedUserId = user._id;
+    this.selectedUser = user._id;
     this.title = 'Edit User';
     this.usersForm.patchValue({
       user_name: user.user_name || user.full_name,
@@ -95,13 +109,15 @@ export class UsersComponent implements OnInit {
       password: user.password || '',
       role_id: user.role_id?._id || user.role_id || '',
     });
+        (document.getElementById('UserModal') as any)?.classList.add('show');
+
   }
 
 
 
   createOrUpdateUser() {
     if (this.usersForm.invalid) {
-      alert('Please fill all required fields correctly');
+      this.showToast('Please fill all required fields correctly','warning');
       return;
     }
 
@@ -118,36 +134,71 @@ export class UsersComponent implements OnInit {
       formData.append('id_proof', this.logoFile);
     }
 
-    if (this.selectedUserId) {
+    if (this.selectedUser) {
       // Update
-      this.service.updateUser(this.selectedUserId, formData).subscribe({
+      this.service.updateUser(this.selectedUser, formData).subscribe({
         next: () => {
-          alert('User updated successfully');
+          this.showToast('User updated successfully', 'success');
           this.getUsers();
           this.resetForm();
+          const modal = bootstrap.Modal.getInstance(document.getElementById('userModal'));
+        modal.hide();
+          
         },
-        error: (err) => console.error('Update error', err),
+        error: (err) => {
+            console.error('Update error', err)
+          this.showToast('Failed to update User', 'error');
+        },
       });
     } else {
       // Create
       this.service.createUser(formData).subscribe({
         next: () => {
-          alert('User added successfully');
+          this.showToast('User added successfully','success');
           this.getUsers();
           this.resetForm();
+         const modal = bootstrap.Modal.getInstance(document.getElementById('userModal'));
+        modal.hide();
+        
         },
-        error: (err) => console.error('Create error', err),
+        error: (err) => {
+          console.error('Create error', err);
+          this.showToast('Failed to add User', 'error');
+        },
       });
     }
   }
-    delete(id: string) {
-    if (!confirm('Are you sure you want to delete this user?')) return;
-    this.service.deleteUser(id).subscribe({
+  //   delete(id: string) {
+  //   if (!confirm('Are you sure you want to delete this user?')) return;
+  //   this.service.deleteUser(id).subscribe({
+  //     next: () => {
+  //       alert('User deleted successfully');
+  //       this.getUsers();
+  //     },
+  //     error: (err) => console.error('Delete error', err),
+  //   });
+  // }
+openDeleteModal(user: any) {
+    this.selectedUser = user;
+    const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    modal.show();
+  }
+  confirmDelete() {
+    if (!this.selectedUser) return;
+    this.service.deleteUser(this.selectedUser._id).subscribe({
       next: () => {
-        alert('User deleted successfully');
+                this.showToast('User soft deleted successfully', 'success');
+
         this.getUsers();
+        const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+        modal.hide();
       },
-      error: (err) => console.error('Delete error', err),
+      error: (err) =>{ 
+        console.error('Delete error', err);
+         this.showToast('Failed to delete unit', 'error');
+      },
     });
   }
 }
+
+
