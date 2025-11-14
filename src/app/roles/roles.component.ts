@@ -66,6 +66,7 @@ toastType: any;
 
   createOrUpdateRole(): void {
     if (this.roleForm.invalid) {
+      this.roleForm.markAllAsTouched();
       this.showToast('Please fill all required fields!','warning');
       return;
     }
@@ -127,7 +128,7 @@ this.selectedRole = roles;
     if (!this.selectedRole) return;
     this.api.deleteRole(this.selectedRole._id).subscribe({
       next: () => {
-                this.showToast('User soft deleted successfully', 'success');
+                this.showToast('Role soft deleted successfully', 'success');
 
         this.getAllRoles();
         const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
@@ -139,7 +140,7 @@ this.selectedRole = roles;
       },
     });
   }
-  showToast(message: string, type: 'success' | 'error' | 'warning') {
+ showToast(message: string, type: 'success' | 'error' | 'warning') {
     this.toastMessage = message;
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 3000);

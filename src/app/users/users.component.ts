@@ -117,6 +117,7 @@ toastMessage: any;
 
   createOrUpdateUser() {
     if (this.usersForm.invalid) {
+      this.usersForm.markAllAsTouched();
       this.showToast('Please fill all required fields correctly','warning');
       return;
     }

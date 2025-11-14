@@ -230,6 +230,7 @@ toastType: any;
 
   createOrUpdateCategory() {
     if (this.categoryForm.invalid) {
+      this.categoryForm.markAllAsTouched();
       this.showToast('Please fill all required fields','warning');
       return;
     }
