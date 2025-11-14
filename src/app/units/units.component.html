@@ -1,14 +1,43 @@
+<div class="position-fixed top-1 end-0 p-1" style="z-index: 1080;">
+  <div
+    *ngIf="toastMessage"
+    class="toast align-items-center text-light border-0 fade show shadow-lg"
+    [ngClass]="{
+      'bg-success': toastType === 'success',
+      'bg-danger': toastType === 'error',
+      'bg-warning text-dark': toastType === 'warning'
+    }"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+  >
+    <div class="d-flex">
+      <div class="toast-body fw-semibold">
+        {{ toastMessage }}
+      </div>
+      <button
+        type="button"
+        class="btn-close btn-close-white me-2 m-auto"
+        (click)="toastMessage = null"
+        aria-label="Close"
+      ></button>
+    </div>
+  </div>
+</div>
+
+
 <button
   class="btn btn-success  mb-2"
   data-bs-toggle="modal"
   data-bs-target="#unitModel"
   (click)="openAddModal()"
 >
+<i class="bi bi-plus-circle"></i>
   Add Unit
 </button>
 
 <div class="dashboard">
-  <h2 class="title mb-4 p-3 text-center">List of Units</h2>
+  <h2 class="title  mb-2 p-1  text-center">List of Units</h2>
   <div class="row">
     <!-- Users Table -->
     <table class="table table-bordered">
@@ -34,11 +63,11 @@
               data-bs-toggle="modal"
               data-bs-target="#unitModel"
             >
-              Edit
+              <i class="bi bi-pencil-square"></i>
             </button>
-            <button class="btn btn-danger btn-sm" (click)="delete(u._id)">
-              Delete
-            </button>
+               <button class="btn btn-danger btn-sm" (click)="openDeleteModal(u)">
+            <i class="bi bi-trash"></i>
+          </button>
           </td>
         </tr>
       </tbody>
@@ -64,7 +93,7 @@
             class="btn-close"
             data-bs-dismiss="modal"
             aria-label="Close"
-            (click)="resetForm()"
+            (click)="closeModal()"
           ></button>
         </div>
 
@@ -78,6 +107,16 @@
               class="form-control"
               placeholder="Enter name"
             />
+             <div
+            *ngIf="UnitForm.controls['units_name']?.touched && UnitForm.controls['units_name']?.invalid"
+          >
+            <small
+              *ngIf="UnitForm.controls['units_name']?.errors?.['required']"
+              class="text-danger"
+              >unitsname is required and must be at least 3 letters </small
+            >
+          
+          </div>
           </div>
           <div class="col-md-6 mb-2">
             <label class="form-label">Unit</label>
@@ -87,6 +126,16 @@
               class="form-control"
               placeholder="Enter unit"
             />
+                  <div
+            *ngIf="UnitForm.controls['unit']?.touched && UnitForm.controls['unit']?.invalid"
+          >
+            <small
+              *ngIf="UnitForm.controls['unit']?.errors?.['required']"
+              class="text-danger"
+              >unit is required  </small
+            >
+          
+          </div>
           </div>
          </div>
         </div>
@@ -96,7 +145,7 @@
           <button
             type="submit"
             class="btn btn-primary"
-            [disabled]="UnitForm.invalid"
+           
           >
             Save
           </button>
@@ -104,12 +153,51 @@
             type="button"
             class="btn btn-secondary"
             data-bs-dismiss="modal"
-            (click)="resetForm()"
+            (click)="closeModal()"
           >
             Cancel
           </button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<!-- 🗑️ Delete Confirmation Modal -->
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header  text-danger">
+        <h5 class="modal-title">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        Are you sure you want to delete
+        <strong>{{ selectedUnit?.u_name }}</strong>?
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="confirmDelete()"
+        >
+          Delete
+        </button>
+      </div>
     </div>
   </div>
 </div>
