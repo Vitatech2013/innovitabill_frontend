@@ -10,6 +10,8 @@ export class BillingService {
     throw new Error('Method not implemented.');
   }
 
+
+
   deleteBusiness(deleteBusinessId: string) {
     throw new Error('Method not implemented.');
   }
@@ -42,16 +44,23 @@ export class BillingService {
   deletebusiness(id: string) {
     return this.http.delete(`${this.baseUrl}/business/businessdelete/${id}`);
   }
-  profileupdate(formData: FormData, id: string) {
-    return this.http.put(
-      `${this.baseUrl}/superadmin/superadminupdate/${id}`,
-      formData
-    );
+profileupdate(formData: FormData, id: string) {
+  return this.http.put(`${this.baseUrl}/superadmin/superadminupdate/${id}`, formData);
+}
+getadminprofile(id: string) {
+  return this.http.get(`${this.baseUrl}/superadmin/superadminprofile/${id}`);
+}
+getBusinessTypes() {
+    return this.http.get(`${this.baseUrl}/btypes/getbtypes`);
   }
-  getadminprofile(superadmin_id: any) {
-    return this.http.get<any[]>(`${this.baseUrl}/business/businessget`);
+
+
+getStatuses() {
+    return this.http.get(`${this.baseUrl}/status/getstatus`);
   }
-  getDataFromBackend(): Observable<any> {
+
+
+getDataFromBackend(): Observable<any> {
     // Make sure you return the observable from HttpClient
     return this.http.get('http://localhost:3003/your-endpoint');
   }
@@ -98,8 +107,8 @@ export class BillingService {
       `${this.baseUrl}/categories/categoriesdelete/${id}`
     );
   }
-  addCategory(formData: FormData) {
-    return this.http.post(`${this.baseUrl}/categories/categoriesadd`, formData);
+    addCategory(data: any) {
+    return this.http.post(`${this.baseUrl}/categories/categoriesadd`,data);
   }
   updateCategory(id: string, value: any) {
     return this.http.put(
@@ -108,16 +117,14 @@ export class BillingService {
     );
   }
 
-  // casher_login
-  cashierlogin(value?: any) {
-    return this.http.get<any[]>(`${this.baseUrl}/cashier/cashierlogin`);
+cashierlogin(value?: any){
+  return this.http.get<any[]>(`${this.baseUrl}/cashier/cashierlogin`)
+}
+  addUnit(unit: any) {
+    return this.http.post(`${this.baseUrl}/units/unitsadd`,unit);
   }
-  //units
-  addUnit(formData: FormData) {
-    return this.http.post(`${this.baseUrl}/units/unitsadd`, formData);
-  }
-  getUnits(value: any) {
-    return this.http.get<any[]>(`${this.baseUrl}/units/unitsget`);
+  getUnits() {
+    return this.http.get(`${this.baseUrl}/units/unitsget`)
   }
   updateUnit(id: string, data: any) {
     return this.http.put(`${this.baseUrl}/units/unitsupdate/${id}`, data);

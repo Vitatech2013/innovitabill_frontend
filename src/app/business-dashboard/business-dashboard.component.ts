@@ -10,6 +10,7 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
   styleUrl: './business-dashboard.component.css',
 })
 export class BusinessDashboardComponent implements OnInit {
+
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
   isSidebarOpen: any;
@@ -34,10 +35,14 @@ export class BusinessDashboardComponent implements OnInit {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
 
-  logout() {
+  // logout() {
+  //   localStorage.removeItem('user');
+  //   localStorage.removeItem('userToken');
+  //   this.router.navigate(['/businesslogin']);
+  // }
+   logout() {
     localStorage.removeItem('user');
-    localStorage.removeItem('userToken');
-
-    this.router.navigate(['/SuperAdminLogin']);
+    localStorage.removeItem('userToken')
+    this.router.navigate(['/businesslogin']);
   }
 }

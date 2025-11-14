@@ -29,7 +29,7 @@ export class BusinessLoginComponent implements OnInit {
 login() {
   if (this.businessForm.invalid) {
     this.businessForm.markAllAsTouched();
-    this.showToast('❌ Please fill all required fields correctly!', 'warning');
+    this.showToast('Please fill all required fields correctly!', 'warning');
     return;
   }
 
@@ -47,7 +47,7 @@ login() {
         state: { toast: 'User login successful!' }
       });
 
-      this.showToast('✅ User login successful!', 'success');
+      this.showToast(' User login successful!', 'success');
     },
     error: (err: any) => {
       console.error('Login failed:', err);

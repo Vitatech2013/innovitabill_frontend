@@ -22,6 +22,7 @@ import { ItemListComponent } from './item-list/item-list.component';
 import { ItemsComponent } from './items/items.component';
 import { SalesComponent } from './sales-list/sales.component';
 import { SaleComponent } from './sale/sale.component';
+import { BusinessprofileComponent } from './businessprofile/businessprofile.component';
 
 export const routes: Routes = [
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
@@ -36,23 +37,6 @@ export const routes: Routes = [
     ],
   },
 
-  { path: 'businesslogin', component: BusinessLoginComponent },
-  { path: 'businessRegister', component: BusinessRegisterComponent },
-  {
-    path: 'business-Dashboard',
-    component: BusinessDashboardComponent,
-    children: [
-      { path: '', component: UsersComponent },
-      { path: 'users', component: UsersComponent },
-      { path: 'categories', component: CategoriesComponent },
-      { path: 'roles', component: RolesComponent },
-      { path: 'units', component: UnitsComponent },
-    ],
-  },
-
-  { path: '', component: HomeComponent },
-  { path: 'home', component: HomeComponent },
-  { path: 'cashier_login', component: CashierLoginComponent },
   { path: 'userlogin', component: UserLoginComponent },
   {
     path: 'userview',
@@ -75,4 +59,23 @@ export const routes: Routes = [
       },
     ],
   },
+
+  { path: 'businesslogin', component: BusinessLoginComponent },
+  { path: 'businessRegister', component: BusinessRegisterComponent },
+  {
+    path: 'business-Dashboard',
+    component: BusinessDashboardComponent,
+    children: [
+      { path: '', component: UsersComponent },
+      { path: 'users', component: UsersComponent },
+      { path: 'categories', component: CategoriesComponent },
+      { path: 'roles', component: RolesComponent },
+      { path: 'units', component: UnitsComponent },
+      { path: 'businessprofile', component: BusinessprofileComponent },
+    ],
+  },
+
+  { path: '', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
+  { path: 'cashier_login', component: CashierLoginComponent },
 ];
