@@ -16,6 +16,12 @@ import { CategoriesComponent } from './categories/categories.component';
 import { UnitsComponent } from './units/units.component';
 import { AddBusinessComponent } from './add-business/add-business.component';
 import { SuperadminProfileComponent } from './superadmin-profile/superadmin-profile.component';
+import { UserLoginComponent } from './user-login/user-login.component';
+import { UserViewComponent } from './user-view/user-view.component';
+import { ItemListComponent } from './item-list/item-list.component';
+import { ItemsComponent } from './items/items.component';
+import { SalesComponent } from './sales-list/sales.component';
+import { SaleComponent } from './sale/sale.component';
 import { BusinessprofileComponent } from './businessprofile/businessprofile.component';
 
 export const routes: Routes = [
@@ -28,6 +34,29 @@ export const routes: Routes = [
       { path: 'view-business', component: BusinessListComponent },
       { path: 'add-business', component: AddBusinessComponent },
       { path: 'superadmin_profile', component: SuperadminProfileComponent },
+    ],
+  },
+
+  { path: 'userlogin', component: UserLoginComponent },
+  {
+    path: 'userview',
+    component: UserViewComponent,
+    children: [
+      { path: '', component: ItemListComponent },
+      {
+        path: 'itemlist',
+        component: ItemListComponent,
+        children: [{ path: 'items', component: ItemsComponent }],
+      },
+
+      {
+        path: 'saleslist',
+        component: SalesComponent,
+      },
+      {
+        path: 'sale',
+        component: SaleComponent,
+      },
     ],
   },
 

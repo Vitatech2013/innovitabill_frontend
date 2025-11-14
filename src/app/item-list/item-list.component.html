@@ -1,0 +1,249 @@
+<div *ngIf="!isCreatingInvoice()">
+  <div class="row">
+    <div
+      class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2"
+    >
+      <h4 class="mb-3">Available Items</h4>
+
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search by name, brand, or status..."
+        [(ngModel)]="searchTerm"
+        style="max-width: 300px"
+      />
+
+      <a
+        class="btn btn-success text-white"
+        [routerLink]="['items']"
+        routerLinkActive="active"
+      >
+        <i class="bi bi-plus-circle me-1"></i> Create Item
+      </a>
+    </div>
+
+    <div class="col-md-12">
+      <table class="table table-bordered table-hover align-middle text-center">
+        <thead class="table-success">
+          <tr>
+            <th>Item Name</th>
+            <th>Brand</th>
+            <th>Price (₹)</th>
+            <th>Status</th>
+            <th>Available Quantity</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let it of filteredItems()"
+            [ngClass]="{
+              'low-stock': it.stock_quantity <= 5,
+              'medium-stock': it.stock_quantity > 5 && it.stock_quantity <= 15,
+              'high-stock': it.stock_quantity > 15
+            }"
+          >
+            <td>{{ it.item_name }}</td>
+            <td>{{ it.brand_name }}</td>
+            <td>₹{{ it.selling_price }}</td>
+            <td>{{ it.status }}</td>
+            <td>{{ it.stock_quantity }} {{ it.unit }}</td>
+            <td>
+              <div class="d-flex justify-content-center gap-2">
+                <button
+                   class="btn btn-sm btn-success me-2"
+                 
+                  (click)="openViewModal(it)"
+                >
+                  <b><i class="bi bi-eye"></i></b>
+                </button>
+                <button
+                  class="btn btn-warning"
+                  data-bs-toggle="modal"
+                  data-bs-target="#myEditModal"
+                  (click)="editItem(it)"
+                >
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-danger" (click)="deleteItem(it)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="filteredItems().length === 0">
+            <td colspan="6" class="text-muted">No items found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>
+
+<!--View modal-->
+<div
+  class="modal fade"
+  id="ViewModal"
+  tabindex="-1"
+  aria-labelledby="ViewModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content border-0 shadow-sm rounded-3">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ViewModalLabel">Item Details</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="modal-body p-3">
+        <div class="table-responsive">
+          <table class="table1 table-bordered align-middle file-center mb-0">
+            <thead class="table-success">
+              <tr>
+                <th>Item Name</th>
+                <th>Item Code</th>
+                <th>Unit</th>
+                <th>Purchase Price</th>
+                <th>Selling Price</th>
+                <th>Tax</th>
+                <th>Qunatity</th>
+                <th>Description</th>
+                <th>Brand Name</th>
+                <th>Discount</th>
+                <th>Stock Alert</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="selectedItems">
+              <tr>
+                <td>{{ selectedItems.item_name }}</td>
+                <td>{{ selectedItems.item_code }}</td>
+                <td>{{ selectedItems.unit }}</td>
+                <td>{{ selectedItems.purchase_price }}</td>
+                <td>{{ selectedItems.selling_price }}</td>
+                <td>{{ selectedItems.tax_rate }}</td>
+                <td>{{ selectedItems.stock_quantity }}</td>
+                <td>{{ selectedItems.description }}</td>
+                <td>{{ selectedItems.brand_name }}</td>
+                <td>{{ selectedItems.discount }}</td>
+                <td>{{ selectedItems.min_stock_alert }}</td>
+                <td>
+                  <span
+                    class="badge file-dark"
+                    [ngClass]="{
+                      'bg-success': selectedItems.status === 'Active',
+                      'bg-warning': selectedItems.status === 'Pending',
+                      'bg-danger': selectedItems.status === 'Inactive'
+                    }"
+                  >
+                    {{ selectedItems.status }}</span
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer py-2">
+        <button
+          type="button"
+          class="btn btn-secondary btn-sm"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Edit Modal-->
+
+<div
+  class="modal fade"
+  id="myEditModal"
+  tabindex="-1"
+  aria-labelledby="myEditModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myEditModalLabel">Item Details</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="card shadow-sm p-3 mb-4 border-0 small-card">
+          <form [formGroup]="editForm">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <label class="form-label">Item Name</label>
+                  <input
+                    type="text"
+                    class="form-control p-2"
+                    formControlName="item_name"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Brand Name</label>
+                  <input
+                    type="text"
+                    class="form-control p-2"
+                    formControlName="brand_name"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Price</label>
+                  <input
+                    type="text"
+                    class="form-control p-2"
+                    formControlName="selling_price"
+                  />
+                </div>
+
+                <div>
+                  <label class="form-label"> Status</label>
+                  <input
+                    type="text"
+                    class="form-control p-2"
+                    formControlName="status"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Available</label>
+                  <input
+                    type="text"
+                    class="form-control p-2"
+                    formControlName="stock_quantity"
+                  />
+                </div>
+
+                <div class="text-center">
+                  <button
+                    class="btn btn-success btn w-50 p-2 mt-4"
+                    (click)="updateInvoice()"
+                  >
+                    Update
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

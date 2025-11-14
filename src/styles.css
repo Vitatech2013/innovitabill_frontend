@@ -1,1 +1,59 @@
-/* You can add global styles to this file, and also import other style files */
+.toast-top-center {
+  top: 20px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  bottom: auto !important;
+  right: auto !important;
+  position: fixed !important;
+  z-index: 99999 !important;
+}
+
+.toast {
+  border-radius: 10px !important;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 18px !important;
+  font-weight: 500;
+  padding: 20px 30px !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  opacity: 0.97;
+  min-width: 450px !important;
+  max-width: 650px !important;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.toast-success {
+  background-color: #198754 !important;
+  color: #fff !important;
+}
+
+.toast-error {
+  background-color: #dc3545 !important;
+  color: #fff !important;
+}
+
+.toast-warning {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+}
+
+.toast-info {
+  background-color: #0dcaf0 !important;
+  color: #fff !important;
+}
+
+.toast {
+  transform: translateY(-10px);
+  animation: toast-slide 0.4s ease forwards;
+}
+
+@keyframes toast-slide {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
