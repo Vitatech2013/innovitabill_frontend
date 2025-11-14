@@ -41,7 +41,7 @@ export class ItemListComponent implements OnInit {
     private fb: FormBuilder,
     private service: BillingService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit(): void {

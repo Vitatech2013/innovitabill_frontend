@@ -121,7 +121,7 @@ export class ItemsComponent implements OnInit {
       selling_price: Number(f.selling_price),
       tax_rate: f.tax_rate ? Number(f.tax_rate) : 0,
       stock_quantity: f.stock_quantity ? Number(f.stock_quantity) : 0,
-      discount: f.discount ? Number(f.discount) : 0, 
+      discount: f.discount ? Number(f.discount) : 0,
       min_stock_alert: f.min_stock_alert ? Number(f.min_stock_alert) : 0,
       sub_category_id: f.sub_category_id || null,
       description: f.description || '',

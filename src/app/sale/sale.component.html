@@ -1,9 +1,17 @@
 <div class="row">
   <div class="col-md-8">
+    
+    <input
+      type="text"
+      class="form-control mb-3 justify-content-between"
+      placeholder="Search by name, brand, or status..."
+      [(ngModel)]="searchTerm"
+      style="max-width: 300px"
+    />
     <div class="card-container">
       <div
         class="item-card"
-        *ngFor="let it of items"
+        *ngFor="let it of filteredItems()"
         [ngClass]="{
           'low-stock': it.stock_quantity <= 5,
           'medium-stock': it.stock_quantity > 5 && it.stock_quantity <= 15,

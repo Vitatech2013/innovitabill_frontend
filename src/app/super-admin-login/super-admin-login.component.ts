@@ -40,29 +40,48 @@ export class SuperAdminLoginComponent implements OnInit {
       superadmin_password: ['', Validators.required],
     });
   }
+
   SuperAdminLogin() {
     if (this.superAdminForm.invalid) {
-      this.showToast('please enter valid credentials', 'danger');
+      this.showToast('Please enter valid credentials', 'danger');
       this.superAdminForm.markAllAsTouched();
       return;
     }
+
     this.api.SuperAdminLogin(this.superAdminForm.value).subscribe({
-      next:(res:any)=>{
-        console.log(res,"Super Admin Login Sucess");
-        const superadmin=localStorage.setItem("sa",JSON.stringify(res.data),)
-       const sa_token= localStorage.setItem("sa_token",JSON.stringify(res.token),)
-        console.log(superadmin,sa_token )
-        this.showToast("Super Admin Login Success","success");
-        this.router.navigate(['/SuperAdminView'],{
-          state:{toast:"Super Admin login success"}
+      next: (res: any) => {
+        console.log(res, 'Super Admin Login Success');
+
+        // Save super admin data and token
+        localStorage.setItem('sa', JSON.stringify(res.data));
+        localStorage.setItem('sa_token', res.token);
+
+        this.showToast('Super Admin Login Success', 'success');
+
+        this.router.navigate(['/SuperAdminView'], {
+          state: { toast: 'Super Admin login success' },
         });
       },
+
       error: (err: any) => {
-        console.error('admin login failed', err);
-        this.showToast('Invalid Credentials', 'danger');
+        console.error('Super admin login failed', err);
+
+        if (err.status === 403) {
+          this.showToast(
+            'Your account is inactive. Please contact system admin.',
+            'danger'
+          );
+        } else if (err.status === 401) {
+          this.showToast('Invalid email or password.', 'danger');
+        } else if (err.status === 500) {
+          this.showToast('Server error! Please try again later.', 'danger');
+        } else {
+          this.showToast('Login failed. Please try again.', 'danger');
+        }
       },
     });
   }
+
   showToast(message: string, type: string) {
     this.toastMessage = message;
     this.toastType = type;
