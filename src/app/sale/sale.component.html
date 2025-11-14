@@ -1,0 +1,105 @@
+<div class="row">
+  <div class="col-md-8">
+    <div class="card-container">
+      <div
+        class="item-card"
+        *ngFor="let it of items"
+        [ngClass]="{
+          'low-stock': it.stock_quantity <= 5,
+          'medium-stock': it.stock_quantity > 5 && it.stock_quantity <= 15,
+          'high-stock': it.stock_quantity > 15
+        }"
+      >
+        <div class="card-header">
+          <h3>{{ it.item_name }}</h3>
+          <span class="brand">{{ it.brand_name }}</span>
+        </div>
+
+        <div class="card-body">
+          <p><strong>Price:</strong> ₹{{ it.selling_price }}</p>
+          <p><strong>Discount:</strong> ₹{{ it.discount || 0 }}</p>
+          <p><strong>Tax:</strong> {{ it.tax_rate }}%</p>
+          <p>
+            <strong>Available:</strong> {{ it.stock_quantity }} {{ it.unit }}
+          </p>
+
+          <div class="quantity-control">
+            <button (click)="addToCart(it)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="selected-items">
+      <h4><i class="bi bi-cart4"></i> Cart</h4>
+
+      <div *ngIf="cartItems.length === 0" class="empty">No items added yet</div>
+
+      <div class="selected-card" *ngFor="let item of cartItems">
+        <div class="selected-info">
+          <strong>{{ item.item_name }}</strong>
+          <p>Price: ₹{{ item.selling_price }}</p>
+          <p>Discount: ₹{{ item.discount || 0 }}</p>
+          <p>Qty: {{ item.cartQty }}</p>
+          <p><strong>Total:</strong> ₹{{ getItemTotal(item) }}</p>
+          <div class="cart-buttons">
+            <button class="remove" (click)="removeFromCart(item)">−</button>
+            <button class="add" (click)="addToCart(item)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="cartItems.length > 0" class="total-summary">
+        Grand Total: ₹{{ getTotalBill() }}
+        <br />
+        <button class="generate-btn" (click)="toggleCustomerForm()">
+          Generate Bill
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" *ngIf="showCustomerForm">
+  <div class="modal-content">
+    <h3>Customer Details</h3>
+    <form [formGroup]="customerForm">
+      <div class="row">
+        <div class="col">
+          <label>Name</label>
+          <input formControlName="name" type="text" />
+        </div>
+        <div class="col">
+          <label>Phone</label>
+          <input formControlName="phone" type="text" />
+        </div>
+        <div class="col">
+          <label>Email</label>
+          <input formControlName="email" type="email" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label>Address</label>
+          <input formControlName="address" type="text" />
+        </div>
+        <div class="col">
+          <label>GST Number</label>
+          <input formControlName="gst_number" type="text" />
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-success" (click)="generateBill()">
+          Generate
+        </button>
+        <button type="button" class="btn-cancel" (click)="toggleCustomerForm()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

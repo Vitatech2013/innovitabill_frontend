@@ -16,37 +16,63 @@ import { CategoriesComponent } from './categories/categories.component';
 import { UnitsComponent } from './units/units.component';
 import { AddBusinessComponent } from './add-business/add-business.component';
 import { SuperadminProfileComponent } from './superadmin-profile/superadmin-profile.component';
-
+import { UserLoginComponent } from './user-login/user-login.component';
+import { UserViewComponent } from './user-view/user-view.component';
+import { ItemListComponent } from './item-list/item-list.component';
+import { ItemsComponent } from './items/items.component';
+import { SalesComponent } from './sales-list/sales.component';
+import { SaleComponent } from './sale/sale.component';
 
 export const routes: Routes = [
-    {path:'SuperAdminLogin',component:SuperAdminLoginComponent},
-    {path:'SuperAdminView',component:SuperadminViewComponent,children:[
-        {path:'',component:BusinessListComponent},
-        {path:'view-business',component:BusinessListComponent,},
-        {path:"add-business", component:AddBusinessComponent},
-       {path: 'superadmin_profile', component:SuperadminProfileComponent},
-    ]},
-    
-    {path: 'businesslogin',component:BusinessLoginComponent},
-    {path: 'businessRegister',component:BusinessRegisterComponent},
-    {path: 'business-Dashboard',component:BusinessDashboardComponent, children:[
-        
-        {path:'',component:UsersComponent},
-        {path: 'users', component:UsersComponent},
-        {path:'categories',component:CategoriesComponent},
-        {path:'roles',component:RolesComponent},
-        {path:'units',component:UnitsComponent},
-        
-    ]},
-    
-    {path:'', component:HomeComponent},
-    {path:'home',component:HomeComponent},
-    {path:'cashier_login', component:CashierLoginComponent}
-    
-]
-   
+  { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
+  {
+    path: 'SuperAdminView',
+    component: SuperadminViewComponent,
+    children: [
+      { path: '', component: BusinessListComponent },
+      { path: 'view-business', component: BusinessListComponent },
+      { path: 'add-business', component: AddBusinessComponent },
+      { path: 'superadmin_profile', component: SuperadminProfileComponent },
+    ],
+  },
 
+  { path: 'businesslogin', component: BusinessLoginComponent },
+  { path: 'businessRegister', component: BusinessRegisterComponent },
+  {
+    path: 'business-Dashboard',
+    component: BusinessDashboardComponent,
+    children: [
+      { path: '', component: UsersComponent },
+      { path: 'users', component: UsersComponent },
+      { path: 'categories', component: CategoriesComponent },
+      { path: 'roles', component: RolesComponent },
+      { path: 'units', component: UnitsComponent },
+    ],
+  },
 
+  { path: '', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
+  { path: 'cashier_login', component: CashierLoginComponent },
+  { path: 'userlogin', component: UserLoginComponent },
+  {
+    path: 'userview',
+    component: UserViewComponent,
+    children: [
+      { path: '', component: ItemListComponent },
+      {
+        path: 'itemlist',
+        component: ItemListComponent,
+        children: [{ path: 'items', component: ItemsComponent }],
+      },
 
-
-
+      {
+        path: 'saleslist',
+        component: SalesComponent,
+      },
+      {
+        path: 'sale',
+        component: SaleComponent,
+      },
+    ],
+  },
+];

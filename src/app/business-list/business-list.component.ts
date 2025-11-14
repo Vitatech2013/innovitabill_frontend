@@ -134,7 +134,7 @@ export class BusinessListComponent implements OnInit {
     modal.show();
   }
 
-  editBusiness(b: any) {
+  editBusinessModal(b: any) {
     console.log(b, 'edit data');
     this.s_id = b._id;
     console.log(this.s_id, 'Selected business ID');
@@ -153,7 +153,7 @@ export class BusinessListComponent implements OnInit {
       aadhar_pdf: b.aadhar_pdf,
       certificate_pdf: b.certificate_pdf,
     });
-    console.log(this.BusinessForm.value);
+    console.log(this.BusinessForm.valid);
     const modal = new bootstrap.Modal(
       document.getElementById('editBusinessModal')
     );
