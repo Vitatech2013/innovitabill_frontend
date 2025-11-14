@@ -1,4 +1,6 @@
-<div class="card shadow-sm p-3 mb-4 border-0 small-card">
+<div class="container-fluid">
+  
+  <div class="card shadow-sm p-3 mb-4 border-0 small-card">
   <h5 class="text-success fw-bold mb-3">
     <i class="bi bi-building me-2"></i>
     {{ selectedBusiness ? 'Update Business' : 'Add Business' }}
@@ -11,7 +13,7 @@
   >
     <div class="row g-3">
     <div class="col-md-4">
-      <label class="form-label fw-semibold">Business Name</label>
+      <label class="form-label fw-semibold">Business Name<span class="text-danger">*</span></label>
       <input type="text" class="form-control" formControlName="business_name" placeholder="Enter business name" />
       <small *ngIf="isInvalid('business_name')" class="text-danger">
         Business Name is required and must be at least 3 letters
@@ -20,8 +22,8 @@
 
     
     <div class="col-md-4">
-      <label class="form-label fw-semibold">Owner Name</label>
-      <input type="text" class="form-control" formControlName="owner_name" placeholder="Enter owner name" />
+      <label class="form-label fw-semibold">Owner Name<span class="text-danger">*</span></label>
+      <input type="text" class="form-control" formControlName="owner_name" placeholder="Enter owner name" required />
       <small *ngIf="isInvalid('owner_name')" class="text-danger">
         Owner Name is required and must be at least 3 letters
       </small>
@@ -29,7 +31,7 @@
 
   
     <div class="col-md-4">
-      <label class="form-label fw-semibold">Email</label>
+      <label class="form-label fw-semibold">Email<span class="text-danger">*</span></label>
       <input type="email" class="form-control" formControlName="email" placeholder="Enter email" />
       <small *ngIf="isInvalid('email')" class="text-danger">
         Enter a valid email
@@ -38,7 +40,7 @@
 
    
     <div class="col-md-4">
-      <label class="form-label fw-semibold">Phone Number</label>
+      <label class="form-label fw-semibold">Phone Number<span class="text-danger">*</span></label>
       <input type="text" class="form-control" formControlName="phone_number" placeholder="Enter phone number" />
       <small *ngIf="isInvalid('phone_number')" class="text-danger">
         Phone number is required
@@ -46,26 +48,23 @@
     </div>
 
    
-    <div class="col-md-4">
-      <label class="form-label fw-semibold">Business Type</label>
-      <input type="text" class="form-control" formControlName="business_type" placeholder="e.g. Retail, IT Services" />
-      <small *ngIf="isInvalid('business_type')" class="text-danger">
-        Business Type is required
-      </small>
-    </div>
+<div class="col-md-4">
+  <label class="form-label fw-semibold">Business Type<span class="text-danger">*</span></label>
+<select class="form-select" formControlName="business_type">
+  <option value="">Select Business Type</option>
+  <option *ngFor="let type of businessTypes" [value]="type.type_name">
+    {{ type.type_name }}
+  </option>
+</select>
 
-    
-    <div class="col-md-4">
-      <label class="form-label fw-semibold">Business Address</label>
-      <input type="text" class="form-control" formControlName="business_address" placeholder="Enter address" />
-      <small *ngIf="isInvalid('business_address')" class="text-danger">
-        Address is required
-      </small>
-    </div>
+  <small *ngIf="isInvalid('business_type')" class="text-danger">
+    Business Type is required
+  </small>
+</div>
 
    
     <div class="col-md-4">
-      <label class="form-label fw-semibold">Registration Number</label>
+      <label class="form-label fw-semibold">Registration Number<span class="text-danger">*</span></label>
       <input type="text" class="form-control" formControlName="registration_number" placeholder="Enter registration number" />
       <small *ngIf="isInvalid('registration_number')" class="text-danger">
         Registration Number is required
@@ -73,7 +72,7 @@
     </div>
 
     <div class="col-md-4">
-      <label class="form-label fw-semibold">GST Number</label>
+      <label class="form-label fw-semibold">GST Number<span class="text-danger">*</span></label>
       <input type="text" class="form-control" formControlName="gst_number" placeholder="Enter GST number" />
       <small *ngIf="isInvalid('gst_number')" class="text-danger">
         GST Number is required
@@ -82,12 +81,38 @@
 
     
     <div class="col-md-4">
-      <label class="form-label fw-semibold">Password</label>
+      <label class="form-label fw-semibold">Password<span class="text-danger">*</span></label>
       <input type="text" class="form-control" formControlName="password" placeholder="Enter password" />
       <small *ngIf="isInvalid('password')" class="text-danger">
         Password is required
       </small>
     </div>
+   <div class="col-12 mt-3">
+  <h6 class="text-primary fw-semibold border-bottom pb-2">Address</h6>
+</div>
+
+<div formGroupName="address" class="row">
+  <div class="col-md-4 mb-3" *ngFor="let field of addressFields">
+    <label class="form-label">{{ field.label }}<span class="text-danger">*</span></label>
+    <input
+      type="text"
+      class="form-control"
+      [formControlName]="field.name"
+      placeholder="Enter {{ field.label }}"
+      
+    />
+    <div
+      class="text-danger small mt-1"
+      *ngIf="
+        addBusinessForm.get('address.' + field.name)?.invalid &&
+        addBusinessForm.get('address.' + field.name)?.touched
+      "
+    >
+      {{ field.label }} is required.
+    </div>
+  </div>
+</div>
+
 
 
       <div class="col-12 mt-3">
@@ -97,7 +122,7 @@
       </div>
 
       <div class="col-md-6">
-        <label class="form-label fw-semibold">Logo</label>
+        <label class="form-label fw-semibold">Logo<span class="text-danger">*</span></label>
         <input
           type="file"
           class="form-control"
@@ -114,7 +139,7 @@
       </div>
 
       <div class="col-md-6">
-        <label class="form-label fw-semibold">PAN</label>
+        <label class="form-label fw-semibold">PAN<span class="text-danger">*</span></label>
         <input
           type="file"
           class="form-control"
@@ -124,7 +149,7 @@
       </div>
 
       <div class="col-md-6">
-        <label class="form-label fw-semibold">Aadhar</label>
+        <label class="form-label fw-semibold">Aadhar<span class="text-danger">*</span></label>
         <input
           type="file"
           class="form-control"
@@ -134,7 +159,7 @@
       </div>
 
       <div class="col-md-6">
-        <label class="form-label fw-semibold">Incorporation Certificate</label>
+        <label class="form-label fw-semibold">Incorporation Certificate<span class="text-danger">*</span></label>
         <input
           type="file"
           class="form-control"
@@ -156,11 +181,13 @@
       <button
         type="submit"
         class="btn btn-success px-4"
-        [disabled]="addBusinessForm.invalid"
+        
       >
         <i class="bi bi-save me-1"></i>
         {{ selectedBusiness ? 'Update' : 'Save' }}
       </button>
     </div>
   </form>
+</div>
+
 </div>

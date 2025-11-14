@@ -23,6 +23,24 @@ export class AddBusinessComponent implements OnInit {
   selectedFiles: { [key: string]: File } = {};
   superadmin_id: string = '';
 selectedBusiness: any;
+businessTypes: any[] = [
+    'Restaurant',
+  'Retail',
+  'E-commerce',
+  'Education',
+  'Healthcare',
+  'Technology',
+  'Real Estate',
+  'Manufacturing'
+];
+ addressFields = [
+    { label: 'House No', name: 'house_No' },
+    { label: 'Town Name', name: 'town_Name' },
+    { label: 'Mandal Name', name: 'mandal_Name' },
+    { label: 'District Name', name: 'district_Name' },
+    { label: 'State', name: 'state' },
+    { label: 'Pincode', name: 'pincode' },
+  ];
 
   constructor(
     private api: BillingService,
@@ -35,7 +53,8 @@ selectedBusiness: any;
     const saData = JSON.parse(localStorage.getItem('sa') || '{}');
     this.superadmin_id = saData._id;
     console.log('Superadmin ID:', this.superadmin_id);
-
+  
+  
 
     
     if (!this.superadmin_id) {
@@ -49,16 +68,38 @@ selectedBusiness: any;
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required, Validators.minLength(10)]],
       business_type: ['', [Validators.required, Validators.minLength(3)]],
-      business_address: ['', [Validators.required, Validators.minLength(3)]],
       registration_number: ['', [Validators.required, Validators.minLength(3)]],
       gst_number: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(3)]],
+       address: this.fb.group({
+        house_No: ['', [Validators.required, Validators.minLength(3)]],
+        town_Name: ['', [Validators.required, Validators.minLength(3)]],
+        mandal_Name: ['', [Validators.required, Validators.minLength(3)]],
+        district_Name: ['', [Validators.required, Validators.minLength(3)]],
+        state: ['', [Validators.required, Validators.minLength(3)]],
+        pincode: ['', [Validators.required, Validators.minLength(3)]],
+      }),
       logo_image: [''],
       pan_pdf: [''],
       aadhar_pdf: [''],
       certificate_pdf: [''],
     });
+    this.loadBusinessTypes();
   }
+loadBusinessTypes() {
+    this.api.getBusinessTypes().subscribe({
+      next: (res: any) => {
+        this.businessTypes = res.data || [];
+        console.log('Business Types:', this.businessTypes);
+      },
+      error: (err: any) => console.error('Error fetching business types:', err),
+    });
+    console.log('Business Types:', this.businessTypes);
+
+  }
+
+
+
   isInvalid(controlName: string): boolean {
     const control = this.addBusinessForm.get(controlName);
     return control ? control.touched && control.invalid : false;
@@ -77,52 +118,61 @@ selectedBusiness: any;
     this.selectedFiles = {};
   }
 
-  saveBusiness() {
-    if (!this.superadmin_id) {
-      console.error('Superadmin ID missing. Please login again.');
-      return;
-    }
+ saveBusiness() {
+  if (!this.superadmin_id) {
+    console.error('Superadmin ID missing. Please login again.');
+    return;
+  }
 
-    if (this.addBusinessForm.invalid) {
-      alert('Please fill all required fields correctly.');
-      return;
-    }
+  if (this.addBusinessForm.invalid) {
+    alert('Please fill all required fields correctly.');
+    return;
+  }
 
-    
-    const formData = new FormData();
+  const formData = new FormData();
 
   
-    Object.keys(this.addBusinessForm.value).forEach((key) => {
-      if (this.addBusinessForm.get(key)?.value) {
-        formData.append(key, this.addBusinessForm.get(key)?.value);
-      }
-    });
+  Object.keys(this.addBusinessForm.controls).forEach((key) => {
+    const control = this.addBusinessForm.get(key);
 
-    
-    formData.append('superadmin_id', this.superadmin_id)
-    
-    for (const key in this.selectedFiles) {
+    if (key === 'address' && control instanceof FormGroup) {
+      
+      const addressValue = control.value;
+      formData.append('address', JSON.stringify(addressValue));
+    } else if (control && control.value) {
+      formData.append(key, control.value);
+    }
+  });
+
+
+  formData.append('superadmin_id', this.superadmin_id);
+
+ 
+  for (const key in this.selectedFiles) {
+    if (this.selectedFiles[key]) {
       formData.append(key, this.selectedFiles[key]);
     }
-
-    console.log('Sending formData:', formData);
-   
-    this.api.addBusiness(formData).subscribe({
-      next: (res: any) => {
-        console.log('Business added successfully:', res);
-         localStorage.setItem('superadmin', JSON.stringify(res));
-
-   
-    this.router.navigate(['SuperAdminView']);
-  
-        alert('Business registered successfully!');
-        this.addBusinessForm.reset();
-        this.selectedFiles = {};
-      },
-      error: (err) => {
-        console.error('Add failed:', err);
-        alert('Failed to add business. Please check the console.');
-      },
-    });
   }
+
+ 
+  for (const [key, value] of (formData as any).entries()) {
+  console.log(`${key}:`, value);
+}
+
+ 
+  this.api.addBusiness(formData).subscribe({
+    next: (res: any) => {
+      console.log('Business added successfully:', res);
+      alert('Business registered successfully!');
+      this.addBusinessForm.reset();
+      this.selectedFiles = {};
+      this.router.navigate(['SuperAdminView']);
+    },
+    error: (err) => {
+      console.error('Add failed:', err);
+      alert('Failed to add business. Please check the console.');
+    },
+  });
+}
+
 }
