@@ -27,6 +27,7 @@ export class SaleComponent implements OnInit {
   showCustomerForm = false;
   customerForm!: FormGroup;
   invoice_number!: string;
+  searchTerm: any;
 
   constructor(
     private fb: FormBuilder,
@@ -172,5 +173,14 @@ export class SaleComponent implements OnInit {
         console.error(err);
       },
     });
+  }
+    filteredItems() {
+    if (!this.searchTerm) return this.items;
+    const term = this.searchTerm.toLowerCase();
+    return this.items.filter((it) =>
+      Object.values(it).some((val) =>
+        val?.toString().toLowerCase().includes(term)
+      )
+    );
   }
 }

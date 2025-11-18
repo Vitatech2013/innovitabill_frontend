@@ -62,7 +62,6 @@
         </small>
       </div>
 
-      
       <div class="col-md-4">
         <label class="form-label fw-semibold">Purchase price</label>
         <input
@@ -180,7 +179,6 @@
           class="form-select"
           formControlName="category_id"
           (change)="onCategoryChange($event)"
-
         >
           <option value="">Select Categories</option>
           <option *ngFor="let cat of categories" [value]="cat._id">

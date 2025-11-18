@@ -17,7 +17,6 @@ declare var bootstrap: any;
   styleUrls: ['./users.component.css'],
 })
 export class UsersComponent implements OnInit {
-
   users: any[] = [];
   roles: any[] = [];
   usersForm!: FormGroup;
@@ -26,8 +25,8 @@ export class UsersComponent implements OnInit {
   logoFile: File | null = null;
   business_id: string = '';
   openModel = false;
-toastType: any;
-toastMessage: any;
+  toastType: any;
+  toastMessage: any;
 
   constructor(
     private service: BusinessService,
@@ -70,16 +69,14 @@ toastMessage: any;
       next: (res: any) => {
         this.users = Array.isArray(res) ? res : res.data || [];
         console.log('Users list:', this.users);
-        
       },
       error: (err) => {
         console.error('Get users error:', err);
-        this.showToast('Failed to load units','error');
+        this.showToast('Failed to load units', 'error');
       },
-      
     });
   }
- showToast(message: string, type: 'success' | 'error' | 'warning') {
+  showToast(message: string, type: 'success' | 'error' | 'warning') {
     this.toastMessage = message;
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 3000);
@@ -95,7 +92,6 @@ toastMessage: any;
     this.selectedUser = null;
     this.logoFile = null;
   }
-  
 
   edit(user: any) {
     this.selectedUser = user._id;
@@ -109,16 +105,13 @@ toastMessage: any;
       password: user.password || '',
       role_id: user.role_id?._id || user.role_id || '',
     });
-        (document.getElementById('UserModal') as any)?.classList.add('show');
-
+    (document.getElementById('UserModal') as any)?.classList.add('show');
   }
-
-
 
   createOrUpdateUser() {
     if (this.usersForm.invalid) {
       this.usersForm.markAllAsTouched();
-      this.showToast('Please fill all required fields correctly','warning');
+      this.showToast('Please fill all required fields correctly', 'warning');
       return;
     }
 
@@ -142,12 +135,13 @@ toastMessage: any;
           this.showToast('User updated successfully', 'success');
           this.getUsers();
           this.resetForm();
-          const modal = bootstrap.Modal.getInstance(document.getElementById('userModal'));
-        modal.hide();
-          
+          const modal = bootstrap.Modal.getInstance(
+            document.getElementById('userModal')
+          );
+          modal.hide();
         },
         error: (err) => {
-            console.error('Update error', err)
+          console.error('Update error', err);
           this.showToast('Failed to update User', 'error');
         },
       });
@@ -155,12 +149,13 @@ toastMessage: any;
       // Create
       this.service.createUser(formData).subscribe({
         next: () => {
-          this.showToast('User added successfully','success');
+          this.showToast('User added successfully', 'success');
           this.getUsers();
           this.resetForm();
-         const modal = bootstrap.Modal.getInstance(document.getElementById('userModal'));
-        modal.hide();
-        
+          const modal = bootstrap.Modal.getInstance(
+            document.getElementById('userModal')
+          );
+          modal.hide();
         },
         error: (err) => {
           console.error('Create error', err);
@@ -179,7 +174,7 @@ toastMessage: any;
   //     error: (err) => console.error('Delete error', err),
   //   });
   // }
-openDeleteModal(user: any) {
+  openDeleteModal(user: any) {
     this.selectedUser = user;
     const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
     modal.show();
@@ -188,18 +183,18 @@ openDeleteModal(user: any) {
     if (!this.selectedUser) return;
     this.service.deleteUser(this.selectedUser._id).subscribe({
       next: () => {
-                this.showToast('User soft deleted successfully', 'success');
+        this.showToast('User soft deleted successfully', 'success');
 
         this.getUsers();
-        const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+        const modal = bootstrap.Modal.getInstance(
+          document.getElementById('deleteModal')
+        );
         modal.hide();
       },
-      error: (err) =>{ 
+      error: (err) => {
         console.error('Delete error', err);
-         this.showToast('Failed to delete unit', 'error');
+        this.showToast('Failed to delete unit', 'error');
       },
     });
   }
 }
-
-

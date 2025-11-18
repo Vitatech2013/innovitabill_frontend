@@ -16,7 +16,7 @@ declare var bootstrap: any;
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './business-list.component.html',
-   styleUrls: ['./business-list.component.css'],
+  styleUrls: ['./business-list.component.css'],
 })
 export class BusinessListComponent implements OnInit {
   business: any[] = [];
@@ -27,7 +27,7 @@ export class BusinessListComponent implements OnInit {
   s_id: any;
   selectedImage: string | undefined;
   selectedFiles: Record<string, File> = {};
-  logofile: File | null= null;
+  logofile: File | null = null;
 
   businessTypes: any[] = [];
   statusList: any;
@@ -35,12 +35,12 @@ export class BusinessListComponent implements OnInit {
   constructor(private fb: FormBuilder, private api: BillingService) {}
 
   ngOnInit(): void {
-      const businesslist=localStorage.getItem('satoken');
-      if(businesslist){
-        const bid= JSON.parse(businesslist);
-        this. business= bid._id|| '';
-        console.log('businessID:', this.business);
-      }
+    const businesslist = localStorage.getItem('satoken');
+    if (businesslist) {
+      const bid = JSON.parse(businesslist);
+      this.business = bid._id || '';
+      console.log('businessID:', this.business);
+    }
 
     this.BusinessForm = this.fb.group({
       business_name: ['', [Validators.required, Validators.minLength(3)]],
@@ -48,21 +48,21 @@ export class BusinessListComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required, Validators.minLength(10)]],
       business_type: ['', [Validators.required, Validators.minLength(3)]],
-      business_address: ['', [Validators.required, Validators.minLength(3)]],
+      address: ['', [Validators.required, Validators.minLength(3)]],
       registration_number: ['', [Validators.required, Validators.minLength(3)]],
       gst_number: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(3)]],
-      status: ['', [Validators.required,]],
+      status: ['', [Validators.required]],
       logo_image: [''],
       pan_pdf: [''],
       aadhar_pdf: [''],
       certificate_pdf: [''],
     });
     this.loadBusinessTypes();
+    
     this.loadBusiness();
   }
 
- 
   isInvalid(controlName: string): boolean {
     const control = this.BusinessForm.get(controlName);
     return control ? control.touched && control.invalid : false;
@@ -79,26 +79,26 @@ export class BusinessListComponent implements OnInit {
   }
 
   openImageModal(imageUrl: string) {
-  this.selectedImage = imageUrl || 'assets/default-business.jpg';
-  const modal = new bootstrap.Modal(
-    document.getElementById('imagePreviewModal')
-  );
-  modal.show();
-}
+    this.selectedImage = imageUrl || 'assets/default-business.jpg';
+    const modal = new bootstrap.Modal(
+      document.getElementById('imagePreviewModal')
+    );
+    modal.show();
+  }
 
-  
   openViewModal(b: any) {
     this.selectedBusiness = b;
     const modal = new bootstrap.Modal(document.getElementById('viewModal'));
     modal.show();
   }
 
- 
   editBusiness(b: any) {
     console.log('Edit data:', b);
     this.s_id = b._id;
+    const fullAddress =
+      `${b.address.house_No}, ${b.address.town_Name}, ${b.address.mandal_Name}, ` +
+      `${b.address.district_Name}, ${b.address.state} - ${b.address.pincode}`;
 
-    
     this.BusinessForm.patchValue({
       business_name: b.business_name,
       owner_name: b.owner_name,
@@ -106,26 +106,24 @@ export class BusinessListComponent implements OnInit {
       phone_number: b.phone_number,
       password: b.password,
       business_type: b.business_type,
-      business_address: b.business_address,
+      address: fullAddress,
       registration_number: b.registration_number,
       gst_number: b.gst_number,
-      status:b.status,
+      status: b.status,
     });
 
-    if(this.logofile){
-       this.BusinessForm.get('logo_image')?.reset();
-    this.BusinessForm.get('pan_pdf')?.reset();
-    this.BusinessForm.get('aadhar_pdf')?.reset();
-    this.BusinessForm.get('certificate_pdf')?.reset();
-
+    if (this.logofile) {
+      this.BusinessForm.get('logo_image')?.reset();
+      this.BusinessForm.get('pan_pdf')?.reset();
+      this.BusinessForm.get('aadhar_pdf')?.reset();
+      this.BusinessForm.get('certificate_pdf')?.reset();
     }
-   
+
     const modal = new bootstrap.Modal(
       document.getElementById('editBusinessModal')
     );
     modal.show();
   }
-
 
   onFileSelect(event: any, controlName: string) {
     const file = event.target.files[0];
@@ -135,7 +133,7 @@ export class BusinessListComponent implements OnInit {
     }
   }
 
- loadBusinessTypes() {
+  loadBusinessTypes() {
     this.api.getBusinessTypes().subscribe({
       next: (res: any) => {
         this.businessTypes = res.data || [];
@@ -144,39 +142,28 @@ export class BusinessListComponent implements OnInit {
       error: (err: any) => console.error('Error fetching business types:', err),
     });
     console.log('Business Types:', this.businessTypes);
-
   }
 
-  loadStatuses() {
-    this.api.getStatuses().subscribe({
-      next: (res: any) => {
-        this.statusList = res.data || [];
-        console.log('Statuses:', this.statusList);
-      },
-      error: (err: any) => console.error('Error fetching statuses:', err),
-    });
-  }
+
   getImageUrl(path: string): string {
     if (!path) return 'assets/default-business.jpg';
     const cleanPath = path.replace(/\\/g, '/');
     return cleanPath.includes('business_images/')
-      ? `http://localhost:3003/${cleanPath}`
-      : `http://localhost:3003/business_images/${cleanPath}`;
+      ? `http://localhost:3009/${cleanPath}`
+      : `http://localhost:3009/business_images/${cleanPath}`;
   }
 
   getFileUrl(path: string): string {
     if (!path) return '#';
     const cleanPath = path.replace(/\\/g, '/');
     return cleanPath.includes('business_images/')
-      ? `http://localhost:3003/${cleanPath}`
-      : `http://localhost:3003/business_images/${cleanPath}`;
+      ? `http://localhost:3009/${cleanPath}`
+      : `http://localhost:3009/business_images/${cleanPath}`;
   }
-
 
   updateBusiness() {
     const formData = new FormData();
 
-  
     Object.keys(this.BusinessForm.controls).forEach((key) => {
       if (
         !['logo_image', 'pan_pdf', 'aadhar_pdf', 'certificate_pdf'].includes(
@@ -187,7 +174,6 @@ export class BusinessListComponent implements OnInit {
       }
     });
 
-  
     for (const key of Object.keys(this.selectedFiles)) {
       formData.append(key, this.selectedFiles[key]);
     }
@@ -206,7 +192,6 @@ export class BusinessListComponent implements OnInit {
     });
   }
 
- 
   openDeleteModal(id: string) {
     this.deleteId = id;
     const modalEl = document.getElementById('deleteBusinessModal');
@@ -229,7 +214,6 @@ export class BusinessListComponent implements OnInit {
     });
   }
 
- 
   closeModal(id: string) {
     const modalEl = document.getElementById(id);
     if (modalEl) {
