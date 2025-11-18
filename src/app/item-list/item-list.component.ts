@@ -36,6 +36,12 @@ export class ItemListComponent implements OnInit {
   searchTerm: string = '';
   eid: any;
   selectedItems: any;
+  business_id: string = '';
+  allSubCategories: any[] = [];
+  subCategories: any[] = [];
+
+  users: any;
+  categories: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -45,8 +51,17 @@ export class ItemListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const bid = JSON.parse(storedUser);
+      this.business_id = bid._id || '';
+      console.log('BusinessID:', this.business_id);
+    }
     this.initForm();
     this.loadItems();
+    this.categoriesGet();
+    this.subCategoriesGet();
+    this.usersGet();
   }
 
   private initForm() {
@@ -60,11 +75,21 @@ export class ItemListComponent implements OnInit {
       description: ['', [Validators.required]],
       discount: ['', [Validators.required]],
       status: ['', Validators.required],
+      item_code: ['', Validators.required],
+      purchase_price: ['', Validators.required],
+      category_id: ['', Validators.required],
+      sub_category_id: ['', Validators.required],
+      user_id: ['', Validators.required],
+      min_stock_alert: ['', Validators.required],
     });
+  }
+  isInvalid(controlName: string): boolean {
+    const control = this.editForm.get(controlName);
+    return control ? control.touched && control.invalid : false;
   }
 
   private loadItems() {
-    this.service.getItems(this.Business_id).subscribe({
+    this.service.getItems(this.business_id).subscribe({
       next: (res: any) => {
         console.log('Items fetched:', res);
         this.items = res?.data || [];
@@ -72,21 +97,64 @@ export class ItemListComponent implements OnInit {
       error: (err) => console.error('Error loading items:', err),
     });
   }
-  Business_id(Business_id: any) {
-    throw new Error('Method not implemented.');
-  }
+  // Business_id(Business_id: any) {
+  //   throw new Error('Method not implemented.');
+  // }
 
   editItem(it: any) {
+    console.log('Edit data', it);
     this.eid = it._id;
+
     this.editForm.patchValue({
       item_name: it.item_name,
       brand_name: it.brand_name,
       stock_quantity: it.stock_quantity,
       selling_price: it.selling_price,
       status: it.status,
+      item_code: it.item_code,
+      unit: it.unit,
+      purchase_price: it.purchase_price,
+      tax_rate: it.tax_rate,
+      description: it.description,
+      discount: it.discount,
+      min_stock_alert: it.min_stock_alert,
     });
     console.log('Editing item:', it);
+    const modal = new bootstrap.Modal(document.getElementById('editItemModal'));
+    modal.show();
   }
+  categoriesGet() {
+    this.service.getCategories(this.business_id).subscribe({
+      next: (res: any) => {
+        this.categories = res.data || res;
+        console.log('Categories:', this.categories);
+      },
+      error: (err: any) => console.error('Error loading categories:', err),
+    });
+  }
+
+  subCategoriesGet() {
+    this.service.getSubCategories().subscribe({
+      next: (res: any) => {
+        this.allSubCategories = res.data || [];
+        this.subCategories = [...this.allSubCategories];
+        console.log('Subcategories:', this.subCategories);
+      },
+      error: (err: any) => console.error('Error loading subcategories:', err),
+    });
+  }
+
+  usersGet() {
+    this.service.getUsers(this.business_id).subscribe({
+      next: (res: any) => {
+        console.log('Raw user response:', res);
+        this.users = res.data || res;
+        console.log('Users:', this.users);
+      },
+      error: (err: any) => console.error('Error loading users:', err),
+    });
+  }
+
   updateInvoice() {
     this.service.updateitems(this.eid, this.editForm.value).subscribe({
       next: (res: any) => {
@@ -116,7 +184,7 @@ export class ItemListComponent implements OnInit {
   }
 
   isCreatingInvoice(): boolean {
-    return this.router.url.includes('itemlist/items');
+    return this.router.url.includes('/itemlist/items');
   }
 
   filteredItems() {
@@ -129,18 +197,19 @@ export class ItemListComponent implements OnInit {
     );
   }
   openViewModal(it: any) {
-    // const firstProduct = it.product_ids?.[0] || {};
-
-    // this.editForm.patchValue({
-    //   item_name: it.item_name,
-    //   brand_name: it.brand_name,
-    //   stock_quantity: it.stock_quantity,
-    //   selling_price: it.selling_price,
-    //   status: it.status,
-    // });
-
-    this.selectedItems=it;
-    const modal=new bootstrap.Modal(document.getElementById('ViewModal'));
+    this.selectedItems = it;
+    const modal = new bootstrap.Modal(document.getElementById('ViewModal'));
     modal.show();
+  }
+  onCategoryChange(event: Event) {
+    const selectedCategoryId = (event.target as HTMLSelectElement).value;
+
+    this.subCategories = this.allSubCategories.filter(
+      (sub: any) => sub.category_id === selectedCategoryId
+    );
+
+    this.editForm.patchValue({ category_id: selectedCategoryId });
+
+    console.log('Filtered subcategories:', this.subCategories);
   }
 }

@@ -23,6 +23,7 @@ import { ItemsComponent } from './items/items.component';
 import { SalesComponent } from './sales-list/sales.component';
 import { SaleComponent } from './sale/sale.component';
 import { BusinessprofileComponent } from './businessprofile/businessprofile.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 export const routes: Routes = [
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
@@ -43,6 +44,7 @@ export const routes: Routes = [
     component: UserViewComponent,
     children: [
       { path: '', component: ItemListComponent },
+      { path: 'userprofile', component: UserProfileComponent },
       {
         path: 'itemlist',
         component: ItemListComponent,
