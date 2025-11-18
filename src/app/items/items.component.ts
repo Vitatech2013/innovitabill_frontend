@@ -20,7 +20,7 @@ import { BillingService } from '../billing.service';
 export class ItemsComponent implements OnInit {
   addItemsForm!: FormGroup;
   selectedFiles: { [key: string]: File } = {};
-  Business_id: string = '';
+  business_id: string = '';
   selectedBusiness: any;
   categories: any[] = [];
   subCategories: any[] = [];
@@ -33,16 +33,6 @@ export class ItemsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const saData = JSON.parse(localStorage.getItem('user') || '{}');
-    this.Business_id = saData._id;
-    console.log('Business ID:', this.Business_id);
-
-    if (!this.Business_id) {
-      alert('Business ID missing. Please login again.');
-      this.router.navigate(['SuperAdminLogin']);
-      return;
-    }
-
     this.addItemsForm = this.fb.group({
       item_name: ['', [Validators.required, Validators.minLength(3)]],
       item_code: ['', [Validators.required, Validators.minLength(3)]],
@@ -60,13 +50,26 @@ export class ItemsComponent implements OnInit {
       sub_category_id: ['', Validators.required],
     });
 
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const bid = JSON.parse(storedUser);
+      this.business_id = bid._id || '';
+      console.log('Business ID:', this.business_id);
+    }
+
+    if (!this.business_id) {
+      alert('Business ID missing. Please login again.');
+      this.router.navigate(['SuperAdminLogin']);
+      return;
+    }
+
     this.categoriesGet();
     this.subCategoriesGet();
     this.usersGet();
   }
 
   categoriesGet() {
-    this.service.getCategories(this.Business_id).subscribe({
+    this.service.getCategories(this.business_id).subscribe({
       next: (res: any) => {
         this.categories = res.data || res;
         console.log('Categories:', this.categories);
@@ -86,7 +89,7 @@ export class ItemsComponent implements OnInit {
   }
 
   usersGet() {
-    this.service.getUsers(this.Business_id).subscribe({
+    this.service.getUsers(this.business_id).subscribe({
       next: (res: any) => {
         console.log('Raw user response:', res);
         this.users = res.data || res;
@@ -116,7 +119,7 @@ export class ItemsComponent implements OnInit {
 
     const formData = {
       ...f,
-      business_id: this.Business_id,
+      business_id: this.business_id,
       purchase_price: Number(f.purchase_price),
       selling_price: Number(f.selling_price),
       tax_rate: f.tax_rate ? Number(f.tax_rate) : 0,

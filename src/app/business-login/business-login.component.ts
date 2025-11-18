@@ -45,13 +45,7 @@ export class BusinessLoginComponent implements OnInit {
       next: (res: any) => {
         console.log('Login successful', res);
 
-        // Check if user is active
-        // if (res.data?.status !== 'Active') {
-        //   this.showToast('Your account is inactive. Please contact admin.', 'error');
-        //   return;
-        // }
-
-        // Store user + token
+     
         localStorage.setItem('user', JSON.stringify(res.data));
         localStorage.setItem('userToken', JSON.stringify(res.token));
 

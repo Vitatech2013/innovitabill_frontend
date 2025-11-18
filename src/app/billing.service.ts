@@ -177,4 +177,7 @@ export class BillingService {
   getuserprofile(id: string) {
     return this.http.get(`${this.baseUrl}/user/userprofile/${id}`);
   }
+  getStatusTypes() {
+    return this.http.get(`${this.baseUrl}/status/getstatus`);
+  }
 }

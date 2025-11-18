@@ -15,7 +15,7 @@
 
       <a
         class="btn btn-success text-white"
-        [routerLink]="['items']"
+        [routerLink]="['/userview/itemlist/items']"
         routerLinkActive="active"
       >
         <i class="bi bi-plus-circle me-1"></i> Create Item
@@ -57,9 +57,7 @@
                   <b><i class="bi bi-eye"></i></b>
                 </button>
                 <button
-                  class="btn btn-warning"
-                  data-bs-toggle="modal"
-                  data-bs-target="#myEditModal"
+                  class="btn btn-sm btn-warning me-2"
                   (click)="editItem(it)"
                 >
                   <i class="bi bi-pencil"></i>
@@ -166,15 +164,15 @@
 
 <div
   class="modal fade"
-  id="myEditModal"
+  id="editItemModal"
   tabindex="-1"
-  aria-labelledby="myEditModalLabel"
+  aria-labelledby="editItemModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg rounded-4">
       <div class="modal-header bg-success text-white">
-        <h5 class="modal-title" id="myEditModalLabel">Edit Item</h5>
+        <h5 class="modal-title" id="editItemModalLabel">Edit Item</h5>
         <button
           type="button"
           class="btn-close btn-close-white"
@@ -184,56 +182,196 @@
       </div>
 
       <div class="modal-body">
-        <form [formGroup]="editForm" (ngSubmit)="updateInvoice()">
+        <form [formGroup]="editForm" enctype="multipart/form-data">
           <div class="row g-3">
             <div class="col-md-4">
-              <label class="form-label">Item Name</label>
+              <label class="form-label fw-semibold">Item Name</label>
               <input
                 type="text"
                 class="form-control"
                 formControlName="item_name"
+                placeholder="Enter item name"
               />
+              <small *ngIf="isInvalid('item_name')" class="text-danger">
+                Item Name is required and must be at least 3 letters
+              </small>
             </div>
 
             <div class="col-md-4">
-              <label class="form-label">Brand Name</label>
+              <label class="form-label fw-semibold">Item Code</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="item_code"
+                placeholder="Enter item code"
+              />
+              <small *ngIf="isInvalid('item_code')" class="text-danger">
+                Item code is required and must be at least 3 letters
+              </small>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Unit</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="unit"
+                placeholder="Enter unit"
+              />
+              <small *ngIf="isInvalid('unit')" class="text-danger">
+                Enter a valid unit
+              </small>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Price</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="selling_price"
+                placeholder="Enter selling price"
+              />
+              <small *ngIf="isInvalid('selling_price')" class="text-danger">
+                Selling price is required
+              </small>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Purchase price</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="purchase_price"
+                placeholder="Purchase price"
+              />
+              <small *ngIf="isInvalid('purchase_price')" class="text-danger">
+                Purchase price is required
+              </small>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Tax</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="tax_rate"
+                placeholder="Tax rate"
+              />
+              <small *ngIf="isInvalid('tax_rate')" class="text-danger">
+                Tax rate is required
+              </small>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Stock</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="stock_quantity"
+                placeholder="No.of Quantitys"
+              />
+              <small *ngIf="isInvalid('stock_quantity')" class="text-danger">
+                Stock is required
+              </small>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Description</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="description"
+                placeholder="Enter description"
+              />
+              <small *ngIf="isInvalid('description')" class="text-danger">
+                Description is required
+              </small>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Brand Name</label>
               <input
                 type="text"
                 class="form-control"
                 formControlName="brand_name"
+                placeholder="Enter Brand name"
               />
+              <small *ngIf="isInvalid('brand_name')" class="text-danger">
+                Brand name is required
+              </small>
             </div>
 
             <div class="col-md-4">
-              <label class="form-label">Price</label>
-              <input
-                type="number"
-                class="form-control"
-                formControlName="selling_price"
-              />
-            </div>
-
-            <div class="col-md-4">
-              <label class="form-label"> Status</label>
+              <label class="form-label fw-semibold">Discount</label>
               <input
                 type="text"
-                class="form-control p-2"
-                formControlName="status"
+                class="form-control"
+                formControlName="discount"
+                placeholder="Enter discount"
               />
+              <small *ngIf="isInvalid('discount')" class="text-danger">
+                Discount is required
+              </small>
             </div>
 
             <div class="col-md-4">
-              <label class="form-label">Available Stock</label>
+              <label class="form-label fw-semibold">Stock Alert</label>
               <input
-                type="number"
+                type="text"
                 class="form-control"
-                formControlName="stock_quantity"
+                formControlName="min_stock_alert"
+                placeholder="Enter alert stock"
               />
+              <small *ngIf="isInvalid('min_stock_alert')" class="text-danger">
+                Alert stock is required
+              </small>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Sub-Categories</label>
+              <select class="form-select" formControlName="sub_category_id">
+                <option value="">Select Sub categories</option>
+                <option
+                  *ngFor="let subcat of subCategories"
+                  [value]="subcat._id"
+                >
+                  {{ subcat.sub_category_name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Users</label>
+              <select class="form-select" formControlName="user_id">
+                <option value="">Select Users</option>
+                <option *ngFor="let user of users" [value]="user._id">
+                  {{ user.user_name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Categories</label>
+              <select
+                class="form-select"
+                formControlName="category_id"
+                (change)="onCategoryChange($event)"
+              >
+                <option value="">Select Categories</option>
+                <option *ngFor="let cat of categories" [value]="cat._id">
+                  {{ cat.categories_name }}
+                </option>
+              </select>
             </div>
           </div>
 
           <div class="text-center mt-4">
-            <button type="submit" class="btn btn-success w-50 p-2">
+            <button
+              type="submit"
+              class="btn btn-success w-50 p-2"
+              (click)="updateInvoice()"
+              [disabled]="!editForm.valid"
+            >
               Update Item
             </button>
           </div>
