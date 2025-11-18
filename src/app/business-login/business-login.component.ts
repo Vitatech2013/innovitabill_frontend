@@ -39,8 +39,9 @@ login() {
       
 
       if (res) {
-        localStorage.setItem('user',JSON.stringify(res.data))
-        localStorage.setItem('userToken', JSON.stringify(res.token));
+        localStorage.setItem('business', JSON.stringify(res.data));
+        localStorage.setItem('businessToken', JSON.stringify(res.token));
+
       }
 
       this.router.navigateByUrl('business-Dashboard', {

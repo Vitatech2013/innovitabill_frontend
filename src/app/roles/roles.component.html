@@ -1,4 +1,4 @@
-<div class="position-fixed top-1 end-0 p-1" style="z-index: 1080;">
+<div class="position-fixed top-1 end-0 p-1" style="z-index: 1080">
   <div
     *ngIf="toastMessage"
     class="toast align-items-center text-light border-0 fade show shadow-lg"
@@ -38,14 +38,14 @@
   <h2 class="title mb-2 p-1 text-center">List of Roles</h2>
 
   <div class="row">
-    <table class="table table-bordered">
+    <table class="table table-bordered table-hover shadow-sm">
       <thead class="table-success">
         <tr>
-          <th>Sl.no</th>
-          <th>Role Name</th>
-          <th>Role Number</th>
-          <th>Status</th>
-          <th>Actions</th>
+          <th  style="background:#d4f8d4; color:#0a5c0a;">Sl.no</th>
+          <th  style="background:#d4f8d4; color:#0a5c0a;">Role Name</th>
+          <th  style="background:#d4f8d4; color:#0a5c0a;">Role Number</th>
+          <th  style="background:#d4f8d4; color:#0a5c0a;">Status</th>
+          <th  style="background:#d4f8d4; color:#0a5c0a;">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -56,24 +56,25 @@
           <td>{{ r.status }}</td>
           <td>
             <button
-              class="btn btn-primary btn-sm me-1"
+              class="btn btn-sm btn-outline-primary me-2"
               (click)="edit(r)"
               data-bs-toggle="modal"
               data-bs-target="#roleModal"
             >
               <i class="bi bi-pencil-square"></i>
             </button>
-            <button class="btn btn-danger btn-sm" (click)="openDeleteModal(r)">
-            <i class="bi bi-trash"></i>
-          </button>
+            <button
+              class="btn btn-sm btn-outline-danger"
+              (click)="openDeleteModal(r)"
+            >
+              <i class="bi bi-trash"></i>
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
-
-
 
 <!-- Role Modal -->
 <div
@@ -142,8 +143,17 @@
                 >Role Number is required</small
               >
             </div>
+            </div>
+        <!-- <div class="mb-3">
+          <label class="form-label fw-semibold">Status</label>
+          <select class="form-select" formControlName="status">
+            <option value="">-- Select Status --</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div> -->
           </div>
-        </div>
+        
 
         <div class="modal-footer">
           <button
@@ -161,39 +171,30 @@
   </div>
 </div>
 
-
 <!-- 🗑️ Delete Confirmation Modal -->
-<div
-  class="modal fade"
-  id="deleteModal"
-  tabindex="-1"
-  aria-hidden="true"
->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header  text-danger">
+      <div class="modal-header text-danger">
         <h5 class="modal-title">Confirm Delete</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
       </div>
 
       <div class="modal-body">
         Are you sure you want to delete
-        <strong>{{ selectedRole?.role_name }}</strong>?
+        <strong>{{ selectedRole?.role_name }}</strong
+        >?
       </div>
 
       <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-secondary"
-          data-bs-dismiss="modal"
-        >
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Cancel
         </button>
-        <button
-          type="button"
-          class="btn btn-danger"
-          (click)="confirmDelete()"
-        >
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()">
           Delete
         </button>
       </div>
