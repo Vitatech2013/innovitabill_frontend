@@ -48,7 +48,8 @@ b: any;
       owner_name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required, Validators.minLength(10)]],
-      business_type: ['', [Validators.required, Validators.minLength(3)]],
+     bt_id: ['', Validators.required],
+
       address: ['', [Validators.required, Validators.minLength(3)]],
       registration_number: ['', [Validators.required, Validators.minLength(3)]],
       gst_number: ['', [Validators.required, Validators.minLength(3)]],
@@ -105,12 +106,15 @@ b: any;
       owner_name: b.owner_name,
       email: b.email,
       phone_number: b.phone_number,
-      password: b.password,
-      business_type: b.business_type,
+      password: '',
+       bt_id: b.bt_id?.bt_id,
       address: fullAddress,
       registration_number: b.registration_number,
       gst_number: b.gst_number,
-      status: b.status,
+    status: b.status?.toLowerCase(),
+
+
+
     });
 
     if (this.logofile) {
@@ -162,9 +166,10 @@ b: any;
       : `http://localhost:3009/business_images/${cleanPath}`;
   }
 
-  updateBusiness() {
+   updateBusiness() {
     const formData = new FormData();
 
+  
     Object.keys(this.BusinessForm.controls).forEach((key) => {
       if (
         !['logo_image', 'pan_pdf', 'aadhar_pdf', 'certificate_pdf'].includes(
@@ -175,6 +180,7 @@ b: any;
       }
     });
 
+  
     for (const key of Object.keys(this.selectedFiles)) {
       formData.append(key, this.selectedFiles[key]);
     }

@@ -23,14 +23,7 @@ export class AddBusinessComponent implements OnInit {
   superadmin_id: string = '';
   selectedBusiness: any;
   businessTypes: any[] = [
-    'Restaurant',
-    'Retail',
-    'E-commerce',
-    'Education',
-    'Healthcare',
-    'Technology',
-    'Real Estate',
-    'Manufacturing',
+    
   ];
  
   addressFields = [

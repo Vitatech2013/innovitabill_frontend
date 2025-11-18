@@ -26,7 +26,8 @@
                 <td>{{ b.owner_name }}</td>
                 <td>{{ b.email }}</td>
                 <td>{{ b.phone_number }}</td>
-                <td>{{ b.business_type }}</td>
+                <td>{{ b.bt_id?.business_type }}</td>
+
                 <td>
                   <span
                     class="badge file-dark"
@@ -68,26 +69,7 @@
                 </button>
               </td>
             
-                <td class="file-center">
-                  <button
-                    class="btn btn-sm btn-outline-info me-2"
-                    (click)="openViewModal(b)"
-                  >
-                    <i class="bi bi-eye"></i>
-                  </button>
-                  <button
-                    class="btn btn-sm btn-outline-primary me-2"
-                    (click)="editBusiness(b)"
-                  >
-                    <i class="bi bi-pencil-square"></i>
-                  </button>
-                  <button
-                    class="btn btn-sm btn-outline-danger"
-                    (click)="openDeleteModal(b._id)"
-                  >
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </td>
+             
               </tr>
             </tbody>
           </table>
@@ -126,7 +108,7 @@
                     <th>Owner</th>
                     <th>Email</th>
                     <th>Phone</th>
-                    <th>Type</th>
+                    <th>Business Type</th>
                     <th>Address</th>
                     <th>Reg No</th>
                     <th>Status</th>
@@ -144,7 +126,9 @@
                     <td>{{ selectedBusiness.owner_name }}</td>
                     <td>{{ selectedBusiness.email }}</td>
                     <td>{{ selectedBusiness.phone_number }}</td>
-                    <td>{{ selectedBusiness.business_type }}</td>
+                   <td>{{ selectedBusiness.bt_id?.business_type }}</td>
+
+
                     <td>
                       {{ selectedBusiness.address?.house_No }},
                       {{ selectedBusiness.address?.town_Name }},
@@ -156,7 +140,7 @@
 
                     <td>{{ selectedBusiness.registration_number }}</td>
                     <td>
-                      <span
+                       <span
                         class="badge"
                         [ngClass]="{
                           'bg-success': selectedBusiness.status === 'Active',
@@ -166,6 +150,7 @@
                       >
                         {{ selectedBusiness.status }}
                       </span>
+
                     </td>
                     <td>{{ selectedBusiness.gst_number }}</td>
                     <td>
@@ -287,24 +272,38 @@
               <div class="row g-3 mb-3">
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">Business Type</label>
-                  <select class="form-select" formControlName="business_type">
+                  <select class="form-select" formControlName="bt_id">
                     <option value="">Select Business Type</option>
                     <option
                       *ngFor="let type of businessTypes"
-                      [value]="type.business_type"
+                      [value]="type.bt_id"
                     >
                       {{ type.business_type }}
                     </option>
                   </select>
+                   <div
+                *ngIf="
+                  BusinessForm.controls['bt_id']?.touched &&
+                  BusinessForm.controls['bt_id']?.invalid
+                "
+              >
+                <small
+                  *ngIf="BusinessForm.controls['bt_id']?.errors?.['required']"
+                  class="text-danger"
+                >
+                  Business Type is required</small
+                >
+              </div>
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">Status</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    formControlName="status"
-                  />
+                  <select class="form-control" formControlName="status">
+  <option value="">Select Status</option>
+  <option value="active">Active</option>
+  <option value="inactive">Inactive</option>
+  <option value="pending">Pending</option>
+</select>
                 </div>
 
                 <div class="col-md-6">
@@ -387,23 +386,22 @@
             </form>
           </div>
 
-          <div class="modal-footer bg-white">
-            <button
-              type="button"
-              class="btn btn-secondary px-4"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              class="btn btn-success px-4"
-              (click)="updateBusiness()"
-              [disabled]="!BusinessForm.valid"
-            >
-              Save Changes
-            </button>
-          </div>
+       <div class="modal-footer bg-white">
+  <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+    Cancel
+  </button>
+
+  <button
+  type="button"
+  class="btn btn-success px-4"
+  (click)="updateBusiness()"
+  [disabled]="!BusinessForm.valid"
+>
+  Save Changes
+</button>
+
+</div>
+
         </div>
       </div>
     </div>

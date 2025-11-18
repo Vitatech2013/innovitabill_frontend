@@ -110,7 +110,11 @@ export class SuperadminProfileComponent implements OnInit {
     formData.append('superadmin_number', this.profileForm.get('superadmin_number')?.value);
     formData.append('superadmin_mail', this.profileForm.get('superadmin_mail')?.value);
     formData.append('superadmin_password', this.profileForm.get('superadmin_password')?.value);
-    formData.append('address', this.profileForm.get('address')?.value);
+   formData.append(
+  'address',
+  JSON.stringify(this.profileForm.get('address')?.value)
+);
+
 
     if (this.selectedImage) {
       formData.append('image', this.selectedImage);
@@ -139,16 +143,16 @@ export class SuperadminProfileComponent implements OnInit {
 
     this.profileService.getadminprofile(this.superadmin_id).subscribe({
       next: (res: any) => {
-        console.log('✅ Admin profile fetched successfully:', res);
+        console.log(' Admin profile fetched successfully:', res);
         this.superadminData = res?.data || res;
 
         this.previewUrl = this.superadminData?.image
-          ? `http://localhost:3003/uploads/${this.superadminData.image}`
+          ? `http://localhost:3009/business_images/${this.superadminData.image}`
           : null;
 
         this.profileForm.patchValue(this.superadminData);
       },
-      error: (err) => console.error('❌ Error fetching admin profile:', err),
+      error: (err) => console.error(' Error fetching admin profile:', err),
     });
   }
 
@@ -161,13 +165,18 @@ export class SuperadminProfileComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
-  getImageUrl(image: string): string {
-    if (image) {
-      return `http://localhost:3003/${image}`;
-    } else {
-      return 'assets/default-profile.png';
-    }
+  getImageUrl(image: string | ArrayBuffer | null): string {
+  if (!image) {
+    return '';
   }
+
+  if (typeof image !== 'string') {
+    return image.toString();
+  }
+
+  return `http://localhost:3009/business_images/${image}`;
+}
+
 
 
 }
