@@ -24,6 +24,7 @@ export class BillingService {
   SuperAdminLogin(data: any) {
     return this.http.post(`${this.baseUrl}/superadmin/superadminlogin`, data);
   }
+  // business
   addBusiness(data: any) {
     return this.http.post(
       `${this.baseUrl}/business/businessregistration`,
@@ -34,14 +35,28 @@ export class BillingService {
     return this.http.get<any[]>(`${this.baseUrl}/business/businessget`);
   }
   updateBusiness(id: string, value: any) {
-    return this.http.put(
-      `${this.baseUrl}/business/businessupdate/${id}`,
-      value
-    );
+     return this.http.put(`${this.baseUrl}/business/businessupdate/${id}`, value);
   }
   deletebusiness(id: string) {
     return this.http.delete(`${this.baseUrl}/business/businessdelete/${id}`);
   }
+   getBusinessprofile(id: any) {
+    return this.http.get(`${this.baseUrl}/business/businessprofile/${id}`);
+  }
+  businessprofileupdate(formData: FormData, id: any) {
+  return this.http.put(`${this.baseUrl}/business/businessupdate/${id}`, formData);
+}
+
+  // 
+
+
+profileupdate(formData: FormData, id: string) {
+  return this.http.put(`${this.baseUrl}/superadmin/superadminupdate/${id}`, formData);
+}
+getadminprofile(id: string) {
+  return this.http.get(`${this.baseUrl}/superadmin/superadminprofile/${id}`);
+}
+getBusinessTypes() {
   profileupdate(formData: FormData, id: string) {
     return this.http.put(
       `${this.baseUrl}/superadmin/superadminupdate/${id}`,

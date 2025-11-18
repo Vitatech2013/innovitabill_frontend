@@ -45,9 +45,11 @@ export class BusinessLoginComponent implements OnInit {
       next: (res: any) => {
         console.log('Login successful', res);
 
-     
-        localStorage.setItem('user', JSON.stringify(res.data));
-        localStorage.setItem('userToken', JSON.stringify(res.token));
+      if (res) {
+        localStorage.setItem('business', JSON.stringify(res.data));
+        localStorage.setItem('businessToken', JSON.stringify(res.token));
+
+      }
 
         this.router.navigateByUrl('business-Dashboard', {
           state: { toast: 'User login successful!' },

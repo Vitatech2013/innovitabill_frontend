@@ -31,6 +31,7 @@ export class BusinessListComponent implements OnInit {
 
   businessTypes: any[] = [];
   statusList: any;
+b: any;
 
   constructor(private fb: FormBuilder, private api: BillingService) {}
 

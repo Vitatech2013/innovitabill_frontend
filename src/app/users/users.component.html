@@ -38,15 +38,15 @@
   <h2 class="title mb-2 p-1 text-center">List of Users</h2>
   <div class="row">
     <!-- Users Table -->
-    <table class="table table-bordered">
+    <table class="table table-bordered table-hover shadow-sm">
       <thead class="table-success">
         <tr>
-          <th>SL.No</th>
-          <th>Full Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>status</th>
-          <th>Actions</th>
+          <th  style="background:#d4f8d4; color:#0a5c0a;">SL.No</th>
+          <th  style="background:#d4f8d4; color:#0a5c0a;">Full Name</th>
+          <th  style="background:#d4f8d4; color:#0a5c0a;">Email</th>
+          <th  style="background:#d4f8d4; color:#0a5c0a;">Phone</th>
+          <th  style="background:#d4f8d4; color:#0a5c0a;">status</th>
+          <th  style="background:#d4f8d4; color:#0a5c0a;">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -58,14 +58,14 @@
           <td>{{ u.status }}</td>
           <td>
             <button
-              class="btn btn-primary btn-sm me-1"
+              class="btn btn-sm btn-outline-primary me-2"
               (click)="edit(u)"
               data-bs-toggle="modal"
               data-bs-target="#userModal"
             >
               <i class="bi bi-pencil-square"></i>
             </button>
-            <button class="btn btn-danger btn-sm" (click)="openDeleteModal(u)">
+            <button class="btn btn-sm btn-outline-danger" (click)="openDeleteModal(u)">
             <i class="bi bi-trash"></i>
           </button>
           </td>
@@ -230,6 +230,14 @@
               <input type="file" class="form-control" />
             </div>
           </div>
+           <div class="mb-3">
+          <label class="form-label fw-semibold">Status</label>
+          <select class="form-select" formControlName="status">
+            <option value="">-- Select Status --</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
         </div>
 
         <div class="modal-footer">
@@ -255,7 +263,7 @@
 </div>
 
 
-<!-- 🗑️ Delete Confirmation Modal -->
+
 <div
   class="modal fade"
   id="deleteModal"
