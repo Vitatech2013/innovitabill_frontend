@@ -1,308 +1,10 @@
-<!-- <div class="container mt-4">
-  <h5 class="text-center text-success mb-3">Business Profile</h5>
-  <div class="card shadow-lg border-0 p-4">
-    <div class="row align-items-center">
-      <div class="col-md-4 text-center mb-3 mb-md-0">
-        <img
-          [src]="getImageUrl(profile?.image)"
-          alt="Profile Image"
-          class="img-fluid rounded-circle shadow-sm"
-          width="150"
-          height="150"
-        />
-        <h5 class="mt-3 fw-semibold">
-          {{
-            BusinessprofileForm.get("business_name")?.value || "Business Name"
-          }}
-        </h5>
-        <button
-          class="btn btn-sm btn-primary mt-2"
-          data-bs-toggle="modal"
-          data-bs-target="#editProfileModal"
-          (click)="profileedit()"
-        >
-          <i class="bi bi-pencil"></i> Edit Profile
-        </button>
-      </div>
-      <div class="col-md-8">
-        <form [formGroup]="BusinessprofileForm">
-          <div class="row">
-            <div class="col-md-6 border-end">
-              <h6 class="fw-bold text-primary mb-3">Profile Information</h6>
-
-              <div class="mb-3">
-                <label class="form-label fw-semibold"> Business Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="business_name"
-                  readonly
-                />
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Owner Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="owner_name"
-                  readonly
-                />
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Email</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="email"
-                  readonly
-                />
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Phone Number</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="phone_number"
-                  readonly
-                />
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Business Type</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="business_type"
-                  readonly
-                />
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label fw-semibold"
-                  >Registration Number</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="registration_number"
-                  readonly
-                />
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Gst Number</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="gst_number"
-                  readonly
-                />
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label fw-semibold">password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  formControlName="password"
-                  readonly
-                />
-              </div>
-            </div>
-               <div class="col-md-6 ps-md-4">
-        <h6 class="fw-bold text-primary mb-3">Address Details</h6>
-        <div formGroupName="address" class="row">
-          <div class="col-md-6 mb-3" *ngFor="let field of addressFields">
-            <label class="form-label fw-semibold">{{ field.label }}</label>
-            <input
-              type="text"
-              class="form-control"
-              [formControlName]="field.name"
-              readonly
-            />
-          </div>
-        </div>
-      </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<div
-  class="modal fade"
-  id="editProfileModal"
-  tabindex="-1"
-  aria-labelledby="editProfileModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content shadow-lg">
-      <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title" id="editProfileModalLabel">
-          Edit Business Profile
-        </h5>
-        <button
-          type="button"
-          class="btn-close btn-close-white"
-          data-bs-dismiss="modal"
-        ></button>
-      </div>
-
-      <div class="modal-body">
-        <form
-          [formGroup]="BusinessprofileForm"
-          (ngSubmit)="updateadminprofile()"
-          enctype="multipart/form-data"
-        >
-          <div class="row">
-            <div
-              class="col-md-5 text-center d-flex flex-column align-items-center justify-content-center"
-            >
-              <label for="fileInput" style="cursor: pointer">
-                <img
-                  [src]="getImageUrl(profile?.image)"
-                  alt="Profile Image"
-                  class="img-fluid rounded-circle shadow-sm"
-                  width="150"
-                  height="150"
-                />
-              </label>
-              <input
-                type="file"
-                id="fileInput"
-                class="d-none"
-                (change)="onImageSelected($event)"
-                accept="image/*"
-              />
-              <small class="text-muted">Click image to change</small>
-            </div>
-
-            <div class="col-md-7">
-              <div class="mb-3">
-                <label class="form-label">Business Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="business_name"
-                />
-              </div>
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Owner Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="owner_name"
-                  readonly
-                />
-            </div>
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Email</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="email"
-                  readonly
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Phone Number</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="phone_number"
-                  readonly
-                />
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Business Type</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="business_type"
-                  readonly
-                />
-              </div>
-
-               <div class="mb-3">
-                <label class="form-label fw-semibold"
-                  >Registration Number</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="registration_number"
-                  readonly
-                />
-              </div>
-
-                <div class="mb-3">
-                <label class="form-label fw-semibold">Gst Number</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="gst_number"
-                  readonly
-                />
-              </div>
-
-               <div class="mb-3">
-                <label class="form-label fw-semibold">password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  formControlName="password"
-                  readonly
-                />
-              </div>
-              
-               <h6 class="fw-bold mt-3">Address</h6>
-              <div formGroupName="address" class="row">
-                <div class="col-md-6 mb-2" *ngFor="let field of addressFields">
-                  <label class="form-label">{{ field.label }}</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    [formControlName]="field.name"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button type="submit" class="btn btn-success">
-              Update Profile
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
- -->
-
- <div class="container mt-6">
+<div class="container mt-6">
   <h5 class="text-center text-success mb-3">Business Profile</h5>
 
   <div class="card shadow-lg border-0 p-4">
     <div class="row align-items-center">
 
-      <!-- Profile Left -->
+    
       <div class="col-md-4 text-center mb-3 mb-md-0">
         <img
           [src]="getImageUrl(profile?.image)"
@@ -326,12 +28,11 @@
         </button>
       </div>
 
-      <!-- Profile Right -->
       <div class="col-md-8">
         <form [formGroup]="BusinessprofileForm">
           <div class="row">
 
-            <!-- Left column -->
+          
             <div class="col-md-6 border-end">
               <h6 class="fw-bold text-primary mb-3">Profile Information</h6>
 
@@ -356,7 +57,7 @@
               </div>
             </div>
 
-            <!-- Right column -->
+          
             <div class="col-md-6 ps-md-4">
               <h6 class="fw-bold text-primary mb-3">Business Details</h6>
 
@@ -383,7 +84,7 @@
 
           </div>
 
-          <!-- Address Section -->
+         
           <h6 class="fw-bold text-primary mt-4">Address Details</h6>
           <div class="row" formGroupName="address">
             <div class="col-md-6 mb-3" *ngFor="let field of addressFields">
@@ -582,7 +283,7 @@
           enctype="multipart/form-data"
         >
 
-          <!-- ⭐ PROFILE IMAGE ON TOP -->
+         
           <div class="text-center mb-4">
             <label for="fileInput" style="cursor: pointer">
               <img
@@ -603,7 +304,7 @@
             <small class="text-muted d-block mt-2">Click image to change</small>
           </div>
 
-          <!-- ⭐ FORM FIELDS BELOW -->
+        
           <div class="container">
             <div class="row">
 
@@ -649,7 +350,7 @@
 
             </div>
 
-            <!-- ⭐ ADDRESS SECTION -->
+           
             <h6 class="fw-bold mt-3">Address</h6>
 
             <div formGroupName="address" class="row">
@@ -664,7 +365,7 @@
             </div>
           </div>
 
-          <!-- MODAL FOOTER -->
+         
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
               Cancel
