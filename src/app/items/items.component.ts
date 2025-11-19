@@ -25,6 +25,7 @@ export class ItemsComponent implements OnInit {
   categories: any[] = [];
   subCategories: any[] = [];
   users: any[] = [];
+  allSubCategories: any;
 
   constructor(
     private fb: FormBuilder,
@@ -149,16 +150,13 @@ export class ItemsComponent implements OnInit {
   }
 
   onCategoryChange(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    const selectedCategoryId = selectElement.value;
-
-    this.subCategories = this.subCategories.filter(
-      (sub) => sub.category_id === selectedCategoryId
+    const selectedCategoryId = (event.target as HTMLSelectElement).value;
+    this.subCategories = this.allSubCategories.filter(
+      (sub: any) =>
+        sub.category_id?._id === selectedCategoryId ||
+        sub.category_id === selectedCategoryId
     );
-
     this.addItemsForm.patchValue({ category_id: selectedCategoryId });
-
-    console.log('Selected category ID:', selectedCategoryId);
     console.log('Filtered subcategories:', this.subCategories);
   }
 }

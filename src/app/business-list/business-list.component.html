@@ -26,17 +26,19 @@
                 <td>{{ b.owner_name }}</td>
                 <td>{{ b.email }}</td>
                 <td>{{ b.phone_number }}</td>
-                <td>{{ b.business_type }}</td>
+                <td>{{ b.bt_id?.business_type }}</td>
+
                 <td>
                   <span
-                    class="badge file-dark"
+                    class="badge "
                     [ngClass]="{
-                      'bg-success': b.status === 'Active',
-                      'bg-warning': b.status === 'Pending',
-                      'bg-danger': b.status === 'Inactive'
+                      'bg-success': b.status === 'active',
+                      'bg-warning': b.status === 'pending',
+                      'bg-danger': b.status === 'inactive'
                     }"
                   >
-                    {{ b.status }}
+                    {{ b.status | titlecase }}
+
                   </span>
                 </td>
                 <!-- <td class="file-center">
@@ -47,27 +49,6 @@
                   (click)="openImageModal(getImageUrl(b.logo_image))"
                 />
               </td> -->
-              <td class="file-center">
-                <button
-                  class="btn btn-sm btn-outline-info me-2"
-                  (click)="openViewModal(b)"
-                >
-                  <i class="bi bi-eye"></i>
-                </button>
-                <button
-                  class="btn btn-sm btn-outline-primary me-2"
-                  (click)="editBusiness(b)"
-                >
-                  <i class="bi bi-pencil-square"></i>
-                </button>
-                <button
-                  class="btn btn-sm btn-outline-danger"
-                  (click)="openDeleteModal(b._id)"
-                >
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            
                 <td class="file-center">
                   <button
                     class="btn btn-sm btn-outline-info me-2"
@@ -144,7 +125,7 @@
                     <td>{{ selectedBusiness.owner_name }}</td>
                     <td>{{ selectedBusiness.email }}</td>
                     <td>{{ selectedBusiness.phone_number }}</td>
-                    <td>{{ selectedBusiness.business_type }}</td>
+                    <td>{{ selectedBusiness.bt_id?.business_type }}</td>
                     <td>
                       {{ selectedBusiness.address?.house_No }},
                       {{ selectedBusiness.address?.town_Name }},
@@ -291,7 +272,7 @@
                     <option value="">Select Business Type</option>
                     <option
                       *ngFor="let type of businessTypes"
-                      [value]="type.business_type"
+                      [value]="type._id"
                     >
                       {{ type.business_type }}
                     </option>
@@ -301,7 +282,7 @@
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">Status</label>
                   <input
-                    type="number"
+                    type="text"
                     class="form-control"
                     formControlName="status"
                   />

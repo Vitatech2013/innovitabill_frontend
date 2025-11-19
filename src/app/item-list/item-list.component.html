@@ -355,7 +355,7 @@
               <select
                 class="form-select"
                 formControlName="category_id"
-                (change)="onCategoryChange($event)"
+                
               >
                 <option value="">Select Categories</option>
                 <option *ngFor="let cat of categories" [value]="cat._id">
@@ -370,7 +370,7 @@
               type="submit"
               class="btn btn-success w-50 p-2"
               (click)="updateInvoice()"
-              [disabled]="!editForm.valid"
+             
             >
               Update Item
             </button>

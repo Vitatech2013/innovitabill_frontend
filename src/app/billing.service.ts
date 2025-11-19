@@ -6,11 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class BillingService {
- private baseUrl = 'http://localhost:3009';
+
+
+  private baseUrl = 'http://localhost:3009';
 
   constructor(private http: HttpClient) {}
-
-
 
 
   getSuperadminById(superadmin_id: string) {
@@ -52,8 +52,7 @@ export class BillingService {
   return this.http.put(`${this.baseUrl}/business/businessupdate/${id}`, formData);
 }
 
-  // 
-
+ 
 
 profileupdate(formData: FormData, id: string) {
   return this.http.put(`${this.baseUrl}/superadmin/superadminupdate/${id}`, formData);
@@ -70,10 +69,7 @@ getadminprofile(id: string) {
     return this.http.get(`${this.baseUrl}/status/getstatus`);
   }
 
-  getDataFromBackend(): Observable<any> {
-    // Make sure you return the observable from HttpClient
-    return this.http.get('http://localhost:3009/your-endpoint');
-  }
+  
 
   //Admins
   deleteAdmin(id: string) {
@@ -190,5 +186,8 @@ getadminprofile(id: string) {
   }
   getStatusTypes() {
     return this.http.get(`${this.baseUrl}/status/getstatus`);
+  }
+  getSalesReport(){
+    return this.http.get(`${this.baseUrl}/sales/getSalesReport`)
   }
 }

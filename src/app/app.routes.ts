@@ -24,6 +24,7 @@ import { SalesComponent } from './sales-list/sales.component';
 import { SaleComponent } from './sale/sale.component';
 import { BusinessprofileComponent } from './businessprofile/businessprofile.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { SaleReportsComponent } from './sale-reports/sale-reports.component';
 
 export const routes: Routes = [
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
@@ -53,7 +54,9 @@ export const routes: Routes = [
 
       {
         path: 'saleslist',
-        component: SalesComponent,
+        component: SalesComponent,children:[
+          {path:'salereports',component:SaleReportsComponent}
+        ]
       },
       {
         path: 'sale',

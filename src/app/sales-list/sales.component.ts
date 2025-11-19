@@ -21,7 +21,7 @@ import { ToastrService } from 'ngx-toastr';
   standalone: true,
   imports: [
     RouterOutlet,
-    
+    RouterLink,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
