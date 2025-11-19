@@ -6,6 +6,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class BillingService {
+ private baseUrl = 'http://localhost:3009';
+
+  constructor(private http: HttpClient) {}
+
+
+
+
   getSuperadminById(superadmin_id: string) {
     throw new Error('Method not implemented.');
   }
@@ -17,9 +24,7 @@ export class BillingService {
     throw new Error('Method not implemented.');
   }
 
-  private baseUrl = 'http://localhost:3009';
-
-  constructor(private http: HttpClient) {}
+ 
 
   SuperAdminLogin(data: any) {
     return this.http.post(`${this.baseUrl}/superadmin/superadminlogin`, data);
@@ -56,16 +61,7 @@ profileupdate(formData: FormData, id: string) {
 getadminprofile(id: string) {
   return this.http.get(`${this.baseUrl}/superadmin/superadminprofile/${id}`);
 }
-getBusinessTypes() {
-  profileupdate(formData: FormData, id: string) {
-    return this.http.put(
-      `${this.baseUrl}/superadmin/superadminupdate/${id}`,
-      formData
-    );
-  }
-  getadminprofile(id: string) {
-    return this.http.get(`${this.baseUrl}/superadmin/superadminprofile/${id}`);
-  }
+
   getBusinessTypes() {
     return this.http.get(`${this.baseUrl}/btypes/getbtypes`);
   }
