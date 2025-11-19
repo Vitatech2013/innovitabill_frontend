@@ -8,8 +8,8 @@ import { Observable } from 'rxjs';
 export class BillingService {
 
 
-  private baseUrl = 'http://localhost:3009';
-
+  // private baseUrl = 'http://localhost:3009';
+  private baseUrl = 'http://78.142.47.247:3009';
   constructor(private http: HttpClient) {}
 
 
