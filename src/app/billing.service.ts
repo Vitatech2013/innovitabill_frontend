@@ -6,6 +6,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class BillingService {
+
+
+  private baseUrl = 'http://localhost:3009';
+
+  constructor(private http: HttpClient) {}
+
+
   getSuperadminById(superadmin_id: string) {
     throw new Error('Method not implemented.');
   }
@@ -17,9 +24,6 @@ export class BillingService {
     throw new Error('Method not implemented.');
   }
 
-  private baseUrl = 'http://localhost:3009';
-
-  constructor(private http: HttpClient) {}
 
   SuperAdminLogin(data: any) {
     return this.http.post(`${this.baseUrl}/superadmin/superadminlogin`, data);
@@ -47,8 +51,7 @@ export class BillingService {
   return this.http.put(`${this.baseUrl}/business/businessupdate/${id}`, formData);
 }
 
-  // 
-
+ 
 
 profileupdate(formData: FormData, id: string) {
   return this.http.put(`${this.baseUrl}/superadmin/superadminupdate/${id}`, formData);
@@ -56,16 +59,7 @@ profileupdate(formData: FormData, id: string) {
 getadminprofile(id: string) {
   return this.http.get(`${this.baseUrl}/superadmin/superadminprofile/${id}`);
 }
-getBusinessTypes() {
-  profileupdate(formData: FormData, id: string) {
-    return this.http.put(
-      `${this.baseUrl}/superadmin/superadminupdate/${id}`,
-      formData
-    );
-  }
-  getadminprofile(id: string) {
-    return this.http.get(`${this.baseUrl}/superadmin/superadminprofile/${id}`);
-  }
+
   getBusinessTypes() {
     return this.http.get(`${this.baseUrl}/btypes/getbtypes`);
   }
@@ -74,10 +68,7 @@ getBusinessTypes() {
     return this.http.get(`${this.baseUrl}/status/getstatus`);
   }
 
-  getDataFromBackend(): Observable<any> {
-    // Make sure you return the observable from HttpClient
-    return this.http.get('http://localhost:3009/your-endpoint');
-  }
+  
 
   //Admins
   deleteAdmin(id: string) {
@@ -194,5 +185,8 @@ getBusinessTypes() {
   }
   getStatusTypes() {
     return this.http.get(`${this.baseUrl}/status/getstatus`);
+  }
+  getSalesReport(){
+    return this.http.get(`${this.baseUrl}/sales/getSalesReport`)
   }
 }

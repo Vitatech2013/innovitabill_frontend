@@ -136,8 +136,8 @@ export class ItemListComponent implements OnInit {
   subCategoriesGet() {
     this.service.getSubCategories().subscribe({
       next: (res: any) => {
-        this.allSubCategories = res.data || [];
-        this.subCategories = [...this.allSubCategories];
+        console.log('Raw users response', res);
+        this.subCategories = res.data || res;
         console.log('Subcategories:', this.subCategories);
       },
       error: (err: any) => console.error('Error loading subcategories:', err),
@@ -201,15 +201,14 @@ export class ItemListComponent implements OnInit {
     const modal = new bootstrap.Modal(document.getElementById('ViewModal'));
     modal.show();
   }
-  onCategoryChange(event: Event) {
-    const selectedCategoryId = (event.target as HTMLSelectElement).value;
-
-    this.subCategories = this.allSubCategories.filter(
-      (sub: any) => sub.category_id === selectedCategoryId
-    );
-
-    this.editForm.patchValue({ category_id: selectedCategoryId });
-
-    console.log('Filtered subcategories:', this.subCategories);
-  }
+  // onCategoryChange(event: Event) {
+  //   const selectedCategoryId = (event.target as HTMLSelectElement).value;
+  //   this.subCategories = this.allSubCategories.filter(
+  //     (sub: any) =>
+  //       sub.category_id?._id === selectedCategoryId ||
+  //       sub.category_id === selectedCategoryId
+  //   );
+  //   this.editForm.patchValue({ category_id: selectedCategoryId });
+  //   console.log('Filtered subcategories:', this.subCategories);
+  // }
 }

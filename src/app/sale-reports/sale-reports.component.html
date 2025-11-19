@@ -1,0 +1,35 @@
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">Sales Report</h2>
+
+ 
+  <div class="card mb-4 p-3">
+    <h4 class="mb-3">Daily Sales</h4>
+    <canvas id="dailyChart" height="120"></canvas>
+  </div>
+  <div class="card mb-4 p-3">
+    <h4 class="mb-3">Weekly Sales</h4>
+    <canvas id="weeklyChart" height="120"></canvas>
+  </div>
+
+  
+  <div class="card mb-4 p-3">
+    <h4 class="mb-3">Monthly Sales</h4>
+    <canvas id="monthlyChart" height="120"></canvas>
+  </div>
+
+  
+  <div class="card mb-4 p-3">
+    <h4 class="mb-3">Yearly Sales</h4>
+    <canvas id="yearlyChart" height="120"></canvas>
+  </div>
+
+  
+  <div class="text-center mt-4">
+    <button class="btn btn-primary me-2" (click)="downloadPDF()">
+      Download PDF
+    </button>
+    <button class="btn btn-success" (click)="downloadExcel()">
+      Download Excel
+    </button>
+  </div>
+</div>
