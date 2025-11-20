@@ -4,36 +4,31 @@
       <a class="navbar-brand text-white fw-bold" routerLink="/home">
         BUSINESS DASHBOARD
       </a>
+      <button class="btn text-white d-lg-none me-3" (click)="toggleSidebar()">
+        <i class="bi bi-list" style="font-size: 28px"></i>
+      </button>
 
-      <div
-        class="ms-auto d-flex align-items-center collapse navbar-collaspe"
-        id="navbarnav"
-      >
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a
-              class="nav-link text-white me-3"
-              routerLink="businessprofile"
-              style="cursor: pointer"
-              title="Profile"
-              routerLinkActive="active"
-            >
-              <i class="bi bi-person-circle" style="font-size: 28px"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link text-white"
-              style="cursor: pointer"
-              routerLink="/"
-              routerLinkActive="active"
-              (click)="logout()"
-              title="Logout"
-            >
-              <i class="bi bi-box-arrow-right" style="font-size: 28px"></i>
-            </a>
-          </li>
-        </ul>
+      <div class="ms-auto d-flex align-items-center collapse navbar-collaspe">
+        <a
+          class="nav-link text-white me-3"
+          routerLink="businessprofile"
+          style="cursor: pointer"
+          title="Profile"
+          routerLinkActive="active"
+        >
+          <i class="bi bi-person-circle" style="font-size: 28px"></i>
+        </a>
+
+        <a
+          class="nav-link text-white"
+          style="cursor: pointer"
+          routerLink="/"
+          routerLinkActive="active"
+          (click)="logout()"
+          title="Logout"
+        >
+          <i class="bi bi-box-arrow-right" style="font-size: 28px"></i>
+        </a>
       </div>
     </nav>
   </div>
@@ -53,31 +48,31 @@
                 onmouseover="this.style.background='#d4f8d4'"
                 onmouseout="this.style.background='transparent'"
               >
-              <i class="bi bi-people-fill"></i>
+                <i class="bi bi-people-fill"></i>
                 USERS
               </a>
             </li>
             <li class="mb-4">
               <a
                 routerLink="roles"
-                class="text-decoration-none fw-semibold d-block p-2 text-success "
+                class="text-decoration-none fw-semibold d-block p-2 text-success"
                 style="transition: 0.2s"
                 onmouseover="this.style.background='#d4f8d4'"
                 onmouseout="this.style.background='transparent'"
               >
-              <i class="bi bi-person-fill-gear"></i>
+                <i class="bi bi-person-fill-gear"></i>
                 ROLES
               </a>
             </li>
             <li class="mb-4">
               <a
                 routerLink="categories"
-                class="text-decoration-none fw-semibold d-block p-2 text-success "
+                class="text-decoration-none fw-semibold d-block p-2 text-success"
                 style="transition: 0.2s"
                 onmouseover="this.style.background='#d4f8d4'"
                 onmouseout="this.style.background='transparent'"
               >
-              <i class="bi bi-grid-fill"></i>
+                <i class="bi bi-grid-fill"></i>
                 CATEGORIES
               </a>
             </li>
@@ -85,12 +80,12 @@
             <li class="mb-4">
               <a
                 routerLink="units"
-                class="text-decoration-none fw-semibold d-block p-2 text-success "
+                class="text-decoration-none fw-semibold d-block p-2 text-success"
                 style="transition: 0.2s"
                 onmouseover="this.style.background='#d4f8d4'"
                 onmouseout="this.style.background='transparent'"
               >
-             <i class="bi bi-diagram-3-fill"></i>
+                <i class="bi bi-diagram-3-fill"></i>
                 UNITS
               </a>
             </li>

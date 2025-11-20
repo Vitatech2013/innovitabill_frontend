@@ -126,3 +126,22 @@ input[type="file"] {
   border-top: none;
 }
 /* table */
+
+
+
+/* edit */
+.choose-btn {
+  cursor: pointer;
+  background: whitesmoke;   
+  color: #fff;
+ border-radius: 12px;
+  
+}
+
+.choose-btn:hover {
+  background: #157347;
+}
+
+.choose-btn input {
+  display: none;
+}

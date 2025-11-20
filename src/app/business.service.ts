@@ -5,9 +5,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class BusinessService {
- 
-  
-  private baseUrl = 'http://localhost:3009';
+  // private baseUrl = 'http://localhost:3009';
+  private baseUrl = 'http://78.142.47.247:3009';
 
   constructor(private http: HttpClient) {}
 
@@ -27,7 +26,4 @@ export class BusinessService {
   getUsers() {
     return this.http.get(`${this.baseUrl}/user/getuser`);
   }
-
-
 }
-

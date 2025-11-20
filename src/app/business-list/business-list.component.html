@@ -1,27 +1,42 @@
 <div class="container-fluid">
   <div class="dashboard">
+    <div class="row mb-3">
+      <div class="col-12 position-relative">
+        <h4 class="mb-0 fw-bold text-success">Available Business List</h4>
+
+        <input
+          type="text"
+          class="form-control shadow-sm position-absolute top-50 start-50 translate-middle"
+          placeholder="Search by name, brand, or status..."
+          [(ngModel)]="searchTerm"
+          style="max-width: 300px"
+        />
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-12">
-        <div
-          class="table-responsive business-table-container rounded-3 p-3 bg-white"
-        >
-          <table class="table table-bordered align-middle business-table">
-            <thead class="table-success file-center align-middle">
+        <div class="table-responsive bg-white p-3 rounded-4">
+          <table class="table table-hover table-bordered align-middle">
+            <thead class="table-success text-center">
               <tr>
-                <th>Sl. No</th>
+                <th style="width: 70px">Sl. No</th>
                 <th>Business Name</th>
                 <th>Owner</th>
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Business Type</th>
                 <th>Status</th>
-                <th>Actions</th>
+                <th style="width: 140px">Actions</th>
               </tr>
             </thead>
 
             <tbody>
-              <tr *ngFor="let b of business; let i = index" class="table-row">
-                <td class="file-center fw-semibold">{{ i + 1 }}</td>
+              <tr
+                *ngFor="let b of business; let i = index"
+                class="align-middle"
+              >
+                <td class="text-center fw-semibold">{{ i + 1 }}</td>
                 <td>{{ b.business_name }}</td>
                 <td>{{ b.owner_name }}</td>
                 <td>{{ b.email }}</td>
@@ -30,7 +45,8 @@
 
                 <td>
                   <span
-                    class="badge "
+                    class="badge px-3 py-2"
+                   
                     [ngClass]="{
                       'bg-success': b.status === 'active',
                       'bg-warning': b.status === 'pending',
@@ -51,17 +67,19 @@
               </td> -->
                 <td class="file-center">
                   <button
-                    class="btn btn-sm btn-outline-info me-2"
+                    class="btn btn-sm btn-outline-info me-1"
                     (click)="openViewModal(b)"
                   >
                     <i class="bi bi-eye"></i>
                   </button>
+
                   <button
-                    class="btn btn-sm btn-outline-primary me-2"
+                    class="btn btn-sm btn-outline-primary me-1"
                     (click)="editBusiness(b)"
                   >
                     <i class="bi bi-pencil-square"></i>
                   </button>
+
                   <button
                     class="btn btn-sm btn-outline-danger"
                     (click)="openDeleteModal(b._id)"
@@ -70,6 +88,12 @@
                   </button>
                 </td>
               </tr>
+
+              <!-- <tr *ngIf="filteredItems().length === 0">
+                <td colspan="8" class="text-center text-muted py-3">
+                  No items found.
+                </td>
+              </tr> -->
             </tbody>
           </table>
         </div>
@@ -107,7 +131,7 @@
                     <th>Owner</th>
                     <th>Email</th>
                     <th>Phone</th>
-                    <th>Type</th>
+                    <th>Business Type</th>
                     <th>Address</th>
                     <th>Reg No</th>
                     <th>Status</th>
@@ -272,20 +296,34 @@
                     <option value="">Select Business Type</option>
                     <option
                       *ngFor="let type of businessTypes"
-                      [value]="type._id"
+                      [value]="type.bt_id"
                     >
                       {{ type.business_type }}
                     </option>
                   </select>
+                  <div
+                    *ngIf="
+                      BusinessForm.controls['bt_id']?.touched &&
+                      BusinessForm.controls['bt_id']?.invalid
+                    "
+                  >
+                    <small
+                      *ngIf="BusinessForm.controls['bt_id']?.errors?.['required']"
+                      class="text-danger"
+                    >
+                      Business Type is required</small
+                    >
+                  </div>
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">Status</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="status"
-                  />
+                  <select class="form-select" formControlName="status">
+                    <option value="">Select Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="pending">Pending</option>
+                  </select>
                 </div>
 
                 <div class="col-md-6">
@@ -324,45 +362,87 @@
               <h6 class="fw-bold text-success mb-3 mt-4">Documents</h6>
               <div class="row g-3">
                 <div class="col-md-6">
-                  <label class="form-label fw-semibold">Logo Image</label>
-                  <input
-                    type="file"
-                    class="form-control"
-                    formControlName="logo_image"
-                    accept="image/*"
-                  />
+                  <label class="form-label fw-semibold">LOGO</label>
+
+                  <div class="input-group">
+                    <label class="input-group-text choose-btn text-dark">
+                      Choose File
+                      <input
+                        type="file"
+                        class="d-none"
+                        (change)="onCustomFileSelect($event, 'logo_image')"
+                      />
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="selectedBusiness?.logo_image || 'No file chosen'"
+                      readonly
+                    />
+                  </div>
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">PAN</label>
-                  <input
-                    type="file"
-                    class="form-control"
-                    formControlName="pan_pdf"
-                    accept=".pdf,image/*"
-                  />
+                  <div class="input-group">
+                    <label class="input-group-text choose-btn text-dark">
+                      Choose File
+                      <input
+                        type="file"
+                        class="d-none"
+                        (change)="onCustomFileSelect($event, 'pan_pdf')"
+                      />
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="selectedBusiness?.pan_pdf || 'No file chosen'"
+                      readonly
+                    />
+                  </div>
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">Aadhar</label>
-                  <input
-                    type="file"
-                    class="form-control"
-                    formControlName="aadhar_pdf"
-                    accept=".pdf,image/*"
-                  />
+                  <div class="input-group">
+                    <label class="input-group-text choose-btn text-dark">
+                      Choose File
+                      <input
+                        type="file"
+                        class="d-none"
+                        (change)="onCustomFileSelect($event, 'aadhar_pdf')"
+                      />
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="selectedBusiness?.aadhar_pdf || 'No file chosen'"
+                      readonly
+                    />
+                  </div>
                 </div>
 
                 <div class="col-md-6">
-                  <label class="form-label fw-semibold"
-                    >Incorporation Certificate</label
-                  >
-                  <input
-                    type="file"
-                    class="form-control"
-                    formControlName="certificate_pdf"
-                    accept=".pdf,image/*"
-                  />
+                  <label class="form-label fw-semibold">Certificate</label>
+
+                  <div class="input-group">
+                    <label class="input-group-text choose-btn text-dark">
+                      Choose File
+                      <input
+                        type="file"
+                        class="d-none"
+                        (change)="onCustomFileSelect($event, 'certificate_pdf')"
+                      />
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="
+                        selectedBusiness?.certificate_pdf || 'No file chosen'
+                      "
+                      readonly
+                    />
+                  </div>
                 </div>
               </div>
             </form>
@@ -376,6 +456,7 @@
             >
               Cancel
             </button>
+
             <button
               type="button"
               class="btn btn-success px-4"
