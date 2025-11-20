@@ -1,27 +1,42 @@
 <div class="container-fluid">
   <div class="dashboard">
+    <div class="row mb-3">
+      <div class="col-12 position-relative">
+        <h4 class="mb-0 fw-bold text-success">Available Business List</h4>
+
+        <input
+          type="text"
+          class="form-control shadow-sm position-absolute top-50 start-50 translate-middle"
+          placeholder="Search by name, brand, or status..."
+          [(ngModel)]="searchTerm"
+          style="max-width: 300px"
+        />
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-12">
-        <div
-          class="table-responsive business-table-container rounded-3 p-3 bg-white"
-        >
-          <table class="table table-bordered align-middle business-table">
-            <thead class="table-success file-center align-middle">
+        <div class="table-responsive bg-white p-3 rounded-4">
+          <table class="table table-hover table-bordered align-middle">
+            <thead class="table-success text-center">
               <tr>
-                <th>Sl. No</th>
+                <th style="width: 70px">Sl. No</th>
                 <th>Business Name</th>
                 <th>Owner</th>
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Business Type</th>
                 <th>Status</th>
-                <th>Actions</th>
+                <th style="width: 140px">Actions</th>
               </tr>
             </thead>
 
             <tbody>
-              <tr *ngFor="let b of business; let i = index" class="table-row">
-                <td class="file-center fw-semibold">{{ i + 1 }}</td>
+              <tr
+                *ngFor="let b of business; let i = index"
+                class="align-middle"
+              >
+                <td class="text-center fw-semibold">{{ i + 1 }}</td>
                 <td>{{ b.business_name }}</td>
                 <td>{{ b.owner_name }}</td>
                 <td>{{ b.email }}</td>
@@ -30,7 +45,7 @@
 
                 <td>
                   <span
-                    class="badge file-dark"
+                    class="badge px-3 py-2"
                     [ngClass]="{
                       'bg-success': b.status === 'Active',
                       'bg-warning': b.status === 'Pending',
@@ -40,27 +55,22 @@
                     {{ b.status }}
                   </span>
                 </td>
-                <!-- <td class="file-center">
-                <img
-                  [src]="getImageUrl(b.logo_image)"
-                  alt="Business Logo"
-                  class="img-thumbnail business-logo"
-                  (click)="openImageModal(getImageUrl(b.logo_image))"
-                />
-              </td> -->
-                <td class="file-center">
+
+                <td class="text-center">
                   <button
-                    class="btn btn-sm btn-outline-info me-2"
+                    class="btn btn-sm btn-outline-info me-1"
                     (click)="openViewModal(b)"
                   >
                     <i class="bi bi-eye"></i>
                   </button>
+
                   <button
-                    class="btn btn-sm btn-outline-primary me-2"
+                    class="btn btn-sm btn-outline-primary me-1"
                     (click)="editBusiness(b)"
                   >
                     <i class="bi bi-pencil-square"></i>
                   </button>
+
                   <button
                     class="btn btn-sm btn-outline-danger"
                     (click)="openDeleteModal(b._id)"
@@ -69,6 +79,12 @@
                   </button>
                 </td>
               </tr>
+
+              <!-- <tr *ngIf="filteredItems().length === 0">
+                <td colspan="8" class="text-center text-muted py-3">
+                  No items found.
+                </td>
+              </tr> -->
             </tbody>
           </table>
         </div>

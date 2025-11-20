@@ -32,6 +32,8 @@ export class BusinessListComponent implements OnInit {
   businessTypes: any[] = [];
   statusList: any;
   b: any;
+  searchTerm: string = '';
+  items: any[] = [];
 
   constructor(private fb: FormBuilder, private api: BillingService) {}
 
@@ -194,6 +196,18 @@ export class BusinessListComponent implements OnInit {
       },
     });
   }
+
+filteredItems() {
+    if (!this.searchTerm) return this.items;
+    const term = this.searchTerm.toLowerCase();
+    return this.items.filter((it) =>
+      Object.values(it).some((val) =>
+        val?.toString().toLowerCase().includes(term)
+      )
+    );
+  }
+
+
 
   onCustomFileSelect(event: any, field: string) {
     const file = event.target.files[0];
