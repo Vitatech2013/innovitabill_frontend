@@ -13,7 +13,7 @@ export class BusinessDashboardComponent implements OnInit {
 
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
-  isSidebarOpen: any;
+isSidebarOpen: boolean = false;
 
   constructor(private router: Router) {}
 
@@ -31,9 +31,11 @@ export class BusinessDashboardComponent implements OnInit {
     setTimeout(() => (this.toastMessage = null), 3000);
   }
 
-  toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
-  }
+ 
+toggleSidebar() {
+  this.isSidebarOpen = !this.isSidebarOpen;
+}
+
 
   // logout() {
   //   localStorage.removeItem('user');
