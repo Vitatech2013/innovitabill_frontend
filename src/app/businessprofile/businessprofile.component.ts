@@ -20,7 +20,7 @@ export class BusinessprofileComponent implements OnInit {
   previewUrl: string | ArrayBuffer | null = null;
   superadmin_id: any;
 
-  // ✅ FIXED: Address fields array (used in HTML *ngFor)
+ 
   addressFields = [
     { name: "house_No", label: "House No" },
     { name: "town_Name", label: "Town Name" },
@@ -85,15 +85,15 @@ this.superadmin_id = stored?._id || null;
 
           this.BusinessData = res?.data || res;
 
-          // FIXED IMAGE URL
+         
           this.previewUrl = this.BusinessData?.image
             ? `http://localhost:3003/uploads/${this.BusinessData.image}`
             : null;
 
-          // Patch main form
+       
           this.BusinessprofileForm.patchValue(this.BusinessData);
 
-          // Patch nested address
+        
           if (this.BusinessData.address) {
             this.BusinessprofileForm.get("address")?.patchValue(this.BusinessData.address);
           }
@@ -103,20 +103,25 @@ this.superadmin_id = stored?._id || null;
   }
 
   onImageSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedImage = file;
-      const reader = new FileReader();
-      reader.onload = () => (this.previewUrl = reader.result);
-      reader.readAsDataURL(file);
-    }
-  }
+  const file = event.target.files[0];
+  if (!file) return;
 
-  getImageUrl(image: string): string {
-    return image
-      ? `http://localhost:3003/uploads/${image}`
-      : 'assets/default-profile.png';
-  }
+  this.selectedImage = file;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    this.previewUrl = reader.result; 
+  };
+
+  reader.readAsDataURL(file);
+}
+
+getImageUrl(image: string): string {
+  return image
+    ? `http://localhost:3009/uploads/${image}`
+    : 'assets/default-profile.png';
+}
+
 
   updateadminprofile() {
   if (this.BusinessprofileForm.invalid) {
@@ -126,20 +131,19 @@ this.superadmin_id = stored?._id || null;
 
   const formData = new FormData();
 
-  // Append all non-address fields
+  
   Object.keys(this.BusinessprofileForm.controls).forEach(key => {
     if (key !== "address") {
       formData.append(key, this.BusinessprofileForm.get(key)?.value);
     }
   });
 
-  // Address group
   formData.append(
     "address",
     JSON.stringify(this.BusinessprofileForm.get("address")?.value)
   );
 
-  // Logo image
+ 
   if (this.selectedImage) {
     formData.append("logo_image", this.selectedImage);
   }
@@ -148,7 +152,7 @@ this.superadmin_id = stored?._id || null;
     .subscribe({
       next: (res: any) => {
         alert("Profile updated successfully!");
-        this.fetchData(); // reload UI
+        this.fetchData(); 
       },
       error: (err: any) => {
         console.error("Update failed:", err);

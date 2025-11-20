@@ -1,36 +1,37 @@
+/* Sidebar default (desktop) */
 .sidebar {
-  transition: all 0.3s ease-in-out;
+  width: 230px;
+  transition: 0.3s ease-in-out;
 }
 
-/* Mobile view */
+/* Mobile sidebar hidden */
 @media (max-width: 768px) {
   .sidebar {
     position: fixed;
-    top: 56px;
-    left: -250px;
-    width: 250px;
-    height: calc(100vh - 56px);
-    background-color: #f8f9fa;
+    left: -230px;
+    top: 0;
+    height: 100%;
     z-index: 1050;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
   }
 
+  /* When sidebar is open */
   .sidebar.show-sidebar {
     left: 0;
   }
 
+  /* Dark overlay on mobile */
   .sidebar-overlay {
     position: fixed;
-    top: 56px;
+    top: 0;
     left: 0;
     width: 100%;
-    height: calc(100vh - 56px);
-    background: rgba(0, 0, 0, 0.4);
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
     z-index: 1040;
   }
 
+  /* Content pushes slightly */
   .content-area {
-    flex: 1;
-    width: 100%;
+    margin-left: 0 !important;
   }
 }

@@ -22,12 +22,10 @@ export class BusinessListComponent implements OnInit {
   business: any[] = [];
   BusinessForm!: FormGroup;
   selectedBusiness: any = null;
-  isEditing = false;
   deleteId: string | null = null;
   s_id: any;
   selectedImage: string | undefined;
   selectedFiles: Record<string, File> = {};
-  logofile: File | null = null;
 
   businessTypes: any[] = [];
   statusList: any;
@@ -38,13 +36,6 @@ export class BusinessListComponent implements OnInit {
   constructor(private fb: FormBuilder, private api: BillingService) {}
 
   ngOnInit(): void {
-    const businesslist = localStorage.getItem('satoken');
-    if (businesslist) {
-      const bid = JSON.parse(businesslist);
-      this.business = bid._id || '';
-      console.log('businessID:', this.business);
-    }
-
     this.BusinessForm = this.fb.group({
       business_name: ['', [Validators.required, Validators.minLength(3)]],
       owner_name: ['', [Validators.required, Validators.minLength(3)]],
@@ -61,9 +52,10 @@ export class BusinessListComponent implements OnInit {
       pan_pdf: [''],
       aadhar_pdf: [''],
       certificate_pdf: [''],
+      bt_id: ['', Validators.required],
     });
-    this.loadBusinessTypes();
 
+    this.loadBusinessTypes();
     this.loadBusiness();
   }
 
@@ -75,19 +67,19 @@ export class BusinessListComponent implements OnInit {
   loadBusiness() {
     this.api.getBusiness().subscribe({
       next: (res: any) => {
-        console.log('Business fetched:', res);
         this.business = res.data || [];
       },
       error: (err) => console.error('Error loading business:', err),
     });
   }
 
-  openImageModal(imageUrl: string) {
-    this.selectedImage = imageUrl || 'assets/default-business.jpg';
-    const modal = new bootstrap.Modal(
-      document.getElementById('imagePreviewModal')
-    );
-    modal.show();
+  loadBusinessTypes() {
+    this.api.getBusinessTypes().subscribe({
+      next: (res: any) => {
+        this.businessTypes = res.data || [];
+      },
+      error: (err: any) => console.error('Error fetching business types:', err),
+    });
   }
 
   openViewModal(b: any) {
@@ -97,8 +89,8 @@ export class BusinessListComponent implements OnInit {
   }
 
   editBusiness(b: any) {
-    console.log('Edit data:', b);
     this.s_id = b._id;
+
     const fullAddress =
       `${b.address.house_No}, ${b.address.town_Name}, ${b.address.mandal_Name}, ` +
       `${b.address.district_Name}, ${b.address.state} - ${b.address.pincode}`;
@@ -179,21 +171,20 @@ export class BusinessListComponent implements OnInit {
       }
     });
 
+    // Append selected files
     for (const key of Object.keys(this.selectedFiles)) {
       formData.append(key, this.selectedFiles[key]);
     }
 
-    console.log('Updating business:', this.s_id, formData);
+    // Ensure bt_id is included
+    formData.append('bt_id', this.BusinessForm.get('business_type')?.value);
 
     this.api.updateBusiness(this.s_id, formData).subscribe({
       next: (res: any) => {
-        console.log(' Business updated:', res);
         this.loadBusiness();
         this.closeModal('editBusinessModal');
       },
-      error: (err) => {
-        console.error('Error updating business:', err);
-      },
+      error: (err) => console.error('Error updating business:', err),
     });
   }
 
@@ -229,12 +220,11 @@ filteredItems() {
   deleteBusiness(id?: string | null) {
     if (!id) return;
     this.api.deletebusiness(id).subscribe({
-      next: (res: any) => {
-        console.log(' Business deleted:', res);
+      next: () => {
         this.loadBusiness();
         this.closeModal('deleteBusinessModal');
       },
-      error: (err) => console.error(' Error deleting business:', err),
+      error: (err) => console.error('Error deleting business:', err),
     });
   }
 
@@ -244,5 +234,28 @@ filteredItems() {
       const modal = bootstrap.Modal.getInstance(modalEl);
       if (modal) modal.hide();
     }
+  }
+
+  getImageUrl(path: string): string {
+    if (!path) return 'assets/default-business.jpg';
+    const cleanPath = path.replace(/\\/g, '/');
+    return cleanPath.includes('business_images/')
+      ? `http://localhost:3009/${cleanPath}`
+      : `http://localhost:3009/business_images/${cleanPath}`;
+  }
+
+  getFileUrl(path: string): string {
+    if (!path) return '#';
+    const cleanPath = path.replace(/\\/g, '/');
+    return cleanPath.includes('business_images/')
+      ? `http://localhost:3009/${cleanPath}`
+      : `http://localhost:3009/business_images/${cleanPath}`;
+  }
+  openImageModal(imageUrl: string) {
+    this.selectedImage = imageUrl || 'assets/default-business.jpg';
+    const modal = new bootstrap.Modal(
+      document.getElementById('imagePreviewModal')
+    );
+    modal.show();
   }
 }
