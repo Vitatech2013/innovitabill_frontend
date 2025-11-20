@@ -31,7 +31,7 @@ export class BusinessListComponent implements OnInit {
 
   businessTypes: any[] = [];
   statusList: any;
-b: any;
+  b: any;
 
   constructor(private fb: FormBuilder, private api: BillingService) {}
 
@@ -48,12 +48,12 @@ b: any;
       owner_name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required, Validators.minLength(10)]],
-     bt_id: ['', Validators.required],
+      bt_id: ['', Validators.required],
 
       address: ['', [Validators.required, Validators.minLength(3)]],
       registration_number: ['', [Validators.required, Validators.minLength(3)]],
       gst_number: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(3)]],
+      password: [''],
       status: ['', [Validators.required]],
       logo_image: [''],
       pan_pdf: [''],
@@ -61,7 +61,7 @@ b: any;
       certificate_pdf: [''],
     });
     this.loadBusinessTypes();
-    
+
     this.loadBusiness();
   }
 
@@ -107,16 +107,15 @@ b: any;
       email: b.email,
       phone_number: b.phone_number,
       password: '',
-       bt_id: b.bt_id?.bt_id,
+      bt_id: b.bt_id?.bt_id,
+
       address: fullAddress,
       registration_number: b.registration_number,
       gst_number: b.gst_number,
-    status: b.status?.toLowerCase(),
-
-
-
+      status: b.status || b.business_status || b.status?.status || "",
     });
-
+    this.selectedBusiness = b;
+    this.selectedFiles = {};
     if (this.logofile) {
       this.BusinessForm.get('logo_image')?.reset();
       this.BusinessForm.get('pan_pdf')?.reset();
@@ -149,7 +148,6 @@ b: any;
     console.log('Business Types:', this.businessTypes);
   }
 
-
   getImageUrl(path: string): string {
     if (!path) return 'assets/default-business.jpg';
     const cleanPath = path.replace(/\\/g, '/');
@@ -166,10 +164,9 @@ b: any;
       : `http://localhost:3009/business_images/${cleanPath}`;
   }
 
-   updateBusiness() {
+  updateBusiness() {
     const formData = new FormData();
 
-  
     Object.keys(this.BusinessForm.controls).forEach((key) => {
       if (
         !['logo_image', 'pan_pdf', 'aadhar_pdf', 'certificate_pdf'].includes(
@@ -180,7 +177,6 @@ b: any;
       }
     });
 
-  
     for (const key of Object.keys(this.selectedFiles)) {
       formData.append(key, this.selectedFiles[key]);
     }
@@ -197,6 +193,13 @@ b: any;
         console.error('Error updating business:', err);
       },
     });
+  }
+
+  onCustomFileSelect(event: any, field: string) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedBusiness[field] = file.name;
+    }
   }
 
   openDeleteModal(id: string) {

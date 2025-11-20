@@ -48,28 +48,26 @@
                   (click)="openImageModal(getImageUrl(b.logo_image))"
                 />
               </td> -->
-              <td class="file-center">
-                <button
-                  class="btn btn-sm btn-outline-info me-2"
-                  (click)="openViewModal(b)"
-                >
-                  <i class="bi bi-eye"></i>
-                </button>
-                <button
-                  class="btn btn-sm btn-outline-primary me-2"
-                  (click)="editBusiness(b)"
-                >
-                  <i class="bi bi-pencil-square"></i>
-                </button>
-                <button
-                  class="btn btn-sm btn-outline-danger"
-                  (click)="openDeleteModal(b._id)"
-                >
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            
-             
+                <td class="file-center">
+                  <button
+                    class="btn btn-sm btn-outline-info me-2"
+                    (click)="openViewModal(b)"
+                  >
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-primary me-2"
+                    (click)="editBusiness(b)"
+                  >
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="openDeleteModal(b._id)"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -126,8 +124,7 @@
                     <td>{{ selectedBusiness.owner_name }}</td>
                     <td>{{ selectedBusiness.email }}</td>
                     <td>{{ selectedBusiness.phone_number }}</td>
-                   <td>{{ selectedBusiness.bt_id?.business_type }}</td>
-
+                    <td>{{ selectedBusiness.bt_id?.business_type }}</td>
 
                     <td>
                       {{ selectedBusiness.address?.house_No }},
@@ -140,7 +137,7 @@
 
                     <td>{{ selectedBusiness.registration_number }}</td>
                     <td>
-                       <span
+                      <span
                         class="badge"
                         [ngClass]="{
                           'bg-success': selectedBusiness.status === 'Active',
@@ -150,7 +147,6 @@
                       >
                         {{ selectedBusiness.status }}
                       </span>
-
                     </td>
                     <td>{{ selectedBusiness.gst_number }}</td>
                     <td>
@@ -281,29 +277,30 @@
                       {{ type.business_type }}
                     </option>
                   </select>
-                   <div
-                *ngIf="
-                  BusinessForm.controls['bt_id']?.touched &&
-                  BusinessForm.controls['bt_id']?.invalid
-                "
-              >
-                <small
-                  *ngIf="BusinessForm.controls['bt_id']?.errors?.['required']"
-                  class="text-danger"
-                >
-                  Business Type is required</small
-                >
-              </div>
+                  <div
+                    *ngIf="
+                      BusinessForm.controls['bt_id']?.touched &&
+                      BusinessForm.controls['bt_id']?.invalid
+                    "
+                  >
+                    <small
+                      *ngIf="BusinessForm.controls['bt_id']?.errors?.['required']"
+                      class="text-danger"
+                    >
+                      Business Type is required</small
+                    >
+                  </div>
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">Status</label>
-                  <select class="form-control" formControlName="status">
+                 <select class="form-select" formControlName="status">
   <option value="">Select Status</option>
   <option value="active">Active</option>
   <option value="inactive">Inactive</option>
   <option value="pending">Pending</option>
 </select>
+
                 </div>
 
                 <div class="col-md-6">
@@ -342,66 +339,109 @@
               <h6 class="fw-bold text-success mb-3 mt-4">Documents</h6>
               <div class="row g-3">
                 <div class="col-md-6">
-                  <label class="form-label fw-semibold">Logo Image</label>
-                  <input
-                    type="file"
-                    class="form-control"
-                    formControlName="logo_image"
-                    accept="image/*"
-                  />
+                  <label class="form-label fw-semibold">LOGO</label>
+
+                  <div class="input-group">
+                    <label class="input-group-text choose-btn text-dark">
+                      Choose File
+                      <input
+                        type="file"
+                        class="d-none"
+                        (change)="onCustomFileSelect($event, 'logo_image')"
+                      />
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="selectedBusiness?.logo_image || 'No file chosen'"
+                      readonly
+                    />
+                  </div>
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">PAN</label>
-                  <input
-                    type="file"
-                    class="form-control"
-                    formControlName="pan_pdf"
-                    accept=".pdf,image/*"
-                  />
+                  <div class="input-group">
+                    <label class="input-group-text choose-btn text-dark">
+                      Choose File
+                      <input
+                        type="file"
+                        class="d-none"
+                        (change)="onCustomFileSelect($event, 'pan_pdf')"
+                      />
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="selectedBusiness?.pan_pdf || 'No file chosen'"
+                      readonly
+                    />
+                  </div>
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">Aadhar</label>
-                  <input
-                    type="file"
-                    class="form-control"
-                    formControlName="aadhar_pdf"
-                    accept=".pdf,image/*"
-                  />
+                  <div class="input-group">
+                    <label class="input-group-text choose-btn text-dark">
+                      Choose File
+                      <input
+                        type="file"
+                        class="d-none"
+                        (change)="onCustomFileSelect($event, 'aadhar_pdf')"
+                      />
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="selectedBusiness?.aadhar_pdf || 'No file chosen'"
+                      readonly
+                    />
+                  </div>
                 </div>
 
                 <div class="col-md-6">
-                  <label class="form-label fw-semibold"
-                    >Incorporation Certificate</label
-                  >
-                  <input
-                    type="file"
-                    class="form-control"
-                    formControlName="certificate_pdf"
-                    accept=".pdf,image/*"
-                  />
+                  <label class="form-label fw-semibold">Certificate</label>
+
+                  <div class="input-group">
+                    <label class="input-group-text choose-btn text-dark">
+                      Choose File
+                      <input
+                        type="file"
+                        class="d-none"
+                        (change)="onCustomFileSelect($event, 'certificate_pdf')"
+                      />
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="
+                        selectedBusiness?.certificate_pdf || 'No file chosen'
+                      "
+                      readonly
+                    />
+                  </div>
                 </div>
               </div>
             </form>
           </div>
 
-       <div class="modal-footer bg-white">
-  <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
-    Cancel
-  </button>
+          <div class="modal-footer bg-white">
+            <button
+              type="button"
+              class="btn btn-secondary px-4"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
 
-  <button
-  type="button"
-  class="btn btn-success px-4"
-  (click)="updateBusiness()"
-  [disabled]="!BusinessForm.valid"
->
-  Save Changes
-</button>
-
-</div>
-
+            <button
+              type="button"
+              class="btn btn-success px-4"
+              (click)="updateBusiness()"
+            >
+              Save Changes
+            </button>
+          </div>
         </div>
       </div>
     </div>
