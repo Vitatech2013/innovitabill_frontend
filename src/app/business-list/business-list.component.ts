@@ -28,6 +28,10 @@ export class BusinessListComponent implements OnInit {
   selectedFiles: Record<string, File> = {};
 
   businessTypes: any[] = [];
+  statusList: any;
+  b: any;
+  searchTerm: string = '';
+  items: any[] = [];
 
   constructor(private fb: FormBuilder, private api: BillingService) {}
 
@@ -37,11 +41,12 @@ export class BusinessListComponent implements OnInit {
       owner_name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required, Validators.minLength(10)]],
-      business_type: ['', Validators.required],
+      bt_id: ['', Validators.required],
+
       address: ['', [Validators.required, Validators.minLength(3)]],
       registration_number: ['', [Validators.required, Validators.minLength(3)]],
       gst_number: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(3)]],
+      password: [''],
       status: ['', [Validators.required]],
       logo_image: [''],
       pan_pdf: [''],
@@ -96,12 +101,21 @@ export class BusinessListComponent implements OnInit {
       email: b.email,
       phone_number: b.phone_number,
       password: '',
-      business_type: b.bt_id?._id || '', 
+      bt_id: b.bt_id?.bt_id,
+
       address: fullAddress,
       registration_number: b.registration_number,
       gst_number: b.gst_number,
-      status: b.status,
+      status: b.status || b.business_status || b.status?.status || "",
     });
+    this.selectedBusiness = b;
+    this.selectedFiles = {};
+    if (this.logofile) {
+      this.BusinessForm.get('logo_image')?.reset();
+      this.BusinessForm.get('pan_pdf')?.reset();
+      this.BusinessForm.get('aadhar_pdf')?.reset();
+      this.BusinessForm.get('certificate_pdf')?.reset();
+    }
 
     const modal = new bootstrap.Modal(
       document.getElementById('editBusinessModal')
@@ -111,7 +125,37 @@ export class BusinessListComponent implements OnInit {
 
   onFileSelect(event: any, controlName: string) {
     const file = event.target.files[0];
-    if (file) this.selectedFiles[controlName] = file;
+    if (file) {
+      this.selectedFiles[controlName] = file;
+      console.log('Selected file for', controlName, ':', file.name);
+    }
+  }
+
+  loadBusinessTypes() {
+    this.api.getBusinessTypes().subscribe({
+      next: (res: any) => {
+        this.businessTypes = res.data || [];
+        console.log('Business Types:', this.businessTypes);
+      },
+      error: (err: any) => console.error('Error fetching business types:', err),
+    });
+    console.log('Business Types:', this.businessTypes);
+  }
+
+  getImageUrl(path: string): string {
+    if (!path) return 'assets/default-business.jpg';
+    const cleanPath = path.replace(/\\/g, '/');
+    return cleanPath.includes('business_images/')
+      ? `http://localhost:3009/${cleanPath}`
+      : `http://localhost:3009/business_images/${cleanPath}`;
+  }
+
+  getFileUrl(path: string): string {
+    if (!path) return '#';
+    const cleanPath = path.replace(/\\/g, '/');
+    return cleanPath.includes('business_images/')
+      ? `http://localhost:3009/${cleanPath}`
+      : `http://localhost:3009/business_images/${cleanPath}`;
   }
 
   updateBusiness() {
@@ -142,6 +186,25 @@ export class BusinessListComponent implements OnInit {
       },
       error: (err) => console.error('Error updating business:', err),
     });
+  }
+
+filteredItems() {
+    if (!this.searchTerm) return this.items;
+    const term = this.searchTerm.toLowerCase();
+    return this.items.filter((it) =>
+      Object.values(it).some((val) =>
+        val?.toString().toLowerCase().includes(term)
+      )
+    );
+  }
+
+
+
+  onCustomFileSelect(event: any, field: string) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedBusiness[field] = file.name;
+    }
   }
 
   openDeleteModal(id: string) {

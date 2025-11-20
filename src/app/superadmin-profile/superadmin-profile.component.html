@@ -4,7 +4,7 @@
     <div class="row align-items-center">
       <div class="col-md-4 text-center mb-3 mb-md-0">
         <img
-          [src]="getImageUrl(profile?.image)"
+          [src]="getImageUrl(superadminData?.image || previewUrl)"
           alt="Profile Image"
           class="img-fluid rounded-circle shadow-sm"
           width="150"
@@ -127,7 +127,7 @@
             >
               <label for="fileInput" style="cursor: pointer">
                 <img
-                  [src]="getImageUrl(profile?.image)"
+                  [src]="getImageUrl(superadminData?.image || previewUrl)"
                   alt="Profile Image"
                   class="img-fluid rounded-circle shadow-sm"
                   width="150"

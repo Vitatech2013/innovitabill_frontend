@@ -26,6 +26,11 @@ export class BillingService {
 
  
 
+
+
+
+
+
   SuperAdminLogin(data: any) {
     return this.http.post(`${this.baseUrl}/superadmin/superadminlogin`, data);
   }
@@ -57,10 +62,10 @@ export class BillingService {
 profileupdate(formData: FormData, id: string) {
   return this.http.put(`${this.baseUrl}/superadmin/superadminupdate/${id}`, formData);
 }
-getadminprofile(id: string) {
-  return this.http.get(`${this.baseUrl}/superadmin/superadminprofile/${id}`);
-}
 
+  getadminprofile(id: string) {
+    return this.http.get(`${this.baseUrl}/superadmin/superadminprofile/${id}`);
+  }
   getBusinessTypes() {
     return this.http.get(`${this.baseUrl}/btypes/getbtypes`);
   }

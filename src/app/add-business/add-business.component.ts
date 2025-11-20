@@ -22,17 +22,8 @@ export class AddBusinessComponent implements OnInit {
   selectedFiles: { [key: string]: File } = {};
   superadmin_id: string = '';
   selectedBusiness: any;
-  businessTypes: any[] = [
-    'Restaurant',
-    'Retail',
-    'E-commerce',
-    'Education',
-    'Healthcare',
-    'Technology',
-    'Real Estate',
-    'Manufacturing',
-  ];
- 
+  businessTypes: any[] = [];
+
   addressFields = [
     { label: 'House No', name: 'house_No' },
     { label: 'Town Name', name: 'town_Name' },
@@ -41,7 +32,6 @@ export class AddBusinessComponent implements OnInit {
     { label: 'State', name: 'state' },
     { label: 'Pincode', name: 'pincode' },
   ];
-  
 
   constructor(
     private api: BillingService,
@@ -68,7 +58,7 @@ export class AddBusinessComponent implements OnInit {
       registration_number: ['', [Validators.required, Validators.minLength(3)]],
       gst_number: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(3)]],
-     
+
       address: this.fb.group({
         house_No: ['', [Validators.required, Validators.minLength(3)]],
         town_Name: ['', [Validators.required, Validators.minLength(3)]],
@@ -83,7 +73,6 @@ export class AddBusinessComponent implements OnInit {
       certificate_pdf: [''],
     });
     this.loadBusinessTypes();
-   
   }
   loadBusinessTypes() {
     this.api.getBusinessTypes().subscribe({
@@ -95,8 +84,6 @@ export class AddBusinessComponent implements OnInit {
     });
     console.log('Business Types:', this.businessTypes);
   }
-
- 
 
   isInvalid(controlName: string): boolean {
     const control = this.addBusinessForm.get(controlName);
@@ -116,10 +103,10 @@ export class AddBusinessComponent implements OnInit {
   }
 
   saveBusiness() {
-    if (!this.superadmin_id) {
-      console.error('Superadmin ID missing. Please login again.');
-      return;
-    }
+    // if (!this.superadmin_id) {
+    //   console.error('Superadmin ID missing. Please login again.');
+    //   return;
+    // }
 
     if (this.addBusinessForm.invalid) {
       alert('Please fill all required fields correctly.');
@@ -131,20 +118,26 @@ export class AddBusinessComponent implements OnInit {
     Object.keys(this.addBusinessForm.controls).forEach((key) => {
       const control = this.addBusinessForm.get(key);
 
-      if (key === 'address' && control instanceof FormGroup) {
-        const addressValue = control.value;
-        formData.append('address', JSON.stringify(addressValue));
-      } else if (control && control.value) {
-        formData.append(key, control.value);
+      //       if (key === 'address' && control instanceof FormGroup) {
+      //         const addressValue = control.value;
+      // const addr = this.addBusinessForm.get('address')?.value;
+      // formData.append('address', JSON.stringify(addr));
+
+      //       } else if (control && control.value) {
+      //         formData.append(key, control.value);
+      //       }
+      if (key === 'address') {
+        const addr = control?.value;
+        formData.append('address', JSON.stringify(addr)); 
+      } else {
+        formData.append(key, control?.value);
       }
     });
 
     formData.append('superadmin_id', this.superadmin_id);
 
     for (const key in this.selectedFiles) {
-      if (this.selectedFiles[key]) {
-        formData.append(key, this.selectedFiles[key]);
-      }
+      formData.append(key, this.selectedFiles[key]);
     }
 
     for (const [key, value] of (formData as any).entries()) {
@@ -161,7 +154,11 @@ export class AddBusinessComponent implements OnInit {
       },
       error: (err) => {
         console.error('Add failed:', err);
-        alert('Failed to add business. Please check the console.');
+        if (err?.error?.missing_fields) {
+          alert('Missing fields: ' + err.error.missing_fields.join(', '));
+        } else {
+          alert('Failed to register business.');
+        }
       },
     });
   }
