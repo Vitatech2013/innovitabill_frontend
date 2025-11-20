@@ -29,9 +29,10 @@
           <th>#</th>
           <th>Invoice No</th>
           <th>Customer Name</th>
+          
           <th>Quantity</th>
           <th>Price</th>
-          <th>Total</th>
+          <!-- <th>Total</th> -->
           <th>Grand total</th>
           <th>Status</th>
           <th>Actions</th>
@@ -43,6 +44,7 @@
           <td>{{ sale.invoice_number }}</td>
 
           <td>{{ sale.customer_id?.name || "N/A" }}</td>
+         
 
           <td>
             <div *ngFor="let p of sale.product_ids">
@@ -54,9 +56,9 @@
             <div *ngFor="let p of sale.product_ids">₹{{ p.selling_price }}</div>
           </td>
 
-          <td>
+          <!-- <td>
             <div *ngFor="let p of sale.product_ids">₹{{ p.total }}</div>
-          </td>
+          </td> -->
 
           <td>₹{{ sale.grand_total }}</td>
 
@@ -69,7 +71,7 @@
               data-bs-target="#myEmptyModal"
               (click)="view(sale)"
             >
-              <b><i class="bi bi-pencil-square"></i></b>
+              <b><i class="bi bi-eye"></i></b>
             </button>
           </td>
         </tr>
@@ -121,14 +123,14 @@
                     formControlName="name"
                   />
                 </div>
-                <div class="col-md-4">
-                  <label class="form-label">Customer Name</label>
+                <!-- <div class="col-md-4">
+                  <label class="form-label">Item Name</label>
                   <input
                     type="text"
                     class="form-control p-2"
-                    formControlName="name"
+                    formControlName="item_name"
                   />
-                </div>
+                </div> -->
 
                 <!-- <div>
                   <label class="form-label">Item Id</label>
@@ -154,14 +156,14 @@
                     formControlName="selling_price"
                   />
                 </div>
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                   <label class="form-label">Total</label>
                   <input
                     type="text"
                     class="form-control p-2"
                     formControlName="total"
                   />
-                </div>
+                </div> -->
                 <div class="col-md-4">
                   <label class="form-label">Grand total</label>
                   <input

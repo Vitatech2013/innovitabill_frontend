@@ -26,6 +26,8 @@ export class ItemsComponent implements OnInit {
   subCategories: any[] = [];
   users: any[] = [];
   allSubCategories: any;
+  units: any;
+  users_id: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -37,7 +39,7 @@ export class ItemsComponent implements OnInit {
     this.addItemsForm = this.fb.group({
       item_name: ['', [Validators.required, Validators.minLength(3)]],
       item_code: ['', [Validators.required, Validators.minLength(3)]],
-      unit: ['', Validators.required],
+      unit_id: ['', [Validators.required]],
       purchase_price: ['', Validators.required],
       selling_price: ['', Validators.required],
       tax_rate: ['', Validators.required],
@@ -63,10 +65,24 @@ export class ItemsComponent implements OnInit {
       this.router.navigate(['SuperAdminLogin']);
       return;
     }
+     const storedUsers = localStorage.getItem('users');
+    if (storedUsers) {
+      const bid = JSON.parse(storedUsers);
+      this.users_id = bid._id || '';
+      console.log('Business ID:', this.users_id);
+    }
+
+    if (!this.users_id) {
+      alert('User Id missing. Please login again.');
+      this.router.navigate(['SuperAdminLogin']);
+      return;
+    }
+
 
     this.categoriesGet();
     this.subCategoriesGet();
     this.usersGet();
+    this.unitsGet();
   }
 
   categoriesGet() {
@@ -76,6 +92,17 @@ export class ItemsComponent implements OnInit {
         console.log('Categories:', this.categories);
       },
       error: (err: any) => console.error('Error loading categories:', err),
+    });
+  }
+
+  unitsGet() {
+    this.service.getUnits().subscribe({
+      next: (res: any) => {
+        console.log('Raw units response', res);
+        this.units = res.data || res;
+        console.log('Units:', this.units);
+      },
+      error: (err: any) => console.error('Error loading units:', err),
     });
   }
 
@@ -120,6 +147,7 @@ export class ItemsComponent implements OnInit {
 
     const formData = {
       ...f,
+       user_id: this.users_id,
       business_id: this.business_id,
       purchase_price: Number(f.purchase_price),
       selling_price: Number(f.selling_price),

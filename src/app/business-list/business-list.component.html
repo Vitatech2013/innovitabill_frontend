@@ -268,7 +268,7 @@
               <div class="row g-3 mb-3">
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">Business Type</label>
-                  <select class="form-select" formControlName="business_type">
+                  <select class="form-select" formControlName="bt_id">
                     <option value="">Select Business Type</option>
                     <option
                       *ngFor="let type of businessTypes"
@@ -380,7 +380,7 @@
               type="button"
               class="btn btn-success px-4"
               (click)="updateBusiness()"
-              [disabled]="!BusinessForm.valid"
+              
             >
               Save Changes
             </button>

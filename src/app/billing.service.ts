@@ -152,7 +152,7 @@ getadminprofile(id: string) {
     return this.http.post(`http://localhost:3009/items/additems`, formData);
   }
 
-  getCategories(Business_id: string) {
+  getCategories(business_id: string) {
     return this.http.get(`http://localhost:3009/categories/categoriesget`);
   }
   getSubCategories() {

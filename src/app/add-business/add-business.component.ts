@@ -32,7 +32,7 @@ export class AddBusinessComponent implements OnInit {
     'Real Estate',
     'Manufacturing',
   ];
- 
+
   addressFields = [
     { label: 'House No', name: 'house_No' },
     { label: 'Town Name', name: 'town_Name' },
@@ -41,7 +41,6 @@ export class AddBusinessComponent implements OnInit {
     { label: 'State', name: 'state' },
     { label: 'Pincode', name: 'pincode' },
   ];
-  
 
   constructor(
     private api: BillingService,
@@ -64,11 +63,11 @@ export class AddBusinessComponent implements OnInit {
       owner_name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required, Validators.minLength(10)]],
-      business_type: ['', [Validators.required, Validators.minLength(3)]],
+      bt_id: ['', Validators.required],
       registration_number: ['', [Validators.required, Validators.minLength(3)]],
       gst_number: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(3)]],
-     
+
       address: this.fb.group({
         house_No: ['', [Validators.required, Validators.minLength(3)]],
         town_Name: ['', [Validators.required, Validators.minLength(3)]],
@@ -83,7 +82,6 @@ export class AddBusinessComponent implements OnInit {
       certificate_pdf: [''],
     });
     this.loadBusinessTypes();
-   
   }
   loadBusinessTypes() {
     this.api.getBusinessTypes().subscribe({
@@ -95,8 +93,6 @@ export class AddBusinessComponent implements OnInit {
     });
     console.log('Business Types:', this.businessTypes);
   }
-
- 
 
   isInvalid(controlName: string): boolean {
     const control = this.addBusinessForm.get(controlName);
