@@ -42,6 +42,7 @@ export class ItemListComponent implements OnInit {
 
   users: any;
   categories: any[] = [];
+  units: any;
 
   constructor(
     private fb: FormBuilder,
@@ -62,13 +63,14 @@ export class ItemListComponent implements OnInit {
     this.categoriesGet();
     this.subCategoriesGet();
     this.usersGet();
+    this.unitsGet();
   }
 
   private initForm() {
     this.editForm = this.fb.group({
       brand_name: ['', [Validators.required, Validators.minLength(3)]],
       item_name: ['', [Validators.required, Validators.minLength(3)]],
-      unit: ['', [Validators.required]],
+      unit_id: ['', [Validators.required]],
       selling_price: ['', [Validators.required]],
       tax_rate: ['', [Validators.required]],
       stock_quantity: ['', [Validators.required]],
@@ -79,7 +81,7 @@ export class ItemListComponent implements OnInit {
       purchase_price: ['', Validators.required],
       category_id: ['', Validators.required],
       sub_category_id: ['', Validators.required],
-      user_id: ['', Validators.required],
+     
       min_stock_alert: ['', Validators.required],
     });
   }
@@ -110,14 +112,16 @@ export class ItemListComponent implements OnInit {
       brand_name: it.brand_name,
       stock_quantity: it.stock_quantity,
       selling_price: it.selling_price,
-      status: it.status,
+      status: it.status?.toLowerCase(),
       item_code: it.item_code,
-      unit: it.unit,
+      unit_id: it.unit_id?._id,
       purchase_price: it.purchase_price,
       tax_rate: it.tax_rate,
       description: it.description,
       discount: it.discount,
       min_stock_alert: it.min_stock_alert,
+      category_id: it.category_id?._id,
+      sub_category_id: it.sub_category_id?._id,
     });
     console.log('Editing item:', it);
     const modal = new bootstrap.Modal(document.getElementById('editItemModal'));
@@ -130,6 +134,17 @@ export class ItemListComponent implements OnInit {
         console.log('Categories:', this.categories);
       },
       error: (err: any) => console.error('Error loading categories:', err),
+    });
+  }
+
+  unitsGet() {
+    this.service.getUnits().subscribe({
+      next: (res: any) => {
+        console.log('Raw units response', res);
+        this.units = res.data || res;
+        console.log('Units:', this.units);
+      },
+      error: (err: any) => console.error('Error loading units:', err),
     });
   }
 

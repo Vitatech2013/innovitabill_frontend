@@ -54,7 +54,7 @@ export class AddBusinessComponent implements OnInit {
       owner_name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required, Validators.minLength(10)]],
-      business_type: ['', [Validators.required, Validators.minLength(3)]],
+      bt_id: ['', Validators.required],
       registration_number: ['', [Validators.required, Validators.minLength(3)]],
       gst_number: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(3)]],

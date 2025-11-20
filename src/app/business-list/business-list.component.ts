@@ -41,8 +41,6 @@ export class BusinessListComponent implements OnInit {
       owner_name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required, Validators.minLength(10)]],
-      bt_id: ['', Validators.required],
-
       address: ['', [Validators.required, Validators.minLength(3)]],
       registration_number: ['', [Validators.required, Validators.minLength(3)]],
       gst_number: ['', [Validators.required, Validators.minLength(3)]],
@@ -91,9 +89,9 @@ export class BusinessListComponent implements OnInit {
   editBusiness(b: any) {
     this.s_id = b._id;
 
-    const fullAddress =
-      `${b.address.house_No}, ${b.address.town_Name}, ${b.address.mandal_Name}, ` +
-      `${b.address.district_Name}, ${b.address.state} - ${b.address.pincode}`;
+    // const fullAddress =
+    //   `${b.address.house_No}, ${b.address.town_Name}, ${b.address.mandal_Name}, ` +
+    //   `${b.address.district_Name}, ${b.address.state} - ${b.address.pincode}`;
 
     this.BusinessForm.patchValue({
       business_name: b.business_name,
@@ -101,9 +99,8 @@ export class BusinessListComponent implements OnInit {
       email: b.email,
       phone_number: b.phone_number,
       password: '',
-      bt_id: b.bt_id?.bt_id,
-
-      address: fullAddress,
+      bt_id: b.bt_id?._id || b.bt_id,
+      address: JSON.stringify(b.address),
       registration_number: b.registration_number,
       gst_number: b.gst_number,
       status: b.status || b.business_status || b.status?.status || "",
@@ -167,17 +164,37 @@ export class BusinessListComponent implements OnInit {
           key
         )
       ) {
-        formData.append(key, this.BusinessForm.get(key)?.value || '');
+        let value = this.BusinessForm.get(key)?.value;
+
+        if (key === 'address') {
+          if (typeof value === 'object') {
+            value = JSON.stringify(value);
+          } else {
+            try {
+              JSON.parse(value);
+            } catch {
+              value = JSON.stringify({
+                house_No: '',
+                town_Name: '',
+                mandal_Name: '',
+                district_Name: '',
+                state: '',
+                pincode: '',
+              });
+            }
+          }
+        }
+        formData.append(key, value || '');
       }
     });
 
-    // Append selected files
     for (const key of Object.keys(this.selectedFiles)) {
       formData.append(key, this.selectedFiles[key]);
     }
 
-    // Ensure bt_id is included
-    formData.append('bt_id', this.BusinessForm.get('business_type')?.value);
+    for (const pair of (formData as any).entries()) {
+      console.log('formData ->', pair[0], pair[1]);
+    }
 
     this.api.updateBusiness(this.s_id, formData).subscribe({
       next: (res: any) => {
