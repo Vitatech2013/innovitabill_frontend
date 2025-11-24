@@ -30,6 +30,7 @@ export class SaleComponent implements OnInit {
   currentDate = new Date().toLocaleString();
   grandTotal = 0;
   searchTerm: string = '';
+  business_id: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -40,20 +41,23 @@ export class SaleComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const userData = JSON.parse(localStorage.getItem('user') || '{}');
-    this.Business_id = userData._id;
-    this.user_id = userData._id;
-    this.business = {
-      name: userData.business_name || 'My Business',
-      address: userData.address || 'Main Street, City',
-      gst_number: userData.gst_number || 'N/A',
-    };
-
-    if (!this.Business_id) {
-      alert('Business ID missing. Please login again.');
-      this.router.navigate(['SuperAdminLogin']);
-      return;
+    const storedUser = localStorage.getItem('business');
+    if (storedUser) {
+      const bid = JSON.parse(storedUser);
+      this.business_id = bid._id || '';
+      console.log('BusinessID:', this.business_id);
     }
+    const UserStored = localStorage.getItem('users');
+    if (UserStored) {
+      const u = JSON.parse(UserStored);
+      this.user_id = u._id || '';
+    }
+
+    // if (!this.Business_id) {
+    //   alert('Business ID missing. Please login again.');
+    //   this.router.navigate(['SuperAdminLogin']);
+    //   return;
+    // }
 
     this.customerForm = this.fb.group({
       name: [''],
@@ -68,7 +72,7 @@ export class SaleComponent implements OnInit {
   }
 
   getItems(): void {
-    this.service.getItems(this.Business_id).subscribe({
+    this.service.getItems(this.business_id).subscribe({
       next: (res: any) => {
         this.items = res.data || [];
       },
@@ -144,12 +148,12 @@ export class SaleComponent implements OnInit {
     const payload = {
       invoice_number: this.invoice_number,
       customer: this.customerForm.value,
-      business_id: this.Business_id,
+      business_id: this.business_id,
       user_id: this.user_id,
       discount: this.cartItems.reduce((sum, it) => sum + (it.discount || 0), 0),
       products: this.cartItems.map((it) => ({
         item_id: it._id,
-        item_name: it.item_name,
+
         quantity: it.cartQty,
         selling_price: it.selling_price,
         tax_rate: it.tax_rate,
@@ -170,9 +174,10 @@ export class SaleComponent implements OnInit {
         setTimeout(() => this.printBill('a4'), 200);
       },
       error: (err) => {
-        console.error(err);
+        console.log('PAYLOAD:', payload);
+        console.log('SERVER:', err.error);
         this.toastr.error(
-          'Failed to generate bill. Please try again.',
+          err.error?.message || 'Failed to generate bill.',
           'Error'
         );
       },

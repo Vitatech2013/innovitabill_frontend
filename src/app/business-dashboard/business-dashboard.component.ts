@@ -43,8 +43,8 @@ toggleSidebar() {
   //   this.router.navigate(['/businesslogin']);
   // }
    logout() {
-    localStorage.removeItem('user');
-    localStorage.removeItem('userToken')
+    localStorage.removeItem('business');
+    localStorage.removeItem('businessToken')
     this.router.navigate(['/businesslogin']);
   }
 }

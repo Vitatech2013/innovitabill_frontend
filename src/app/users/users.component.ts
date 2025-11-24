@@ -48,8 +48,7 @@ export class UsersComponent implements OnInit {
       phone_number: ['', Validators.required],
       password: ['', Validators.required],
       role_id: ['', Validators.required],
-      status:['',Validators.required],
-    
+      status: ['', Validators.required],
     });
 
     this.getUsers();
@@ -106,7 +105,7 @@ export class UsersComponent implements OnInit {
       id_proof: user.id_proof || user.id_proof,
       password: user.password || '',
       role_id: user.role_id?._id || user.role_id || '',
-      status: user.status ||user.status || user.status?.status || '',
+      status: user.status || user.status || user.status?.status || '',
     });
     (document.getElementById('UserModal') as any)?.classList.add('show');
   }
@@ -139,9 +138,9 @@ export class UsersComponent implements OnInit {
           this.getUsers();
           this.resetForm();
           const modal = bootstrap.Modal.getInstance(
-  document.getElementById('userModal')
-);
-modal?.hide();
+            document.getElementById('userModal')
+          );
+          modal?.hide();
         },
         error: (err) => {
           console.error('Update error', err);
@@ -162,6 +161,7 @@ modal?.hide();
         },
         error: (err) => {
           console.error('Create error', err);
+          console.log("Create error", err.error);
           this.showToast('Failed to add User', 'error');
         },
       });
