@@ -170,7 +170,7 @@
         <div class="modal-body p-4">
           <form
             [formGroup]="demoForm"
-            (ngSubmit)="getstarteddemo()"
+            
             enctype="multipart/form-data"
           >
             <div class="mb-3 text-start">
@@ -178,6 +178,7 @@
               <input
                 type="text"
                 class="form-control"
+                formControlName="name"
                 placeholder="Enter your name"
               />
             </div>
@@ -187,21 +188,34 @@
               <input
                 type="email"
                 class="form-control"
+                formControlName="email"
                 placeholder="Enter your email"
               />
             </div>
 
             <div class="mb-3 text-start">
+              <label class="form-label">phone</label>
+              <input
+                type="phone"
+                class="form-control"
+                formControlName="phone"
+                placeholder="Enter your phone"
+              />
+            </div>
+
+            
+              <div class="mb-3 text-start">
               <label class="form-label">Message</label>
               <textarea
                 class="form-control"
                 rows="3"
                 placeholder="Enter your message"
+                formControlName="message"
               ></textarea>
-            </div>
+              </div>
 
             <div class="text-end">
-              <button type="button" class="btn btn-success">Send Email</button>
+              <button type="button" class="btn btn-success" (click)="sendEmail()">Send Email</button>
             </div>
           </form>
         </div>

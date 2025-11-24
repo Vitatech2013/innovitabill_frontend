@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { BillingService } from '../billing.service';
+import { ToastrService } from 'ngx-toastr';
 
 declare var bootstrap: any;
 
@@ -22,20 +23,30 @@ export class BusinessListComponent implements OnInit {
   business: any[] = [];
   BusinessForm!: FormGroup;
   selectedBusiness: any = null;
+  isEditing = false;
   deleteId: string | null = null;
   s_id: any;
   selectedImage: string | undefined;
   selectedFiles: Record<string, File> = {};
-
+  logofile: File | null = null;
+businessID: string = ''
   businessTypes: any[] = [];
   statusList: any;
   b: any;
   searchTerm: string = '';
   items: any[] = [];
 
-  constructor(private fb: FormBuilder, private api: BillingService) {}
+  constructor(private fb: FormBuilder, private api: BillingService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
+   const businesslist = localStorage.getItem('sa');
+if (businesslist) {
+  const bid = JSON.parse(businesslist);
+  this.businessID = bid._id;   // <-- store ID separately
+  console.log('businessID:', this.businessID);
+}
+
+
     this.BusinessForm = this.fb.group({
       business_name: ['', [Validators.required, Validators.minLength(3)]],
       owner_name: ['', [Validators.required, Validators.minLength(3)]],
@@ -52,12 +63,18 @@ export class BusinessListComponent implements OnInit {
       pan_pdf: [''],
       aadhar_pdf: [''],
       certificate_pdf: [''],
-      bt_id: ['', Validators.required],
     });
-
     this.loadBusinessTypes();
+
     this.loadBusiness();
   }
+
+
+//   getBusinessTypeName(id: string) {
+//   const type = this.businessTypes.find(t => t._id === id);
+//   return type ? type.business_type : '';
+// }
+
 
   isInvalid(controlName: string): boolean {
     const control = this.BusinessForm.get(controlName);
@@ -67,19 +84,20 @@ export class BusinessListComponent implements OnInit {
   loadBusiness() {
     this.api.getBusiness().subscribe({
       next: (res: any) => {
-        this.business = res.data || [];
+        console.log('Business fetched:', res);
+        // this.business = res.data || [];
+          this.business = res.data;
       },
       error: (err) => console.error('Error loading business:', err),
     });
   }
 
-  loadBusinessTypes() {
-    this.api.getBusinessTypes().subscribe({
-      next: (res: any) => {
-        this.businessTypes = res.data || [];
-      },
-      error: (err: any) => console.error('Error fetching business types:', err),
-    });
+  openImageModal(imageUrl: string) {
+    this.selectedImage = imageUrl || 'assets/default-business.jpg';
+    const modal = new bootstrap.Modal(
+      document.getElementById('imagePreviewModal')
+    );
+    modal.show();
   }
 
   openViewModal(b: any) {
@@ -89,8 +107,8 @@ export class BusinessListComponent implements OnInit {
   }
 
   editBusiness(b: any) {
+    console.log('Edit data:', b);
     this.s_id = b._id;
-
     const fullAddress =
       `${b.address.house_No}, ${b.address.town_Name}, ${b.address.mandal_Name}, ` +
       `${b.address.district_Name}, ${b.address.state} - ${b.address.pincode}`;
@@ -101,9 +119,13 @@ export class BusinessListComponent implements OnInit {
       email: b.email,
       phone_number: b.phone_number,
       password: '',
-      bt_id: b.bt_id?.bt_id,
+      // bt_id: b.bt_id?._id,
+      // bt_id: b.bt_id?.bt_id,
+// bt_id: b.bt_id?._id || b.bt_id,
+bt_id: b.bt_id?._id || b.bt_id,
 
       address: fullAddress,
+      // address: JSON.stringify(b.address),
       registration_number: b.registration_number,
       gst_number: b.gst_number,
       status: b.status || b.business_status || b.status?.status || "",
@@ -146,47 +168,176 @@ export class BusinessListComponent implements OnInit {
     if (!path) return 'assets/default-business.jpg';
     const cleanPath = path.replace(/\\/g, '/');
     return cleanPath.includes('business_images/')
-      ? `http://localhost:3009/${cleanPath}`
-      : `http://localhost:3009/business_images/${cleanPath}`;
+      ? `http://78.142.47.247:3009/${cleanPath}`
+      : `http://78.142.47.247:3009/business_images/${cleanPath}`;
   }
 
   getFileUrl(path: string): string {
     if (!path) return '#';
     const cleanPath = path.replace(/\\/g, '/');
     return cleanPath.includes('business_images/')
-      ? `http://localhost:3009/${cleanPath}`
-      : `http://localhost:3009/business_images/${cleanPath}`;
+      ? `http://78.142.47.247:3009/${cleanPath}`
+      : `http://78.142.47.247:3009/business_images/${cleanPath}`;
   }
 
-  updateBusiness() {
-    const formData = new FormData();
+updateBusiness() {
+  const formData = new FormData();
 
-    Object.keys(this.BusinessForm.controls).forEach((key) => {
-      if (
-        !['logo_image', 'pan_pdf', 'aadhar_pdf', 'certificate_pdf'].includes(
-          key
-        )
-      ) {
-        formData.append(key, this.BusinessForm.get(key)?.value || '');
-      }
-    });
+  const businessForm = this.BusinessForm.value;
+  formData.append("business_name", businessForm.business_name || "");
+  formData.append("owner_name", businessForm.owner_name || "");
+  formData.append("email", businessForm.email || "");
+  formData.append("phone_number", businessForm.phone_number || "");
 
-    // Append selected files
-    for (const key of Object.keys(this.selectedFiles)) {
-      formData.append(key, this.selectedFiles[key]);
+ 
+  const btValue = businessForm.bt_id;
+  formData.append("bt_id", typeof btValue === "object" ? btValue._id : btValue || "");
+
+ 
+  const addr = businessForm.address;
+  let parsedAddress: any = {};
+
+  if (typeof addr === "string") {
+    const parts = addr.split(",");
+    parsedAddress = {
+      house_No: parts[0]?.trim() || "",
+      town_Name: parts[1]?.trim() || "",
+      mandal_Name: parts[2]?.trim() || "",
+      district_Name: parts[3]?.trim() || "",
+      state: parts[4]?.trim() || "",
+      pincode: parts[5]?.trim() || ""
+    };
+  }
+
+  formData.append("address", JSON.stringify(parsedAddress));
+
+  formData.append("registration_number", businessForm.registration_number || "");
+  formData.append("gst_number", businessForm.gst_number || "");
+  formData.append("status", businessForm.status || "");
+
+  if (businessForm.password) {
+    formData.append("password", businessForm.password);
+  }
+
+ 
+  Object.keys(this.selectedFiles).forEach((key) => {
+    formData.append(key, this.selectedFiles[key]);
+  });
+
+  console.log("Sending FormData:");
+  formData.forEach((value, key) => console.log(key, value));
+
+  this.api.updateBusiness(this.s_id, formData).subscribe({
+    next: (res) => {
+      this.toastr.success("Business updated successfully!");
+      this.loadBusiness();
+      this.closeModal("editBusinessModal");
+    },
+    error: (err) => {
+      console.error("Update Error:", err);
+      this.toastr.error("Update failed");
     }
+  });
+}
 
-    // Ensure bt_id is included
-    formData.append('bt_id', this.BusinessForm.get('business_type')?.value);
 
-    this.api.updateBusiness(this.s_id, formData).subscribe({
-      next: (res: any) => {
-        this.loadBusiness();
-        this.closeModal('editBusinessModal');
-      },
-      error: (err) => console.error('Error updating business:', err),
-    });
-  }
+
+// updateBusiness() {
+//   const formData = new FormData();
+
+//   const businessForm = this.BusinessForm.value;
+//   formData.append("business_name", businessForm.business_name || "");
+//   formData.append("owner_name", businessForm.owner_name || "");
+//   formData.append("email", businessForm.email || "");
+//   formData.append("phone_number", businessForm.phone_number || "");
+
+
+//   const btValue = businessForm.bt_id;
+//   formData.append("bt_id", typeof btValue === "object" ? btValue._id : btValue || "");
+
+  
+//   const addr = businessForm.address;
+//   let parsedAddress: any = {};
+
+//   if (typeof addr === "string") {
+//     const parts = addr.split(",");
+//     parsedAddress = {
+//       house_No: parts[0]?.trim() || "",
+//       town_Name: parts[1]?.trim() || "",
+//       mandal_Name: parts[2]?.trim() || "",
+//       district_Name: parts[3]?.trim() || "",
+//       state: parts[4]?.trim() || "",
+//       pincode: parts[5]?.trim() || ""
+//     };
+//   } else if (addr && typeof addr === "object") {
+//     parsedAddress = {
+//       house_No: addr.house_No || "",
+//       town_Name: addr.town_Name || "",
+//       mandal_Name: addr.mandal_Name || "",
+//       district_Name: addr.district_Name || "",
+//       state: addr.state || "",
+//       pincode: addr.pincode || ""
+//     };
+//   }
+
+//   formData.append("address", JSON.stringify(parsedAddress));
+
+  
+//   formData.append("registration_number", businessForm.registration_number || "");
+//   formData.append("gst_number", businessForm.gst_number || "");
+//   formData.append("status", businessForm.status || "");
+
+//   if (businessForm.password) {
+//     formData.append("password", businessForm.password);
+//   }
+
+// const satoken = localStorage.getItem('sa_token');
+//   if (!satoken) {
+//     this.toastr.error("Superadmin token missing. Please login again.");
+//     return;
+//   }
+
+//   let superadmin_id = '';
+//   try {
+//     const token = JSON.parse(satoken);
+//     superadmin_id = token?.data?._id || token?._id;
+//   } catch (err) {
+//     console.error("Token parsing error:", err);
+//   }
+
+//   if (!superadmin_id) {
+//     this.toastr.error("Superadmin ID missing. Please login again.");
+//     return;
+//   }
+
+ 
+//   if (this.selectedFiles && Object.keys(this.selectedFiles).length) {
+//     Object.keys(this.selectedFiles).forEach((key) => {
+//       formData.append(key, this.selectedFiles[key]);
+//     });
+//   }
+
+//   console.log("Sending FormData:");
+//   formData.forEach((value, key) => console.log(key, value));
+//   console.log("superadmin_id:", superadmin_id);
+
+ 
+//   this.api.updateBusiness(this.s_id, formData).subscribe({
+//     next: (res) => {
+//       this.toastr.success("Business updated successfully!");
+//       this.loadBusiness();
+//       this.closeModal("editBusinessModal");
+//     },
+//     error: (err) => {
+//       console.error("Update Error:", err);
+//       this.toastr.error("Update failed");
+//     }
+//   });
+// }
+
+
+
+
 
 filteredItems() {
     if (!this.searchTerm) return this.items;
@@ -203,7 +354,7 @@ filteredItems() {
   onCustomFileSelect(event: any, field: string) {
     const file = event.target.files[0];
     if (file) {
-      this.selectedBusiness[field] = file.name;
+       this.selectedFiles[field] = file;
     }
   }
 
@@ -220,11 +371,12 @@ filteredItems() {
   deleteBusiness(id?: string | null) {
     if (!id) return;
     this.api.deletebusiness(id).subscribe({
-      next: () => {
+      next: (res: any) => {
+        console.log(' Business deleted:', res);
         this.loadBusiness();
         this.closeModal('deleteBusinessModal');
       },
-      error: (err) => console.error('Error deleting business:', err),
+      error: (err) => console.error(' Error deleting business:', err),
     });
   }
 
@@ -234,28 +386,5 @@ filteredItems() {
       const modal = bootstrap.Modal.getInstance(modalEl);
       if (modal) modal.hide();
     }
-  }
-
-  getImageUrl(path: string): string {
-    if (!path) return 'assets/default-business.jpg';
-    const cleanPath = path.replace(/\\/g, '/');
-    return cleanPath.includes('business_images/')
-      ? `http://localhost:3009/${cleanPath}`
-      : `http://localhost:3009/business_images/${cleanPath}`;
-  }
-
-  getFileUrl(path: string): string {
-    if (!path) return '#';
-    const cleanPath = path.replace(/\\/g, '/');
-    return cleanPath.includes('business_images/')
-      ? `http://localhost:3009/${cleanPath}`
-      : `http://localhost:3009/business_images/${cleanPath}`;
-  }
-  openImageModal(imageUrl: string) {
-    this.selectedImage = imageUrl || 'assets/default-business.jpg';
-    const modal = new bootstrap.Modal(
-      document.getElementById('imagePreviewModal')
-    );
-    modal.show();
   }
 }

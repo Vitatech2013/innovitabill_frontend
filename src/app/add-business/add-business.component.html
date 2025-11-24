@@ -65,14 +65,15 @@
 
         <div class="col-md-4">
           <label class="form-label fw-semibold">Business Type<span class="text-danger">*</span></label>
-          <select class="form-select" formControlName="business_type">
+          <select class="form-select" formControlName="bt_id">
             <option value="">Select Business Type</option>
             <option
-              *ngFor="let type of businessTypes"
-              [value]="type.business_type"
-            >
-              {{ type.business_type }}
-            </option>
+  *ngFor="let type of businessTypes"
+  [value]="type._id"
+>
+  {{ type.business_type }}
+</option>
+
           </select>
         </div>
 

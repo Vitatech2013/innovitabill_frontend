@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet} from '@angular/router';
 import { BillingService } from '../billing.service';
 
 @Component({
@@ -17,8 +17,7 @@ import { BillingService } from '../billing.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterOutlet,
-    RouterLink,
+   RouterLink,
   ],
   templateUrl: './super-admin-login.component.html',
   styleUrl: './super-admin-login.component.css',
@@ -52,7 +51,7 @@ export class SuperAdminLoginComponent implements OnInit {
       next: (res: any) => {
         console.log(res, 'Super Admin Login Success');
 
-        // Save super admin data and token
+        
         localStorage.setItem('sa', JSON.stringify(res.data));
         localStorage.setItem('sa_token', res.token);
 
