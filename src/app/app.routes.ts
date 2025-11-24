@@ -25,6 +25,8 @@ import { SaleComponent } from './sale/sale.component';
 import { BusinessprofileComponent } from './businessprofile/businessprofile.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { SaleReportsComponent } from './sale-reports/sale-reports.component';
+import { BusinessForgotpasswordComponent } from './business-forgotpassword/business-forgotpassword.component';
+import { BusinessOtpComponent } from './business-otp/business-otp.component';
 
 export const routes: Routes = [
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
@@ -65,6 +67,8 @@ export const routes: Routes = [
   },
 
   { path: 'businesslogin', component: BusinessLoginComponent },
+  {path: 'business-Forgotpassword',component: BusinessForgotpasswordComponent},
+  {path: 'business-otp', component: BusinessOtpComponent},
   { path: 'businessRegister', component: BusinessRegisterComponent },
   {
     path: 'business-Dashboard',

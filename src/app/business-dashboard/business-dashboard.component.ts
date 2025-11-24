@@ -36,12 +36,6 @@ toggleSidebar() {
   this.isSidebarOpen = !this.isSidebarOpen;
 }
 
-
-  // logout() {
-  //   localStorage.removeItem('user');
-  //   localStorage.removeItem('userToken');
-  //   this.router.navigate(['/businesslogin']);
-  // }
    logout() {
     localStorage.removeItem('user');
     localStorage.removeItem('userToken')

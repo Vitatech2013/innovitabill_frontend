@@ -32,6 +32,7 @@ export class BusinessListComponent implements OnInit {
   b: any;
   searchTerm: string = '';
   items: any[] = [];
+  logofile: any;
 
   constructor(private fb: FormBuilder, private api: BillingService) {}
 
@@ -126,33 +127,6 @@ export class BusinessListComponent implements OnInit {
       this.selectedFiles[controlName] = file;
       console.log('Selected file for', controlName, ':', file.name);
     }
-  }
-
-  loadBusinessTypes() {
-    this.api.getBusinessTypes().subscribe({
-      next: (res: any) => {
-        this.businessTypes = res.data || [];
-        console.log('Business Types:', this.businessTypes);
-      },
-      error: (err: any) => console.error('Error fetching business types:', err),
-    });
-    console.log('Business Types:', this.businessTypes);
-  }
-
-  getImageUrl(path: string): string {
-    if (!path) return 'assets/default-business.jpg';
-    const cleanPath = path.replace(/\\/g, '/');
-    return cleanPath.includes('business_images/')
-      ? `http://localhost:3009/${cleanPath}`
-      : `http://localhost:3009/business_images/${cleanPath}`;
-  }
-
-  getFileUrl(path: string): string {
-    if (!path) return '#';
-    const cleanPath = path.replace(/\\/g, '/');
-    return cleanPath.includes('business_images/')
-      ? `http://localhost:3009/${cleanPath}`
-      : `http://localhost:3009/business_images/${cleanPath}`;
   }
 
   updateBusiness() {
