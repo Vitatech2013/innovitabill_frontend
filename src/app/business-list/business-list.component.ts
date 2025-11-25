@@ -72,14 +72,14 @@ export class BusinessListComponent implements OnInit {
     });
   }
 
-  loadBusinessTypes() {
-    this.api.getBusinessTypes().subscribe({
-      next: (res: any) => {
-        this.businessTypes = res.data || [];
-      },
-      error: (err: any) => console.error('Error fetching business types:', err),
-    });
-  }
+  // loadBusinessTypes() {
+  //   this.api.getBusinessTypes().subscribe({
+  //     next: (res: any) => {
+  //       this.businessTypes = res.data || [];
+  //     },
+  //     error: (err: any) => console.error('Error fetching business types:', err),
+  //   });
+  // }
 
   openViewModal(b: any) {
     this.selectedBusiness = b;
@@ -100,11 +100,11 @@ export class BusinessListComponent implements OnInit {
       email: b.email,
       phone_number: b.phone_number,
       password: '',
-      bt_id: b.bt_id?._id || b.bt_id,
-      address: JSON.stringify(b.address),
+      bt_id: b.bt_id ? b.bt_id._id || b.bt_id : '',
+     address: JSON.stringify(b.address),
       registration_number: b.registration_number,
       gst_number: b.gst_number,
-      status: b.status || b.business_status || b.status?.status || "",
+      status: b.status || b.business_status || b.status?.status || '',
     });
     this.selectedBusiness = b;
     this.selectedFiles = {};
@@ -129,6 +129,17 @@ export class BusinessListComponent implements OnInit {
     }
   }
 
+  loadBusinessTypes() {
+    this.api.getBusinessTypes().subscribe({
+      next: (res: any) => {
+        this.businessTypes = res.data || [];
+        console.log('Business Types:', this.businessTypes);
+      },
+      error: (err: any) => console.error('Error fetching business types:', err),
+    });
+    console.log('Business Types:', this.businessTypes);
+  }
+
   updateBusiness() {
     const formData = new FormData();
 
@@ -140,24 +151,15 @@ export class BusinessListComponent implements OnInit {
       ) {
         let value = this.BusinessForm.get(key)?.value;
 
-        if (key === 'address') {
-          if (typeof value === 'object') {
-            value = JSON.stringify(value);
-          } else {
-            try {
-              JSON.parse(value);
-            } catch {
-              value = JSON.stringify({
-                house_No: '',
-                town_Name: '',
-                mandal_Name: '',
-                district_Name: '',
-                state: '',
-                pincode: '',
-              });
-            }
-          }
+        if (key === 'bt_id' && !value) {
+          console.error('Error: bt_id cannot be empty');
+          return;
         }
+
+        if (key === 'address') {
+          value = JSON.stringify(value);
+        }
+
         formData.append(key, value || '');
       }
     });
@@ -179,7 +181,7 @@ export class BusinessListComponent implements OnInit {
     });
   }
 
-filteredItems() {
+  filteredItems() {
     if (!this.searchTerm) return this.items;
     const term = this.searchTerm.toLowerCase();
     return this.items.filter((it) =>
@@ -188,8 +190,6 @@ filteredItems() {
       )
     );
   }
-
-
 
   onCustomFileSelect(event: any, field: string) {
     const file = event.target.files[0];

@@ -46,7 +46,6 @@
                 <td>
                   <span
                     class="badge px-3 py-2"
-                   
                     [ngClass]="{
                       'bg-success': b.status === 'active',
                       'bg-warning': b.status === 'pending',
@@ -54,7 +53,6 @@
                     }"
                   >
                     {{ b.status | titlecase }}
-
                   </span>
                 </td>
                 <!-- <td class="file-center">
@@ -286,13 +284,10 @@
               <div class="row g-3 mb-3">
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">Business Type</label>
-                  <select class="form-select" formControlName="bt_id">
-                    <option value="">Select Business Type</option>
-                    <option
-                      *ngFor="let type of businessTypes"
-                      [value]="type.bt_id"
-                    >
-                      {{ type.business_type }}
+                  <select formControlName="bt_id" class="form-control">
+                    <option value="" disabled>Select Business Type</option>
+                    <option *ngFor="let t of businessTypes" [value]="t._id">
+                      {{ t.business_type }}
                     </option>
                   </select>
                   <div
@@ -455,7 +450,6 @@
               type="button"
               class="btn btn-success px-4"
               (click)="updateBusiness()"
-              
             >
               Save Changes
             </button>

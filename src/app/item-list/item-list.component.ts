@@ -52,7 +52,7 @@ export class ItemListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const storedUser = localStorage.getItem('user');
+    const storedUser = localStorage.getItem('business');
     if (storedUser) {
       const bid = JSON.parse(storedUser);
       this.business_id = bid._id || '';
@@ -81,7 +81,7 @@ export class ItemListComponent implements OnInit {
       purchase_price: ['', Validators.required],
       category_id: ['', Validators.required],
       sub_category_id: ['', Validators.required],
-     
+      // business_id: ['', Validators.required],
       min_stock_alert: ['', Validators.required],
     });
   }
@@ -138,7 +138,7 @@ export class ItemListComponent implements OnInit {
   }
 
   unitsGet() {
-    this.service.getUnits().subscribe({
+    this.service.getUnits(this.business_id).subscribe({
       next: (res: any) => {
         console.log('Raw units response', res);
         this.units = res.data || res;
@@ -181,7 +181,7 @@ export class ItemListComponent implements OnInit {
         this.toastr.error('Failed to update items.', 'Error', {
           positionClass: 'toast-top-center',
         });
-        console.error(err);
+        
       },
     });
   }
@@ -190,7 +190,7 @@ export class ItemListComponent implements OnInit {
     if (confirm(`Are you sure you want to delete ${it.item_name}?`)) {
       this.service.deleteItem(it._id).subscribe({
         next: () => {
-          alert(`${it.item_name} deleted successfully.`);
+          this.toastr.success(`${it.item_name} deleted successfully.`);
           this.loadItems();
         },
         error: (err: any) => console.error('Delete failed:', err),
@@ -216,14 +216,5 @@ export class ItemListComponent implements OnInit {
     const modal = new bootstrap.Modal(document.getElementById('ViewModal'));
     modal.show();
   }
-  // onCategoryChange(event: Event) {
-  //   const selectedCategoryId = (event.target as HTMLSelectElement).value;
-  //   this.subCategories = this.allSubCategories.filter(
-  //     (sub: any) =>
-  //       sub.category_id?._id === selectedCategoryId ||
-  //       sub.category_id === selectedCategoryId
-  //   );
-  //   this.editForm.patchValue({ category_id: selectedCategoryId });
-  //   console.log('Filtered subcategories:', this.subCategories);
-  // }
+
 }
