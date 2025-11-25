@@ -49,6 +49,7 @@ selectedUnit: any;
       unit: ['', Validators.required],
       user_id: [''],
       business_id: [''],
+      status:['']
     });
 
 
@@ -84,6 +85,8 @@ selectedUnit: any;
     this.UnitForm.patchValue({
       units_name: unit.units_name,
       unit: unit.unit,
+      status: unit.status || unit.business_status || unit.status?.status || "",
+
     });
     (document.getElementById('UnitModal') as any)?.classList.add('show');
   }

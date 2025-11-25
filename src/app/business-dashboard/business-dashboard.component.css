@@ -1,37 +1,13 @@
-/* Sidebar default (desktop) */
-.sidebar {
-  width: 230px;
-  transition: 0.3s ease-in-out;
+
+nav.navbar {
+  position: relative !important;
+  z-index: 2000 !important;
 }
 
-/* Mobile sidebar hidden */
-@media (max-width: 768px) {
-  .sidebar {
-    position: fixed;
-    left: -230px;
-    top: 0;
-    height: 100%;
-    z-index: 1050;
-  }
 
-  /* When sidebar is open */
-  .sidebar.show-sidebar {
-    left: 0;
-  }
-
-  /* Dark overlay on mobile */
-  .sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1040;
-  }
-
-  /* Content pushes slightly */
-  .content-area {
-    margin-left: 0 !important;
-  }
+.sidebar-overlay {
+  z-index: 1500 !important;
 }
+
+
+

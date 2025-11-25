@@ -53,6 +53,8 @@ export class BillingService {
     );
   }
 
+  //superadmin
+
   profileupdate(formData: FormData, id: string) {
     return this.http.put(
       `${this.baseUrl}/superadmin/superadminupdate/${id}`,
@@ -101,6 +103,10 @@ export class BillingService {
   addRole(newRole: any) {
     return this.http.post(`${this.baseUrl}/role/addrole`, newRole);
   }
+  updateRole(id: string, data: any) {
+    return this.http.put(`${this.baseUrl}/role/roleupdate/${id}`, data);
+  }
+
   deleteRole(id: string) {
     return this.http.delete(`${this.baseUrl}/role/roledelete/${id}`);
   }
