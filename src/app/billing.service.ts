@@ -6,12 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class BillingService {
-
-
   // private baseUrl = 'http://localhost:3009';
   private baseUrl = 'http://78.142.47.247:3009';
   constructor(private http: HttpClient) {}
-
 
   getSuperadminById(superadmin_id: string) {
     throw new Error('Method not implemented.');
@@ -23,13 +20,6 @@ export class BillingService {
   getAllBusiness() {
     throw new Error('Method not implemented.');
   }
-
- 
-
-
-
-
-
 
   SuperAdminLogin(data: any) {
     return this.http.post(`${this.baseUrl}/superadmin/superadminlogin`, data);
@@ -45,23 +35,32 @@ export class BillingService {
     return this.http.get<any[]>(`${this.baseUrl}/business/businessget`);
   }
   updateBusiness(id: string, value: any) {
-     return this.http.put(`${this.baseUrl}/business/businessupdate/${id}`, value);
+    return this.http.put(
+      `${this.baseUrl}/business/businessupdate/${id}`,
+      value
+    );
   }
   deletebusiness(id: string) {
     return this.http.delete(`${this.baseUrl}/business/businessdelete/${id}`);
   }
-   getBusinessprofile(id: any) {
+  getBusinessprofile(id: any) {
     return this.http.get(`${this.baseUrl}/business/businessprofile/${id}`);
   }
   businessprofileupdate(formData: FormData, id: any) {
-  return this.http.put(`${this.baseUrl}/business/businessupdate/${id}`, formData);
-}
+    return this.http.put(
+      `${this.baseUrl}/business/businessupdate/${id}`,
+      formData
+    );
+  }
 
- 
+  //superadmin
 
-profileupdate(formData: FormData, id: string) {
-  return this.http.put(`${this.baseUrl}/superadmin/superadminupdate/${id}`, formData);
-}
+  profileupdate(formData: FormData, id: string) {
+    return this.http.put(
+      `${this.baseUrl}/superadmin/superadminupdate/${id}`,
+      formData
+    );
+  }
 
   getadminprofile(id: string) {
     return this.http.get(`${this.baseUrl}/superadmin/superadminprofile/${id}`);
@@ -73,8 +72,6 @@ profileupdate(formData: FormData, id: string) {
   getStatuses() {
     return this.http.get(`${this.baseUrl}/status/getstatus`);
   }
-
-  
 
   //Admins
   deleteAdmin(id: string) {
@@ -106,6 +103,10 @@ profileupdate(formData: FormData, id: string) {
   addRole(newRole: any) {
     return this.http.post(`${this.baseUrl}/role/addrole`, newRole);
   }
+  updateRole(id: string, data: any) {
+    return this.http.put(`${this.baseUrl}/role/roleupdate/${id}`, data);
+  }
+
   deleteRole(id: string) {
     return this.http.delete(`${this.baseUrl}/role/roledelete/${id}`);
   }
@@ -192,7 +193,7 @@ profileupdate(formData: FormData, id: string) {
   getStatusTypes() {
     return this.http.get(`${this.baseUrl}/status/getstatus`);
   }
-  getSalesReport(){
-    return this.http.get(`${this.baseUrl}/sales/getSalesReport`)
+  getSalesReport() {
+    return this.http.get(`${this.baseUrl}/sales/getSalesReport`);
   }
 }
