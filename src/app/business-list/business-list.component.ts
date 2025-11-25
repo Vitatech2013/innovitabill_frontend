@@ -35,6 +35,7 @@ businessID: string = ''
   b: any;
   searchTerm: string = '';
   items: any[] = [];
+  logofile: any;
 
   constructor(private fb: FormBuilder, private api: BillingService, private toastr: ToastrService) {}
 
@@ -52,8 +53,6 @@ if (businesslist) {
       owner_name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required, Validators.minLength(10)]],
-      bt_id: ['', Validators.required],
-
       address: ['', [Validators.required, Validators.minLength(3)]],
       registration_number: ['', [Validators.required, Validators.minLength(3)]],
       gst_number: ['', [Validators.required, Validators.minLength(3)]],
@@ -128,7 +127,7 @@ bt_id: b.bt_id?._id || b.bt_id,
       // address: JSON.stringify(b.address),
       registration_number: b.registration_number,
       gst_number: b.gst_number,
-      status: b.status || b.business_status || b.status?.status || "",
+      status: b.status || b.business_status || b.status?.status || '',
     });
     this.selectedBusiness = b;
     this.selectedFiles = {};
@@ -348,8 +347,6 @@ filteredItems() {
       )
     );
   }
-
-
 
   onCustomFileSelect(event: any, field: string) {
     const file = event.target.files[0];

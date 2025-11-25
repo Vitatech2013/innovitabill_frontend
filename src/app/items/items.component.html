@@ -37,16 +37,13 @@
       </div>
 
       <div class="col-md-4">
-        <label class="form-label fw-semibold">Unit</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="unit"
-          placeholder="Enter unit"
-        />
-        <small *ngIf="isInvalid('unit')" class="text-danger">
-          Enter a valid unit
-        </small>
+        <label class="form-label">Units</label>
+        <select class="form-select" formControlName="unit_id">
+          <option [ngValue]="null">Select Units</option>
+          <option *ngFor="let unit of units" [ngValue]="unit._id">
+            {{ unit.units_name }}
+          </option>
+        </select>
       </div>
 
       <div class="col-md-4">
@@ -163,7 +160,7 @@
         </select>
       </div>
 
-      <div class="col-md-4">
+      <!-- <div class="col-md-4">
         <label class="form-label">Users</label>
         <select class="form-select" formControlName="user_id">
           <option value="">Select Users</option>
@@ -171,15 +168,11 @@
             {{ user.user_name }}
           </option>
         </select>
-      </div>
+      </div> -->
 
       <div class="col-md-4">
         <label class="form-label">Categories</label>
-        <select
-          class="form-select"
-          formControlName="category_id"
-          (change)="onCategoryChange($event)"
-        >
+        <select class="form-select" formControlName="category_id">
           <option value="">Select Categories</option>
           <option *ngFor="let cat of categories" [value]="cat._id">
             {{ cat.categories_name }}

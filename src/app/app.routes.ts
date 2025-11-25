@@ -51,11 +51,12 @@ export const routes: Routes = [
   },
 
   { path: 'userlogin', component: UserLoginComponent },
+
   {
     path: 'userview',
     component: UserViewComponent,
     children: [
-      { path: '', component: ItemListComponent },
+      { path: '', component: SaleComponent },
       { path: 'userprofile', component: UserProfileComponent },
       {
         path: 'itemlist',
@@ -65,9 +66,8 @@ export const routes: Routes = [
 
       {
         path: 'saleslist',
-        component: SalesComponent,children:[
-          {path:'salereports',component:SaleReportsComponent}
-        ]
+        component: SalesComponent,
+        children: [{ path: 'salereports', component: SaleReportsComponent }],
       },
       {
         path: 'sale',
@@ -77,6 +77,8 @@ export const routes: Routes = [
   },
 
   { path: 'businesslogin', component: BusinessLoginComponent },
+  {path: 'business-Forgotpassword',component: BusinessForgotpasswordComponent},
+  {path: 'business-otp', component: BusinessOtpComponent},
   { path: 'businessRegister', component: BusinessRegisterComponent },
   {
     path: 'business-Dashboard',

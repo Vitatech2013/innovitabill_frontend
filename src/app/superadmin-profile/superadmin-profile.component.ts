@@ -179,3 +179,5 @@ export class SuperadminProfileComponent implements OnInit {
     return `http://78.142.47.247:3009/business_images/${image}`;
   }
 }
+
+

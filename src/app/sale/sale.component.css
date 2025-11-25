@@ -410,3 +410,25 @@
     color: #666;
   }
 }
+
+.bill-preview {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 20px;
+  background: #f9f9f9;
+}
+.bill-preview table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.bill-preview th, .bill-preview td {
+  border: 1px solid #000;
+  padding: 4px;
+  text-align: left;
+}
+.bill-preview .total {
+  text-align: right;
+  margin-top: 10px;
+  font-weight: bold;
+}
+

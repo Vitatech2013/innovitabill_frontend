@@ -6,12 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class BillingService {
-
-
   // private baseUrl = 'http://localhost:3009';
   private baseUrl = 'http://78.142.47.247:3009';
   constructor(private http: HttpClient) {}
-
 
   getSuperadminById(superadmin_id: string) {
     throw new Error('Method not implemented.');
@@ -23,13 +20,6 @@ export class BillingService {
   getAllBusiness() {
     throw new Error('Method not implemented.');
   }
-
- 
-
-
-
-
-
 
   SuperAdminLogin(data: any) {
     return this.http.post(`${this.baseUrl}/superadmin/superadminlogin`, data);
@@ -55,23 +45,32 @@ forgotPassword(data: any) {
     return this.http.get<any[]>(`${this.baseUrl}/business/businessget`);
   }
   updateBusiness(id: string, value: any) {
-     return this.http.put(`${this.baseUrl}/business/businessupdate/${id}`, value);
+    return this.http.put(
+      `${this.baseUrl}/business/businessupdate/${id}`,
+      value
+    );
   }
   deletebusiness(id: string) {
     return this.http.delete(`${this.baseUrl}/business/businessdelete/${id}`);
   }
-   getBusinessprofile(id: any) {
+  getBusinessprofile(id: any) {
     return this.http.get(`${this.baseUrl}/business/businessprofile/${id}`);
   }
   businessprofileupdate(formData: FormData, id: any) {
-  return this.http.put(`${this.baseUrl}/business/businessupdate/${id}`, formData);
-}
+    return this.http.put(
+      `${this.baseUrl}/business/businessupdate/${id}`,
+      formData
+    );
+  }
 
- 
+  //superadmin
 
-profileupdate(formData: FormData, id: string) {
-  return this.http.put(`${this.baseUrl}/superadmin/superadminupdate/${id}`, formData);
-}
+  profileupdate(formData: FormData, id: string) {
+    return this.http.put(
+      `${this.baseUrl}/superadmin/superadminupdate/${id}`,
+      formData
+    );
+  }
 
   getadminprofile(id: string) {
     return this.http.get(`${this.baseUrl}/superadmin/superadminprofile/${id}`);
@@ -146,6 +145,10 @@ updateBusinessType(id: string, data: any) {
   addRole(newRole: any) {
     return this.http.post(`${this.baseUrl}/role/addrole`, newRole);
   }
+  updateRole(id: string, data: any) {
+    return this.http.put(`${this.baseUrl}/role/roleupdate/${id}`, data);
+  }
+
   deleteRole(id: string) {
     return this.http.delete(`${this.baseUrl}/role/roledelete/${id}`);
   }
@@ -174,7 +177,7 @@ updateBusinessType(id: string, data: any) {
   addUnit(unit: any) {
     return this.http.post(`${this.baseUrl}/units/unitsadd`, unit);
   }
-  getUnits() {
+  getUnits(business_id: string) {
     return this.http.get(`${this.baseUrl}/units/unitsget`);
   }
   updateUnit(id: string, data: any) {
@@ -186,41 +189,41 @@ updateBusinessType(id: string, data: any) {
 
   //users
 
-  UserLogin(data: any) {
-    return this.http.post(`http://localhost:3009/user/userlogin`, data);
+  LoginUser(data: any) {
+    return this.http.post(`${this.baseUrl}/user/userlogin`, data);
   }
 
   getItems(Business_id: any): Observable<any> {
-    return this.http.get(`http://localhost:3009/items/getitems`);
+    return this.http.get(`${this.baseUrl}/items/getitems`);
   }
 
-  addItems(formData: FormData) {
-    return this.http.post(`http://localhost:3009/items/additems`, formData);
+  addItems(data: any) {
+    return this.http.post(`${this.baseUrl}/items/additems`, data);
   }
 
-  getCategories(Business_id: string) {
-    return this.http.get(`http://localhost:3009/categories/categoriesget`);
+  getCategories(business_id: string) {
+    return this.http.get(`${this.baseUrl}/categories/categoriesget`);
   }
   getSubCategories() {
-    return this.http.get(`http://localhost:3009/subcat/getsubcat`);
+    return this.http.get(`${this.baseUrl}/subcat/getsubcat`);
   }
   getUsers(business_id: string) {
-    return this.http.get(`http://localhost:3009/user/getuser`);
+    return this.http.get(`${this.baseUrl}/user/getuser`);
   }
 
   saleslist(): Observable<any> {
-    return this.http.get(`http://localhost:3009/sales/getSales`);
+    return this.http.get(`${this.baseUrl}/sales/getSales`);
   }
 
   savesale(data: any) {
-    return this.http.post(`http://localhost:3009/sales/createsale`, data);
+    return this.http.post(`${this.baseUrl}/sales/createsale`, data);
   }
 
   updateitems(id: any, data: any) {
-    return this.http.put(`http://localhost:3009/items/updateitems/${id}`, data);
+    return this.http.put(`${this.baseUrl}/items/updateitems/${id}`, data);
   }
   deleteItem(id: String) {
-    return this.http.delete(`http://localhost:3009/items/deleteitems/${id}`);
+    return this.http.delete(`${this.baseUrl}/items/deleteitems/${id}`);
   }
 
   updateprofile(formData: FormData, id: string) {
@@ -232,7 +235,7 @@ updateBusinessType(id: string, data: any) {
   getStatusTypes() {
     return this.http.get(`${this.baseUrl}/status/getstatus`);
   }
-  getSalesReport(){
-    return this.http.get(`${this.baseUrl}/sales/getSalesReport`)
+  getSalesReport() {
+    return this.http.get(`${this.baseUrl}/sales/getSalesReport`);
   }
 }
