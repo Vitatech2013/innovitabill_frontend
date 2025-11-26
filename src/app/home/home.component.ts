@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -9,6 +9,8 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { BillingService } from '../billing.service';
+
+declare var bootstrap: any;   
 
 @Component({
   selector: 'app-home',
@@ -23,13 +25,9 @@ import { BillingService } from '../billing.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit {
-  getstarteddemo() {
-    throw new Error('Method not implemented.');
-  }
+export class HomeComponent implements OnInit, AfterViewInit {
   demoForm!: FormGroup;
-
-  roles: any;
+  demoModal: any;
 
   constructor(
     private fb: FormBuilder,
@@ -40,41 +38,51 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.demoForm = this.fb.group({
       name: ['', Validators.required],
-      phone: [''],
+      phone: ['', [Validators.required, Validators.minLength(10)]],
       email: ['', [Validators.required, Validators.email]],
       message: ['', Validators.required],
     });
   }
 
-    // this.api.getRoles().subscribe((res: any) => {
-    //   this.roles = res;
-    //   console.log(res, "roles");
-      
-    // });
 
+  ngAfterViewInit(): void {
+    const modalElement = document.getElementById('demoModal');
 
+    if (modalElement) {
+      this.demoModal = new bootstrap.Modal(modalElement);
+    } else {
+      console.error("Modal element #demoModal not found!");
+    }
+  }
 
+ 
+  getstarteddemo() {
+    if (this.demoModal) {
+      this.demoModal.show();
+    }
+  }
 
-    // const modalElement = document.getElementById('demoModal');
-    // if (modalElement) {
-    //   this.demoModal = new bootstrap.Modal(modalElement);
-    // }
-  
+ 
+sendEmail() {
+  if (this.demoForm.invalid) {
+    alert("Please fill all required fields");
+    return;
+  }
 
-  // getstarteddemo() {
-  //   if (this.demoModal) {
-  //     this.demoModal.show();
-  //   }
-  // }
+  this.api.sendDemoMail(this.demoForm.value).subscribe({
+    next: (res: any) => {
+      alert("Message Registered Successfully! Mail Sent ");
+      this.demoForm.reset();
 
-  // submitDemoForm() {
-  //   if (this.demoForm.valid) {
-  //     console.log('Form Data:', this.demoForm.value);
-  //     alert('Your demo request has been submitted successfully!');
-  //     this.demoForm.reset();
-  //     this.demoModal.hide();
-  //   } else {
-  //     alert('Please fill in all required fields!');
-  //   }
-  // }
+      if (this.demoModal) {
+        this.demoModal.hide();
+      }
+    },
+    error: (err: any) => {
+      console.error(err);
+      alert("Failed to send email");
+    }
+  });
+}
+
 }

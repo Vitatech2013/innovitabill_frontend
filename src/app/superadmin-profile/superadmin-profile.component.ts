@@ -176,7 +176,7 @@ export class SuperadminProfileComponent implements OnInit {
   }
   getImageUrl(image: string | null): string {
     if (!image) return '';
-    return `http://localhost:3009/business_images/${image}`;
+    return `http://78.142.47.247:3009/business_images/${image}`;
   }
 }
 
