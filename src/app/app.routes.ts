@@ -29,6 +29,8 @@ import { AddBusinessTypeComponent } from './add-business-type/add-business-type.
 import { ViewBusinessTypeComponent } from './view-business-type/view-business-type.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { BusinessForgotpasswordComponent } from './business-forgotpassword/business-forgotpassword.component';
+import { BusinessOtpComponent } from './business-otp/business-otp.component';
 
 
 
