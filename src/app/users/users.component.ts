@@ -229,9 +229,9 @@ if (this.logoFile) {
           this.getUsers();
           this.resetForm();
           const modal = bootstrap.Modal.getInstance(
-  document.getElementById('userModal')
-);
-modal?.hide();
+            document.getElementById('userModal')
+          );
+          modal?.hide();
         },
         error: (err) => {
           console.error('Update error', err);
@@ -252,6 +252,7 @@ modal?.hide();
         },
         error: (err) => {
           console.error('Create error', err);
+          console.log("Create error", err.error);
           this.showToast('Failed to add User', 'error');
         },
       });
