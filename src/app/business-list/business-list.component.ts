@@ -29,13 +29,13 @@ export class BusinessListComponent implements OnInit {
   selectedImage: string | undefined;
   selectedFiles: Record<string, File> = {};
   logofile: File | null = null;
-businessID: string = ''  superadmin_id: any;
   businessTypes: any[] = [];
   statusList: any;
   b: any;
   searchTerm: string = '';
   items: any[] = [];
-  logofile: any;
+  businessID: any;
+  superadmin_id: any;
 
   constructor(private fb: FormBuilder, private api: BillingService, private toastr: ToastrService) {}
 
