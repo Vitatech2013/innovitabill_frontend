@@ -203,9 +203,25 @@ export class BillingService {
   getCategories(business_id: string) {
     return this.http.get(`${this.baseUrl}/categories/categoriesget`);
   }
-  getSubCategories() {
-    return this.http.get(`${this.baseUrl}/subcat/getsubcat`);
-  }
+  //
+
+  addSubcat(data: any) {
+  return this.http.post(`http://localhost:3009/subcat/addsubcat`, data);
+}
+
+ getSubCategories() {
+  return this.http.get(`http://localhost:3009/subcat/getsubcat`);
+}
+    updateSubcat(id: string, data: any) {
+  // Use PUT and include the ID in the URL
+  return this.http.put(`http://localhost:3009/subcat/updatesubcat/${id}`, data);
+}
+
+   deleteSubCat(id: string) {
+  return this.http.delete(`http://localhost:3009/subcat/deletesubcat/${id}`);
+}
+
+  //
   getUsers(business_id: string) {
     return this.http.get(`${this.baseUrl}/user/getuser`);
   }
