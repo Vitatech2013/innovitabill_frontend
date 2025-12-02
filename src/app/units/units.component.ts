@@ -110,7 +110,8 @@ selectedUnit: any;
         next: () => {
           this.showToast('Unit updated successfully', 'success');
           this.getAllUnits();
-          this.closeModal();
+         const modal = bootstrap.Modal.getInstance(document.getElementById('unitModel'));
+        modal.hide();
         },
         error: (err) => {
           console.error('Update error', err);
@@ -123,7 +124,8 @@ selectedUnit: any;
         next: () => {
           this.showToast('Unit added successfully', 'success');
           this.getAllUnits();
-          this.closeModal();
+          const modal = bootstrap.Modal.getInstance(document.getElementById('unitModel'));
+        modal.hide();
         },
         error: (err) => {
           console.error('Create error', err);

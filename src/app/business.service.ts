@@ -5,8 +5,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class BusinessService {
-  // private baseUrl = 'http://localhost:3009';
-  private baseUrl = 'http://78.142.47.247:3009';
+  private baseUrl = 'http://localhost:3009';
+  // private baseUrl = 'http://78.142.47.247:3009';
 
   constructor(private http: HttpClient) {}
 
@@ -30,10 +30,10 @@ export class BusinessService {
   deleteUser(id: string) {
     return this.http.delete(`${this.baseUrl}/user/userdelete/${id}`);
   }
-  updateUser(id: string, data: any) {
-    return this.http.put(`${this.baseUrl}/user/updateuser/${id}`, data);
-  }
-  getUsers() {
+  updateUser(selectedUser: any, payload: any) {
+  return this.http.put(`http://localhost:3009/user/updateuser/${selectedUser._id}`, payload);
+}
+  getUser() {
     return this.http.get(`${this.baseUrl}/user/getuser`);
   }
 }
