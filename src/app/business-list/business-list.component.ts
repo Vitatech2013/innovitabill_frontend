@@ -35,7 +35,6 @@ businessID: string = ''
   b: any;
   searchTerm: string = '';
   items: any[] = [];
-  logofile: any;
 
   constructor(private fb: FormBuilder, private api: BillingService, private toastr: ToastrService) {}
 

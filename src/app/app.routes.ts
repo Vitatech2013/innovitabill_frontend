@@ -33,6 +33,10 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { AddBusinessTypeComponent } from './add-business-type/add-business-type.component';
 import { ViewBusinessTypeComponent } from './view-business-type/view-business-type.component';
+import { BusinessForgotpasswordComponent } from './business-forgotpassword/business-forgotpassword.component';
+import { BusinessOtpComponent } from './business-otp/business-otp.component';
+
+
 
 export const routes: Routes = [
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
