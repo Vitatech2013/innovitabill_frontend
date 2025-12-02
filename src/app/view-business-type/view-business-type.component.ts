@@ -59,42 +59,39 @@ export class ViewBusinessTypeComponent implements OnInit {
     this.openModal = true;
   }
 
-  Updatebtype() {
-    if (this.b_typeForm.invalid) {
-      this.b_typeForm.markAllAsTouched();
-      return;
-    }
+ Updatebtype() {
+    if (this.b_typeForm.invalid) return;
 
-    const formData = this.b_typeForm.value;
+    const data = this.b_typeForm.value;
 
     if (this.selectedTypeId) {
-     
-      this.api.updateBusinessType(this.selectedTypeId, formData).subscribe({
+    
+      this.api.updateBusinessType(this.selectedTypeId, data).subscribe({
         next: () => {
           this.showToast('Business Type updated successfully', 'success');
           this.getAllBusinessTypes();
-          this.closeModal();
+
+          const modal = bootstrap.Modal.getInstance(document.getElementById('roleModal'));
+          modal?.hide();
         },
-        error: (err) => {
-          console.error(err);
-          this.showToast('Failed to update business type', 'error');
-        }
+        error: () => this.showToast('Failed to update business type', 'error')
       });
+
     } else {
-    
-      this.api.addBusinessType(formData).subscribe({
+     
+      this.api.addBusinessType(data).subscribe({
         next: () => {
-          this.showToast('Business Type added successfully', 'success');
+          this.showToast('Business Type added', 'success');
           this.getAllBusinessTypes();
-          this.closeModal();
+
+          const modal = bootstrap.Modal.getInstance(document.getElementById('roleModal'));
+          modal?.hide();
         },
-        error: (err) => {
-          console.error(err);
-          this.showToast('Failed to add business type', 'error');
-        }
+        error: () => this.showToast('Failed to add business type', 'error')
       });
     }
   }
+
 
   DeleteModal(b_type: any) {
     this.selectedB_type = b_type;

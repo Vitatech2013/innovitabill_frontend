@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { constants } from '../../constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BusinessService {
-  private baseUrl = 'http://localhost:3009';
-  // private baseUrl = 'http://78.142.47.247:3009';
+  private baseUrl = constants.baseUrl;
 
   constructor(private http: HttpClient) {}
 

@@ -14,7 +14,9 @@ import { BillingService } from '../billing.service';
 export class ResetPasswordComponent implements OnInit {
 
   resetForm!: FormGroup;
- token: string | null = null;
+  token: string | null = null;
+   toastMessage: string | null = null;
+  toastType: string | undefined;
 
   loading = false;
   message = '';
@@ -26,25 +28,33 @@ export class ResetPasswordComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
- ngOnInit(): void {
-  this.token = this.route.snapshot.paramMap.get('token');  
+  ngOnInit(): void {
+    this.token = this.route.snapshot.paramMap.get('token');
 
-  this.resetForm = this.fb.group({
-    password: ['', Validators.required],
-    confirm_password: ['', Validators.required],
-  });
-}
+    this.resetForm = this.fb.group(
+      {
+        newPassword: ['', [Validators.required, Validators.minLength(6)]],
+       
+      },
+      { validators: this.matchPasswordValidator }
+    );
+  }
+
+  matchPasswordValidator(formGroup: FormGroup) {
+    const newPassword = formGroup.get('newPassword')?.value;
+   
+
+    
+  }
 
 update() {
-  if (this.resetForm.invalid) return;
-
-  if (this.resetForm.value.password !== this.resetForm.value.confirm_password) {
-    this.message = "Passwords do not match";
+  if (this.resetForm.invalid) {
+    this.showToast('warning', 'Please enter a valid password');
     return;
   }
 
   const body = {
-    newPassword: this.resetForm.value.password   
+    newPassword: this.resetForm.value.newPassword
   };
 
   this.loading = true;
@@ -52,14 +62,20 @@ update() {
   this.api.resetPassword(body, this.token).subscribe({
     next: () => {
       this.loading = false;
-      this.message = 'Password reset successful!';
-      this.router.navigate(['/SuperAdminLogin']);
+      this.showToast('success', 'Password reset successfully!');
+      setTimeout(() => {
+        this.router.navigate(['/SuperAdminLogin']);
+      }, 1000);
     },
-    error: (err) => {
+    error: () => {
       this.loading = false;
-      console.log(err);
-      this.message = 'Unable to reset password';
+      this.showToast('error', 'Failed to reset password');
     },
   });
+}
+ showToast(message: string, type: string = 'success') {
+  this.toastMessage = message;
+  this.toastType = type;
+  setTimeout(() => (this.toastMessage = null), 3000);
 }
 }

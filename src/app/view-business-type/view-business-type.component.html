@@ -102,14 +102,11 @@
             </div>
 
             <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label">business type</label>
-                <select class="form-select" formControlName="business_type">
-                  <option value="">Select Business Type</option>
-                  <option *ngFor="let type of b_types" [value]="type._id">
-                    {{ type.business_type }}
-                  </option>
-                </select>
+             <div class="mb-3">
+  <label class="form-label">Business Type</label>
+  <input type="text" class="form-control" formControlName="business_type" placeholder="Enter Business Type" />
+
+
                 <div
                   *ngIf="
                     b_typeForm.controls['business_type']?.touched &&

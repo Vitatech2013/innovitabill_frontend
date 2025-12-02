@@ -1,15 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
+import { constants } from '../../constants';
 @Injectable({
   providedIn: 'root',
 })
 export class BillingService {
- 
-
-  private baseUrl = 'http://localhost:3009';
-  // private baseUrl = 'http://78.142.47.247:3009';
+  private baseUrl = constants.baseUrl;
   constructor(private http: HttpClient) {}
 
   getSuperadminById(superadmin_id: string) {
@@ -27,14 +24,19 @@ export class BillingService {
     return this.http.post(`${this.baseUrl}/superadmin/superadminlogin`, data);
   }
 
-forgotPassword(data: any) {
-  return this.http.post('http://78.142.47.247:3009/superadmin/forgotPassword', data);
-}
+  forgotPassword(data: any) {
+    return this.http.post(
+      `${this.baseUrl}/superadmin/forgotPassword`,
+      data
+    );
+  }
 
-
- resetPassword(data: any, token: any){
-  return this.http.post(`${this.baseUrl}/superadmin/resetPassword/${token}`, data);
-}
+  resetPassword(data: any, token: any) {
+    return this.http.post(
+      `${this.baseUrl}/superadmin/resetPassword/${token}`,
+      data
+    );
+  }
 
   // business
   addBusiness(data: any) {
@@ -65,8 +67,6 @@ forgotPassword(data: any) {
     );
   }
 
-  //superadmin
-
   profileupdate(formData: FormData, id: string) {
     return this.http.put(
       `${this.baseUrl}/superadmin/superadminupdate/${id}`,
@@ -85,23 +85,21 @@ forgotPassword(data: any) {
     return this.http.get(`${this.baseUrl}/status/getstatus`);
   }
 
-// b_types
-// addBusinessType(data: any) {
-//   return this.http.get(`${this.baseUrl}/btypes/addtypes`, data);
-// }
+  // b_types
+  // addBusinessType(data: any) {
+  //   return this.http.get(`${this.baseUrl}/btypes/addtypes`, data);
+  // }
 
-// updateBusinessType(id: string, data: any) {
-//  return this.http.get(`${this.baseUrl}/btypes/btypesupdate/${id}`, data);
-// }
-addBusinessType(data: any) {
-  return this.http.post(`${this.baseUrl}/btypes/addtypes`, data);
-}
+  // updateBusinessType(id: string, data: any) {
+  //  return this.http.get(`${this.baseUrl}/btypes/btypesupdate/${id}`, data);
+  // }
+  addBusinessType(data: any) {
+    return this.http.post(`${this.baseUrl}/btypes/addtypes`, data);
+  }
 
-updateBusinessType(id: string, data: any) {
-  return this.http.put(`${this.baseUrl}/btypes/btypesupdate/${id}`, data);
-}
-
- 
+  updateBusinessType(id: string, data: any) {
+    return this.http.put(`${this.baseUrl}/btypes/btypesupdate/${id}`, data);
+  }
 
   getAllBusinessTypes(): Observable<any> {
     return this.http.get(`${this.baseUrl}/btypes/getbtypes`);
@@ -111,11 +109,10 @@ updateBusinessType(id: string, data: any) {
     return this.http.delete(`${this.baseUrl}/btypes/btypesdelete/${id}`);
   }
 
-// Demo
+  // Demo
   sendDemoMail(data: any) {
-  return this.http.post(`${this.baseUrl}/demo/demoregistration`, data);
-}
-
+    return this.http.post(`${this.baseUrl}/demo/demoregistration`, data);
+  }
 
   //Admins
   deleteAdmin(id: string) {
