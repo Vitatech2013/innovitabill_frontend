@@ -27,6 +27,16 @@ export class BillingService {
   SuperAdminLogin(data: any) {
     return this.http.post(`${this.baseUrl}/superadmin/superadminlogin`, data);
   }
+
+forgotPassword(data: any) {
+  return this.http.post('http://78.142.47.247:3009/superadmin/forgotPassword', data);
+}
+
+
+ resetPassword(data: any, token: any){
+  return this.http.post(`${this.baseUrl}/superadmin/resetPassword/${token}`, data);
+}
+
   // business
   addBusiness(data: any) {
     return this.http.post(
@@ -59,6 +69,8 @@ export class BillingService {
     );
   }
 
+  //superadmin
+
   profileupdate(formData: FormData, id: string) {
     return this.http.put(
       `${this.baseUrl}/superadmin/superadminupdate/${id}`,
@@ -76,6 +88,38 @@ export class BillingService {
   getStatuses() {
     return this.http.get(`${this.baseUrl}/status/getstatus`);
   }
+
+// b_types
+// addBusinessType(data: any) {
+//   return this.http.get(`${this.baseUrl}/btypes/addtypes`, data);
+// }
+
+// updateBusinessType(id: string, data: any) {
+//  return this.http.get(`${this.baseUrl}/btypes/btypesupdate/${id}`, data);
+// }
+addBusinessType(data: any) {
+  return this.http.post(`${this.baseUrl}/btypes/addtypes`, data);
+}
+
+updateBusinessType(id: string, data: any) {
+  return this.http.put(`${this.baseUrl}/btypes/btypesupdate/${id}`, data);
+}
+
+ 
+
+  getAllBusinessTypes(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/btypes/getbtypes`);
+  }
+
+  deleteBusinessType(id: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/btypes/btypesdelete/${id}`);
+  }
+
+// Demo
+  sendDemoMail(data: any) {
+  return this.http.post(`${this.baseUrl}/demo/demoregistration`, data);
+}
+
 
   //Admins
   deleteAdmin(id: string) {
@@ -107,6 +151,10 @@ export class BillingService {
   addRole(newRole: any) {
     return this.http.post(`${this.baseUrl}/role/addrole`, newRole);
   }
+  updateRole(id: string, data: any) {
+    return this.http.put(`${this.baseUrl}/role/roleupdate/${id}`, data);
+  }
+
   deleteRole(id: string) {
     return this.http.delete(`${this.baseUrl}/role/roledelete/${id}`);
   }

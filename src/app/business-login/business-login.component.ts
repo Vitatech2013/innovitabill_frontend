@@ -46,8 +46,9 @@ export class BusinessLoginComponent implements OnInit {
         console.log('Login successful', res);
 
       if (res) {
-        localStorage.setItem('business', JSON.stringify(res.data));
-        localStorage.setItem('businessToken', JSON.stringify(res.token));
+       localStorage.setItem('user', JSON.stringify(res.data));   // ⭐ FIXED
+localStorage.setItem('businessToken', JSON.stringify(res.token));
+
 
       }
 

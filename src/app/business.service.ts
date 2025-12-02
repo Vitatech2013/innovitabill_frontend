@@ -13,6 +13,16 @@ export class BusinessService {
   login(data: any) {
     return this.http.post(`${this.baseUrl}/business/businesslogin`, data);
   }
+  businessForgotpassword(email: string) {
+    return this.http.post(
+      'http://78.142.47.247:3009/forgotPassword',email);
+  }
+  businessResetPassword(data: any) {
+    return this.http.post(
+      'http:78.142.47.247:3009/business/resetPassword',
+      data
+    );
+  }
 
   createUser(userData: any) {
     return this.http.post(`${this.baseUrl}/user/userregistration`, userData);
@@ -27,3 +37,4 @@ export class BusinessService {
     return this.http.get(`${this.baseUrl}/user/getuser`);
   }
 }
+
