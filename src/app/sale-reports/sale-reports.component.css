@@ -1,0 +1,82 @@
+/* :host {
+  display: block;
+  padding: 18px;
+  background: #cffade;
+  min-height: 100vh;
+  color: #fff;
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+} */
+
+.container {
+  max-width: 1100px;
+  margin: 12px auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+}
+
+h2.mb-4 {
+  color: #0d0d0d;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.card {
+  background: transparent;
+  border: none;
+  padding: 14px;
+}
+
+.card > .card-inner {
+  background: #1a1a1a;
+  padding: 14px;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+canvas {
+  display: block;
+  width: 100% !important;
+  height: 180px !important;
+  background: transparent;
+}
+
+h4.mb-3 {
+  color: #eaeaea;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.text-center {
+  margin-top: 24px;
+}
+.btn {
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-weight: 600;
+}
+.btn-primary {
+  background: #ff6b5f;
+  border: none;
+  color: #fff;
+}
+.btn-success {
+  background: #1f7a4f;
+  border: none;
+  color: #fff;
+}
+
+.row > .col-md-6 {
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-bottom: 18px;
+}
+
+@media (max-width: 768px) {
+  canvas {
+    height: 160px !important;
+  }
+  .container {
+    padding: 12px;
+  }
+}

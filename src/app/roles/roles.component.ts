@@ -39,6 +39,7 @@ toastType: any;
     this.roleForm = this.fb.group({
       role_name: ['', Validators.required],
       role_number: ['', Validators.required],
+      status:['',Validators.required],
     });
 
     this.getAllRoles();
@@ -60,36 +61,94 @@ toastType: any;
     this.openModel = true;
   }
 
-  closeModal(): void {
-    this.openModel = false;
+ 
+
+//   createOrUpdateRole(): void {
+//   if (this.roleForm.invalid) {
+//     this.roleForm.markAllAsTouched();
+//     this.showToast('Please fill all required fields!', 'warning');
+//     return;
+//   }
+
+//   const newRole = {
+//     ...this.roleForm.value,
+//     business_id: this.business_id,
+//   };
+
+//   this.api.addRole(newRole).subscribe({
+//     next: (res) => {
+//       this.showToast('Role saved successfully!', 'success');
+//       this.roleForm.reset();
+//       this.getAllRoles();
+
+//       // ✅ CLOSE BOOTSTRAP MODAL PROPERLY
+//       const modalEl = document.getElementById('roleModal');
+//       const modal = bootstrap.Modal.getInstance(modalEl);
+//       modal.hide();
+//     },
+//     error: (err) => {
+//       console.error('Error saving:', err);
+//       if (err.status === 401)
+//         this.showToast('Unauthorized! Please log in again.', 'error');
+//     },
+//   });
+// }
+
+createOrUpdateRole(): void {
+  if (this.roleForm.invalid) {
+    this.roleForm.markAllAsTouched();
+    this.showToast('Please fill all required fields!', 'warning');
+    return;
   }
 
-  createOrUpdateRole(): void {
-    if (this.roleForm.invalid) {
-      this.roleForm.markAllAsTouched();
-      this.showToast('Please fill all required fields!','warning');
-      return;
-    }
+  const payload = {
+    ...this.roleForm.value,
+    business_id: this.business_id,
+  };
 
-    const newRole = {
-      ...this.roleForm.value,
-      business_id: this.business_id,
-    };
-
-    this.api.addRole(newRole).subscribe({
+  // **IF editing → call UPDATE API**
+  if (this.selectedUserId) {
+    this.api.updateRole(this.selectedUserId, payload).subscribe({
       next: (res) => {
-        console.log('Role saved:', res);
-        this.showToast('Role saved successfully!','success');
+        this.showToast('Role updated successfully!', 'success');
         this.roleForm.reset();
+        this.selectedUserId = null;
+
         this.getAllRoles();
-        this.closeModal();
+
+        const modal = bootstrap.Modal.getInstance(
+          document.getElementById('roleModal')
+        );
+        modal.hide();
       },
       error: (err) => {
-        console.error('Error saving:', err);
-        if (err.status - 401) this.showToast('Unauthorized! Please log in again.','error');
+        console.error(err);
+        this.showToast('Failed to update role!', 'error');
+      },
+    });
+  } 
+  else {
+    // **IF adding → call ADD API**
+    this.api.addRole(payload).subscribe({
+      next: (res) => {
+        this.showToast('Role added successfully!', 'success');
+        this.roleForm.reset();
+
+        this.getAllRoles();
+
+        const modal = bootstrap.Modal.getInstance(
+          document.getElementById('roleModal')
+        );
+        modal.hide();
+      },
+      error: (err) => {
+        console.error(err);
+        this.showToast('Failed to add role!', 'error');
       },
     });
   }
+}
+
 
   edit(role: any): void {
     this.selectedUserId = role._id;
@@ -97,6 +156,8 @@ toastType: any;
     this.roleForm.patchValue({
       role_name: role.role_name,
       role_number: role.role_number,
+      status: role.status || role.status || role.status?.status || "",
+
     });
     this.openModel = true;
   }
@@ -118,6 +179,7 @@ toastType: any;
   resetForm(): void {
     this.roleForm.reset();
     this.selectedUserId = null;
+    
   }
   openDeleteModal(roles: any) {
 this.selectedRole = roles;
@@ -131,8 +193,11 @@ this.selectedRole = roles;
                 this.showToast('Role soft deleted successfully', 'success');
 
         this.getAllRoles();
-        const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
-        modal.hide();
+        
+        const modal = bootstrap.Modal.getInstance(
+            document.getElementById('deleteModal')
+          );
+          modal.hide();
       },
       error: (err) =>{ 
         console.error('Delete error', err);

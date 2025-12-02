@@ -216,3 +216,5 @@ if (newPassword && newPassword.trim() !== '') {
     return `${this.baseUrl}/business_images/${image}`;
   }
 }
+
+

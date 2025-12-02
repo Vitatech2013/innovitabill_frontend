@@ -48,10 +48,10 @@ export class SalesComponent implements OnInit {
     this.editForm = this.fb.group({
       invoice_number: ['', Validators.required],
       name: ['', Validators.required],
-      item_id: ['', Validators.required],
+      item_name: ['', Validators.required],
       quantity: ['', Validators.required],
       selling_price: ['', Validators.required],
-      total: ['', Validators.required],
+
       grand_total: ['', Validators.required],
       payment_status: ['', Validators.required],
     });
@@ -80,10 +80,10 @@ export class SalesComponent implements OnInit {
     this.editForm.patchValue({
       invoice_number: sale.invoice_number,
       name: sale.customer_id?.name || '',
-      item_id: firstProduct.item_id?.item_name || '',
+      item_name: firstProduct.item_id?.item_name || '',
       quantity: firstProduct.quantity || '',
       selling_price: firstProduct.selling_price || '',
-      total: firstProduct.total || '',
+
       grand_total: sale.grand_total || '',
       payment_status: sale.payment_status || 'Pending',
     });

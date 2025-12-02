@@ -1,0 +1,25 @@
+<div class="container p-4 text-center">
+  <h2>Enter OTP</h2>
+
+  <form [formGroup]="otpForm">
+    <div class="mb-3">
+      <input type="text" formControlName="email" class="form-control" placeholder="Email" />
+    </div>
+    <div class="mb-3">
+      <input type="text" formControlName="otp" class="form-control" placeholder="Enter OTP" />
+
+      <!-- <div *ngIf="otpForm.get('otp')?.touched && otpForm.get('otp')?.errors" class="text-danger mt-1">
+        <small *ngIf="otpForm.get('otp')?.errors?.['required']">OTP is required.</small>
+        <small *ngIf="otpForm.get('otp')?.errors?.['minlength']">OTP must be at least 4 digits.</small>
+        <small *ngIf="otpForm.get('otp')?.errors?.['maxlength']">OTP cannot exceed 6 digits.</small>
+      </div> -->
+    </div>
+    <div class="mb-3">
+    <input type="text" formControlName="newPassword" class="form-control" placeholder="New Password" />
+    </div>
+
+    <button type="submit" class="btn btn-primary"(click)="resetPassword()">Verify OTP</button>
+  </form>
+</div>
+
+
