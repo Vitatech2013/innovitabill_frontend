@@ -10,7 +10,7 @@ import {
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { BillingService } from '../billing.service';
 
-declare var bootstrap: any;   
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-home',
@@ -26,8 +26,13 @@ declare var bootstrap: any;
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit, AfterViewInit {
+submitted = false;
+
   demoForm!: FormGroup;
   demoModal: any;
+
+  toastMessage: string | null = null;
+  toastType: 'success' | 'error' | 'info' | 'warning' | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -44,45 +49,45 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-
   ngAfterViewInit(): void {
     const modalElement = document.getElementById('demoModal');
-
     if (modalElement) {
       this.demoModal = new bootstrap.Modal(modalElement);
-    } else {
-      console.error("Modal element #demoModal not found!");
     }
   }
 
- 
   getstarteddemo() {
     if (this.demoModal) {
       this.demoModal.show();
     }
   }
 
- 
-sendEmail() {
-  if (this.demoForm.invalid) {
-    alert("Please fill all required fields");
-    return;
+  sendEmail() {
+    if (this.demoForm.invalid) {
+      this.showToast("Please fill all required fields", "error");
+      return;
+    }
+
+    this.api.sendDemoMail(this.demoForm.value).subscribe({
+      next: (res: any) => {
+        this.showToast("Message Registered Successfully! Mail Sent", "success");
+        this.demoForm.reset();
+        this.demoModal?.hide();
+      },
+      error: (err: any) => {
+        console.error(err);
+        this.showToast("Failed to send email", "error");
+      }
+    });
   }
 
-  this.api.sendDemoMail(this.demoForm.value).subscribe({
-    next: (res: any) => {
-      alert("Message Registered Successfully! Mail Sent ");
-      this.demoForm.reset();
+  showToast(message: string, type: 'success' | 'error' | 'info' | 'warning') {
+    this.toastMessage = message;
+    this.toastType = type;
 
-      if (this.demoModal) {
-        this.demoModal.hide();
-      }
-    },
-    error: (err: any) => {
-      console.error(err);
-      alert("Failed to send email");
-    }
-  });
-}
-
+    setTimeout(() => {
+      this.toastMessage = null;
+      this.toastType = null;
+    }, 3000);
+  }
 }

@@ -9,7 +9,8 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BillingService } from '../billing.service';
-
+import { constants } from '../../../constants';
+declare var bootstrap: any;
 @Component({
   selector: 'app-superadmin-profile',
   standalone: true,
@@ -23,7 +24,7 @@ export class SuperadminProfileComponent implements OnInit {
   superadminData: any;
   selectedImage: File | null = null;
   previewUrl: string | ArrayBuffer | null = null;
-
+  private baseUrl = constants.baseUrl;
   addressFields = [
     { label: 'House No', name: 'house_No' },
     { label: 'Town Name', name: 'town_Name' },
@@ -33,6 +34,8 @@ export class SuperadminProfileComponent implements OnInit {
     { label: 'Pincode', name: 'pincode' },
   ];
   profile: any;
+  toastMessage: string | null = null;
+  toastType: string | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -85,6 +88,8 @@ export class SuperadminProfileComponent implements OnInit {
   // }
 
   profileedit() {
+    console.log(this.superadminData,'superadmin data');
+    
     if (!this.superadminData) return;
     this.profileForm.patchValue({
       superadmin_name: this.superadminData.superadmin_name,
@@ -93,11 +98,12 @@ export class SuperadminProfileComponent implements OnInit {
       superadmin_password: this.superadminData.superadmin_password,
       address: this.superadminData.address,
     });
+
   }
 
   updateadminprofile() {
     if (this.profileForm.invalid) {
-      alert('Please fill all required fields');
+      this.showToast('Please fill all required fields.', 'error');
       return;
     }
 
@@ -134,7 +140,18 @@ export class SuperadminProfileComponent implements OnInit {
 
     this.profileService.profileupdate(formData, this.superadmin_id).subscribe({
       next: (res: any) => {
-        alert('Profile updated successfully!');
+       
+         this.showToast('Profile updated successfully!', 'success');
+         this.fetchAdminData();
+         
+          let modal = bootstrap.Modal.getInstance(document.getElementById('roleModal'));
+          modal?.hide();
+// setTimeout(() => {
+//   this.router.navigate(['/SuperAdminView/superadminProfile']);
+// }, 500);
+
+
+      
         if (this.selectedImage) {
           const reader = new FileReader();
           reader.onload = () => {
@@ -144,14 +161,30 @@ export class SuperadminProfileComponent implements OnInit {
 
           reader.readAsDataURL(this.selectedImage);
         }
-        this.fetchAdminData();
+          this.fetchAdminData();
+      const bsmodal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'))
+      bsmodal.hide();
+    
+        // window.location.reload();
       },
       error: (err: any) => {
         console.error('Update failed:', err);
-        alert('Profile update failed! Please try again.');
+        // alert('Profile update failed! Please try again.');
+         this.showToast('Profile update failed! Please try again.', 'Error');
       },
+      
     });
   }
+
+
+ showToast(message: string, type: string = 'success') {
+  this.toastMessage = message;
+  this.toastType = type;
+  setTimeout(() => (this.toastMessage = null), 3000);
+}
+
+
+
   fetchAdminData() {
     if (!this.superadmin_id) return;
 
@@ -181,7 +214,7 @@ export class SuperadminProfileComponent implements OnInit {
   }
   getImageUrl(image: string | null): string {
     if (!image) return '';
-    return `http://78.142.47.247:3009/business_images/${image}`;
+    return `${this.baseUrl}/business_images/${image}`;
   }
 }
 
