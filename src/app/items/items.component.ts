@@ -31,6 +31,7 @@ export class ItemsComponent implements OnInit {
   users_id: string = '';
   toastType: any;
   toastMessage: any;
+  selectedImageFile!: File | null;
 
   constructor(
     private fb: FormBuilder,
@@ -54,17 +55,14 @@ export class ItemsComponent implements OnInit {
       min_stock_alert: ['', Validators.required],
       category_id: ['', Validators.required],
       sub_category_id: ['', Validators.required],
+      image: [''],
     });
 
     const storedBusiness = localStorage.getItem('business');
     if (storedBusiness) {
       const b = JSON.parse(storedBusiness);
-      this.business_id = b._id || '';
+      this.business_id = b._id;
       console.log('Business ID:', this.business_id);
-    } else {
-      this.toastr.error('Business ID missing. Please login again.');
-      this.router.navigate(['businesslogin']);
-      return;
     }
 
     const storedUsers = localStorage.getItem('users');
@@ -72,12 +70,6 @@ export class ItemsComponent implements OnInit {
       const u = JSON.parse(storedUsers);
       this.users_id = u._id || '';
       console.log('User ID:', this.users_id);
-    }
-
-    if (!this.users_id) {
-      this.toastr.error('User ID missing. Please login again.');
-      this.router.navigate(['SuperAdminLogin']);
-      return;
     }
 
     this.categoriesGet();
@@ -133,47 +125,49 @@ export class ItemsComponent implements OnInit {
     this.selectedFiles = {};
   }
 
-  saveBusiness() {
+  saveItems() {
     if (this.addItemsForm.invalid) {
       this.addItemsForm.markAllAsTouched();
       return;
     }
 
     const f = this.addItemsForm.value;
+    const formData = new FormData();
 
-    const payload = {
-      item_name: f.item_name,
-      item_code: f.item_code,
-      purchase_price: Number(f.purchase_price),
-      selling_price: Number(f.selling_price),
-      tax_rate: Number(f.tax_rate || 0),
-      stock_quantity: Number(f.stock_quantity || 0),
-      discount: Number(f.discount || 0),
-      min_stock_alert: Number(f.min_stock_alert || 0),
+    formData.append('item_name', f.item_name);
+    formData.append('item_code', f.item_code);
+    formData.append('purchase_price', f.purchase_price);
+    formData.append('selling_price', f.selling_price);
+    formData.append('tax_rate', f.tax_rate);
+    formData.append('stock_quantity', f.stock_quantity);
+    formData.append('discount', f.discount);
+    formData.append('min_stock_alert', f.min_stock_alert);
+    formData.append('description', f.description);
+    formData.append('brand_name', f.brand_name);
+    formData.append('category_id', f.category_id);
+    formData.append('sub_category_id', f.sub_category_id);
+    formData.append('unit_id', f.unit_id);
 
-      category_id: f.category_id,
-      sub_category_id: f.sub_category_id || null,
-      unit_id: f.unit_id,
+    formData.append('business_id', this.business_id);
+    formData.append('user_id', this.users_id);
 
-      description: f.description || '',
-      brand_name: f.brand_name || '',
+    if (this.selectedImageFile) {
+      formData.append('image', this.selectedImageFile);
+    }
 
-      user_id: this.users_id,
-      business_id: this.business_id,
-    };
-
-    console.log('Sending data:', payload);
-
-    this.service.addItems(payload).subscribe({
+    this.service.addItems(formData).subscribe({
       next: (res) => {
-        this.showToast('Item added successfully!', 'success');
+        this.toastr.success('Item added successfully!');
         this.addItemsForm.reset();
-        this.router.navigateByUrl('userview');
+        this.selectedImageFile = null;
       },
       error: (err) => {
-        console.error('Add failed:', err);
         this.toastr.error(err.error?.message || 'Failed to add item', 'Error');
       },
     });
+  }
+
+  onFileSelect(event: any) {
+    this.selectedImageFile = event.target.files[0] || null;
   }
 }

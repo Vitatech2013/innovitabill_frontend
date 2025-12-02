@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BillingService } from '../billing.service';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -17,7 +17,6 @@ import {
   PieController,
   Tooltip,
   Legend,
-  TimeScale,
   Title,
 } from 'chart.js';
 
@@ -40,6 +39,7 @@ Chart.register(
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
+import { Modal } from 'bootstrap';
 
 @Component({
   selector: 'app-sale-reports',
@@ -48,7 +48,8 @@ import * as XLSX from 'xlsx';
   templateUrl: './sale-reports.component.html',
   styleUrl: './sale-reports.component.css',
 })
-export class SaleReportsComponent implements OnInit {
+export class SaleReportsComponent implements OnInit, AfterViewInit {
+
   dailyData: any[] = [];
   monthlyData: any[] = [];
   yearlyData: any[] = [];
@@ -59,15 +60,19 @@ export class SaleReportsComponent implements OnInit {
   monthlyChart: any;
   yearlyChart: any;
 
-  private primaryLineColor = '#ff6b5f';
-  private accentColor = '#f6f6f6';
-  private gridColor = '#2a2a2a';
-  private fontColor = '#e9e9e9';
+  private pdfDoc: jsPDF | null = null;
+  pdfPreviewSrc: string | null = null;
+  private pdfPreviewModal: Modal | null = null;
 
   constructor(private service: BillingService) {}
 
   ngOnInit(): void {
     this.loadReport();
+  }
+
+  ngAfterViewInit() {
+    const modal = document.getElementById('pdfPreviewModal');
+    if (modal) this.pdfPreviewModal = new Modal(modal, { backdrop: 'static' });
   }
 
   loadReport() {
@@ -77,11 +82,6 @@ export class SaleReportsComponent implements OnInit {
       this.monthlyData = res.monthly || [];
       this.yearlyData = res.yearly || [];
 
-      this.dailyData = [...this.dailyData];
-      this.weeklyData = [...this.weeklyData];
-      this.monthlyData = [...this.monthlyData];
-      this.yearlyData = [...this.yearlyData];
-
       this.loadDailyChart(this.dailyData);
       this.loadWeeklyChart(this.weeklyData);
       this.loadMonthlyChart(this.monthlyData);
@@ -89,250 +89,86 @@ export class SaleReportsComponent implements OnInit {
     });
   }
 
-  private sharedLineOptions() {
-    return {
-      plugins: {
-        legend: { display: false },
-        title: { display: false },
-        tooltip: {
-          enabled: true,
-          backgroundColor: '#1f1f1f',
-          titleColor: this.fontColor,
-          bodyColor: this.fontColor,
-          callbacks: {
-            label: (ctx: any) =>
-              `${ctx.dataset.label ? ctx.dataset.label + ': ' : ''}${ctx.raw}`,
-          },
-        },
-        datalabels: {
-          display: false,
-        },
-      },
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        x: {
-          grid: { color: this.gridColor, display: false },
-          ticks: {
-            color: this.fontColor,
-            maxRotation: 45,
-            minRotation: 45,
-            autoSkip: true,
-            padding: 6,
-          },
-          border: { display: false },
-        },
-        y: {
-          grid: { color: this.gridColor },
-          ticks: { color: this.fontColor, padding: 6 },
-          beginAtZero: false,
-          border: { display: false },
-        },
-      },
-      elements: {
-        line: {
-          tension: 0.35,
-          borderWidth: 2.5,
-        },
-        point: {
-          radius: 5,
-          hoverRadius: 7,
-          backgroundColor: this.primaryLineColor,
-          borderWidth: 0,
-        },
-      },
-    };
-  }
-
   loadDailyChart(data: any[]) {
     if (this.dailyChart) this.dailyChart.destroy();
-
-    const labels = data.map((x) => x._id);
-    const values = data.map((x) => x.totalSales);
-
     this.dailyChart = new Chart('dailyChart', {
       type: 'bar',
       data: {
-        labels,
-        datasets: [
-          {
-            label: 'Daily Sales',
-            data: values,
-            backgroundColor: this.primaryLineColor,
-            borderRadius: 6,
-            barThickness: 18,
-          },
-        ],
+        labels: data.map(x => x._id),
+        datasets: [{ label: 'Daily Sales', data: data.map(x => x.totalSales) }],
       },
-      options: {
-        ...this.sharedLineOptions(),
-        plugins: {
-          ...this.sharedLineOptions().plugins,
-          datalabels: { display: false },
-        },
-        scales: {
-          x: { ...this.sharedLineOptions().scales.x },
-          y: { ...this.sharedLineOptions().scales.y },
-        },
-      },
-      plugins: [ChartDataLabels],
     });
   }
 
   loadWeeklyChart(data: any[]) {
     if (this.weeklyChart) this.weeklyChart.destroy();
-
-    const labels = data.map((x) => `W${x._id.week}-${x._id.year}`);
-    const values = data.map((x) => x.totalSales);
-
     this.weeklyChart = new Chart('weeklyChart', {
       type: 'line',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'Weekly Sales',
-            data: values,
-            borderColor: this.primaryLineColor,
-            backgroundColor: 'transparent',
-            pointBackgroundColor: this.primaryLineColor,
-            pointBorderColor: this.primaryLineColor,
-            fill: false,
-          },
-        ],
-      },
-      options: this.sharedLineOptions(),
-      plugins: [ChartDataLabels],
+      data: { labels: data.map(x => `W${x._id.week}-${x._id.year}`), datasets: [{label:'Weekly Sales',data:data.map(x=>x.totalSales),fill:false}],},
     });
   }
 
   loadMonthlyChart(data: any[]) {
     if (this.monthlyChart) this.monthlyChart.destroy();
-
-    const monthLabels = data.map((x) => {
-      const m = x._id?.month ?? x._id;
-
-      const monthNames = [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ];
-      if (typeof m === 'number') return monthNames[(m - 1 + 12) % 12];
-      if (typeof m === 'string' && /^\d+$/.test(m))
-        return monthNames[(parseInt(m, 10) - 1 + 12) % 12];
-      return String(m);
-    });
-
-    const values = data.map((x) => x.totalSales);
-
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     this.monthlyChart = new Chart('monthlyChart', {
       type: 'line',
       data: {
-        labels: monthLabels,
-        datasets: [
-          {
-            label: 'Monthly Sales',
-            data: values,
-            borderColor: this.primaryLineColor,
-            backgroundColor: 'transparent',
-            pointBackgroundColor: this.primaryLineColor,
-            pointBorderColor: this.primaryLineColor,
-            fill: false,
-          },
-        ],
+        labels: data.map(x => monthNames[(x._id.month - 1) % 12]),
+        datasets: [{ label: 'Monthly Sales', data: data.map(x => x.totalSales), fill: false }],
       },
-      options: this.sharedLineOptions(),
-      plugins: [ChartDataLabels],
     });
   }
 
   loadYearlyChart(data: any[]) {
     if (this.yearlyChart) this.yearlyChart.destroy();
+    this.yearlyChart = new Chart('yearlyChart',{type:'line',data:{ labels:data.map(x=>x._id.year??x._id), datasets:[{label:'Yearly Sales',data:data.map(x=>x.totalSales),fill:false}],},});
+  }
 
-    const labels = data.map((x) => x._id.year ?? x._id);
-    const values = data.map((x) => x.totalSales);
+  // 🚀 NEW: Prepare PDF and show preview in modal
+  preparePDFPreview() {
+    const element: any = document.getElementById('report-content');
+    if (!element) return;
 
-    this.yearlyChart = new Chart('yearlyChart', {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'Yearly Sales',
-            data: values,
-            borderColor: this.primaryLineColor,
-            backgroundColor: 'transparent',
-            pointBackgroundColor: this.primaryLineColor,
-            pointBorderColor: this.primaryLineColor,
-            fill: false,
-          },
-        ],
-      },
-      options: this.sharedLineOptions(),
-      plugins: [ChartDataLabels],
+    html2canvas(element, { scale: 2, backgroundColor: '#fff' }).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      this.pdfPreviewSrc = imgData;
+
+      const pdf = new jsPDF('p','mm','a4');
+      const imgWidth = 210;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      pdf.addImage(imgData,'PNG',0,0,imgWidth,imgHeight);
+      this.pdfDoc = pdf;
+
+      this.pdfPreviewModal?.show();
     });
   }
 
-  downloadPDF() {
-    const element: any = document.querySelector('.container');
-
-    if (!element) {
-      console.warn('Report container not found for PDF capture');
-      return;
-    }
-
-    html2canvas(element, { scale: 2, backgroundColor: '#171717' }).then(
-      (canvas) => {
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const img = canvas.toDataURL('image/png');
-
-        const pageWidth = 210;
-        const pageHeight = 297;
-        const imgWidth = pageWidth;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-        pdf.addImage(img, 'PNG', 0, 0, imgWidth, imgHeight);
-        pdf.save('Sales_Report.pdf');
-      }
-    );
+  
+  confirmDownload() {
+    this.pdfDoc?.save('Sales_Report.pdf');
+    this.pdfPreviewSrc = null;
+    this.pdfPreviewModal?.hide();
   }
 
+ 
+  cancelPreview() {
+    this.pdfPreviewSrc = null;
+    this.pdfPreviewModal?.hide();
+  }
+
+ 
   downloadExcel() {
-    const exportData = [
-      ...this.dailyData.map((d) => ({
-        Period: d._id,
-        Type: 'Daily',
-        Sales: d.totalSales,
-      })),
-      ...this.weeklyData.map((w) => ({
-        Period: `W${w._id.week}-${w._id.year}`,
-        Type: 'Weekly',
-        Sales: w.totalSales,
-      })),
-      ...this.monthlyData.map((m) => ({
-        Period: `${m._id.month ?? m._id}-${m._id.year ?? ''}`.replace(/-$/, ''),
-        Type: 'Monthly',
-        Sales: m.totalSales,
-      })),
-      ...this.yearlyData.map((y) => ({
-        Period: y._id.year ?? y._id,
-        Type: 'Yearly',
-        Sales: y.totalSales,
-      })),
+    const tableData = [
+      ...this.dailyData.map(x => ({ Period: x._id, Type:'Daily', Sales:x.totalSales })),
+      ...this.weeklyData.map(x => ({ Period:`W${x._id.week}-${x._id.year}`, Type:'Weekly', Sales:x.totalSales })),
+      ...this.monthlyData.map(x => ({ Period:`${x._id.month}-${x._id.year}`, Type:'Monthly', Sales:x.totalSales })),
+      ...this.yearlyData.map(x => ({ Period:x._id.year??x._id, Type:'Yearly', Sales:x.totalSales })),
     ];
 
-    const ws = XLSX.utils.json_to_sheet(exportData);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sales');
-    XLSX.writeFile(wb, 'Sales_Report.xlsx');
+    const sheet = XLSX.utils.json_to_sheet(tableData);
+    const book = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(book, sheet, 'Sales');
+    XLSX.writeFile(book, 'Sales_Report.xlsx');
   }
 }

@@ -6,6 +6,10 @@ import { constants } from '../../constants';
   providedIn: 'root',
 })
 export class BillingService {
+  // getQuotationData(demoId: string | null) {
+  //   throw new Error('Method not implemented.');
+  // }
+  // private baseUrl = 'http://78.142.47.247:3009';
   private baseUrl = constants.baseUrl;
   constructor(private http: HttpClient) {}
 
@@ -45,9 +49,12 @@ export class BillingService {
       data
     );
   }
-  getBusiness() {
-    return this.http.get<any[]>(`${this.baseUrl}/business/businessget`);
+  getBusiness(sid: any) {
+    return this.http.get<any[]>(
+      `${this.baseUrl}/business/businessgetbysuperadminid/${sid}`
+    );
   }
+
   updateBusiness(id: string, value: any) {
     return this.http.put(
       `${this.baseUrl}/business/businessupdate/${id}`,
@@ -234,7 +241,7 @@ export class BillingService {
     return this.http.post(`${this.baseUrl}/sales/createsale`, data);
   }
 
-  updateitems(id: any, data: any) {
+  updateitems(id: string, data: FormData) {
     return this.http.put(`${this.baseUrl}/items/updateitems/${id}`, data);
   }
   deleteItem(id: String) {
@@ -252,5 +259,11 @@ export class BillingService {
   }
   getSalesReport() {
     return this.http.get(`${this.baseUrl}/sales/getSalesReport`);
+  }
+  updatesale(id: string, sale: any) {
+    return this.http.put(`${this.baseUrl}/sales/salesupdate/${id}`, sale);
+  }
+  getQuotationData(demoId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/quotation/getQuotationData/${demoId}`);
   }
 }

@@ -37,6 +37,9 @@ import { BusinessForgotpasswordComponent } from './business-forgotpassword/busin
 import { BusinessOtpComponent } from './business-otp/business-otp.component';
 
 
+import { QuotationComponent } from './quotation/quotation.component';
+import { BusinessForgotpasswordComponent } from './business-forgotpassword/business-forgotpassword.component';
+import { BusinessOtpComponent } from './business-otp/business-otp.component';
 
 export const routes: Routes = [
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
@@ -67,18 +70,19 @@ export const routes: Routes = [
       {
         path: 'itemlist',
         component: ItemListComponent,
-        children: [{ path: 'items', component: ItemsComponent }],
       },
+      { path: 'items', component: ItemsComponent },
 
       {
         path: 'saleslist',
         component: SalesComponent,
-        children: [{ path: 'salereports', component: SaleReportsComponent }],
       },
+      { path: 'salereports', component: SaleReportsComponent },
       {
         path: 'sale',
         component: SaleComponent,
       },
+      { path: 'quotation', component: QuotationComponent },
     ],
   },
 

@@ -1,0 +1,69 @@
+.a4-container {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 20mm;
+  margin: auto;
+  background: white;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 80px;
+  margin-right: 20px;
+}
+
+.business-info h2 {
+  margin: 0;
+}
+
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.items-table th,
+.items-table td {
+  border: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+
+.items-table th {
+  background: #f0f0f0;
+}
+
+.totals {
+  text-align: right;
+  margin-top: 20px;
+}
+.btn + .btn {
+  margin-left: 10px;
+}
+.scroll-card-area {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(430px, 1fr));
+  gap: 20px;
+  max-height: calc(100vh - 420px);
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.scroll-card-area::-webkit-scrollbar {
+  width: 3px;
+}
+
+.scroll-card-area::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+#quotation-content {
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}

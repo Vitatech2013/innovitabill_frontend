@@ -62,7 +62,7 @@
                 />
               </div>
 
-              <div class="mb-3">
+              <!-- <div class="mb-3">
                 <label class="form-label fw-semibold">Password</label>
                 <input
                   type="password"
@@ -70,14 +70,16 @@
                   formControlName="password"
                   readonly
                 />
-              </div>
+              </div> -->
             </div>
 
             <div class="col-md-6 ps-md-4">
               <h6 class="fw-bold text-primary mb-3">Address Details</h6>
               <div formGroupName="address" class="row">
                 <div class="col-md-6 mb-3" *ngFor="let field of addressFields">
-                  <label class="form-label fw-semibold">{{ field.label }}</label>
+                  <label class="form-label fw-semibold">{{
+                    field.label
+                  }}</label>
                   <input
                     type="text"
                     class="form-control"
@@ -172,14 +174,14 @@
                 />
               </div>
 
-              <div class="mb-3">
+              <!-- <div class="mb-3">
                 <label class="form-label">Password</label>
                 <input
                   type="password"
                   class="form-control"
                   formControlName="password"
                 />
-              </div>
+              </div> -->
 
               <h6 class="fw-bold mt-3">Address</h6>
               <div formGroupName="address" class="row">

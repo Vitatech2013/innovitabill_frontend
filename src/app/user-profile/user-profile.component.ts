@@ -32,6 +32,8 @@ export class UserProfileComponent implements OnInit {
   profile: any;
   user_id: any;
   userData: any;
+  toastMessage: string | null = null;
+  toastType: string | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -72,14 +74,14 @@ export class UserProfileComponent implements OnInit {
       user_name: this.userData.user_name,
       phone_number: this.userData.phone_number,
       user_email: this.userData.user_email,
-      password: this.userData.password,
+      password: '',
       address: this.userData.address,
     });
   }
 
   getUserProfile() {
     if (this.profileForm.invalid) {
-      alert('Please fill all required fields');
+      this.showToast('Please fill all required feilds!', 'Danger');
       return;
     }
 
@@ -97,7 +99,7 @@ export class UserProfileComponent implements OnInit {
 
     this.service.updateprofile(formData, this.user_id).subscribe({
       next: (res: any) => {
-        alert('Profile updated successfully!');
+        this.showToast('Profile Updated Sucessfully', 'success');
         this.fetchUserData();
 
         const modal = bootstrap.Modal.getInstance(
@@ -107,7 +109,7 @@ export class UserProfileComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        alert('Profile update failed');
+        this.showToast('Profile Update Failed!', 'Danger');
       },
     });
   }
@@ -121,7 +123,8 @@ export class UserProfileComponent implements OnInit {
 
         this.previewUrl = this.userData?.image
           ? `http://localhost:3009/business_images/${this.userData.image}`
-          : null;
+          : // `http://78.142.47.247:3009/business_images/${this.userData.image}`
+            null;
 
         this.profileForm.patchValue({
           user_name: this.userData.user_name,
@@ -129,7 +132,10 @@ export class UserProfileComponent implements OnInit {
           user_email: this.userData.user_email,
           password: this.userData.password,
           address: this.userData.address || {},
+          image: this.userData.image,
         });
+        console.log('User Data from backend:', this.userData);
+        console.log('Image returned:', this.userData?.image);
       },
       error: (err) => console.error('Profile fetch error:', err),
     });
@@ -145,6 +151,15 @@ export class UserProfileComponent implements OnInit {
     }
   }
   getImageUrl(image: string): string {
-    return image ? `http://localhost:3009/business_images/${image}` : '';
+    return image
+      ? //  `http://78.142.47.247:3009/business_images/${image}`
+        `http://localhost:3009/business_images/${image}`
+      : '';
+  }
+
+  showToast(message: string, type: string) {
+    this.toastMessage = message;
+    this.toastType = type;
+    setTimeout(() => (this.toastMessage = null), 3000);
   }
 }

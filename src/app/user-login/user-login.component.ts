@@ -28,8 +28,7 @@ export class UserLoginComponent implements OnInit {
   userForm!: FormGroup;
   toastMessage: string | null = null;
   toastType: string | undefined;
-  business_id: string = '';
-  user_id: string = '';
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -42,12 +41,6 @@ export class UserLoginComponent implements OnInit {
       user_email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
-    // const storedUser = localStorage.getItem('business');
-    // if (storedUser) {
-    //   const user = JSON.parse(storedUser);
-    //   this.business_id = user._id || '';
-    //   this.user_id = user._id || '';
-    // }
   }
 
   UserLogin() {
@@ -56,12 +49,24 @@ export class UserLoginComponent implements OnInit {
       this.userForm.markAllAsTouched();
       return;
     }
+
     this.api.LoginUser(this.userForm.value).subscribe({
       next: (res: any) => {
-        console.log(res, 'User Login Success');
+        console.log('User Login Success Response:', res);
 
+        
         localStorage.setItem('users', JSON.stringify(res.data));
         localStorage.setItem('us_token', res.token);
+
+        const businessID =
+          res?.data?.business_id?._id || res?.data?.business_id || null;
+
+        if (businessID) {
+         localStorage.setItem('business', JSON.stringify({ _id: businessID }));
+          console.log('Stored business_id:', businessID);
+        } else {
+          console.warn(' Warning: business_id not found in login response');
+        }
 
         this.showToast('User Login Success', 'success');
 
