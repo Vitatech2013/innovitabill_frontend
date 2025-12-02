@@ -23,6 +23,8 @@ export class AddBusinessComponent implements OnInit {
   superadmin_id: string = '';
   selectedBusiness: any;
   businessTypes: any[] = [];
+   toastMessage: string | null = null;
+  toastType: string | undefined;
 
   addressFields = [
     { label: 'House No', name: 'house_No' },
@@ -30,7 +32,7 @@ export class AddBusinessComponent implements OnInit {
     { label: 'Mandal Name', name: 'mandal_Name' },
     { label: 'District Name', name: 'district_Name' },
     { label: 'State', name: 'state' },
-    { label: 'Pincode', name: 'pincode' },
+    { label: 'pincode', name: 'pincode' },
   ];
 
   constructor(
@@ -82,7 +84,7 @@ export class AddBusinessComponent implements OnInit {
       },
       error: (err: any) => console.error('Error fetching business types:', err),
     });
-    console.log('Business Types:', this.businessTypes);
+    
   }
 
   isInvalid(controlName: string): boolean {
@@ -98,13 +100,17 @@ export class AddBusinessComponent implements OnInit {
   }
 
   cancelAdd() {
-    this.addBusinessForm.reset();
-    this.selectedFiles = {};
-  }
+  this.addBusinessForm.reset();
+  this.addBusinessForm.get('address')?.reset();
+  this.selectedFiles = {};
+  this.showToast('Form cleared', 'error');
+}
+
 
  saveBusiness() {
   if (this.addBusinessForm.invalid) {
-    alert('Please fill all required fields correctly.');
+   this.showToast('Please fill all required fields correctly.', 'error');
+  this.addBusinessForm.markAllAsTouched();
     return;
   }
 
@@ -139,8 +145,13 @@ export class AddBusinessComponent implements OnInit {
 
   this.api.addBusiness(formData).subscribe({
     next: (res) => {
-      alert('Business registered successfully!');
-      this.router.navigate(['SuperAdminView']);
+    this.showToast('Business registered successfully!', 'success');
+setTimeout(() => {
+  this.router.navigate(['SuperAdminView']);
+}, 500);
+
+
+      
     },
     error: (err) => {
       console.error('Add failed:', err);
@@ -152,5 +163,12 @@ export class AddBusinessComponent implements OnInit {
     },
   });
 }
+ showToast(message: string, type: string = 'success') {
+  this.toastMessage = message;
+  this.toastType = type;
+  setTimeout(() => (this.toastMessage = null), 3000);
+}
+
+
 
 }

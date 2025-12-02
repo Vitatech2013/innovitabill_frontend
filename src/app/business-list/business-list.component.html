@@ -1,5 +1,17 @@
 <div class="container-fluid">
   <div class="dashboard">
+       <div class="position-fixed top-0 end-0 p-4" style="z-index: 1080;">
+  <div
+    *ngIf="toastMessage"
+    class="custom-toast"
+    [ngClass]="toastType"
+  >
+    <div class="d-flex justify-content-between align-items-center">
+      <span>{{ toastMessage }}</span>
+      <button class="btn-close ms-3" (click)="toastMessage = null"></button>
+    </div>
+  </div>
+</div>
     <div class="row mb-3">
       <div class="col-12 position-relative">
         <h4 class="mb-0 fw-bold text-success">Available Business List</h4>
@@ -15,9 +27,16 @@
     </div>
 
     <div class="row">
+      <div *ngIf="business.length === 0" class="text-center mt-4">
+      <div class="alert alert-info shadow-sm py-3">
+        <i class="bi bi-info-circle"></i> No users found.
+      </div>
+    </div>
       <div class="col-12">
         <div class="table-responsive bg-white p-3 rounded-4">
-          <table class="table table-hover table-bordered align-middle">
+          <table
+           *ngIf="business.length > 0"
+           class="table table-hover table-bordered align-middle">
             <thead class="table-success text-center">
               <tr>
                 <th style="width: 70px">Sl. No</th>
@@ -42,9 +61,6 @@
                 <td>{{ b.email }}</td>
                 <td>{{ b.phone_number }}</td>
                 <td>{{ b.bt_id?.business_type }}</td> 
-
-
-
                 <td>
                   <span
                     class="badge px-3 py-2"
@@ -102,7 +118,7 @@
       aria-labelledby="viewModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-dialog modal-xl modal-dialog-centered  w-200vh">
         <div class="modal-content border-0 shadow-sm rounded-3">
           <div class="modal-header bg-success text-white py-2 px-3">
             <h5 class="modal-title fw-semibold" id="viewModalLabel">
@@ -120,13 +136,13 @@
               <table class="table table-bordered align-middle text-center mb-0">
                 <thead class="table-success">
                   <tr>
-                    <th>Business Name</th>
+                    <th>Business_Name</th>
                     <th>Owner</th>
                     <th>Email</th>
                     <th>Phone</th>
-                    <th>Business Type</th>
+                    <th>Business_Type</th>
                     <th>Address</th>
-                    <th>Reg No</th>
+                    <th>Reg_No</th>
                     <th>Status</th>
                     <th>GST</th>
                     <th>Logo</th>
@@ -156,7 +172,7 @@
                     <td>{{ selectedBusiness.registration_number }}</td>
                     <td>
                       <span
-                        class="badge"
+                        class="badge "
                         [ngClass]="{
                           'bg-success': selectedBusiness.status === 'Active',
                           'bg-warning': selectedBusiness.status === 'Pending',
@@ -244,9 +260,9 @@
 
           <div class="modal-body bg-light">
             <form [formGroup]="BusinessForm" enctype="multipart/form-data">
-              <h6 class="fw-bold text-success mb-3">Basic Information</h6>
+              <h6 class="fw-bold text-success mb-3">Business Details</h6>
               <div class="row g-3 mb-3">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <label class="form-label fw-semibold">Business Name</label>
                   <input
                     type="text"
@@ -255,37 +271,7 @@
                   />
                 </div>
 
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Owner Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="owner_name"
-                  />
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Email</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    formControlName="email"
-                  />
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Phone Number</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    formControlName="phone_number"
-                  />
-                </div>
-              </div>
-
-              <h6 class="fw-bold text-success mb-3 mt-4">Business Details</h6>
-              <div class="row g-3 mb-3">
-                <div class="col-md-6">
+                       <div class="col-md-4">
                   <label class="form-label fw-semibold">Business Type</label>
                  <select class="form-select" formControlName="bt_id">
   <option value="">Select Business Type</option>
@@ -309,17 +295,41 @@
                   </div>
                 </div>
 
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold">Status</label>
-                  <select class="form-select" formControlName="status">
-                    <option value="">Select Status</option>
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                    <option value="pending">Pending</option>
-                  </select>
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Owner Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="owner_name"
+                  />
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    formControlName="email"
+                  />
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Phone Number</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    formControlName="phone_number"
+                  />
+                </div>
+              <!-- </div> -->
+
+              <!-- <h6 class="fw-bold text-success mb-3 mt-4">Business Details</h6>
+              <div class="row g-3 mb-3"> -->
+         
+
+              
+
+                <div class="col-md-4">
                   <label class="form-label fw-semibold">Business Address</label>
                   <input
                     type="text"
@@ -328,7 +338,7 @@
                   />
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <label class="form-label fw-semibold"
                     >Registration Number</label
                   >
@@ -339,7 +349,7 @@
                   />
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <label class="form-label fw-semibold">GST Number</label>
                   <input
                     type="text"
@@ -350,11 +360,20 @@
                     GST Number is required
                   </small>
                 </div>
+                  <div class="col-md-4">
+                  <label class="form-label fw-semibold">Status</label>
+                  <select class="form-select" formControlName="status">
+                    <option value="">Select Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="pending">Pending</option>
+                  </select>
+                </div>
               </div>
 
               <h6 class="fw-bold text-success mb-3 mt-4">Documents</h6>
               <div class="row g-3">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <label class="form-label fw-semibold">LOGO</label>
 
                   <div class="input-group">
@@ -375,7 +394,7 @@
                   </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <label class="form-label fw-semibold">PAN</label>
                   <div class="input-group">
                     <label class="input-group-text choose-btn text-dark">
@@ -395,7 +414,7 @@
                   </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <label class="form-label fw-semibold">Aadhar</label>
                   <div class="input-group">
                     <label class="input-group-text choose-btn text-dark">
@@ -415,7 +434,7 @@
                   </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <label class="form-label fw-semibold">Certificate</label>
 
                   <div class="input-group">

@@ -1,8 +1,22 @@
 <div class="container-fluid">
   <div class="card shadow-sm p-3 mb-4 border-0 small-card">
+       <div class="position-fixed top-0 end-0 p-4" style="z-index: 1080;">
+  <div
+    *ngIf="toastMessage"
+    class="custom-toast"
+    [ngClass]="toastType"
+  >
+    <div class="d-flex justify-content-between align-items-center">
+      <span>{{ toastMessage }}</span>
+      <button class="btn-close ms-3" (click)="toastMessage = null"></button>
+    </div>
+  </div>
+</div>
+
     <h5 class="text-success fw-bold mb-3">
       <i class="bi bi-building me-2"></i>
       {{ selectedBusiness ? "Update Business" : "Add Business" }}
+      
     </h5>
 
     <form
@@ -11,7 +25,7 @@
       enctype="multipart/form-data"
     >
       <div class="row g-3">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label class="form-label fw-semibold">Business Name<span class="text-danger">*</span></label>
           <input
             type="text"
@@ -24,46 +38,7 @@
           </small>
         </div>
 
-        <div class="col-md-4">
-          <label class="form-label fw-semibold">Owner Name<span class="text-danger">*</span></label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="owner_name"
-            placeholder="Enter owner name"
-          />
-          <small *ngIf="isInvalid('owner_name')" class="text-danger">
-            Owner Name is required and must be at least 3 letters
-          </small>
-        </div>
-
-        <div class="col-md-4">
-          <label class="form-label fw-semibold">Email<span class="text-danger">*</span></label>
-          <input
-            type="email"
-            class="form-control"
-            formControlName="email"
-            placeholder="Enter email"
-          />
-          <small *ngIf="isInvalid('email')" class="text-danger">
-            Enter a valid email
-          </small>
-        </div>
-
-        <div class="col-md-4">
-          <label class="form-label fw-semibold">Phone Number<span class="text-danger">*</span></label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="phone_number"
-            placeholder="Enter phone number"
-          />
-          <small *ngIf="isInvalid('phone_number')" class="text-danger">
-            Phone number is required
-          </small>
-        </div>
-
-        <div class="col-md-4">
+                <div class="col-md-3">
           <label class="form-label fw-semibold">Business Type<span class="text-danger">*</span></label>
           <select class="form-select" formControlName="bt_id">
             <option value="">Select Business Type</option>
@@ -77,33 +52,46 @@
           </select>
         </div>
 
-        <div class="col-md-4">
-          <label class="form-label fw-semibold">Registration Number<span class="text-danger">*</span></label>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Owner Name<span class="text-danger">*</span></label>
           <input
             type="text"
             class="form-control"
-            formControlName="registration_number"
-            placeholder="Enter registration number"
+            formControlName="owner_name"
+            placeholder="Enter owner name"
           />
-          <small *ngIf="isInvalid('registration_number')" class="text-danger">
-            Registration Number is required
+          <small *ngIf="isInvalid('owner_name')" class="text-danger">
+            Owner Name is required and must be at least 3 letters
           </small>
         </div>
 
-        <div class="col-md-4">
-          <label class="form-label fw-semibold">GST Number<span class="text-danger">*</span></label>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Email<span class="text-danger">*</span></label>
+          <input
+            type="email"
+            class="form-control"
+            formControlName="email"
+            placeholder="Enter email"
+          />
+          <small *ngIf="isInvalid('email')" class="text-danger">
+            Enter a valid email
+          </small>
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Phone Number<span class="text-danger">*</span></label>
           <input
             type="text"
             class="form-control"
-            formControlName="gst_number"
-            placeholder="Enter GST number"
+            formControlName="phone_number"
+            placeholder="Enter phone number"
           />
-          <small *ngIf="isInvalid('gst_number')" class="text-danger">
-            GST Number is required
+          <small *ngIf="isInvalid('phone_number')" class="text-danger">
+            Phone number is required
           </small>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label class="form-label fw-semibold"
             >Password<span class="text-danger">*</span></label
           >
@@ -117,13 +105,41 @@
             Password is required
           </small>
         </div>
+
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Registration Number<span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="registration_number"
+            placeholder="Enter registration number"
+          />
+          <small *ngIf="isInvalid('registration_number')" class="text-danger">
+            Registration Number is required
+          </small>
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">GST Number<span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="gst_number"
+            placeholder="Enter GST number"
+          />
+          <small *ngIf="isInvalid('gst_number')" class="text-danger">
+            GST Number is required
+          </small>
+        </div>
+
+
         
         <div class="col-12 mt-3">
           <h6 class="text-primary fw-semibold border-bottom pb-2">Address</h6>
         </div>
 
         <div formGroupName="address" class="row">
-          <div class="col-md-4 mb-3" *ngFor="let field of addressFields">
+          <div class="col-md-3 mb-4" *ngFor="let field of addressFields">
             <label class="form-label"
               >{{ field.label }}<span class="text-danger">*</span></label
             >
@@ -151,7 +167,7 @@
           </h6>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-3">
           <label class="form-label fw-semibold"
             >Logo<span class="text-danger">*</span></label
           >
@@ -179,7 +195,7 @@
           </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-3">
           <label class="form-label fw-semibold"
             >PAN<span class="text-danger">*</span></label
           >
@@ -191,7 +207,7 @@
           />
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-3">
           <label class="form-label fw-semibold"
             >Aadhar<span class="text-danger">*</span></label
           >
@@ -203,7 +219,7 @@
           />
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-3">
           <label class="form-label fw-semibold"
             >Incorporation Certificate<span class="text-danger">*</span></label
           >

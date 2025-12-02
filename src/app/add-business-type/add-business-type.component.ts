@@ -4,7 +4,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { BillingService } from '../billing.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-
+declare var bootstrap: any;
 @Component({
   selector: 'app-add-business-type',
   standalone: true,
@@ -17,6 +17,8 @@ export class AddBusinessTypeComponent implements OnInit {
   selectedBusiness: any;
   addBusinessTypeForm!: any;
   superadmin_id: any;
+   toastMessage: string | null = null;
+  toastType: string | undefined;
 
   constructor(
     private api: BillingService, 
@@ -59,6 +61,10 @@ export class AddBusinessTypeComponent implements OnInit {
           this.toastr.success('Business Type Updated Successfully!');
           this.addBusinessTypeForm.reset();
           this.selectedBusiness = null;
+           window.location.reload();
+            
+      const bsmodal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'))
+      bsmodal.hide();
         },
         error: (err: any) => {
           console.error(err);
@@ -71,7 +77,7 @@ export class AddBusinessTypeComponent implements OnInit {
 
     this.api.addBusinessType(formData).subscribe({
       next: (res: any) => {
-        this.toastr.success('Business Type added successfully!');
+        this.showToast('Business Type added successfully!', 'success');
         this.addBusinessTypeForm.reset();
         
       },
@@ -86,4 +92,10 @@ export class AddBusinessTypeComponent implements OnInit {
     const control = this.addBusinessTypeForm.get(controlName);
     return control ? control.touched && control.invalid : false;
   }
+   showToast(message: string, type: string = 'success') {
+  this.toastMessage = message;
+  this.toastType = type;
+  setTimeout(() => (this.toastMessage = null), 3000);
+}
+
 }

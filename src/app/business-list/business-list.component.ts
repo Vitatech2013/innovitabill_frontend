@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { BillingService } from '../billing.service';
 import { ToastrService } from 'ngx-toastr';
+import { constants } from '../../../constants';
 
 declare var bootstrap: any;
 
@@ -35,6 +36,9 @@ businessID: string = ''
   b: any;
   searchTerm: string = '';
   items: any[] = [];
+   private baseUrl = constants.baseUrl;
+   toastMessage: string | null = null;
+  toastType: string | undefined;
 
   constructor(private fb: FormBuilder, private api: BillingService, private toastr: ToastrService) {}
 
@@ -121,7 +125,7 @@ if (businesslist) {
       password: '',
       // bt_id: b.bt_id?._id,
       // bt_id: b.bt_id?.bt_id,
-// bt_id: b.bt_id?._id || b.bt_id,
+
 bt_id: b.bt_id?._id || b.bt_id,
 
       address: fullAddress,
@@ -161,23 +165,23 @@ bt_id: b.bt_id?._id || b.bt_id,
       },
       error: (err: any) => console.error('Error fetching business types:', err),
     });
-    console.log('Business Types:', this.businessTypes);
+   
   }
 
   getImageUrl(path: string): string {
     if (!path) return 'assets/default-business.jpg';
     const cleanPath = path.replace(/\\/g, '/');
     return cleanPath.includes('business_images/')
-      ? `http://78.142.47.247:3009/${cleanPath}`
-      : `http://78.142.47.247:3009/business_images/${cleanPath}`;
+      ? `${this.baseUrl}/${cleanPath}`
+      : `${this.baseUrl}/business_images/${cleanPath}`;
   }
 
   getFileUrl(path: string): string {
     if (!path) return '#';
     const cleanPath = path.replace(/\\/g, '/');
     return cleanPath.includes('business_images/')
-      ? `http://78.142.47.247:3009/${cleanPath}`
-      : `http://78.142.47.247:3009/business_images/${cleanPath}`;
+      ? `${this.baseUrl}/${cleanPath}`
+      : `${this.baseUrl}/business_images/${cleanPath}`;
   }
 
 updateBusiness() {
@@ -229,15 +233,20 @@ updateBusiness() {
 
   this.api.updateBusiness(this.s_id, formData).subscribe({
     next: (res) => {
-      this.toastr.success("Business updated successfully!");
+      this.showToast("Business updated successfully!", 'success');
       this.loadBusiness();
       this.closeModal("editBusinessModal");
     },
     error: (err) => {
       console.error("Update Error:", err);
-      this.toastr.error("Update failed");
+      this.showToast("Update failed", 'Update Failed');
     }
   });
+}
+ showToast(message: string, type: string = 'success') {
+  this.toastMessage = message;
+  this.toastType = type;
+  setTimeout(() => (this.toastMessage = null), 3000);
 }
 
 

@@ -35,7 +35,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 export const routes: Routes = [
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
    {path: 'forgot-password', component: ForgotPasswordComponent},
-   {path: 'reset-password', component: ResetPasswordComponent},
+   {path: 'reset-password/:token', component: ResetPasswordComponent},
   {
     path: 'SuperAdminView',
     component: SuperadminViewComponent,
@@ -43,7 +43,7 @@ export const routes: Routes = [
       { path: '', component: BusinessListComponent },
       { path: 'view-business', component: BusinessListComponent },
       { path: 'add-business', component: AddBusinessComponent },
-      { path: 'superadmin_profile', component: SuperadminProfileComponent },
+      { path: 'superadmin-profile', component: SuperadminProfileComponent },
       {path: 'add_business_type', component: AddBusinessTypeComponent},
       {path: 'view_business_type', component: ViewBusinessTypeComponent}
       
