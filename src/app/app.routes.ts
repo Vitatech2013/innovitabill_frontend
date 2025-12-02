@@ -32,6 +32,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 
 
 import { QuotationComponent } from './quotation/quotation.component';
+import { BusinessForgotpasswordComponent } from './business-forgotpassword/business-forgotpassword.component';
+import { BusinessOtpComponent } from './business-otp/business-otp.component';
 
 export const routes: Routes = [
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
