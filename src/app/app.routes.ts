@@ -25,6 +25,7 @@ import { SaleComponent } from './sale/sale.component';
 import { BusinessprofileComponent } from './businessprofile/businessprofile.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { SaleReportsComponent } from './sale-reports/sale-reports.component';
+import { QuotationComponent } from './quotation/quotation.component';
 
 export const routes: Routes = [
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
@@ -50,18 +51,19 @@ export const routes: Routes = [
       {
         path: 'itemlist',
         component: ItemListComponent,
-        children: [{ path: 'items', component: ItemsComponent }],
       },
+      { path: 'items', component: ItemsComponent },
 
       {
         path: 'saleslist',
         component: SalesComponent,
-        children: [{ path: 'salereports', component: SaleReportsComponent }],
       },
+      { path: 'salereports', component: SaleReportsComponent },
       {
         path: 'sale',
         component: SaleComponent,
       },
+      { path: 'quotation', component: QuotationComponent },
     ],
   },
 

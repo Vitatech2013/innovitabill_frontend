@@ -26,7 +26,7 @@ export class BusinessListComponent implements OnInit {
   s_id: any;
   selectedImage: string | undefined;
   selectedFiles: Record<string, File> = {};
-
+  superadmin_id: any;
   businessTypes: any[] = [];
   statusList: any;
   b: any;
@@ -53,6 +53,9 @@ export class BusinessListComponent implements OnInit {
       certificate_pdf: [''],
       bt_id: ['', Validators.required],
     });
+    const saData = JSON.parse(localStorage.getItem('sa') || '{}');
+    this.superadmin_id = saData._id;
+    console.log('Superadmin ID:', this.superadmin_id);
 
     this.loadBusinessTypes();
     this.loadBusiness();
@@ -64,11 +67,11 @@ export class BusinessListComponent implements OnInit {
   }
 
   loadBusiness() {
-    this.api.getBusiness().subscribe({
+    this.api.getBusiness(this.superadmin_id).subscribe({
       next: (res: any) => {
         this.business = res.data || [];
+        console.log(this.business);
       },
-      error: (err) => console.error('Error loading business:', err),
     });
   }
 
@@ -101,7 +104,7 @@ export class BusinessListComponent implements OnInit {
       phone_number: b.phone_number,
       password: '',
       bt_id: b.bt_id ? b.bt_id._id || b.bt_id : '',
-     address: JSON.stringify(b.address),
+      address: JSON.stringify(b.address),
       registration_number: b.registration_number,
       gst_number: b.gst_number,
       status: b.status || b.business_status || b.status?.status || '',
@@ -137,7 +140,6 @@ export class BusinessListComponent implements OnInit {
       },
       error: (err: any) => console.error('Error fetching business types:', err),
     });
-    console.log('Business Types:', this.businessTypes);
   }
 
   updateBusiness() {

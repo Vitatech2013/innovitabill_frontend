@@ -62,10 +62,9 @@
   padding: 6px 10px;
   font-size: 14px;
   border-radius: 8px;
-  font-weight: 500; 
-  color: #333 !important; 
+  font-weight: 500;
+  color: #333 !important;
 }
-
 
 .table1 th,
 .table1 td {
@@ -80,11 +79,20 @@
   color: #333;
 }
 
-
-
-
-
 .table td a {
   font-weight: 500;
 }
+.table-wrapper {
+  max-height: calc(100vh - 220px);
+  overflow-y: auto;
+  padding-right: 5px;
+}
 
+.table-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #bdbdbd;
+  border-radius: 8px;
+}
