@@ -54,7 +54,7 @@ export class AddBusinessComponent implements OnInit {
       owner_name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required, Validators.minLength(10)]],
-      bt_id: ['', Validators.required],
+      bt_id: ['', [Validators.required, Validators.minLength(3)]],
       registration_number: ['', [Validators.required, Validators.minLength(3)]],
       gst_number: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(3)]],
@@ -102,64 +102,55 @@ export class AddBusinessComponent implements OnInit {
     this.selectedFiles = {};
   }
 
-  saveBusiness() {
-    // if (!this.superadmin_id) {
-    //   console.error('Superadmin ID missing. Please login again.');
-    //   return;
-    // }
-
-    if (this.addBusinessForm.invalid) {
-      alert('Please fill all required fields correctly.');
-      return;
-    }
-
-    const formData = new FormData();
-
-    Object.keys(this.addBusinessForm.controls).forEach((key) => {
-      const control = this.addBusinessForm.get(key);
-
-      //       if (key === 'address' && control instanceof FormGroup) {
-      //         const addressValue = control.value;
-      // const addr = this.addBusinessForm.get('address')?.value;
-      // formData.append('address', JSON.stringify(addr));
-
-      //       } else if (control && control.value) {
-      //         formData.append(key, control.value);
-      //       }
-      if (key === 'address') {
-        const addr = control?.value;
-        formData.append('address', JSON.stringify(addr)); 
-      } else {
-        formData.append(key, control?.value);
-      }
-    });
-
-    formData.append('superadmin_id', this.superadmin_id);
-
-    for (const key in this.selectedFiles) {
-      formData.append(key, this.selectedFiles[key]);
-    }
-
-    for (const [key, value] of (formData as any).entries()) {
-      console.log(`${key}:`, value);
-    }
-
-    this.api.addBusiness(formData).subscribe({
-      next: (res: any) => {
-        console.log('Business added successfully:', res);
-        alert('Business registered successfully!');
-        this.addBusinessForm.reset();
-        this.selectedFiles = {};
-        this.router.navigate(['SuperAdminView']);
-      },
-      error: (err) => {
-        console.error('Add failed:', err);
-        if (err?.error?.missing_fields) {
-          alert('Missing fields: ' + err.error.missing_fields.join(', '));
-        } else {
-          alert('Failed to register business.');
-        }
-      },
-    });
+ saveBusiness() {
+  if (this.addBusinessForm.invalid) {
+    alert('Please fill all required fields correctly.');
+    return;
   }
+
+  const formData = new FormData();
+
+  Object.keys(this.addBusinessForm.controls).forEach((key) => {
+    const control = this.addBusinessForm.get(key);
+
+    if (key === 'address') {
+      const addr = control?.value;
+      formData.append('address', JSON.stringify(addr));
+    } else {
+      
+      if (control?.value && typeof control.value === 'string') {
+        formData.append(key, control.value);
+      }
+    }
+  });
+
+
+  formData.append('superadmin_id', this.superadmin_id);
+
+
+  for (const key in this.selectedFiles) {
+    formData.append(key, this.selectedFiles[key]);
+  }
+
+ formData.forEach((value, key) => {
+  console.log(key, value);
+});
+
+
+  this.api.addBusiness(formData).subscribe({
+    next: (res) => {
+      alert('Business registered successfully!');
+      this.router.navigate(['SuperAdminView']);
+    },
+    error: (err) => {
+      console.error('Add failed:', err);
+      if (err?.error?.missing_fields) {
+        alert('Missing fields: ' + err.error.missing_fields.join(', '));
+      } else {
+        alert('Failed to register business.');
+      }
+    },
+  });
+}
+
 }

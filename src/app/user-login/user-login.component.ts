@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { BillingService } from '../billing.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-login',
@@ -27,10 +28,13 @@ export class UserLoginComponent implements OnInit {
   userForm!: FormGroup;
   toastMessage: string | null = null;
   toastType: string | undefined;
+  business_id: string = '';
+  user_id: string = '';
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private api: BillingService
+    private api: BillingService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +42,12 @@ export class UserLoginComponent implements OnInit {
       user_email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
+    // const storedUser = localStorage.getItem('business');
+    // if (storedUser) {
+    //   const user = JSON.parse(storedUser);
+    //   this.business_id = user._id || '';
+    //   this.user_id = user._id || '';
+    // }
   }
 
   UserLogin() {
@@ -46,8 +56,7 @@ export class UserLoginComponent implements OnInit {
       this.userForm.markAllAsTouched();
       return;
     }
-
-    this.api.UserLogin(this.userForm.value).subscribe({
+    this.api.LoginUser(this.userForm.value).subscribe({
       next: (res: any) => {
         console.log(res, 'User Login Success');
 

@@ -58,7 +58,7 @@ selectedUnit: any;
 
  
   getAllUnits() {
-    this.api.getUnits().subscribe({
+    this.api.getUnits(this.business_id).subscribe({
       next: (res: any) => {
         this.units = res.data || res;
         console.log('Units loaded:', this.units);

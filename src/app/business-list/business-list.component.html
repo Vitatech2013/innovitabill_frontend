@@ -34,38 +34,31 @@
             <tbody>
               <tr
                 *ngFor="let b of business; let i = index"
-                class="align-middle"
+                class="align-middle text-center" 
               >
                 <td class="text-center fw-semibold">{{ i + 1 }}</td>
                 <td>{{ b.business_name }}</td>
                 <td>{{ b.owner_name }}</td>
                 <td>{{ b.email }}</td>
                 <td>{{ b.phone_number }}</td>
-                <td>{{ b.bt_id?.business_type }}</td>
+                <td>{{ b.bt_id?.business_type }}</td> 
+
+
 
                 <td>
                   <span
                     class="badge px-3 py-2"
-                   
                     [ngClass]="{
-                      'bg-success': b.status === 'active',
-                      'bg-warning': b.status === 'pending',
-                      'bg-danger': b.status === 'inactive'
+                      'bg-success': b.status === 'Active',
+                      'bg-warning': b.status === 'Pending',
+                      'bg-danger': b.status === 'Inactive'
                     }"
                   >
-                    {{ b.status | titlecase }}
-
+                    {{ b.status }}
                   </span>
                 </td>
-                <!-- <td class="file-center">
-                <img
-                  [src]="getImageUrl(b.logo_image)"
-                  alt="Business Logo"
-                  class="img-thumbnail business-logo"
-                  (click)="openImageModal(getImageUrl(b.logo_image))"
-                />
-              </td> -->
-                <td class="file-center">
+
+                <td class="text-center">
                   <button
                     class="btn btn-sm btn-outline-info me-1"
                     (click)="openViewModal(b)"
@@ -144,6 +137,7 @@
                     <td>{{ selectedBusiness.email }}</td>
                     <td>{{ selectedBusiness.phone_number }}</td>
                     <td>{{ selectedBusiness.bt_id?.business_type }}</td>
+
                     <td>
                       {{ selectedBusiness.address?.house_No }},
                       {{ selectedBusiness.address?.town_Name }},
@@ -179,6 +173,7 @@
                         "
                       />
                     </td>
+
                     <td>
                       <a
                         [href]="getFileUrl(selectedBusiness.pan_pdf)"
@@ -286,15 +281,13 @@
               <div class="row g-3 mb-3">
                 <div class="col-md-6">
                   <label class="form-label fw-semibold">Business Type</label>
-                  <select class="form-select" formControlName="bt_id">
-                    <option value="">Select Business Type</option>
-                    <option
-                      *ngFor="let type of businessTypes"
-                      [value]="type.bt_id"
-                    >
-                      {{ type.business_type }}
-                    </option>
-                  </select>
+                 <select class="form-select" formControlName="bt_id">
+  <option value="">Select Business Type</option>
+  <option *ngFor="let type of businessTypes" [value]="type._id">
+    {{ type.business_type }}
+  </option>
+</select>
+
                   <div
                     *ngIf="
                       BusinessForm.controls['bt_id']?.touched &&
@@ -455,7 +448,6 @@
               type="button"
               class="btn btn-success px-4"
               (click)="updateBusiness()"
-              
             >
               Save Changes
             </button>

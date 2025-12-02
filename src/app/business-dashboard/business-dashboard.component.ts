@@ -37,8 +37,8 @@ toggleSidebar() {
 }
 
    logout() {
-    localStorage.removeItem('user');
-    localStorage.removeItem('userToken')
+    localStorage.removeItem('business');
+    localStorage.removeItem('businessToken')
     this.router.navigate(['/businesslogin']);
   }
 }

@@ -191,8 +191,10 @@ export class UsersComponent implements OnInit {
           this.showToast('User updated successfully', 'success');
           this.getUsers();
           this.resetForm();
+
  
           bootstrap.Modal.getInstance(document.getElementById('userModal'))?.hide();
+
         },
         error: (err) => {
           console.error('Update error', err);
@@ -210,6 +212,7 @@ export class UsersComponent implements OnInit {
         },
         error: (err) => {
           console.error('Create error', err);
+          console.log("Create error", err.error);
           this.showToast('Failed to add User', 'error');
         },
       });

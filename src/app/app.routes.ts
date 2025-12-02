@@ -25,12 +25,19 @@ import { SaleComponent } from './sale/sale.component';
 import { BusinessprofileComponent } from './businessprofile/businessprofile.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { SaleReportsComponent } from './sale-reports/sale-reports.component';
+
 import { BusinessForgotpasswordComponent } from './business-forgotpassword/business-forgotpassword.component';
 import { BusinessOtpComponent } from './business-otp/business-otp.component';
 import { SubCategoriesComponent } from './sub-categories/sub-categories.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { AddBusinessTypeComponent } from './add-business-type/add-business-type.component';
+import { ViewBusinessTypeComponent } from './view-business-type/view-business-type.component';
 
 export const routes: Routes = [
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
+   {path: 'forgot-password', component: ForgotPasswordComponent},
+   {path: 'reset-password', component: ResetPasswordComponent},
   {
     path: 'SuperAdminView',
     component: SuperadminViewComponent,
@@ -39,10 +46,14 @@ export const routes: Routes = [
       { path: 'view-business', component: BusinessListComponent },
       { path: 'add-business', component: AddBusinessComponent },
       { path: 'superadmin_profile', component: SuperadminProfileComponent },
+      {path: 'add_business_type', component: AddBusinessTypeComponent},
+      {path: 'view_business_type', component: ViewBusinessTypeComponent}
+      
     ],
   },
 
   { path: 'userlogin', component: UserLoginComponent },
+
   {
     path: 'userview',
     component: UserViewComponent,
