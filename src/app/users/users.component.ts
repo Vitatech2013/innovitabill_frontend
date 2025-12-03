@@ -44,7 +44,7 @@ export class UsersComponent implements OnInit {
 
   constructor(
     private service: BusinessService,
-    private api: BillingService,
+    private api: BusinessService,
     private fb: FormBuilder
   ) {}
 
@@ -75,12 +75,12 @@ export class UsersComponent implements OnInit {
       }),
     });
 
-    this.getUsers();
-    this.getRoles();
+    this.loadUsers();
+    this.LoadRoles();
   }
 
   // Fetch roles
-  getRoles() {
+  LoadRoles() {
     this.api.getRoles().subscribe({
       next: (res: any) => {
         this.roles = res.data || [];
@@ -90,11 +90,11 @@ export class UsersComponent implements OnInit {
   }
 
   // Fetch users
-  getUsers() {
-    this.service.getUser().subscribe((res: any) => {
-      this.users = res.data || [];
-    });
-  }
+  loadUsers() {
+  this.api.getUser().subscribe((res: any) => {
+    this.users = res;
+  });
+}
 
   // Toast notification
   showToast(message: string, type: 'success' | 'error' | 'warning') {
@@ -189,7 +189,7 @@ export class UsersComponent implements OnInit {
       this.service.updateUser(this.selectedUser, formData).subscribe({
         next: () => {
           this.showToast('User updated successfully', 'success');
-          this.getUsers();
+          this.loadUsers();
           this.resetForm();
 
  
@@ -206,7 +206,7 @@ export class UsersComponent implements OnInit {
       this.service.createUser(formData).subscribe({
         next: () => {
           this.showToast('User added successfully', 'success');
-          this.getUsers();
+          this.loadUsers();
           this.resetForm();
           bootstrap.Modal.getInstance(document.getElementById('userModal'))?.hide();
         },
@@ -264,7 +264,7 @@ onFileChange(event: any, fieldName: string) {
     this.service.deleteUser(this.selectedUser._id).subscribe({
       next: () => {
         this.showToast('User soft deleted successfully', 'success');
-        this.getUsers();
+        this.loadUsers();
         bootstrap.Modal.getInstance(document.getElementById('deleteModal'))?.hide();
       },
       error: (err) => {

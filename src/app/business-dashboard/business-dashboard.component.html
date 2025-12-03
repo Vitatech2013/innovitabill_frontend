@@ -1,9 +1,7 @@
 <div class="container-fluid">
   <div class="row">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success px-3">
-      <a class="navbar-brand text-white fw-bold" style="cursor: pointer;" routerLink="/home">
-        BUSINESS DASHBOARD
-      </a>
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-success px-3">
+      
       <button class="btn text-white d-lg-none me-3" (click)="toggleSidebar()">
         <i class="bi bi-list" style="font-size: 28px"></i>
       </button>
@@ -32,117 +30,124 @@
           <i class="bi bi-box-arrow-right" style="font-size: 28px"></i>
         </a>
       </div>
-    </nav>
-  </div>
-</div>  
+    </nav> -->
 
-  <div class="row flex-grow-1 position-relative">
-    <div
-      class="col-sm-2 p-0 sidebar bg-light border-end"
-      [ngClass]="{ 'show-sidebar': isSidebarOpen }"
+    <nav
+      class="navbar navbar-expand-lg navbar-dark fixed-top bg-success px-3 w-100"
     >
-      <div class="card shadow-sm border-1 rounded-0 vh-100">
-        <div class="card-body p-3 d-flex flex-column">
-          <ul class="list-unstyled flex-grow-1">
-            <li class="mb-4">
-              <a
-                routerLink="users"
-                class="text-decoration-none fw-semibold d-block p-2 text-success"
-                style="transition: 0.2s"
-                onmouseover="this.style.background='#d4f8d4'"
-                onmouseout="this.style.background='transparent'"
-              >
-                <i class="bi bi-people-fill"></i>
-                USERS
-              </a>
-            </li>
-            <li class="mb-4">
-              <a
-                routerLink="roles"
-                class="text-decoration-none fw-semibold d-block p-2 text-success"
-                style="transition: 0.2s"
-                onmouseover="this.style.background='#d4f8d4'"
-                onmouseout="this.style.background='transparent'"
-              >
-                <i class="bi bi-person-fill-gear"></i>
-                ROLES
-              </a>
-            </li>
-            <li class="mb-4">
-              <a
-                routerLink="categories"
-                class="text-decoration-none fw-semibold d-block p-2 text-success"
-                style="transition: 0.2s"
-                onmouseover="this.style.background='#d4f8d4'"
-                onmouseout="this.style.background='transparent'"
-              >
-                <i class="bi bi-grid-fill"></i>
-                CATEGORIES
-              </a>
-            </li>
-            <li class="mb-4">
-              <a
-                routerLink="sub-categories"
-                class="text-decoration-none fw-semibold d-block p-2 text-success"
-                style="transition: 0.2s"
-                onmouseover="this.style.background='#d4f8d4'"
-                onmouseout="this.style.background='transparent'"
-              >
-                <i class="bi bi-diagram-2-fill"></i>
-                 SUB CATEGORIES
-              </a>
-            </li>
+      <a
+        class="navbar-brand text-white fw-bold"
+        style="cursor: pointer"
+        routerLink="/home"
+      >
+        Billing Software
+      </a>
 
-            <li class="mb-4">
+      <div class="ms-auto d-flex align-items-center">
+        <div class="me-3 text-white text-end">
+          <div class="fw-bold">{{ loggedInBusiness?.name }}</div>
+          <small>{{ loggedInBusiness?.loginTime }}</small>
+        </div>
+
+        <div class="dropdown">
+          <a
+            class="nav-link text-white d-flex align-items-center"
+            id="profileDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            style="cursor: pointer"
+          >
+            <i class="bi bi-person-circle" style="font-size: 28px"></i>
+          </a>
+
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            aria-labelledby="profileDropdown"
+          >
+            <li>
+              <a class="dropdown-item" routerLink="businessprofile">
+                <i class="bi bi-person me-2"></i> Profile
+              </a>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
               <a
-                routerLink="units"
-                class="text-decoration-none fw-semibold d-block p-2 text-success"
-                style="transition: 0.2s"
-                onmouseover="this.style.background='#d4f8d4'"
-                onmouseout="this.style.background='transparent'"
+                class="dropdown-item"
+                style="cursor: pointer"
+                (click)="logout()"
               >
-                <i class="bi bi-bounding-box"></i>
-                UNITS
+                <i class="bi bi-box-arrow-right me-2"></i> Logout
               </a>
             </li>
           </ul>
         </div>
       </div>
+    </nav>
+
+  </div>
+ 
+
+   <div class="row mt-5 pt-4">
+    <div class="col-md-2 p-4 ">
+      <div class="d-flex flex-column gap-3">
+        <!-- <button
+          class="btn side-btn text-dark"
+          routerLink="/business-Dashboard/businessprofile"
+          routerLinkActive="active-btn"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <b><i class="bi bi-list-check me-2"></i></b> 
+        </button> -->
+        <button
+          class="btn side-btn text-dark"
+          routerLink="/business-Dashboard/users"
+          routerLinkActive="active-btn"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <b> <i class="bi bi-people-fill me-1"></i></b> Users
+        </button>
+
+        <button
+          class="btn side-btn text-dark"
+          routerLink="/business-Dashboard/roles"
+          routerLinkActive="active-btn"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <b>  <i class="bi bi-person-fill-gear me-1"></i></b> Roles
+        </button>
+
+        <button
+          class="btn side-btn text-dark"
+          routerLink="/business-Dashboard/categories"
+          routerLinkActive="active-btn"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <b>  <i class="bi bi-grid-fill me-1"></i></b> categories
+        </button>
+
+        <button
+          class="btn side-btn text-dark"
+          routerLink="/business-Dashboard/sub-categories"
+          routerLinkActive="active-btn"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <b>  <i class="bi bi-diagram-2-fill me-1"></i> </b> Sub Categories
+        </button>
+
+        <button
+          class="btn side-btn text-dark"
+          routerLink="/business-Dashboard/units"
+          routerLinkActive="active-btn"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <b>  <i class="bi bi-bounding-box me-1"></i></b>Units
+        </button>
+        
+      </div>
     </div>
 
-    <div
-      class="sidebar-overlay"
-      *ngIf="isSidebarOpen"
-      (click)="toggleSidebar()"
-    ></div>
-
-    <div class="col-sm-10 p-3 position-relative content-area">
-      <div class="position-fixed top-0 end-0 p-5" style="z-index: 1080">
-        <div
-          *ngIf="toastMessage"
-          class="toast align-items-center text-white border-0 fade show"
-          [ngClass]="{
-            'bg-success': toastType === 'success',
-            'bg-danger': toastType === 'error',
-            'bg-warning text-dark': toastType === 'warning'
-          }"
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
-        >
-          <div class="d-flex">
-            <div class="toast-body">{{ toastMessage }}</div>
-            <button
-              type="button"
-              class="btn-close btn-close-white me-2 m-auto"
-              (click)="toastMessage = null"
-              aria-label="Close"
-            ></button>
-          </div>
-        </div>
-      </div>
-
+    <div class="col-md-10 p-4">
       <router-outlet></router-outlet>
     </div>
   </div>
-
+</div>

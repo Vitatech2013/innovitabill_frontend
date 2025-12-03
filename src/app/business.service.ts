@@ -30,11 +30,30 @@ export class BusinessService {
   deleteUser(id: string) {
     return this.http.delete(`${this.baseUrl}/user/userdelete/${id}`);
   }
-  updateUser(selectedUser: any, payload: any) {
+//   updateUser(selectedUser: any, payload: any) {
+//   return this.http.put(`user/updateuser/${selectedUser._id}`, payload);
+// }
+updateUser(selectedUser: any, payload: any) {
   return this.http.put(`http://localhost:3009/user/updateuser/${selectedUser._id}`, payload);
 }
   getUser() {
     return this.http.get(`${this.baseUrl}/user/getuser`);
+  }
+
+  //Roles
+
+  getRoles() {
+    return this.http.get(`${this.baseUrl}/role/getrole`);
+  }
+  addRole(newRole: any) {
+    return this.http.post(`${this.baseUrl}/role/addrole`, newRole);
+  }
+  updateRole(id: string, data: any) {
+    return this.http.put(`${this.baseUrl}/role/roleupdate/${id}`, data);
+  }
+
+  deleteRole(id: string) {
+    return this.http.delete(`${this.baseUrl}/role/roledelete/${id}`);
   }
 }
 
