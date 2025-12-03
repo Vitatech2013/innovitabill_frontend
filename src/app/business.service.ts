@@ -15,11 +15,11 @@ export class BusinessService {
   }
   businessForgotpassword(email: string) {
     return this.http.post(
-      'http://78.142.47.247:3009/forgotPassword',email);
+      `${this.baseUrl}/forgotPassword`,email);
   }
   businessResetPassword(data: any) {
     return this.http.post(
-      'http:78.142.47.247:3009/business/resetPassword',
+      `${this.baseUrl}/business/resetPassword`,
       data
     );
   }
@@ -31,7 +31,7 @@ export class BusinessService {
     return this.http.delete(`${this.baseUrl}/user/userdelete/${id}`);
   }
   updateUser(selectedUser: any, payload: any) {
-  return this.http.put(`http://localhost:3009/user/updateuser/${selectedUser._id}`, payload);
+  return this.http.put(`${this.baseUrl}/user/updateuser/${selectedUser._id}`, payload);
 }
   getUser() {
     return this.http.get(`${this.baseUrl}/user/getuser`);

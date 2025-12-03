@@ -16,6 +16,7 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { constants } from '../../../constants';
 
 @Component({
   selector: 'app-item-list',
@@ -42,6 +43,7 @@ export class ItemListComponent implements OnInit {
   toastType: string | undefined;
   imagefile: any;
   imagePreviewUrl: string = '';
+   private baseUrl = constants.baseUrl;
 
   constructor(
     private fb: FormBuilder,
@@ -262,7 +264,7 @@ export class ItemListComponent implements OnInit {
     if (!path) return 'assets/default-business.jpg';
     const cleanPath = path.replace(/\\/g, '/');
     return cleanPath.includes('business_images/')
-      ? `http://localhost:3009/${cleanPath}`
-      : `http://localhost:3009/business_images/${cleanPath}`;
+      ? `${this.baseUrl}/${cleanPath}`
+      : `${this.baseUrl}/business_images/${cleanPath}`;
   }
 }
