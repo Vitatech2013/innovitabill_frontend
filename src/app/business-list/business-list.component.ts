@@ -107,11 +107,23 @@ if (businesslist) {
     modal.show();
   }
 
+  // openViewModal(b: any) {
+  //   this.selectedBusiness = b;
+  //   const modal = new bootstrap.Modal(document.getElementById('viewModal'));
+  //   modal.show();
+  // }
   openViewModal(b: any) {
-    this.selectedBusiness = b;
-    const modal = new bootstrap.Modal(document.getElementById('viewModal'));
-    modal.show();
+  this.selectedBusiness = { ...b };
+
+  if (typeof b.bt_id === 'string') {
+    const btObject = this.businessTypes.find((t: any) => t._id === b.bt_id);
+    this.selectedBusiness.bt_id = btObject;
   }
+
+  const modal = new bootstrap.Modal(document.getElementById('viewModal'));
+  modal.show();
+}
+
 
   editBusiness(b: any) {
     console.log('Edit data:', b);
@@ -165,6 +177,14 @@ if (businesslist) {
     });
    
   }
+
+
+  getBusinessTypeName(id: string): string {
+  const type = this.businessTypes.find(t => t._id === id);
+  return type ? type.business_type : '';
+}
+
+
 
   getImageUrl(path: string): string {
     if (!path) return 'assets/default-business.jpg';
@@ -346,11 +366,11 @@ updateBusiness() {
 
 
 
-filteredItems() {
-    if (!this.searchTerm) return this.items;
+filteredBusiness() {
+    if (!this.searchTerm) return this.business;
     const term = this.searchTerm.toLowerCase();
-    return this.items.filter((it) =>
-      Object.values(it).some((val) =>
+    return this.business.filter((b) =>
+      Object.values(b).some((val) =>
         val?.toString().toLowerCase().includes(term)
       )
     );

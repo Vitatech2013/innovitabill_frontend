@@ -11,37 +11,38 @@
           <small>{{ loggedInUser?.loginTime }}</small>
         </div>
 
-        <div class="dropdown">
-          <a
-            class="nav-link text-white me-3 dropdown-toggle"
-            id="profileDropdown"
-            data-bs-toggle="dropdown"
-            style="cursor: pointer"
-            title="Profile"
-          >
-            <i class="bi bi-person-circle" style="font-size: 28px"></i>
-          </a>
+<div class="dropdown">
+  <a
+    class="nav-link text-white me-3 dropdown-toggle"
+    id="profileDropdown"
+    role="button"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+    style="cursor: pointer"
+    title="Profile"
+  >
+    <i class="bi bi-person-circle" style="font-size: 28px"></i>
+  </a>
 
-          <ul
-            class="dropdown-menu dropdown-menu-end"
-            aria-labelledby="profileDropdown"
-          >
-            <li>
-              <a class="dropdown-item" routerLink="superadmin-profile">
-                <i class="bi bi-person me-2"></i> Profile
-              </a>
-            </li>
-            <li>
-              <a
-                class="dropdown-item"
-                data-bs-toggle="modal"
-                data-bs-target="#logoutModal"
-              >
-                <i class="bi bi-box-arrow-right me-2"></i> Logout
-              </a>
-            </li>
-          </ul>
-        </div>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+    <li>
+      <a class="dropdown-item" routerLink="/superadmin-profile">
+        <i class="bi bi-person me-2"></i> Profile
+      </a>
+    </li>
+
+    <li>
+      <a
+        class="dropdown-item"
+        data-bs-toggle="modal"
+        data-bs-target="#logoutModal"
+      >
+        <i class="bi bi-box-arrow-right me-2"></i> Logout
+      </a>
+    </li>
+  </ul>
+</div>
+
       </div>
     </nav>
   </div>
