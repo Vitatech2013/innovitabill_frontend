@@ -30,12 +30,13 @@ export class BusinessListComponent implements OnInit {
   selectedImage: string | undefined;
   selectedFiles: Record<string, File> = {};
   logofile: File | null = null;
-businessID: string = ''
   businessTypes: any[] = [];
   statusList: any;
   b: any;
   searchTerm: string = '';
   items: any[] = [];
+  businessID: any;
+  superadmin_id: any;
    private baseUrl = constants.baseUrl;
    toastMessage: string | null = null;
   toastType: string | undefined;
@@ -68,6 +69,10 @@ if (businesslist) {
       aadhar_pdf: [''],
       certificate_pdf: [''],
     });
+    const saData = JSON.parse(localStorage.getItem('sa') || '{}');
+    this.superadmin_id = saData._id;
+    console.log('Superadmin ID:', this.superadmin_id);
+
     this.loadBusinessTypes();
 
     this.loadBusiness();
@@ -86,13 +91,11 @@ if (businesslist) {
   }
 
   loadBusiness() {
-    this.api.getBusiness().subscribe({
+    this.api.getBusiness(this.superadmin_id).subscribe({
       next: (res: any) => {
-        console.log('Business fetched:', res);
-        // this.business = res.data || [];
-          this.business = res.data;
+        this.business = res.data || [];
+        console.log(this.business);
       },
-      error: (err) => console.error('Error loading business:', err),
     });
   }
 
@@ -123,13 +126,8 @@ if (businesslist) {
       email: b.email,
       phone_number: b.phone_number,
       password: '',
-      // bt_id: b.bt_id?._id,
-      // bt_id: b.bt_id?.bt_id,
-
-bt_id: b.bt_id?._id || b.bt_id,
-
-      address: fullAddress,
-      // address: JSON.stringify(b.address),
+      bt_id: b.bt_id ? b.bt_id._id || b.bt_id : '',
+      address: JSON.stringify(b.address),
       registration_number: b.registration_number,
       gst_number: b.gst_number,
       status: b.status || b.business_status || b.status?.status || '',
@@ -395,3 +393,5 @@ filteredItems() {
     }
   }
 }
+
+

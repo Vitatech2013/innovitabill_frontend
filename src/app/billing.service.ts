@@ -6,6 +6,10 @@ import { constants } from '../../constants';
   providedIn: 'root',
 })
 export class BillingService {
+  // getQuotationData(demoId: string | null) {
+  //   throw new Error('Method not implemented.');
+  // }
+  // private baseUrl = 'http://78.142.47.247:3009';
   private baseUrl = constants.baseUrl;
   constructor(private http: HttpClient) {}
 
@@ -45,9 +49,12 @@ export class BillingService {
       data
     );
   }
-  getBusiness() {
-    return this.http.get<any[]>(`${this.baseUrl}/business/businessget`);
+  getBusiness(sid: any) {
+    return this.http.get<any[]>(
+      `${this.baseUrl}/business/businessgetbysuperadminid/${sid}`
+    );
   }
+
   updateBusiness(id: string, value: any) {
     return this.http.put(
       `${this.baseUrl}/business/businessupdate/${id}`,
@@ -203,9 +210,25 @@ export class BillingService {
   getCategories(business_id: string) {
     return this.http.get(`${this.baseUrl}/categories/categoriesget`);
   }
-  getSubCategories() {
-    return this.http.get(`${this.baseUrl}/subcat/getsubcat`);
-  }
+  //
+
+  addSubcat(data: any) {
+  return this.http.post(`http://localhost:3009/subcat/addsubcat`, data);
+}
+
+ getSubCategories() {
+  return this.http.get(`http://localhost:3009/subcat/getsubcat`);
+}
+    updateSubcat(id: string, data: any) {
+  // Use PUT and include the ID in the URL
+  return this.http.put(`http://localhost:3009/subcat/updatesubcat/${id}`, data);
+}
+
+   deleteSubCat(id: string) {
+  return this.http.delete(`http://localhost:3009/subcat/deletesubcat/${id}`);
+}
+
+  //
   getUsers(business_id: string) {
     return this.http.get(`${this.baseUrl}/user/getuser`);
   }
@@ -218,7 +241,7 @@ export class BillingService {
     return this.http.post(`${this.baseUrl}/sales/createsale`, data);
   }
 
-  updateitems(id: any, data: any) {
+  updateitems(id: string, data: FormData) {
     return this.http.put(`${this.baseUrl}/items/updateitems/${id}`, data);
   }
   deleteItem(id: String) {
@@ -236,5 +259,11 @@ export class BillingService {
   }
   getSalesReport() {
     return this.http.get(`${this.baseUrl}/sales/getSalesReport`);
+  }
+  updatesale(id: string, sale: any) {
+    return this.http.put(`${this.baseUrl}/sales/salesupdate/${id}`, sale);
+  }
+  getQuotationData(demoId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/quotation/getQuotationData/${demoId}`);
   }
 }

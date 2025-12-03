@@ -31,6 +31,8 @@ export class SaleComponent implements OnInit {
   grandTotal = 0;
   searchTerm: string = '';
   business_id: string = '';
+  toastMessage: string | null = null;
+  toastType: string | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -53,12 +55,6 @@ export class SaleComponent implements OnInit {
       this.user_id = u._id || '';
     }
 
-    // if (!this.Business_id) {
-    //   alert('Business ID missing. Please login again.');
-    //   this.router.navigate(['SuperAdminLogin']);
-    //   return;
-    // }
-
     this.customerForm = this.fb.group({
       name: [''],
       phone: [''],
@@ -78,7 +74,7 @@ export class SaleComponent implements OnInit {
       },
       error: (err: any) => {
         console.error('Error fetching items:', err);
-        this.toastr.error('Failed to load items.', 'Error');
+        this.showToast('Failed to load Items', 'Danger');
       },
     });
   }
@@ -90,7 +86,7 @@ export class SaleComponent implements OnInit {
 
   addToCart(item: any) {
     if (item.stock_quantity <= 0) {
-      this.toastr.warning('Out of stock!');
+      this.showToast('Out Of Stock!', 'Warning');
       return;
     }
 
@@ -141,14 +137,14 @@ export class SaleComponent implements OnInit {
 
   generateBill() {
     if (this.cartItems.length === 0) {
-      this.toastr.warning('No items in cart to generate bill.', 'Warning');
+      this.showToast('No items in cart to generate bill.', 'Warning');
       return;
     }
 
     const payload = {
       invoice_number: this.invoice_number,
       customer: this.customerForm.value,
-      business_id: this.business_id,
+      business_id: this.business_id || null,
       user_id: this.user_id,
       discount: this.cartItems.reduce((sum, it) => sum + (it.discount || 0), 0),
       products: this.cartItems.map((it) => ({
@@ -160,7 +156,12 @@ export class SaleComponent implements OnInit {
         discount: it.discount || 0,
       })),
     };
-
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const bid = JSON.parse(storedUser);
+      this.business_id = bid._id || '';
+      console.log('BusinessID:', this.business_id);
+    }
     this.service.savesale(payload).subscribe({
       next: () => {
         this.generatedInvoice = payload;
@@ -169,17 +170,20 @@ export class SaleComponent implements OnInit {
 
         this.cdr.detectChanges();
 
-        this.toastr.success('Bill generated successfully!', 'Success');
+        this.showToast('Bill generated successfully!', 'Success');
+        console.log('KEYS IN LOCAL STORAGE:', Object.keys(localStorage));
 
+        console.log('business:', localStorage.getItem('business'));
+        console.log('user:', localStorage.getItem('user'));
+        console.log('users:', localStorage.getItem('users'));
+        console.log('currentUser:', localStorage.getItem('currentUser'));
+        console.log('loginData:', localStorage.getItem('loginData'));
         setTimeout(() => this.printBill('a4'), 200);
       },
       error: (err) => {
         console.log('PAYLOAD:', payload);
         console.log('SERVER:', err.error);
-        this.toastr.error(
-          err.error?.message || 'Failed to generate bill.',
-          'Error'
-        );
+        this.showToast('Failed to generate bill.', 'Danger');
       },
     });
   }
@@ -188,14 +192,14 @@ export class SaleComponent implements OnInit {
     const content = document.getElementById('printArea')?.innerHTML;
 
     if (!content) {
-      this.toastr.error('Bill content not found.', 'Error');
+      this.showToast('Bill content not found.', 'Danger');
       return;
     }
 
     const printWindow = window.open('', '', 'width=350,height=600');
 
     if (!printWindow) {
-      this.toastr.error('Popup blocked! Allow popups to print.', 'Error');
+      this.showToast('Popup blocked! Allow popups to print.', 'Danger');
       return;
     }
 
@@ -250,5 +254,13 @@ export class SaleComponent implements OnInit {
         val?.toString().toLowerCase().includes(term)
       )
     );
+  }
+  showToast(message: string, type: string) {
+    this.toastMessage = message;
+    this.toastType = type;
+    setTimeout(() => (this.toastMessage = null), 3000);
+  }
+  getImageUrl(filename: string): string {
+    return `http://localhost:3009/business_images/${filename}`; 
   }
 }

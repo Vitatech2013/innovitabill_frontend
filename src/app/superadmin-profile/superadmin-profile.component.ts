@@ -120,14 +120,15 @@ export class SuperadminProfileComponent implements OnInit {
       'superadmin_mail',
       this.profileForm.get('superadmin_mail')?.value
     );
-   const newPassword = this.profileForm.get('superadmin_password')?.value;
+    // formData.append(
+    //   'superadmin_password',
+    //   this.profileForm.get('superadmin_password')?.value
+    // );
+    const password = this.profileForm.get('superadmin_password')?.value;
 
-if (newPassword && newPassword.trim() !== '') {
-  formData.append('password', newPassword);
-} else {
-  console.log("Password not changed");
-}
-
+    if (password && password.trim() !== '') {
+      formData.append('superadmin_password', password);
+    }
     formData.append(
       'address',
       JSON.stringify(this.profileForm.get('address')?.value)

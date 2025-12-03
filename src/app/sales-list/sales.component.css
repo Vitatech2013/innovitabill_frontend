@@ -44,3 +44,58 @@
   align-items: center;
   min-height: 100vh;
 }
+.table-wrapper {
+  max-height: calc(100vh - 220px);
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.table-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #bdbdbd;
+  border-radius: 8px;
+}
+
+.payment-update-modal .modal-dialog {
+  max-width: 500px;
+}
+
+.payment-update-modal .modal-header {
+  background-color: #127829 !important;
+  color: #fff;
+  border-bottom: none;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.payment-update-modal .modal-content {
+  border-radius: 0.6rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: none;
+}
+
+.payment-update-modal .modal-body {
+  padding: 1.5rem;
+}
+
+.payment-update-modal .modal-body .form-select,
+.payment-update-modal .modal-body .form-control {
+  border: 1px solid #ccc;
+  border-radius: 0.45rem;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.95rem;
+}
+
+.payment-update-modal .modal-footer {
+  border-top: none;
+  padding: 0.9rem 1.5rem;
+}
+
+.payment-update-modal.show .modal-dialog {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+}

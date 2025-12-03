@@ -20,13 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-item-list',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterLink,
-    RouterOutlet,
-  ],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterOutlet],
   templateUrl: './item-list.component.html',
   styleUrl: './item-list.component.css',
 })
@@ -39,10 +33,15 @@ export class ItemListComponent implements OnInit {
   business_id: string = '';
   allSubCategories: any[] = [];
   subCategories: any[] = [];
-
+  selectedImage: string | undefined;
+  selectedFiles: Record<string, File> = {};
   users: any;
   categories: any[] = [];
   units: any;
+  toastMessage: string | null = null;
+  toastType: string | undefined;
+  imagefile: any;
+  imagePreviewUrl: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -83,6 +82,7 @@ export class ItemListComponent implements OnInit {
       sub_category_id: ['', Validators.required],
       // business_id: ['', Validators.required],
       min_stock_alert: ['', Validators.required],
+      image: [''],
     });
   }
   isInvalid(controlName: string): boolean {
@@ -99,9 +99,6 @@ export class ItemListComponent implements OnInit {
       error: (err) => console.error('Error loading items:', err),
     });
   }
-  // Business_id(Business_id: any) {
-  //   throw new Error('Method not implemented.');
-  // }
 
   editItem(it: any) {
     console.log('Edit data', it);
@@ -123,6 +120,10 @@ export class ItemListComponent implements OnInit {
       category_id: it.category_id?._id,
       sub_category_id: it.sub_category_id?._id,
     });
+    this.selectedImage = it.image
+      ? it.image.split('/').pop()
+      : 'No file chosen';
+
     console.log('Editing item:', it);
     const modal = new bootstrap.Modal(document.getElementById('editItemModal'));
     modal.show();
@@ -170,28 +171,40 @@ export class ItemListComponent implements OnInit {
     });
   }
 
-  updateInvoice() {
-    this.service.updateitems(this.eid, this.editForm.value).subscribe({
+  updateItems() {
+    const formData = new FormData();
+
+    Object.keys(this.editForm.value).forEach((key) => {
+      if (key !== 'image') {
+        formData.append(key, this.editForm.value[key]);
+      }
+    });
+
+    if (this.selectedFiles['image']) {
+      formData.append('image', this.selectedFiles['image']);
+    }
+
+    this.service.updateitems(this.eid, formData).subscribe({
       next: (res: any) => {
-        this.toastr.success('Items updated successfully!', 'Success', {
-          positionClass: 'toast-top-center',
-        });
+        this.toastr.success('Item Updated Successfully');
+        this.loadItems();
       },
-      error: (err: any) => {
-        this.toastr.error('Failed to update items.', 'Error', {
-          positionClass: 'toast-top-center',
-        });
-        
+      error: (err) => {
+        console.log(err);
+        this.toastr.error('Update Failed');
       },
     });
   }
-
   deleteItem(it: any) {
     if (confirm(`Are you sure you want to delete ${it.item_name}?`)) {
       this.service.deleteItem(it._id).subscribe({
         next: () => {
-          this.toastr.success(`${it.item_name} deleted successfully.`);
+          this.showToast(
+            `${it.item_name} deleted successfully.`,
+            `Successfully`
+          );
           this.loadItems();
+          window.location.reload();
         },
         error: (err: any) => console.error('Delete failed:', err),
       });
@@ -203,18 +216,53 @@ export class ItemListComponent implements OnInit {
   }
 
   filteredItems() {
-    if (!this.searchTerm) return this.items;
+    if (!this.searchTerm) {
+      return [...this.items].sort((a, b) =>
+        JSON.stringify(a).localeCompare(JSON.stringify(b))
+      );
+    }
+
     const term = this.searchTerm.toLowerCase();
-    return this.items.filter((it) =>
-      Object.values(it).some((val) =>
-        val?.toString().toLowerCase().includes(term)
+
+    return this.items
+      .filter((it) =>
+        Object.values(it).some((val) =>
+          val?.toString().toLowerCase().includes(term)
+        )
       )
-    );
+      .sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+  }
+  onCustomFileSelect(event: any, key: string) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFiles[key] = file;
+      this.editForm.patchValue({ [key]: file });
+      this.selectedImage = file.name;
+    }
   }
   openViewModal(it: any) {
     this.selectedItems = it;
+    this.selectedItems.imageUrl = this.getImageUrl(it.image); // <-- FIX
     const modal = new bootstrap.Modal(document.getElementById('ViewModal'));
     modal.show();
   }
-
+  showToast(message: string, type: string) {
+    this.toastMessage = message;
+    this.toastType = type;
+    setTimeout(() => (this.toastMessage = null), 3000);
+  }
+  openImageModal(imagePath: string | undefined) {
+    this.imagePreviewUrl = this.getImageUrl(imagePath || '');
+    const modal = new bootstrap.Modal(
+      document.getElementById('imagePreviewModal')
+    );
+    modal.show();
+  }
+  getImageUrl(path: string): string {
+    if (!path) return 'assets/default-business.jpg';
+    const cleanPath = path.replace(/\\/g, '/');
+    return cleanPath.includes('business_images/')
+      ? `http://localhost:3009/${cleanPath}`
+      : `http://localhost:3009/business_images/${cleanPath}`;
+  }
 }

@@ -19,13 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-sales',
   standalone: true,
-  imports: [
-    RouterOutlet,
-    RouterLink,
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-  ],
+  imports: [RouterOutlet, CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './sales.component.html',
 
   styleUrls: ['./sales.component.css'],
@@ -35,6 +29,10 @@ export class SalesComponent implements OnInit {
   searchTerm: string = '';
   editForm!: FormGroup;
   iid: any;
+  paymentForm!: FormGroup;
+  sid: any;
+  toastMessage: string | null = null;
+  toastType: string | undefined;
 
   constructor(
     private router: Router,
@@ -53,6 +51,10 @@ export class SalesComponent implements OnInit {
       selling_price: ['', Validators.required],
 
       grand_total: ['', Validators.required],
+      payment_status: ['', Validators.required],
+    });
+
+    this.paymentForm = this.fb.group({
       payment_status: ['', Validators.required],
     });
 
@@ -95,5 +97,28 @@ export class SalesComponent implements OnInit {
 
   isInvoiceDetails(): boolean {
     return this.router.url.includes('');
+  }
+  edit(sale: any) {
+    console.log('Edit data', sale);
+    this.sid = sale._id;
+    this.paymentForm.patchValue({
+      payment_status: sale.payment_status || 'Pending',
+    });
+  }
+  update() {
+    this.service.updatesale(this.sid, this.paymentForm.value).subscribe({
+      next: (res: any) => {
+        this.showToast('Payment Status  Updated successfully!', 'Success');
+        window.location.reload();
+      },
+      error: (err: any) => {
+        this.showToast('Payment Status Update Failed!', 'Danger');
+      },
+    });
+  }
+  showToast(message: string, type: string) {
+    this.toastMessage = message;
+    this.toastType = type;
+    setTimeout(() => (this.toastMessage = null), 3000);
   }
 }

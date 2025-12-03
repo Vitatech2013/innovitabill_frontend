@@ -25,14 +25,23 @@ import { SaleComponent } from './sale/sale.component';
 import { BusinessprofileComponent } from './businessprofile/businessprofile.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { SaleReportsComponent } from './sale-reports/sale-reports.component';
-import { AddBusinessTypeComponent } from './add-business-type/add-business-type.component';
-import { ViewBusinessTypeComponent } from './view-business-type/view-business-type.component';
+
+import { BusinessForgotpasswordComponent } from './business-forgotpassword/business-forgotpassword.component';
+import { BusinessOtpComponent } from './business-otp/business-otp.component';
+import { SubCategoriesComponent } from './sub-categories/sub-categories.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { AddBusinessTypeComponent } from './add-business-type/add-business-type.component';
+import { ViewBusinessTypeComponent } from './view-business-type/view-business-type.component';
+import { BusinessForgotpasswordComponent } from './business-forgotpassword/business-forgotpassword.component';
+import { BusinessOtpComponent } from './business-otp/business-otp.component';
 import { BusinessForgotpasswordComponent } from './business-forgotpassword/business-forgotpassword.component';
 import { BusinessOtpComponent } from './business-otp/business-otp.component';
 
 
+import { QuotationComponent } from './quotation/quotation.component';
+import { BusinessForgotpasswordComponent } from './business-forgotpassword/business-forgotpassword.component';
+import { BusinessOtpComponent } from './business-otp/business-otp.component';
 
 export const routes: Routes = [
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
@@ -63,18 +72,19 @@ export const routes: Routes = [
       {
         path: 'itemlist',
         component: ItemListComponent,
-        children: [{ path: 'items', component: ItemsComponent }],
       },
+      { path: 'items', component: ItemsComponent },
 
       {
         path: 'saleslist',
         component: SalesComponent,
-        children: [{ path: 'salereports', component: SaleReportsComponent }],
       },
+      { path: 'salereports', component: SaleReportsComponent },
       {
         path: 'sale',
         component: SaleComponent,
       },
+      { path: 'quotation', component: QuotationComponent },
     ],
   },
 
@@ -91,6 +101,7 @@ export const routes: Routes = [
       { path: 'categories', component: CategoriesComponent },
       { path: 'roles', component: RolesComponent },
       { path: 'units', component: UnitsComponent },
+      { path: 'sub-categories', component: SubCategoriesComponent },
       { path: 'businessprofile', component: BusinessprofileComponent },
     ],
   },

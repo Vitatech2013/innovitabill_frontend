@@ -7,6 +7,7 @@
       [(ngModel)]="searchTerm"
       style="max-width: 300px"
     />
+
     <div class="card-container">
       <div
         class="item-card"
@@ -18,9 +19,18 @@
         }"
       >
         <div class="card-header">
-          <h3>{{ it.item_name }}</h3>
-          <span class="brand">{{ it.brand_name }}</span>
+          <div class="left-header">
+            <span class="brand">{{ it.brand_name }}</span>
+            <h3>{{ it.item_name }}</h3>
+          </div>
+
+          <img
+            *ngIf="it.image"
+            [src]="getImageUrl(it.image)"
+            class="item-img-small"
+          />
         </div>
+
         <div class="card-body">
           <p><strong>Price:</strong> ₹{{ it.selling_price }}</p>
           <p><strong>Discount:</strong> ₹{{ it.discount || 0 }}</p>
@@ -28,6 +38,7 @@
           <p>
             <strong>Available:</strong> {{ it.stock_quantity }} {{ it.unit }}
           </p>
+
           <div class="quantity-control">
             <button (click)="addToCart(it)">+</button>
           </div>
@@ -36,23 +47,35 @@
     </div>
   </div>
 
-  <div class="col-md-3">
+  <div class="col-md-4">
     <div class="selected-items">
       <h4><i class="bi bi-cart4"></i> Cart</h4>
+
       <div *ngIf="cartItems.length === 0" class="empty">No items added yet</div>
+
       <div class="selected-card" *ngFor="let item of cartItems">
         <div class="selected-info">
+          <span class="brand">{{ item.brand_name }}</span>
           <strong>{{ item.item_name }}</strong>
           <p>Price: ₹{{ item.selling_price }}</p>
           <p>Discount: ₹{{ item.discount || 0 }}</p>
-          <p>Qty: {{ item.cartQty }}</p>
           <p><strong>Total:</strong> ₹{{ getItemTotal(item) }}</p>
+
           <div class="cart-buttons">
             <button class="remove" (click)="removeFromCart(item)">−</button>
+            <span class="quantity">{{ item.cartQty }}</span>
             <button class="add" (click)="addToCart(item)">+</button>
           </div>
         </div>
+
+        <img
+          *ngIf="item.image"
+          [src]="getImageUrl(item.image)"
+          class="cart-img"
+          alt="{{ item.item_name }}"
+        />
       </div>
+
       <div *ngIf="cartItems.length > 0" class="total-summary">
         Grand Total: ₹{{ getTotalBill() }}
         <br />
@@ -82,6 +105,7 @@
           <input formControlName="email" type="email" />
         </div>
       </div>
+
       <div class="row">
         <div class="col">
           <label>Address</label>
@@ -92,6 +116,7 @@
           <input formControlName="gst_number" type="text" />
         </div>
       </div>
+
       <div class="modal-actions">
         <button type="button" class="btn-success" (click)="generateBill()">
           Print Bill
@@ -102,78 +127,4 @@
       </div>
     </form>
   </div>
-</div>
-<!-- THERMAL RECEIPT PRINT AREA -->
-<div
-  id="printArea"
-  style="
-    position: absolute;
-    left: -9999px;
-    width: 260px;
-    font-family: monospace;
-  "
->
-  <div style="text-align: center; margin-bottom: 10px">
-    <img
-      *ngIf="business.logo_image"
-      [src]="business.logo_image"
-      style="max-height: 60px"
-    />
-    <h3 style="margin: 3px 0">{{ business.name }}</h3>
-    <p style="margin: 0; font-size: 12px">GST: {{ business.gst_number }}</p>
-  </div>
-  <div
-    style="
-      border-top: 1px dashed #000;
-      border-bottom: 1px dashed #000;
-      padding: 5px 0;
-      font-size: 12px;
-    "
-  >
-    <p>Invoice: {{ invoice_number }}</p>
-    <p>Date: {{ currentDate }}</p>
-    <p *ngIf="generatedInvoice?.customer?.name">
-      Customer: {{ generatedInvoice.customer.name }}
-    </p>
-    <p *ngIf="generatedInvoice?.customer?.phone">
-      Phone: {{ generatedInvoice.customer.phone }}
-    </p>
-  </div>
-  <div style="font-size: 12px; margin-top: 8px">
-    <div
-      style="
-        display: flex;
-        font-weight: bold;
-        border-bottom: 1px dashed #000;
-        padding-bottom: 4px;
-      "
-    >
-      <div style="width: 40%">Item</div>
-      <div style="width: 15%; text-align: center">Qty</div>
-      <div style="width: 20%; text-align: right">Rate</div>
-      <div style="width: 25%; text-align: right">Total</div>
-    </div>
-    <div *ngFor="let item of cartItems" style="display: flex; margin: 4px 0">
-      <div style="width: 40%">{{ item.item_name }}</div>
-      <div style="width: 15%; text-align: center">{{ item.cartQty }}</div>
-      <div style="width: 20%; text-align: right">{{ item.selling_price }}</div>
-      <div style="width: 25%; text-align: right">
-        {{ getItemTotal(item) | number : "1.2-2" }}
-      </div>
-    </div>
-    <hr style="border-top: 1px dashed #000" />
-  </div>
-  <div
-    style="
-      font-size: 14px;
-      font-weight: bold;
-      text-align: right;
-      margin-top: 8px;
-    "
-  >
-    Grand Total: ₹{{ grandTotal | number : "1.2-2" }}
-  </div>
-  <p style="text-align: center; margin-top: 10px; font-size: 12px">
-    THANK YOU!
-  </p>
 </div>
