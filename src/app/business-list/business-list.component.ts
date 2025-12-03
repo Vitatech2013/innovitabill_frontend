@@ -39,7 +39,7 @@ businessID: string = ''
    private baseUrl = constants.baseUrl;
    toastMessage: string | null = null;
   toastType: string | undefined;
-  logofile: any;
+  
 
   constructor(private fb: FormBuilder, private api: BillingService, private toastr: ToastrService) {}
 
@@ -47,7 +47,7 @@ businessID: string = ''
    const businesslist = localStorage.getItem('sa');
 if (businesslist) {
   const bid = JSON.parse(businesslist);
-  this.businessID = bid._id;   // <-- store ID separately
+  this.businessID = bid._id;   
   console.log('businessID:', this.businessID);
 }
 
@@ -60,6 +60,7 @@ if (businesslist) {
       address: ['', [Validators.required, Validators.minLength(3)]],
       registration_number: ['', [Validators.required, Validators.minLength(3)]],
       gst_number: ['', [Validators.required, Validators.minLength(3)]],
+      bt_id:[''],
       password: [''],
       status: ['', [Validators.required]],
       logo_image: [''],
