@@ -40,7 +40,7 @@ export class BusinessListComponent implements OnInit {
    private baseUrl = constants.baseUrl;
    toastMessage: string | null = null;
   toastType: string | undefined;
-  logofile: any;
+  
 
   constructor(private fb: FormBuilder, private api: BillingService, private toastr: ToastrService) {}
 

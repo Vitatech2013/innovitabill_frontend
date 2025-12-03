@@ -12,7 +12,9 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { Modal } from 'bootstrap';
+
+import { constants } from '../../../constants';
+import Modal from 'bootstrap/js/dist/modal';
 
 @Component({
   selector: 'app-quotation',
@@ -32,6 +34,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   private pdfDoc: jsPDF | null = null;
   pdfPreviewSrc: string | null = null;
   private pdfPreviewModal: Modal | null = null;
+   private baseUrl = constants.baseUrl;
 
   constructor(
     private fb: FormBuilder,
@@ -87,7 +90,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   }
 
   loadBusinessDetails() {
-    this.http.get<any>('http://localhost:3009/business/businessget').subscribe({
+    this.http.get<any>(`${this.baseUrl}/business/businessget`).subscribe({
       next: (b) => {
         if (!b) return;
 
@@ -95,7 +98,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
 
         let logoUrl = b.logo_image || '';
         if (logoUrl && !logoUrl.startsWith('http')) {
-          logoUrl = `http://localhost:3009/business_images/${logoUrl}`;
+          logoUrl = `${this.baseUrl}/business_images/${logoUrl}`;
         }
         businessGroup.get('logo_image')?.setValue(logoUrl);
 
@@ -138,7 +141,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
 
   getDemoCustomers() {
     this.http
-      .get<any[]>('http://localhost:3009/demo/getDemoCustomers')
+      .get<any[]>(`${this.baseUrl}/demo/getDemoCustomers`)
       .subscribe({
         next: (res) => {
           this.demoCustomers = res;
@@ -149,7 +152,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
 
   itemsGets() {
     this.http
-      .get('http://localhost:3009/items/getitems')
+      .get(`${this.baseUrl}/items/getitems`)
       .subscribe((res: any) => {
         this.itemsList = res.data;
       });
@@ -157,7 +160,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
 
   quotationGet(id: string) {
     this.http
-      .get<any>(`http://localhost:3009/quotation/getQuotation/${id}`)
+      .get<any>(`${this.baseUrl}/quotation/getQuotation/${id}`)
       .subscribe((res) => {
         this.quotationForm.get('customer')?.patchValue(res.customer);
 
@@ -169,7 +172,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
 
           let logoUrl = res.business.logo_image || '';
           if (logoUrl && !logoUrl.startsWith('http')) {
-            logoUrl = `http://localhost:3009/uploads/${logoUrl}`;
+            logoUrl = `${this.baseUrl}/uploads/${logoUrl}`;
           }
           businessGroup.get('logo_image')?.setValue(logoUrl);
 
@@ -235,7 +238,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   saveQuotation() {
     const payload = this.quotationForm.value;
     this.http
-      .post('http://localhost:3009/quotation/saveQuotation', payload)
+      .post(`${this.baseUrl}/quotation/saveQuotation`, payload)
       .subscribe({
         next: (res: any) => {
           alert('Quotation saved successfully!');

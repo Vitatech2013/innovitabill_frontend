@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BillingService } from '../billing.service';
+import { constants } from '../../../constants';
 declare var bootstrap: any;
 @Component({
   selector: 'app-user-profile',
@@ -34,6 +35,7 @@ export class UserProfileComponent implements OnInit {
   userData: any;
   toastMessage: string | null = null;
   toastType: string | undefined;
+   private baseUrl = constants.baseUrl;
 
   constructor(
     private fb: FormBuilder,
@@ -122,7 +124,7 @@ export class UserProfileComponent implements OnInit {
         this.userData = res?.data || res;
 
         this.previewUrl = this.userData?.image
-          ? `http://localhost:3009/business_images/${this.userData.image}`
+          ? `${this.baseUrl}/business_images/${this.userData.image}`
           : // `http://78.142.47.247:3009/business_images/${this.userData.image}`
             null;
 
@@ -153,7 +155,7 @@ export class UserProfileComponent implements OnInit {
   getImageUrl(image: string): string {
     return image
       ? //  `http://78.142.47.247:3009/business_images/${image}`
-        `http://localhost:3009/business_images/${image}`
+        `${this.baseUrl}/business_images/${image}`
       : '';
   }
 

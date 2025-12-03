@@ -39,7 +39,8 @@ Chart.register(
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as XLSX from 'xlsx';
-import { Modal } from 'bootstrap';
+import Modal from 'bootstrap/js/dist/modal';
+
 
 @Component({
   selector: 'app-sale-reports',
