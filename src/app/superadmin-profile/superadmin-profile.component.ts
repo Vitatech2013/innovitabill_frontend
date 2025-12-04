@@ -88,8 +88,8 @@ export class SuperadminProfileComponent implements OnInit {
   // }
 
   profileedit() {
-    console.log(this.superadminData,'superadmin data');
-    
+    console.log(this.superadminData, 'superadmin data');
+
     if (!this.superadminData) return;
     this.profileForm.patchValue({
       superadmin_name: this.superadminData.superadmin_name,
@@ -98,7 +98,14 @@ export class SuperadminProfileComponent implements OnInit {
       superadmin_password: this.superadminData.superadmin_password,
       address: this.superadminData.address,
     });
+    const modalEl = document.getElementById('editProfileModal');
+    let modal = bootstrap.Modal.getInstance(modalEl);
 
+    if (!modal) {
+      modal = new bootstrap.Modal(modalEl);
+    }
+
+    modal.show();
   }
 
   updateadminprofile() {
@@ -140,18 +147,36 @@ export class SuperadminProfileComponent implements OnInit {
 
     this.profileService.profileupdate(formData, this.superadmin_id).subscribe({
       next: (res: any) => {
-       
-         this.showToast('Profile updated successfully!', 'success');
-         this.fetchAdminData();
-         
-          let modal = bootstrap.Modal.getInstance(document.getElementById('roleModal'));
-          modal?.hide();
-// setTimeout(() => {
-//   this.router.navigate(['/SuperAdminView/superadminProfile']);
-// }, 500);
+        this.showToast('Profile updated successfully!', 'success');
+        this.fetchAdminData();
 
+        const modalEl = document.getElementById('editProfileModal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
 
-      
+        modal?.hide();
+
+        modalEl?.addEventListener('hidden.bs.modal', () => {
+          document
+            .querySelectorAll('.modal-backdrop')
+            .forEach((backdrop) => backdrop.remove());
+
+          document.body.classList.remove('modal-open');
+          document.body.style.overflow = 'auto';
+          document.body.style.filter = 'none';
+          document.body.style.removeProperty('pointer-events');
+          document.body.style.paddingRight = '0';
+
+          const container = document.querySelector('.container, .card');
+          if (container) {
+            container.classList.remove('profile-blur');
+            if (container instanceof HTMLElement)
+              container.style.filter = 'none';
+          }
+        });
+        // setTimeout(() => {
+        //   this.router.navigate(['/SuperAdminView/superadminProfile']);
+        // }, 500);
+
         if (this.selectedImage) {
           const reader = new FileReader();
           reader.onload = () => {
@@ -161,29 +186,27 @@ export class SuperadminProfileComponent implements OnInit {
 
           reader.readAsDataURL(this.selectedImage);
         }
-          this.fetchAdminData();
-      const bsmodal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'))
-      bsmodal.hide();
-    
+        this.fetchAdminData();
+        const bsmodal = bootstrap.Modal.getInstance(
+          document.getElementById('editProfileModal')
+        );
+        bsmodal.hide();
+
         // window.location.reload();
       },
       error: (err: any) => {
         console.error('Update failed:', err);
         // alert('Profile update failed! Please try again.');
-         this.showToast('Profile update failed! Please try again.', 'Error');
+        this.showToast('Profile update failed! Please try again.', 'Error');
       },
-      
     });
   }
 
-
- showToast(message: string, type: string = 'success') {
-  this.toastMessage = message;
-  this.toastType = type;
-  setTimeout(() => (this.toastMessage = null), 3000);
-}
-
-
+  showToast(message: string, type: string = 'success') {
+    this.toastMessage = message;
+    this.toastType = type;
+    setTimeout(() => (this.toastMessage = null), 3000);
+  }
 
   fetchAdminData() {
     if (!this.superadmin_id) return;
@@ -217,5 +240,3 @@ export class SuperadminProfileComponent implements OnInit {
     return `${this.baseUrl}/business_images/${image}`;
   }
 }
-
-

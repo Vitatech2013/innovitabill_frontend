@@ -27,3 +27,24 @@
     opacity: 1;
   }
 }
+
+
+body.modal-open {
+  overflow: auto !important;
+  filter: none !important;
+  pointer-events: auto !important;
+}
+
+.modal-backdrop {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+.profile-blur {
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+.container, .card {
+  filter: none;
+}

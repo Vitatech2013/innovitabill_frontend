@@ -79,6 +79,7 @@ export class AddBusinessTypeComponent implements OnInit {
       next: (res: any) => {
         this.showToast('Business Type added successfully!', 'success');
         this.addBusinessTypeForm.reset();
+        window.location.reload();
         
       },
       error: (err: any) => {

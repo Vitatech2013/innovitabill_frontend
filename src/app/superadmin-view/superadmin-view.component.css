@@ -30,3 +30,9 @@
   border-left: 4px solid #3b8651;
   border-right: 4px solid #3b8651;
 }
+
+
+
+body {
+  padding-top: 70px; /* height of navbar */
+}
