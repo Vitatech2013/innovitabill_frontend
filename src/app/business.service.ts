@@ -13,13 +13,16 @@ export class BusinessService {
   login(data: any) {
     return this.http.post(`${this.baseUrl}/business/businesslogin`, data);
   }
-  businessForgotpassword(email: string) {
+ businessForgotpassword(data: any) {
     return this.http.post(
-      'http://78.142.47.247:3009/forgotPassword',email);
+      `${this.baseUrl}/business/forgotPassword`,
+      data
+    );
   }
-  businessResetPassword(data: any) {
+
+  businessResetPassword(data: any, token: any) {
     return this.http.post(
-      'http:78.142.47.247:3009/business/resetPassword',
+      `${this.baseUrl}/business/resetPassword/${token}`,
       data
     );
   }
@@ -30,9 +33,10 @@ export class BusinessService {
   deleteUser(id: string) {
     return this.http.delete(`${this.baseUrl}/user/userdelete/${id}`);
   }
-  updateUser(selectedUser: any, payload: any) {
-  return this.http.put(`http://localhost:3009/user/updateuser/${selectedUser._id}`, payload);
+updateUser(id: string, payload: any) {
+  return this.http.put(`${this.baseUrl}/user/updateuser/${id}`, payload);
 }
+
   getUser() {
     return this.http.get(`${this.baseUrl}/user/getuser`);
   }

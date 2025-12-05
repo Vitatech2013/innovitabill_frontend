@@ -7,39 +7,55 @@ import { BusinessService } from '../business.service';
 @Component({
   selector: 'app-business-forgotpassword',
   standalone: true,
-  imports: [CommonModule,FormsModule,ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './business-forgotpassword.component.html',
-  styleUrl: './business-forgotpassword.component.css'
+  styleUrls: ['./business-forgotpassword.component.css']   // ✔ Corrected (styleUrls)
 })
 export class BusinessForgotpasswordComponent implements OnInit {
 
-businessForm!: FormGroup;
- constructor(private fb:FormBuilder, private router: Router, private service: BusinessService ){}
+  businessForm!: FormGroup;
+  loading = false;
+  message: string = '';
 
-ngOnInit(): void {
-    this.businessForm=this.fb.group({
-      email:['',[Validators.required,Validators.email]]
-    })
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private service: BusinessService
+  ) {}
+
+  ngOnInit(): void {
+    this.businessForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]]
+    });
   }
-  sendOtp(): void {
+
+  sendOtp() {
     if (this.businessForm.invalid) {
-      this.businessForm.markAllAsTouched();
+      this.message = "Please enter a valid email";
       return;
     }
 
-    this.service.businessForgotpassword(this.businessForm.value).subscribe((res:any)=>{
-      console.log(res,"forgot otp")
-    })
-    alert("OTP sent. Check your Email")
-    this.router.navigate(['/business-otp']); 
+    this.loading = true;
+    const email = this.businessForm.value.email;
+
+    this.service.businessForgotpassword({ email})
+      .subscribe({
+        next: (res: any) => {
+          this.message = res.message || 'Password reset link sent to your email';
+          this.loading = false;
+        },
+        error: (err) => {
+          this.message = err.error?.message || 'Something went wrong';
+          this.loading = false;
+        }
+      });
   }
-    
-  
-   //  Logout
-    logout(): void {
-      localStorage.removeItem('user');   // remove token from local storage
-      sessionStorage.clear();             // clear session storage
-      this.router.navigate(['/home']);    // redirect to home
-    }
+
+  // Logout
+  logout(): void {
+    localStorage.removeItem('user');
+    sessionStorage.clear();
+    this.router.navigate(['/home']);
+  }
 
 }

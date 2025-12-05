@@ -11,7 +11,7 @@
 
 
 } */
- .side-btn {
+.side-btn {
   background-color: #f3f4f6;
   border-radius: 8px;
   padding: 10px 15px;
@@ -31,8 +31,9 @@
   border-right: 4px solid #3b8651;
 }
 
-
-
 body {
   padding-top: 70px; /* height of navbar */
+}
+.dropdown-toggle::after {
+  display: none !important;
 }

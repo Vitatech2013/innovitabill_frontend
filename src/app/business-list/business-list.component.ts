@@ -57,7 +57,7 @@ if (businesslist) {
       business_name: ['', [Validators.required, Validators.minLength(3)]],
       owner_name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      phone_number: ['', [Validators.required, Validators.minLength(10)]],
+      phone_number: ['', [Validators.required, Validators.minLength(10),]],
       address: ['', [Validators.required, Validators.minLength(3)]],
       registration_number: ['', [Validators.required, Validators.minLength(3)]],
       gst_number: ['', [Validators.required, Validators.minLength(3)]],
@@ -393,17 +393,42 @@ filteredBusiness() {
     }
   }
 
-  deleteBusiness(id?: string | null) {
-    if (!id) return;
-    this.api.deletebusiness(id).subscribe({
-      next: (res: any) => {
-        console.log(' Business deleted:', res);
-        this.loadBusiness();
-        this.closeModal('deleteBusinessModal');
-      },
-      error: (err) => console.error(' Error deleting business:', err),
-    });
-  }
+deleteBusiness(id?: string | null) {
+  if (!id) return;
+
+  this.api.deletebusiness(id).subscribe({
+    next: (res: any) => {
+      console.log('Business deleted:', res);
+
+      // Reload the business list
+      this.loadBusiness();
+
+      // Close the modal
+      this.closeModal('deleteBusinessModal');
+
+      // Show success toast
+      this.toastMessage = 'Business deleted successfully!';
+      this.toastType = 'bg-success text-white'; // you can define your own class if needed
+
+      // Optional: hide toast after 3 seconds
+      setTimeout(() => {
+        this.toastMessage = null;
+      }, 3000);
+    },
+
+    error: (err) => {
+      console.error('Error deleting business:', err);
+
+      // Show error toast
+      this.toastMessage = 'Failed to delete business!';
+      this.toastType = 'bg-danger text-white';
+
+      setTimeout(() => {
+        this.toastMessage = null;
+      }, 3000);
+    },
+  });
+}
 
   closeModal(id: string) {
     const modalEl = document.getElementById(id);

@@ -37,6 +37,7 @@
             class="form-control"
             formControlName="business_type"
             placeholder="Enter business type"
+            (keydown)="preventSpace($event)"
           />
           <small *ngIf="isInvalid('business_type')" class="text-danger">
             Business Type is required and must be at least 3 letters
@@ -52,6 +53,7 @@
             class="form-control"
             formControlName="business_code"
             placeholder="Enter business code"
+            (keydown)="preventSpace($event)"
           />
           <small *ngIf="isInvalid('business_code')" class="text-danger">
             Business code is required and must be at least 3 letters
