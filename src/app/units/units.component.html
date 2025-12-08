@@ -109,6 +109,7 @@
               type="text"
               formControlName="units_name"
               class="form-control"
+              (keypress)="allowOnlyLetters($event)"
               placeholder="Enter name"
             />
              <div
@@ -129,6 +130,7 @@
               formControlName="unit"
               class="form-control"
               placeholder="Enter unit"
+              (keypress)="allowOnlyNumbers($event)"
             />
                   <div
             *ngIf="UnitForm.controls['unit']?.touched && UnitForm.controls['unit']?.invalid"

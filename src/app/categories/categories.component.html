@@ -110,6 +110,7 @@
               formControlName="categories_name"
               class="form-control"
               placeholder="Enter Category Name"
+              (keypress)="allowOnlyLetters($event)"
             />
             <div
               *ngIf="
