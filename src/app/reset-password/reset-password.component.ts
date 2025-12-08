@@ -41,10 +41,7 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   matchPasswordValidator(formGroup: FormGroup) {
-    const newPassword = formGroup.get('newPassword')?.value;
-   
-
-    
+    const newPassword = formGroup.get('newPassword')?.value; 
   }
 
 update() {

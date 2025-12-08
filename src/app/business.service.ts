@@ -17,13 +17,16 @@ export class BusinessService {
   login(data: any) {
     return this.http.post(`${this.baseUrl}/business/businesslogin`, data);
   }
-  businessForgotpassword(email: string) {
+ businessForgotpassword(data: any) {
     return this.http.post(
-      `${this.baseUrl}/forgotPassword`,email);
+      `${this.baseUrl}/business/forgotPassword`,
+      data
+    );
   }
-  businessResetPassword(data: any) {
+
+  businessResetPassword(data: any, token: any) {
     return this.http.post(
-      `${this.baseUrl}/business/resetPassword`,
+      `${this.baseUrl}/business/resetPassword/${token}`,
       data
     );
   }

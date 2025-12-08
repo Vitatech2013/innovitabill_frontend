@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
-
+declare var bootstrap: any;
 @Component({
   selector: 'app-superadmin-view',
   standalone: true,
@@ -59,11 +59,30 @@ export class SuperadminViewComponent implements OnInit {
   logout() {
     localStorage.removeItem('sa');
     localStorage.removeItem('sa_token');
-    clearInterval(this.timer);
-    this.router.navigate(['/SuperAdminLogin']);
+   
+    this.router.navigateByUrl ('SuperAdminLogin');
   }
 
-  confirmLogout() {
-    this.logout();
+confirmLogout() {
+  const modalEl = document.getElementById('logoutModal');
+  
+  if (modalEl) {
+    const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+    modal.hide();
   }
+
+  setTimeout(() => {
+   
+    document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+
+    
+    document.body.classList.remove('modal-open');
+    document.body.style.removeProperty('padding-right');
+    document.body.style.removeProperty('overflow');
+
+    this.logout();
+  }, 150);
+}
+
+
 }

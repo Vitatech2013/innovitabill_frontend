@@ -41,13 +41,14 @@ export class BusinessListComponent implements OnInit {
    toastMessage: string | null = null;
   toastType: string | undefined;
 
+
   constructor(private fb: FormBuilder, private api: BillingService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
    const businesslist = localStorage.getItem('sa');
 if (businesslist) {
   const bid = JSON.parse(businesslist);
-  this.businessID = bid._id;   // <-- store ID separately
+  this.businessID = bid._id;   
   console.log('businessID:', this.businessID);
 }
 
@@ -56,10 +57,11 @@ if (businesslist) {
       business_name: ['', [Validators.required, Validators.minLength(3)]],
       owner_name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      phone_number: ['', [Validators.required, Validators.minLength(10)]],
+      phone_number: ['', [Validators.required, Validators.minLength(10),]],
       address: ['', [Validators.required, Validators.minLength(3)]],
       registration_number: ['', [Validators.required, Validators.minLength(3)]],
       gst_number: ['', [Validators.required, Validators.minLength(3)]],
+      bt_id:[''],
       password: [''],
       status: ['', [Validators.required]],
       logo_image: [''],
@@ -105,11 +107,23 @@ if (businesslist) {
     modal.show();
   }
 
+  // openViewModal(b: any) {
+  //   this.selectedBusiness = b;
+  //   const modal = new bootstrap.Modal(document.getElementById('viewModal'));
+  //   modal.show();
+  // }
   openViewModal(b: any) {
-    this.selectedBusiness = b;
-    const modal = new bootstrap.Modal(document.getElementById('viewModal'));
-    modal.show();
+  this.selectedBusiness = { ...b };
+
+  if (typeof b.bt_id === 'string') {
+    const btObject = this.businessTypes.find((t: any) => t._id === b.bt_id);
+    this.selectedBusiness.bt_id = btObject;
   }
+
+  const modal = new bootstrap.Modal(document.getElementById('viewModal'));
+  modal.show();
+}
+
 
   editBusiness(b: any) {
     console.log('Edit data:', b);
@@ -162,6 +176,14 @@ if (businesslist) {
       error: (err: any) => console.error('Error fetching business types:', err),
     });
   }
+
+
+  getBusinessTypeName(id: string): string {
+  const type = this.businessTypes.find(t => t._id === id);
+  return type ? type.business_type : '';
+}
+
+
 
   getImageUrl(path: string): string {
     if (!path) return 'assets/default-business.jpg';
@@ -343,11 +365,11 @@ updateBusiness() {
 
 
 
-filteredItems() {
-    if (!this.searchTerm) return this.items;
+filteredBusiness() {
+    if (!this.searchTerm) return this.business;
     const term = this.searchTerm.toLowerCase();
-    return this.items.filter((it) =>
-      Object.values(it).some((val) =>
+    return this.business.filter((b) =>
+      Object.values(b).some((val) =>
         val?.toString().toLowerCase().includes(term)
       )
     );
@@ -370,17 +392,42 @@ filteredItems() {
     }
   }
 
-  deleteBusiness(id?: string | null) {
-    if (!id) return;
-    this.api.deletebusiness(id).subscribe({
-      next: (res: any) => {
-        console.log(' Business deleted:', res);
-        this.loadBusiness();
-        this.closeModal('deleteBusinessModal');
-      },
-      error: (err) => console.error(' Error deleting business:', err),
-    });
-  }
+deleteBusiness(id?: string | null) {
+  if (!id) return;
+
+  this.api.deletebusiness(id).subscribe({
+    next: (res: any) => {
+      console.log('Business deleted:', res);
+
+      // Reload the business list
+      this.loadBusiness();
+
+      // Close the modal
+      this.closeModal('deleteBusinessModal');
+
+      // Show success toast
+      this.toastMessage = 'Business deleted successfully!';
+      this.toastType = 'bg-success text-white'; // you can define your own class if needed
+
+      // Optional: hide toast after 3 seconds
+      setTimeout(() => {
+        this.toastMessage = null;
+      }, 3000);
+    },
+
+    error: (err) => {
+      console.error('Error deleting business:', err);
+
+      // Show error toast
+      this.toastMessage = 'Failed to delete business!';
+      this.toastType = 'bg-danger text-white';
+
+      setTimeout(() => {
+        this.toastMessage = null;
+      }, 3000);
+    },
+  });
+}
 
   closeModal(id: string) {
     const modalEl = document.getElementById(id);

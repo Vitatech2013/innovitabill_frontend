@@ -52,22 +52,21 @@ export class AddBusinessComponent implements OnInit {
     }
 
     this.addBusinessForm = this.fb.group({
-      business_name: ['', [Validators.required, Validators.minLength(3)]],
-      owner_name: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      phone_number: ['', [Validators.required, Validators.minLength(10)]],
-      bt_id: ['', [Validators.required, Validators.minLength(3)]],
-      registration_number: ['', [Validators.required, Validators.minLength(3)]],
-      gst_number: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(3)]],
-
+      business_name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
+      owner_name: ['', [Validators.required, Validators.minLength(3),  Validators.pattern(/^[A-Za-z ]+$/)]],
+      email: ['', [Validators.required, Validators.email,Validators.pattern(/^\S+$/)]],
+      phone_number: ['', [Validators.required, Validators.minLength(10), Validators.pattern(/^[0-9]+$/),]],
+      bt_id: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
+      registration_number: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
+      gst_number: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
+      password: ['', [Validators.required, Validators.minLength(3),    Validators.pattern(/^[A-Za-z0-9!#$%^&*()]+$/)]],
       address: this.fb.group({
-        house_No: ['', [Validators.required, Validators.minLength(3)]],
-        town_Name: ['', [Validators.required, Validators.minLength(3)]],
-        mandal_Name: ['', [Validators.required, Validators.minLength(3)]],
-        district_Name: ['', [Validators.required, Validators.minLength(3)]],
-        state: ['', [Validators.required, Validators.minLength(3)]],
-        pincode: ['', [Validators.required, Validators.minLength(3)]],
+        house_No: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
+        town_Name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
+        mandal_Name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
+        district_Name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
+        state: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
+        pincode: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
       }),
       logo_image: [''],
       pan_pdf: [''],
@@ -76,6 +75,16 @@ export class AddBusinessComponent implements OnInit {
     });
     this.loadBusinessTypes();
   }
+  preventSpace(event: KeyboardEvent) {
+  if (event.code === 'Space') {
+    event.preventDefault();
+  }
+}
+onNameInput(event: any) {
+  event.target.value = event.target.value.replace(/[^A-Za-z ]/g, '');
+}
+
+
   loadBusinessTypes() {
     this.api.getBusinessTypes().subscribe({
       next: (res: any) => {

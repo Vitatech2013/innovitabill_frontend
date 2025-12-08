@@ -11,8 +11,8 @@
 
 
 } */
- .side-btn {
-  /* background-color: #f3f4f6; */
+.side-btn {
+  background-color: #f3f4f6;
   border-radius: 8px;
   padding: 10px 15px;
   text-align: left;
@@ -29,4 +29,11 @@
   transform: translateX(4px);
   border-left: 4px solid #3b8651;
   border-right: 4px solid #3b8651;
+}
+
+body {
+  padding-top: 70px; /* height of navbar */
+}
+.dropdown-toggle::after {
+  display: none !important;
 }

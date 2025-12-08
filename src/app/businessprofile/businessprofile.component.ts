@@ -20,10 +20,8 @@ declare var bootstrap: any;
   styleUrls: ['./businessprofile.component.css'],
 })
 export class BusinessprofileComponent implements OnInit {
-  profile: any;
   BusinessprofileForm!: FormGroup;
   BusinessData: any;
-  selectedImage: any;
   previewUrl: string | ArrayBuffer | null = null;
   business_id: any;
 
@@ -35,16 +33,15 @@ export class BusinessprofileComponent implements OnInit {
     { name: 'state', label: 'State' },
     { name: 'pincode', label: 'Pincode' },
   ];
+
   businessTypes: any[] = [];
-  selectedBusiness: any;
+  selectedBusiness: any = {};
   pan_file: any;
   aadhar_file: any;
   certificate_file: any;
   logo_file: any;
   toastType: any;
   toastMessage: any;
-  selectedBusinessType: any;
-  private baseUrl = constants.baseUrl;
 
   constructor(
     private fb: FormBuilder,
@@ -54,12 +51,7 @@ export class BusinessprofileComponent implements OnInit {
 
   ngOnInit(): void {
     const stored = JSON.parse(localStorage.getItem('user') || '{}');
-
-    console.log('Stored User:', stored);
-    console.log('stored._id =', stored._id);
-
-    this.business_id = stored._id; // 👈 REAL ID SET HERE
-    console.log('Final business_id =', this.business_id);
+    this.business_id = stored._id;
 
     this.BusinessprofileForm = this.fb.group({
       business_name: ['', [Validators.required, Validators.minLength(3)]],
@@ -74,9 +66,7 @@ export class BusinessprofileComponent implements OnInit {
       aadhar_pdf: [''],
       certificate_pdf: [''],
       logo_image: [''],
-
       bt_id: ['', Validators.required],
-
       address: this.fb.group({
         house_No: [''],
         town_Name: [''],
@@ -87,21 +77,20 @@ export class BusinessprofileComponent implements OnInit {
       }),
     });
 
-    this.fetchData();
     this.loadBusinessTypes();
+    this.fetchData();
   }
 
   loadBusinessTypes() {
     this.profileService.getBusinessTypes().subscribe({
-      next: (res: any) => {
-        this.businessTypes = res.data || [];
-      },
-      error: (err: any) => console.error('Error fetching business types:', err),
+      next: (res: any) => (this.businessTypes = res.data || []),
+      error: (err: any) => console.error(err),
     });
   }
 
   profileedit() {
     if (!this.BusinessData) return;
+
     this.BusinessprofileForm.patchValue({
       business_name: this.BusinessData.business_name,
       owner_name: this.BusinessData.owner_name,
@@ -117,132 +106,28 @@ export class BusinessprofileComponent implements OnInit {
       logo_image: this.BusinessData.logo_image,
       address: this.BusinessData.address,
     });
-  }
-  updateadminprofile() {
-    if (this.BusinessprofileForm.invalid) {
-      this.showToast('Please fill all required fields', 'warning');
-      return;
-    }
 
-    const formData = new FormData();
-    formData.append(
-      'business_name',
-      this.BusinessprofileForm.get('business_name')?.value
-    );
-    formData.append(
-      'owner_name',
-      this.BusinessprofileForm.get('owner_name')?.value
-    );
-    formData.append('email', this.BusinessprofileForm.get('email')?.value);
-    formData.append(
-      'phone_number',
-      this.BusinessprofileForm.get('phone_number')?.value
-    );
-    formData.append('bt_id', this.BusinessprofileForm.get('bt_id')?.value);
-
-    formData.append(
-      'registration_number',
-      this.BusinessprofileForm.get('registration_number')?.value
-    );
-    formData.append(
-      'gst_number',
-      this.BusinessprofileForm.get('gst_number')?.value
-    );
-    // const newPassword = this.BusinessprofileForm.value.password;
-
-    // if (newPassword && newPassword.trim() !== '') {
-    //   formData.append('password', newPassword);
-    // }
-    formData.append(
-      'address',
-      JSON.stringify(this.BusinessprofileForm.get('address')?.value)
-    );
-
-    if (this.logo_file) formData.append('logo_image', this.logo_file);
-    if (this.pan_file) formData.append('pan_pdf', this.pan_file);
-    if (this.aadhar_file) formData.append('aadhar_pdf', this.aadhar_file);
-    if (this.certificate_file)
-      formData.append('certificate_pdf', this.certificate_file);
-
-    this.profileService
-      .businessprofileupdate(formData, this.BusinessData._id)
-      .subscribe({
-        next: (res: any) => {
-          this.showToast('Profile updated successfully!', 'success');
-          if (this.selectedImage) {
-            const reader = new FileReader();
-            reader.onload = () => {
-              this.previewUrl =
-                this.getImageUrl(res.data.image) + '?t=' + Date.now();
-            };
-
-            reader.readAsDataURL(this.selectedImage);
-          }
-          this.fetchData();
-          const modal = bootstrap.Modal.getInstance(
-            document.getElementById('editProfileModal')
-          );
-          modal.hide();
-        },
-        error: (err: any) => {
-          console.error('Update failed:', err);
-          this.showToast('Profile update failed! Please try again.', 'error');
-        },
-      });
-  }
-  showToast(message: string, type: 'success' | 'error' | 'warning') {
-    this.toastMessage = message;
-    this.toastType = type;
-    setTimeout(() => (this.toastMessage = null), 3000);
+    this.selectedBusiness = {
+      logo_image: this.BusinessData.logo_image || '',
+      pan_pdf: this.BusinessData.pan_pdf || '',
+      aadhar_pdf: this.BusinessData.aadhar_pdf || '',
+      certificate_pdf: this.BusinessData.certificate_pdf || '',
+    };
   }
 
-  // fetchData() {
-  //   console.log('Calling API with ID:', this.business_id);
-
-  //   if (!this.business_id) {
-  //     console.error('Business ID missing! Cannot fetch data.');
-  //     return;
-  //   }
-
-  //   this.profileService.getBusinessprofile(this.business_id).subscribe({
-  //     next: (res: any) => {
-  //       console.log('Profile fetched:', res);
-
-  //       this.BusinessData = res?.data || res;
-
-  //       this.previewUrl =
-  //         this.getImageUrl(this.BusinessData.image) + '?t=' + Date.now();
-
-  //       const { image, ...rest } = this.BusinessData;
-  //       this.BusinessprofileForm.patchValue(rest);
-  //     },
-  //     error: (err) => console.error(' Error fetching admin profile:', err),
-  //   });
-  // }
   fetchData() {
-    console.log('Calling API with ID:', this.business_id);
-
-    if (!this.business_id) {
-      console.error('Business ID missing! Cannot fetch data.');
-      return;
-    }
+    if (!this.business_id) return;
 
     this.profileService.getBusinessprofile(this.business_id).subscribe({
       next: (res: any) => {
-        console.log('Profile fetched:', res);
-
         this.BusinessData = res?.data || res;
-
-        // Set preview image
         this.previewUrl =
           this.getImageUrl(this.BusinessData.logo_image) + '?t=' + Date.now();
 
-        // Patch form values
-        const { image, pan_pdf, aadhar_pdf, certificate_pdf, ...rest } =
+        const { logo_image, pan_pdf, aadhar_pdf, certificate_pdf, ...rest } =
           this.BusinessData;
         this.BusinessprofileForm.patchValue(rest);
 
-        // Populate selected files for display
         this.selectedBusiness = {
           logo_image: this.BusinessData.logo_image || '',
           pan_pdf: this.BusinessData.pan_pdf || '',
@@ -250,19 +135,78 @@ export class BusinessprofileComponent implements OnInit {
           certificate_pdf: this.BusinessData.certificate_pdf || '',
         };
       },
-      error: (err) => console.error(' Error fetching admin profile:', err),
+      error: (err) => console.error('Fetch failed:', err),
     });
   }
 
+  updateadminprofile() {
+    if (this.BusinessprofileForm.invalid) {
+      this.showToast('Please fill all required fields', 'warning');
+      return;
+    }
+
+    const formData = new FormData();
+    const formValue = this.BusinessprofileForm.value;
+
+    formData.append('business_name', formValue.business_name);
+    formData.append('owner_name', formValue.owner_name);
+    formData.append('email', formValue.email);
+    formData.append('phone_number', formValue.phone_number);
+    formData.append('bt_id', formValue.bt_id);
+    formData.append('registration_number', formValue.registration_number);
+    formData.append('gst_number', formValue.gst_number);
+    formData.append('address', JSON.stringify(formValue.address));
+
+    if (this.logo_file) formData.append('logo_image', this.logo_file);
+    if (this.pan_file) formData.append('pan_pdf', this.pan_file);
+    if (this.aadhar_file) formData.append('aadhar_pdf', this.aadhar_file);
+    if (this.certificate_file)
+      formData.append('certificate_pdf', this.certificate_file);
+
+    if (!this.BusinessData?._id) {
+      console.error('Business ID missing!');
+      return;
+    }
+
+    this.profileService
+      .businessprofileupdate(formData, this.BusinessData._id)
+      .subscribe({
+        next: (res: any) => {
+          this.showToast('Profile updated successfully!', 'success');
+          this.fetchData();
+
+          const modalEl = document.getElementById('editProfileModal');
+          if (modalEl) {
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal?.hide();
+          }
+        },
+        error: (err: any) => {
+          console.error('Update failed:', err);
+          this.showToast('Profile update failed!', 'error');
+        },
+      });
+  }
+
+  showToast(message: string, type: 'success' | 'error' | 'warning') {
+    this.toastMessage = message;
+    this.toastType = type;
+    setTimeout(() => (this.toastMessage = null), 3000);
+  }
+
+  // Image/file handlers
   onImageSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      this.selectedImage = file;
+      this.logo_file = file;
       const reader = new FileReader();
       reader.onload = () => (this.previewUrl = reader.result);
       reader.readAsDataURL(file);
     }
   }
+
+
+ 
 
   getImageUrl(image: string | null): string {
     if (!image) return '';
@@ -270,26 +214,55 @@ export class BusinessprofileComponent implements OnInit {
     return `${this.baseUrl}/business_images/${image}`;
   }
 
-  onCustomFileSelect(event: any, field: string) {
+
+
+     onPanSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      this.selectedBusiness[field] = file.name;
+      this.pan_file = file;
+      this.selectedBusiness.pan_pdf = file.name;
+    }
+  
+
+  onAadharSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.aadhar_file = file;
+      this.selectedBusiness.aadhar_pdf = file.name;
     }
   }
 
-  onLogoSelected(event: any) {
-    this.logo_file = event.target.files[0];
-  }
-
-  onPanSelected(event: any) {
-    this.pan_file = event.target.files[0];
-  }
-
-  onAadharSelected(event: any) {
-    this.aadhar_file = event.target.files[0];
-  }
-
   onCertificateSelected(event: any) {
-    this.certificate_file = event.target.files[0];
+    const file = event.target.files[0];
+    if (file) {
+      this.certificate_file = file;
+      this.selectedBusiness.certificate_pdf = file.name;
+    }
+  }
+
+  onCustomFileSelect(event: any, field: string) {
+    const file = event.target.files[0];
+    if (!file) return;
+    this.selectedBusiness[field] = file.name;
+
+    switch (field) {
+      case 'pan_pdf':
+        this.pan_file = file;
+        break;
+      case 'aadhar_pdf':
+        this.aadhar_file = file;
+        break;
+      case 'certificate_pdf':
+        this.certificate_file = file;
+        break;
+      case 'logo_image':
+        this.logo_file = file;
+        break;
+    }
+  }
+
+  getImageUrl(image: string | null): string {
+    if (!image) return '';
+    return `http://localhost:3009/business_images/${image}`;
   }
 }

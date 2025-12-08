@@ -209,3 +209,18 @@ input[type="file"] {
 .table-success{
   background-color: #d4f8d4;
 }
+
+
+/* table scroll */
+.table-wrapper {
+  width: 100%;
+}
+
+.table-body-scroll {
+  max-height: 350px;  /* Adjust height as you need */
+  overflow-y: auto;
+}
+
+.table-body-scroll table {
+  margin-bottom: 0;  /* Remove extra margin */
+}

@@ -22,6 +22,8 @@ export class ViewBusinessTypeComponent implements OnInit {
   b_types: any[] = [];
   title: string = '';
   selectedB_type: any;
+   searchTerm: string = '';
+   
   
 
   constructor(private fb: FormBuilder, private api: BillingService) {}
@@ -46,6 +48,16 @@ export class ViewBusinessTypeComponent implements OnInit {
     this.title = 'Add Business Type';
     this.resetForm();
     this.openModal = true;
+  }
+
+filteredBusiness() {
+    if (!this.searchTerm) return this.b_types;
+    const term = this.searchTerm.toLowerCase();
+    return this.b_types.filter((b) =>
+      Object.values(b).some((val) =>
+        val?.toString().toLowerCase().includes(term)
+      )
+    );
   }
 
   edit(b_type: any) {
