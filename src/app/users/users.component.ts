@@ -246,13 +246,11 @@ onFileChange(event: any, fieldName: string) {
 
 
   // Build image URL
-  getImageUrl(path: string ): string {
-    if (!path || path.trim() === '') return 'assets/images/default-business.jpg';
-    const cleanPath = path.replace(/\\/g, '/');
-    return cleanPath.includes('business_images/')
-      ? `${this.baseUrl}/${cleanPath}`
-      : `${this.baseUrl}/business_images/${cleanPath}`;
-  }
+getImageUrl(image: string | null): string {
+  if (!image) return 'assets/images/default-user.png'; // fallback
+  return `${this.baseUrl}/business_images/${image}`;
+}
+
 
   // Open image preview modal
   openImageModal(imagePath: string) {

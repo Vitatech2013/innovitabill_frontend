@@ -20,6 +20,7 @@ declare var bootstrap: any;
   styleUrls: ['./businessprofile.component.css'],
 })
 export class BusinessprofileComponent implements OnInit {
+  baseUrl: string = 'http://localhost:3009';
   BusinessprofileForm!: FormGroup;
   BusinessData: any;
   previewUrl: string | ArrayBuffer | null = null;
@@ -205,24 +206,19 @@ export class BusinessprofileComponent implements OnInit {
     }
   }
 
+  // getImageUrl(image: string | null): string {
+  //   if (!image) return '';
+  //   // return `http://78.142.47.247:3009/business_images/${image}`;
+  //   return `${this.baseUrl}/business_images/${image}`;
+  // }
 
- 
-
-  getImageUrl(image: string | null): string {
-    if (!image) return '';
-    // return `http://78.142.47.247:3009/business_images/${image}`;
-    return `${this.baseUrl}/business_images/${image}`;
-  }
-
-
-
-     onPanSelected(event: any) {
+  onPanSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
       this.pan_file = file;
       this.selectedBusiness.pan_pdf = file.name;
     }
-  
+  }
 
   onAadharSelected(event: any) {
     const file = event.target.files[0];
