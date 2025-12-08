@@ -89,36 +89,48 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     }
   }
 
-  loadBusinessDetails() {
-    this.http.get<any>(`${this.baseUrl}/business/businessget`).subscribe({
-      next: (b) => {
-        if (!b) return;
+ loadBusinessDetails() {
+  this.http.get<any>(`${this.baseUrl}/business/businessget`).subscribe({
+    next: (b) => {
+      if (!b || !b.data || b.data.length === 0) {
+        console.warn('No business data found');
+        return;
+      }
 
-        const businessGroup = this.quotationForm.get('business') as FormGroup;
+      const business = b.data[0]; // take first business from array
 
-        let logoUrl = b.logo_image || '';
-        if (logoUrl && !logoUrl.startsWith('http')) {
-          logoUrl = `${this.baseUrl}/business_images/${logoUrl}`;
-        }
-        businessGroup.get('logo_image')?.setValue(logoUrl);
+      const businessGroup = this.quotationForm.get('business') as FormGroup;
 
-        if (b.address) {
-          const addressGroup = businessGroup.get('address') as FormGroup;
-          addressGroup.patchValue({
-            house_No: b.address.house_No || '',
-            town_Name: b.address.town_Name || '',
-            mandal_Name: b.address.mandal_Name || '',
-            district_Name: b.address.district_Name || '',
-            state: b.address.state || '',
-            pincode: b.address.pincode || '',
-          });
-        }
-      },
-      error: (err) => {
-        console.error('Failed to load business details', err);
-      },
-    });
-  }
+      let logoUrl = business.logo_image || '';
+      if (logoUrl && !logoUrl.startsWith('http')) {
+        logoUrl = `${this.baseUrl}/business_images/${logoUrl}`;
+      }
+      businessGroup.get('logo_image')?.setValue(logoUrl);
+      businessGroup.get('business_name')?.setValue(business.business_name || '');
+      businessGroup.get('owner_name')?.setValue(business.owner_name || '');
+      businessGroup.get('email')?.setValue(business.email || '');
+      businessGroup.get('phone_number')?.setValue(business.phone_number || '');
+
+      if (business.address) {
+        const addressGroup = businessGroup.get('address') as FormGroup;
+        addressGroup.patchValue({
+          house_No: business.address.house_No || '',
+          town_Name: business.address.town_Name || '',
+          mandal_Name: business.address.mandal_Name || '',
+          district_Name: business.address.district_Name || '',
+          state: business.address.state || '',
+          pincode: business.address.pincode || '',
+        });
+      } else {
+        console.warn('Business address missing');
+      }
+    },
+    error: (err) => {
+      console.error('Failed to load business details', err);
+    },
+  });
+}
+
 
   get items(): FormArray {
     return this.quotationForm.get('items') as FormArray;

@@ -35,7 +35,7 @@ export class UserProfileComponent implements OnInit {
   userData: any;
   toastMessage: string | null = null;
   toastType: string | undefined;
-   private baseUrl = constants.baseUrl;
+  private baseUrl = constants.baseUrl;
 
   constructor(
     private fb: FormBuilder,
@@ -79,6 +79,15 @@ export class UserProfileComponent implements OnInit {
       password: '',
       address: this.userData.address,
     });
+
+    const modalEl = document.getElementById('editProfileModal');
+    let modal = bootstrap.Modal.getInstance(modalEl);
+
+    if (!modal) {
+      modal = new bootstrap.Modal(modalEl);
+    }
+
+    modal.show();
   }
 
   getUserProfile() {
@@ -92,7 +101,6 @@ export class UserProfileComponent implements OnInit {
     formData.append('phone_number', this.profileForm.value.phone_number);
     formData.append('user_email', this.profileForm.value.user_email);
     formData.append('password', this.profileForm.value.password);
-
     formData.append('address', JSON.stringify(this.profileForm.value.address));
 
     if (this.selectedImage) {
@@ -101,21 +109,41 @@ export class UserProfileComponent implements OnInit {
 
     this.service.updateprofile(formData, this.user_id).subscribe({
       next: (res: any) => {
-        this.showToast('Profile Updated Sucessfully', 'success');
+        this.showToast('Profile Updated Successfully', 'success');
         this.fetchUserData();
 
-        const modal = bootstrap.Modal.getInstance(
-          document.getElementById('editProfileModal')
-        );
+        const modalEl = document.getElementById('editProfileModal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+
         modal?.hide();
+
+        modalEl?.addEventListener('hidden.bs.modal', () => {
+          document
+            .querySelectorAll('.modal-backdrop')
+            .forEach((backdrop) => backdrop.remove());
+
+          document.body.classList.remove('modal-open');
+          document.body.style.overflow = 'auto';
+          document.body.style.filter = 'none';
+          document.body.style.removeProperty('pointer-events');
+          document.body.style.paddingRight = '0';
+
+          const container = document.querySelector('.container, .card');
+          if (container) {
+            container.classList.remove('profile-blur');
+            if (container instanceof HTMLElement)
+              container.style.filter = 'none';
+          }
+        });
+        window.location.reload();
       },
+
       error: (err) => {
         console.error(err);
         this.showToast('Profile Update Failed!', 'Danger');
       },
     });
   }
-
   fetchUserData() {
     if (!this.user_id) return;
 

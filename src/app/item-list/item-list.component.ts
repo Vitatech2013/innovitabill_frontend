@@ -190,6 +190,7 @@ export class ItemListComponent implements OnInit {
       next: (res: any) => {
         this.toastr.success('Item Updated Successfully');
         this.loadItems();
+        window.location.reload();
       },
       error: (err) => {
         console.log(err);

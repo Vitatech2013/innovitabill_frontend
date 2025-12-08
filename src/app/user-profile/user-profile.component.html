@@ -16,12 +16,7 @@
           {{ profileForm.get("user_name")?.value || "User" }}
         </h5>
 
-        <button
-          class="btn btn-sm btn-primary mt-2"
-          data-bs-toggle="modal"
-          data-bs-target="#editProfileModal"
-          (click)="profileedit()"
-        >
+        <button class="btn btn-sm btn-primary mt-2" (click)="profileedit()">
           <i class="bi bi-pencil"></i> Edit Profile
         </button>
       </div>

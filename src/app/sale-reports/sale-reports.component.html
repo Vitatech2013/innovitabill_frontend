@@ -1,60 +1,48 @@
 <div class="container" id="report-content">
-  <h2 class="mb-3 text-center">Sales Report</h2>
+  <h2 class="mb-4 text-center">Sales Reports</h2>
 
   <div class="row">
-    <div class="col-md-6">
-      <div class="card mb-4 p-3">
-        <h4 class="mb-3">Daily Sales</h4>
-        <canvas id="dailyChart" height="120"></canvas>
+    <div class="col-md-6 mb-4">
+      <div class="card p-3">
+        <h4 class="text-center mb-2">Daily Sales</h4>
+        <apx-chart
+          [series]="dailySeries"
+          [chart]="chartOptions"
+          [xaxis]="dailyXAxis"
+        ></apx-chart>
       </div>
     </div>
 
-    <div class="col-md-6">
-      <div class="card mb-4 p-3">
-        <h4 class="mb-3">Weekly Sales</h4>
-        <canvas id="weeklyChart" height="120"></canvas>
+    <div class="col-md-6 mb-4">
+      <div class="card p-3">
+        <h4 class="text-center mb-2">Weekly Sales</h4>
+        <apx-chart
+          [series]="weeklySeries"
+          [chart]="chartOptions"
+          [xaxis]="weeklyXAxis"
+        ></apx-chart>
       </div>
     </div>
 
-    <div class="col-md-6">
-      <div class="card mb-4 p-3">
-        <h4 class="mb-3">Monthly Sales</h4>
-        <canvas id="monthlyChart" height="120"></canvas>
+    <div class="col-md-6 mb-4">
+      <div class="card p-3">
+        <h4 class="text-center mb-2">Monthly Sales</h4>
+        <apx-chart
+          [series]="monthlySeries"
+          [chart]="chartOptions"
+          [xaxis]="monthlyXAxis"
+        ></apx-chart>
       </div>
     </div>
 
-    <div class="col-md-6">
-      <div class="card mb-4 p-3">
-        <h4 class="mb-3">Yearly Sales</h4>
-        <canvas id="yearlyChart" height="120"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <div class="text-center mt-4">
-    <button class="btn btn-primary me-2" (click)="preparePDFPreview()">
-      Preview PDF
-    </button>
-    <button class="btn btn-success" (click)="downloadExcel()">
-      Download Excel
-    </button>
-  </div>
-</div>
-
-<!-- 🚀 PDF Preview Modal -->
-<div class="modal fade" id="pdfPreviewModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">PDF Preview</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="cancelPreview()"></button>
-      </div>
-      <div class="modal-body text-center">
-        <img *ngIf="pdfPreviewSrc" [src]="pdfPreviewSrc" class="img-fluid" style="max-height: 70vh; border:1px solid #ddd; padding:6px;border-radius:6px;" />
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancelPreview()">Close</button>
-        <button class="btn btn-primary" (click)="confirmDownload()">Download PDF</button>
+    <div class="col-md-6 mb-4">
+      <div class="card p-3">
+        <h4 class="text-center mb-2">Yearly Sales</h4>
+        <apx-chart
+          [series]="yearlySeries"
+          [chart]="chartOptions"
+          [xaxis]="yearlyXAxis"
+        ></apx-chart>
       </div>
     </div>
   </div>
