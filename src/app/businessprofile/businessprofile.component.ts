@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BillingService } from '../billing.service';
+import { constants } from '../../../constants';
 declare var bootstrap: any;
 
 @Component({
@@ -204,13 +205,24 @@ export class BusinessprofileComponent implements OnInit {
     }
   }
 
-  onPanSelected(event: any) {
+
+ 
+
+  getImageUrl(image: string | null): string {
+    if (!image) return '';
+    // return `http://78.142.47.247:3009/business_images/${image}`;
+    return `${this.baseUrl}/business_images/${image}`;
+  }
+
+
+
+     onPanSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
       this.pan_file = file;
       this.selectedBusiness.pan_pdf = file.name;
     }
-  }
+  
 
   onAadharSelected(event: any) {
     const file = event.target.files[0];

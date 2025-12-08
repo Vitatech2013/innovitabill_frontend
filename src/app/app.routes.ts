@@ -37,12 +37,14 @@ import { ViewBusinessTypeComponent } from './view-business-type/view-business-ty
 
 
 import { QuotationComponent } from './quotation/quotation.component';
+import { UserForgotPasswordComponent } from './user-forgot-password/user-forgot-password.component';
+import { UserResetPasswordComponent } from './user-reset-password/user-reset-password.component';
 
 
 export const routes: Routes = [
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
-   {path: 'forgot-password', component: ForgotPasswordComponent},
-   {path: 'reset-password/:token', component: ResetPasswordComponent},
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password/:token', component: ResetPasswordComponent },
   {
     path: 'SuperAdminView',
     component: SuperadminViewComponent,
@@ -51,13 +53,14 @@ export const routes: Routes = [
       { path: 'view-business', component: BusinessListComponent },
       { path: 'add-business', component: AddBusinessComponent },
       { path: 'superadmin-profile', component: SuperadminProfileComponent },
-      {path: 'add_business_type', component: AddBusinessTypeComponent},
-      {path: 'view_business_type', component: ViewBusinessTypeComponent}
-      
+      { path: 'add_business_type', component: AddBusinessTypeComponent },
+      { path: 'view_business_type', component: ViewBusinessTypeComponent },
     ],
   },
 
   { path: 'userlogin', component: UserLoginComponent },
+  {path:'userforgotpassword',component:UserForgotPasswordComponent},
+  {path:'userresetpassword', component:UserResetPasswordComponent},
 
   {
     path: 'userview',
@@ -85,20 +88,24 @@ export const routes: Routes = [
   },
 
   { path: 'businesslogin', component: BusinessLoginComponent },
-  {path: 'business-Forgotpassword',component: BusinessForgotpasswordComponent},
-  {path: 'business-otp', component: BusinessOtpComponent},
+  {
+    path: 'business-Forgotpassword',
+    component: BusinessForgotpasswordComponent,
+  },
+  { path: 'business-otp', component: BusinessOtpComponent },
   { path: 'businessRegister', component: BusinessRegisterComponent },
   {
     path: 'business-Dashboard',
     component: BusinessDashboardComponent,
     children: [
       { path: '', component: UsersComponent },
+      { path: 'businessprofile', component: BusinessprofileComponent },
       { path: 'users', component: UsersComponent },
       { path: 'categories', component: CategoriesComponent },
       { path: 'roles', component: RolesComponent },
       { path: 'units', component: UnitsComponent },
       { path: 'sub-categories', component: SubCategoriesComponent },
-      { path: 'businessprofile', component: BusinessprofileComponent },
+      
     ],
   },
 

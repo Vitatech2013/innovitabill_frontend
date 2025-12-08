@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { BillingService } from '../billing.service';
 import { Router } from '@angular/router';
+import { constants } from '../../../constants';
 
 @Component({
   selector: 'app-sale',
@@ -33,6 +34,7 @@ export class SaleComponent implements OnInit {
   business_id: string = '';
   toastMessage: string | null = null;
   toastType: string | undefined;
+   private baseUrl = constants.baseUrl;
 
   constructor(
     private fb: FormBuilder,
@@ -261,6 +263,6 @@ export class SaleComponent implements OnInit {
     setTimeout(() => (this.toastMessage = null), 3000);
   }
   getImageUrl(filename: string): string {
-    return `http://localhost:3009/business_images/${filename}`; 
+    return `${this.baseUrl}/business_images/${filename}`; 
   }
 }

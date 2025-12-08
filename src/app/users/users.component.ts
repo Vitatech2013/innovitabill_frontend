@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { BusinessService } from '../business.service';
 import { BillingService } from '../billing.service';
+import { constants } from '../../../constants';
 declare var bootstrap: any;
 
 @Component({
@@ -26,6 +27,7 @@ export class UsersComponent implements OnInit {
   business_id: string = '';
   toastType: any;
   toastMessage: any;
+   private baseUrl = constants.baseUrl;
   
   addressFields = [
     { name: 'house_No', label: 'House No' },
@@ -44,7 +46,7 @@ export class UsersComponent implements OnInit {
 
   constructor(
     private service: BusinessService,
-    private api: BillingService,
+   
     private fb: FormBuilder
   ) {}
 
@@ -81,11 +83,12 @@ export class UsersComponent implements OnInit {
 
   // Fetch roles
   getRoles() {
-    this.api.getRoles().subscribe({
+    this.service.getRoles().subscribe({
       next: (res: any) => {
         this.roles = res.data || [];
       },
-      error: (err) => console.error('Error loading roles:', err),
+     error: (err: any) => console.error('Error loading roles:', err),
+
     });
   }
 
@@ -247,8 +250,8 @@ onFileChange(event: any, fieldName: string) {
     if (!path || path.trim() === '') return 'assets/images/default-business.jpg';
     const cleanPath = path.replace(/\\/g, '/');
     return cleanPath.includes('business_images/')
-      ? `http://localhost:3009/${cleanPath}`
-      : `http://localhost:3009/business_images/${cleanPath}`;
+      ? `${this.baseUrl}/${cleanPath}`
+      : `${this.baseUrl}/business_images/${cleanPath}`;
   }
 
   // Open image preview modal
