@@ -1,0 +1,56 @@
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { Router } from '@angular/router';
+import { BillingService } from '../../Services/billing.service';
+
+
+@Component({
+  selector: 'app-user-forgot-password',
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  templateUrl: './user-forgot-password.component.html',
+  styleUrl: './user-forgot-password.component.css',
+})
+export class UserForgotPasswordComponent implements OnInit {
+  forgotForm!: FormGroup;
+  loading = false;
+  message: string = '';
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private service: BillingService
+  ) {}
+  ngOnInit(): void {
+    this.forgotForm = this.fb.group({
+      user_email: ['', [Validators.required, Validators.email]],
+    });
+  }
+
+  forgot() {
+    console.log(this.forgotForm.value);
+
+    if (this.forgotForm.invalid) return;
+
+    this.loading = true;
+
+    const email = this.forgotForm.value.user_email;
+
+    this.service.userForgotPassword({ user_email: email }).subscribe({
+      next: (res: any) => {
+        this.message = res.message || 'Password reset link sent to your email';
+        this.loading = false;
+      },
+      error: (err) => {
+        this.message = err.error?.message || 'Something went wrong';
+        this.loading = false;
+      },
+    });
+  }
+}

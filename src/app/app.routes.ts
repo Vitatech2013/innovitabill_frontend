@@ -1,44 +1,49 @@
 import { Routes } from '@angular/router';
-import { SuperAdminLoginComponent } from './super-admin-login/super-admin-login.component';
-import { SuperadminViewComponent } from './superadmin-view/superadmin-view.component';
-import { BusinessListComponent } from './business-list/business-list.component';
-import { AdminsComponent } from './admins/admins.component';
-import { RolesComponent } from './roles/roles.component';
-import { CashiersComponent } from './cashiers/cashiers.component';
-import { ManagersComponent } from './managers/managers.component';
-import { BusinessLoginComponent } from './business-login/business-login.component';
-import { BusinessDashboardComponent } from './business-dashboard/business-dashboard.component';
-import { BusinessRegisterComponent } from './business-register/business-register.component';
-import { UsersComponent } from './users/users.component';
+
+
 import { HomeComponent } from './home/home.component';
-import { CashierLoginComponent } from './cashier-login/cashier-login.component';
-import { CategoriesComponent } from './categories/categories.component';
-import { UnitsComponent } from './units/units.component';
-import { AddBusinessComponent } from './add-business/add-business.component';
-import { SuperadminProfileComponent } from './superadmin-profile/superadmin-profile.component';
-import { UserLoginComponent } from './user-login/user-login.component';
-import { UserViewComponent } from './user-view/user-view.component';
-import { ItemListComponent } from './item-list/item-list.component';
-import { ItemsComponent } from './items/items.component';
-import { SalesComponent } from './sales-list/sales.component';
-import { SaleComponent } from './sale/sale.component';
-import { BusinessprofileComponent } from './businessprofile/businessprofile.component';
-import { UserProfileComponent } from './user-profile/user-profile.component';
-import { SaleReportsComponent } from './sale-reports/sale-reports.component';
-
-import { BusinessForgotpasswordComponent } from './business-forgotpassword/business-forgotpassword.component';
-import { BusinessOtpComponent } from './business-otp/business-otp.component';
-import { SubCategoriesComponent } from './sub-categories/sub-categories.component';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { AddBusinessTypeComponent } from './add-business-type/add-business-type.component';
-import { ViewBusinessTypeComponent } from './view-business-type/view-business-type.component';
 
 
 
-import { QuotationComponent } from './quotation/quotation.component';
-import { UserForgotPasswordComponent } from './user-forgot-password/user-forgot-password.component';
-import { UserResetPasswordComponent } from './user-reset-password/user-reset-password.component';
+
+
+
+
+
+
+
+
+import { UserResetPasswordComponent } from './User/user-reset-password/user-reset-password.component';
+import { UserForgotPasswordComponent } from './User/user-forgot-password/user-forgot-password.component';
+import { SuperadminProfileComponent } from './Superadmin/superadmin-profile/superadmin-profile.component';
+import { UserLoginComponent } from './User/user-login/user-login.component';
+import { UserViewComponent } from './User/user-view/user-view.component';
+import { UserProfileComponent } from './User/user-profile/user-profile.component';
+import { SuperadminViewComponent } from './Superadmin/superadmin-view/superadmin-view.component';
+import { UsersComponent } from './Business/users/users.component';
+import { SuperAdminLoginComponent } from './Superadmin/super-admin-login/super-admin-login.component';
+import { ForgotPasswordComponent } from './Superadmin/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './Superadmin/reset-password/reset-password.component';
+import { BusinessListComponent } from './Superadmin/business-list/business-list.component';
+import { AddBusinessComponent } from './Superadmin/add-business/add-business.component';
+import { AddBusinessTypeComponent } from './Superadmin/add-business-type/add-business-type.component';
+import { ViewBusinessTypeComponent } from './Superadmin/view-business-type/view-business-type.component';
+import { SaleComponent } from './User/sale/sale.component';
+import { ItemListComponent } from './User/item-list/item-list.component';
+import { ItemsComponent } from './User/items/items.component';
+import { SalesComponent } from './User/sales-list/sales.component';
+import { SaleReportsComponent } from './User/sale-reports/sale-reports.component';
+import { QuotationComponent } from './User/quotation/quotation.component';
+import { BusinessLoginComponent } from './Business/business-login/business-login.component';
+import { BusinessForgotpasswordComponent } from './Business/business-forgotpassword/business-forgotpassword.component';
+import { BusinessOtpComponent } from './Business/business-otp/business-otp.component';
+import { BusinessDashboardComponent } from './Business/business-dashboard/business-dashboard.component';
+import { BusinessprofileComponent } from './Business/businessprofile/businessprofile.component';
+import { CategoriesComponent } from './Business/categories/categories.component';
+import { RolesComponent } from './Business/roles/roles.component';
+import { UnitsComponent } from './Business/units/units.component';
+import { SubCategoriesComponent } from './Business/sub-categories/sub-categories.component';
+
 
 
 export const routes: Routes = [
@@ -47,20 +52,21 @@ export const routes: Routes = [
   { path: 'reset-password/:token', component: ResetPasswordComponent },
   {
     path: 'SuperAdminView',
-    component: SuperadminViewComponent,
+    component:SuperadminViewComponent,
     children: [
       { path: '', component: BusinessListComponent },
       { path: 'view-business', component: BusinessListComponent },
       { path: 'add-business', component: AddBusinessComponent },
-      { path: 'superadmin-profile', component: SuperadminProfileComponent },
+      { path: 'superadmin-profile', component:SuperadminProfileComponent},
       { path: 'add_business_type', component: AddBusinessTypeComponent },
       { path: 'view_business_type', component: ViewBusinessTypeComponent },
     ],
   },
 
-  { path: 'userlogin', component: UserLoginComponent },
+  { path: 'userlogin', component:UserLoginComponent },
   {path:'userforgotpassword',component:UserForgotPasswordComponent},
-  {path:'userresetpassword', component:UserResetPasswordComponent},
+  
+  {path:'userresetpassword',component:UserResetPasswordComponent},
 
   {
     path: 'userview',
@@ -93,7 +99,7 @@ export const routes: Routes = [
     component: BusinessForgotpasswordComponent,
   },
   { path: 'business-otp', component: BusinessOtpComponent },
-  { path: 'businessRegister', component: BusinessRegisterComponent },
+ 
   {
     path: 'business-Dashboard',
     component: BusinessDashboardComponent,
@@ -111,5 +117,5 @@ export const routes: Routes = [
 
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'cashier_login', component: CashierLoginComponent },
+  
 ];
