@@ -160,6 +160,7 @@ export class ItemsComponent implements OnInit {
         this.toastr.success('Item added successfully!');
         this.addItemsForm.reset();
         this.selectedImageFile = null;
+        window.location.reload();
       },
       error: (err) => {
         this.toastr.error(err.error?.message || 'Failed to add item', 'Error');

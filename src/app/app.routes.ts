@@ -37,6 +37,8 @@ import { ViewBusinessTypeComponent } from './view-business-type/view-business-ty
 
 
 import { QuotationComponent } from './quotation/quotation.component';
+import { UserForgotPasswordComponent } from './user-forgot-password/user-forgot-password.component';
+import { UserResetPasswordComponent } from './user-reset-password/user-reset-password.component';
 
 
 export const routes: Routes = [
@@ -58,6 +60,8 @@ export const routes: Routes = [
   },
 
   { path: 'userlogin', component: UserLoginComponent },
+  {path:'userforgotpassword',component:UserForgotPasswordComponent},
+  {path:'userresetpassword', component:UserResetPasswordComponent},
 
   {
     path: 'userview',
