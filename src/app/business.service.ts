@@ -19,11 +19,11 @@ export class BusinessService {
   }
   businessForgotpassword(email: string) {
     return this.http.post(
-      'http://78.142.47.247:3009/forgotPassword',email);
+      `${this.baseUrl}/forgotPassword`,email);
   }
   businessResetPassword(data: any) {
     return this.http.post(
-      'http:78.142.47.247:3009/business/resetPassword',
+      `${this.baseUrl}/business/resetPassword`,
       data
     );
   }

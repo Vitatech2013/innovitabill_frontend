@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { BusinessService } from '../business.service';
 import { BillingService } from '../billing.service';
+import { constants } from '../../../constants';
 declare var bootstrap: any;
 
 @Component({
@@ -26,6 +27,7 @@ export class UsersComponent implements OnInit {
   business_id: string = '';
   toastType: any;
   toastMessage: any;
+   private baseUrl = constants.baseUrl;
   
   addressFields = [
     { name: 'house_No', label: 'House No' },
@@ -248,8 +250,8 @@ onFileChange(event: any, fieldName: string) {
     if (!path || path.trim() === '') return 'assets/images/default-business.jpg';
     const cleanPath = path.replace(/\\/g, '/');
     return cleanPath.includes('business_images/')
-      ? `http://localhost:3009/${cleanPath}`
-      : `http://localhost:3009/business_images/${cleanPath}`;
+      ? `${this.baseUrl}/${cleanPath}`
+      : `${this.baseUrl}/business_images/${cleanPath}`;
   }
 
   // Open image preview modal

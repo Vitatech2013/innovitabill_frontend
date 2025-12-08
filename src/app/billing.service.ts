@@ -42,6 +42,7 @@ export class BillingService {
     );
   }
 
+
   // business
   addBusiness(data: any) {
     return this.http.post(
@@ -199,20 +200,20 @@ export class BillingService {
   //
 
   addSubcat(data: any) {
-  return this.http.post(`http://localhost:3009/subcat/addsubcat`, data);
-}
+    return this.http.post(`${this.baseUrl}/subcat/addsubcat`, data);
+  }
 
- getSubCategories() {
-  return this.http.get(`http://localhost:3009/subcat/getsubcat`);
-}
-    updateSubcat(id: string, data: any) {
-  // Use PUT and include the ID in the URL
-  return this.http.put(`http://localhost:3009/subcat/updatesubcat/${id}`, data);
-}
+  getSubCategories() {
+    return this.http.get(`${this.baseUrl}/subcat/getsubcat`);
+  }
+  updateSubcat(id: string, data: any) {
+    // Use PUT and include the ID in the URL
+    return this.http.put(`${this.baseUrl}/subcat/updatesubcat/${id}`, data);
+  }
 
-   deleteSubCat(id: string) {
-  return this.http.delete(`http://localhost:3009/subcat/deletesubcat/${id}`);
-}
+  deleteSubCat(id: string) {
+    return this.http.delete(`${this.baseUrl}/subcat/deletesubcat/${id}`);
+  }
 
   //
   getUsers(business_id: string) {
@@ -250,6 +251,22 @@ export class BillingService {
     return this.http.put(`${this.baseUrl}/sales/salesupdate/${id}`, sale);
   }
   getQuotationData(demoId: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/quotation/getQuotationData/${demoId}`);
+    return this.http.get(
+      `${this.baseUrl}/quotation/getQuotationData/${demoId}`
+    );
+  }
+
+  userForgotPassword(data: any) {
+    return this.http.post(
+      `${this.baseUrl}/user/forgotPassword`,
+      data
+    );
+  }
+
+  userResetPassword(data: any, token: any) {
+    return this.http.post(
+      `${this.baseUrl}/user/resetPassword/${token}`,
+      data
+    );
   }
 }

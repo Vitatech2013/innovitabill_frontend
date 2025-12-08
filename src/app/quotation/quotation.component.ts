@@ -12,7 +12,9 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { Modal } from 'bootstrap';
+
+import { constants } from '../../../constants';
+import Modal from 'bootstrap/js/dist/modal';
 
 @Component({
   selector: 'app-quotation',
@@ -32,6 +34,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   private pdfDoc: jsPDF | null = null;
   pdfPreviewSrc: string | null = null;
   private pdfPreviewModal: Modal | null = null;
+   private baseUrl = constants.baseUrl;
 
   constructor(
     private fb: FormBuilder,
@@ -86,36 +89,48 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     }
   }
 
-  loadBusinessDetails() {
-    this.http.get<any>('http://localhost:3009/business/businessget').subscribe({
-      next: (b) => {
-        if (!b) return;
+ loadBusinessDetails() {
+  this.http.get<any>(`${this.baseUrl}/business/businessget`).subscribe({
+    next: (b) => {
+      if (!b || !b.data || b.data.length === 0) {
+        console.warn('No business data found');
+        return;
+      }
 
-        const businessGroup = this.quotationForm.get('business') as FormGroup;
+      const business = b.data[0]; // take first business from array
 
-        let logoUrl = b.logo_image || '';
-        if (logoUrl && !logoUrl.startsWith('http')) {
-          logoUrl = `http://localhost:3009/business_images/${logoUrl}`;
-        }
-        businessGroup.get('logo_image')?.setValue(logoUrl);
+      const businessGroup = this.quotationForm.get('business') as FormGroup;
 
-        if (b.address) {
-          const addressGroup = businessGroup.get('address') as FormGroup;
-          addressGroup.patchValue({
-            house_No: b.address.house_No || '',
-            town_Name: b.address.town_Name || '',
-            mandal_Name: b.address.mandal_Name || '',
-            district_Name: b.address.district_Name || '',
-            state: b.address.state || '',
-            pincode: b.address.pincode || '',
-          });
-        }
-      },
-      error: (err) => {
-        console.error('Failed to load business details', err);
-      },
-    });
-  }
+      let logoUrl = business.logo_image || '';
+      if (logoUrl && !logoUrl.startsWith('http')) {
+        logoUrl = `${this.baseUrl}/business_images/${logoUrl}`;
+      }
+      businessGroup.get('logo_image')?.setValue(logoUrl);
+      businessGroup.get('business_name')?.setValue(business.business_name || '');
+      businessGroup.get('owner_name')?.setValue(business.owner_name || '');
+      businessGroup.get('email')?.setValue(business.email || '');
+      businessGroup.get('phone_number')?.setValue(business.phone_number || '');
+
+      if (business.address) {
+        const addressGroup = businessGroup.get('address') as FormGroup;
+        addressGroup.patchValue({
+          house_No: business.address.house_No || '',
+          town_Name: business.address.town_Name || '',
+          mandal_Name: business.address.mandal_Name || '',
+          district_Name: business.address.district_Name || '',
+          state: business.address.state || '',
+          pincode: business.address.pincode || '',
+        });
+      } else {
+        console.warn('Business address missing');
+      }
+    },
+    error: (err) => {
+      console.error('Failed to load business details', err);
+    },
+  });
+}
+
 
   get items(): FormArray {
     return this.quotationForm.get('items') as FormArray;
@@ -138,7 +153,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
 
   getDemoCustomers() {
     this.http
-      .get<any[]>('http://localhost:3009/demo/getDemoCustomers')
+      .get<any[]>(`${this.baseUrl}/demo/getDemoCustomers`)
       .subscribe({
         next: (res) => {
           this.demoCustomers = res;
@@ -149,7 +164,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
 
   itemsGets() {
     this.http
-      .get('http://localhost:3009/items/getitems')
+      .get(`${this.baseUrl}/items/getitems`)
       .subscribe((res: any) => {
         this.itemsList = res.data;
       });
@@ -157,7 +172,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
 
   quotationGet(id: string) {
     this.http
-      .get<any>(`http://localhost:3009/quotation/getQuotation/${id}`)
+      .get<any>(`${this.baseUrl}/quotation/getQuotation/${id}`)
       .subscribe((res) => {
         this.quotationForm.get('customer')?.patchValue(res.customer);
 
@@ -169,7 +184,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
 
           let logoUrl = res.business.logo_image || '';
           if (logoUrl && !logoUrl.startsWith('http')) {
-            logoUrl = `http://localhost:3009/uploads/${logoUrl}`;
+            logoUrl = `${this.baseUrl}/uploads/${logoUrl}`;
           }
           businessGroup.get('logo_image')?.setValue(logoUrl);
 
@@ -235,7 +250,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   saveQuotation() {
     const payload = this.quotationForm.value;
     this.http
-      .post('http://localhost:3009/quotation/saveQuotation', payload)
+      .post(`${this.baseUrl}/quotation/saveQuotation`, payload)
       .subscribe({
         next: (res: any) => {
           alert('Quotation saved successfully!');

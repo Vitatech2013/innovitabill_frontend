@@ -89,7 +89,7 @@
 }
 
 .table-wrapper::-webkit-scrollbar {
-  width: 6px;
+  width: 2  px;
 }
 
 .table-wrapper::-webkit-scrollbar-thumb {

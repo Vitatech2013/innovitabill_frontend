@@ -1,19 +1,33 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
+import {
+  Router,
+  RouterLink,
+  RouterModule,
+  RouterOutlet,
+} from '@angular/router';
 
 @Component({
   selector: 'app-user-view',
   standalone: true,
-  imports: [RouterOutlet, RouterLink,CommonModule,ReactiveFormsModule,FormsModule,RouterModule],
+  imports: [
+    RouterLink,
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    RouterModule,
+  ],
   templateUrl: './user-view.component.html',
   styleUrl: './user-view.component.css',
 })
 export class UserViewComponent implements OnInit {
   loggedInUser: { name: string; loginTime: string } | null = null;
   timer: any;
-items: any;
+  items: any;
+  isCollapsed = false;
+  isMobileMenu = false;
+  darkMode = false;
   constructor(private router: Router) {}
   ngOnInit(): void {
     const stored = localStorage.getItem('users');
@@ -22,6 +36,14 @@ items: any;
       this.router.navigateByUrl('/userlogin');
       return;
     }
+    const saved = localStorage.getItem('sidebarCollapsed');
+    this.isCollapsed = saved === 'true';
+
+    
+    const theme = localStorage.getItem('darkMode');
+    this.darkMode = theme === 'true';
+
+    if (this.darkMode) document.body.classList.add('dark');
 
     const parsed = JSON.parse(stored);
 
@@ -58,6 +80,24 @@ items: any;
     localStorage.removeItem('us_token');
     this.router.navigateByUrl('userlogin');
   }
+  toggleSidebar() {
+  // Mobile → open/close sidebar sliding menu
+  if (window.innerWidth < 768) {
+    this.isMobileMenu = !this.isMobileMenu;
+    return;
+  }
+
+  
+  this.isCollapsed = !this.isCollapsed;
+  localStorage.setItem('sidebarCollapsed', this.isCollapsed.toString());
 }
 
+toggleDarkMode() {
+  this.darkMode = !this.darkMode;
+  localStorage.setItem('darkMode', this.darkMode.toString());
 
+  if (this.darkMode) document.body.classList.add('dark');
+  else document.body.classList.remove('dark');
+}
+
+}
