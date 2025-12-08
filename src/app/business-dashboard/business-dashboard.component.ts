@@ -30,7 +30,7 @@ items: any;
       parsed?.user_name ||
       parsed?.data?.name ||
       parsed?.name ||
-      'User';
+      'Business';
 
     this.loggedInBusiness = {
       name: userName,
@@ -50,7 +50,7 @@ items: any;
       });
     }, 1000);
 
-    console.log('Parsed User:', parsed);
+    console.log('Parsed Business:', parsed);
   }
 
 

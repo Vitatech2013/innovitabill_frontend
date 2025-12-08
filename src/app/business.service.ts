@@ -6,6 +6,10 @@ import { constants } from '../../constants';
   providedIn: 'root',
 })
 export class BusinessService {
+ 
+
+
+
   private baseUrl = constants.baseUrl;
 
   constructor(private http: HttpClient) {}
@@ -24,21 +28,22 @@ export class BusinessService {
     );
   }
 
-  createUser(userData: any) {
-    return this.http.post(`${this.baseUrl}/user/userregistration`, userData);
-  }
-  deleteUser(id: string) {
-    return this.http.delete(`${this.baseUrl}/user/userdelete/${id}`);
-  }
-//   updateUser(selectedUser: any, payload: any) {
-//   return this.http.put(`user/updateuser/${selectedUser._id}`, payload);
+//   createUser(userData: any) {
+//     return this.http.post(`${this.baseUrl}/user/userregistration`, userData);
+//   }
+//   deleteUser(id: string) {
+//     return this.http.delete(`${this.baseUrl}/user/userdelete/${id}`);
+//   }
+// //   updateUser(selectedUser: any, payload: any) {
+// //   return this.http.put(`user/updateuser/${selectedUser._id}`, payload);
+// // }
+// updateUser(selectedUser: any, userdata: any) {
+//   return this.http.put(`http://localhost:3009/user/updateuser/${selectedUser._id}`,userdata);
 // }
-updateUser(selectedUser: any, payload: any) {
-  return this.http.put(`http://localhost:3009/user/updateuser/${selectedUser._id}`, payload);
-}
-  getUser() {
-    return this.http.get(`${this.baseUrl}/user/getuser`);
-  }
+
+//   getUser() {
+//     return this.http.get(`${this.baseUrl}/user/getuser`);
+//   }
 
   //Roles
 
@@ -54,6 +59,34 @@ updateUser(selectedUser: any, payload: any) {
 
   deleteRole(id: string) {
     return this.http.delete(`${this.baseUrl}/role/roledelete/${id}`);
+  }
+
+  // users
+  //  addUser(formData: FormData) {
+  //    return this.http.post(`${this.baseUrl}/user/userregistration`, formData);
+  // }
+  //   getUser() {
+  //   return this.http.get(`${this.baseUrl}/user/getuser`);
+  // }
+  //   updateUser(id: string, data: any) {
+  //   return this.http.put(`${this.baseUrl}/role/roleupdate/${id}`, data);
+  // }
+  //   deleteUser(id: string) {
+  //   return this.http.delete(`${this.baseUrl}/user/userdelete/${id}`);
+  // }
+
+  createUser(userData: any) {
+    return this.http.post(`${this.baseUrl}/user/userregistration`, userData);
+  }
+  deleteUser(id: string) {
+    return this.http.delete(`${this.baseUrl}/user/userdelete/${id}`);
+  }
+updateUser(id: string, payload: any) {
+  return this.http.put(`${this.baseUrl}/user/updateuser/${id}`, payload);
+}
+
+  getUser() {
+    return this.http.get(`${this.baseUrl}/user/getuser`);
   }
 }
 

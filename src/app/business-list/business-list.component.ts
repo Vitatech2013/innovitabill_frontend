@@ -161,7 +161,6 @@ if (businesslist) {
       },
       error: (err: any) => console.error('Error fetching business types:', err),
     });
-   
   }
 
   getImageUrl(path: string): string {
