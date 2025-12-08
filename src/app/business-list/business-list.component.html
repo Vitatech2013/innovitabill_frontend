@@ -76,56 +76,11 @@
               {{ b.status }}
             </span>
           </td>
-          <table
-            *ngIf="business.length > 0"
-            class="table table-hover table-bordered align-middle"
-          >
-            <thead class="table-success text-center">
-              <tr>
-                <th style="width: 70px">Sl. No</th>
-                <th>Business Name</th>
-                <th>Owner</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Business Type</th>
-                <th>Status</th>
-                <th style="width: 140px">Actions</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr
-                *ngFor="let b of business; let i = index"
-                class="align-middle text-center"
-              >
-                <td class="text-center fw-semibold">{{ i + 1 }}</td>
-                <td>{{ b.business_name }}</td>
-                <td>{{ b.owner_name }}</td>
-                <td>{{ b.email }}</td>
-                <td>{{ b.phone_number }}</td>
-                <td>{{ b.bt_id?.business_type }}</td>
-                <td>
-                  <span
-                    class="badge px-3 py-2"
-                    [ngClass]="{
-                      'bg-success': b.status === 'Active',
-                      'bg-warning': b.status === 'Pending',
-                      'bg-danger': b.status === 'Inactive'
-                    }"
-                  >
-                    {{ b.status }}
-                  </span>
-                </td>
-
-                 
 
           <td class="text-center">
-             <button
-                    class="btn btn-sm btn-outline-info me-1"
-                    (click)="openViewModal(b)"
-                  >
-                    <i class="bi bi-eye"></i>
-                  </button>
+            <button class="btn btn-sm btn-outline-info me-1" (click)="openViewModal(b)">
+              <i class="bi bi-eye"></i>
+            </button>
 
             <button class="btn btn-sm btn-outline-primary me-1" (click)="editBusiness(b)">
               <i class="bi bi-pencil-square"></i>
@@ -144,6 +99,7 @@
         </div>
       </div>
     </div>
+
 
     <!-- VIEW MODAL -->
 
