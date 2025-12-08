@@ -63,7 +63,7 @@ export class UserResetPasswordComponent implements OnInit {
         this.loading = false;
         this.showToast('success', 'Password reset successfully!');
         setTimeout(() => {
-          this.router.navigate(['/SuperAdminLogin']);
+          this.router.navigate(['/userlogin']);
         }, 1000);
       },
       error: () => {
