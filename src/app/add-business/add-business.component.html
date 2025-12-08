@@ -108,7 +108,7 @@
             >Phone Number<span class="text-danger">*</span></label
           >
           <input
-            type="number"
+            type="text"
             class="form-control"
             formControlName="phone_number"
             placeholder="Enter phone number"
@@ -130,9 +130,15 @@
   />
 
   <!-- Error message -->
-  <small *ngIf="isInvalid('password')" class="text-danger">
-    Password is required and can contain only letters, numbers, and !#$%^&*()
+ <div *ngIf="addBusinessForm.get('password')?.touched && addBusinessForm.get('password')?.invalid">
+  <small class="text-danger" *ngIf="addBusinessForm.get('password')?.errors?.['required']">
+    Password is required.
   </small>
+
+  <small class="text-danger" *ngIf="addBusinessForm.get('password')?.errors?.['pattern']">
+    Password can contain only letters, numbers, and !#$%^&*().
+  </small>
+</div>
 </div>
 
 
