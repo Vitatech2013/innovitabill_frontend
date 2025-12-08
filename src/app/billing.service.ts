@@ -144,21 +144,7 @@ export class BillingService {
     return this.http.get<any[]>(`${this.baseUrl}/cashier/cashierget`);
   }
 
-  //Roles
-
-  getRoles() {
-    return this.http.get(`${this.baseUrl}/role/getrole`);
-  }
-  addRole(newRole: any) {
-    return this.http.post(`${this.baseUrl}/role/addrole`, newRole);
-  }
-  updateRole(id: string, data: any) {
-    return this.http.put(`${this.baseUrl}/role/roleupdate/${id}`, data);
-  }
-
-  deleteRole(id: string) {
-    return this.http.delete(`${this.baseUrl}/role/roledelete/${id}`);
-  }
+  
   //categories
   getcategories() {
     return this.http.get(`${this.baseUrl}/categories/categoriesget`);

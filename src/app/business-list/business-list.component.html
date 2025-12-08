@@ -1,17 +1,13 @@
 <div class="container-fluid">
   <div class="dashboard">
-       <div class="position-fixed top-0 end-0 p-4" style="z-index: 1080;">
-  <div
-    *ngIf="toastMessage"
-    class="custom-toast"
-    [ngClass]="toastType"
-  >
-    <div class="d-flex justify-content-between align-items-center">
-      <span>{{ toastMessage }}</span>
-      <button class="btn-close ms-3" (click)="toastMessage = null"></button>
+    <div class="position-fixed top-0 end-0 p-4" style="z-index: 1080">
+      <div *ngIf="toastMessage" class="custom-toast" [ngClass]="toastType">
+        <div class="d-flex justify-content-between align-items-center">
+          <span>{{ toastMessage }}</span>
+          <button class="btn-close ms-3" (click)="toastMessage = null"></button>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
     <div class="row mb-3">
       <div class="col-12 position-relative">
         <h4 class="mb-0 fw-bold text-success">Available Business List</h4>
@@ -28,15 +24,16 @@
 
     <div class="row">
       <div *ngIf="business.length === 0" class="text-center mt-4">
-      <div class="alert alert-info shadow-sm py-3">
-        <i class="bi bi-info-circle"></i> No users found.
+        <div class="alert alert-info shadow-sm py-3">
+          <i class="bi bi-info-circle"></i> No users found.
+        </div>
       </div>
-    </div>
       <div class="col-12">
         <div class="table-responsive bg-white p-3 rounded-4">
           <table
-           *ngIf="business.length > 0"
-           class="table table-hover table-bordered align-middle">
+            *ngIf="business.length > 0"
+            class="table table-hover table-bordered align-middle"
+          >
             <thead class="table-success text-center">
               <tr>
                 <th style="width: 70px">Sl. No</th>
@@ -53,14 +50,14 @@
             <tbody>
               <tr
                 *ngFor="let b of business; let i = index"
-                class="align-middle text-center" 
+                class="align-middle text-center"
               >
                 <td class="text-center fw-semibold">{{ i + 1 }}</td>
                 <td>{{ b.business_name }}</td>
                 <td>{{ b.owner_name }}</td>
                 <td>{{ b.email }}</td>
                 <td>{{ b.phone_number }}</td>
-                <td>{{ b.bt_id?.business_type }}</td> 
+                <td>{{ b.bt_id?.business_type }}</td>
                 <td>
                   <span
                     class="badge px-3 py-2"
@@ -112,7 +109,7 @@
       aria-labelledby="viewModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-xl modal-dialog-centered  w-200vh">
+      <div class="modal-dialog modal-xl modal-dialog-centered w-200vh">
         <div class="modal-content border-0 shadow-sm rounded-3">
           <div class="modal-header bg-success text-white py-2 px-3">
             <h5 class="modal-title fw-semibold" id="viewModalLabel">
@@ -166,7 +163,7 @@
                     <td>{{ selectedBusiness.registration_number }}</td>
                     <td>
                       <span
-                        class="badge "
+                        class="badge"
                         [ngClass]="{
                           'bg-success': selectedBusiness.status === 'Active',
                           'bg-warning': selectedBusiness.status === 'Pending',
@@ -265,14 +262,17 @@
                   />
                 </div>
 
-                       <div class="col-md-4">
+                <div class="col-md-4">
                   <label class="form-label fw-semibold">Business Type</label>
-                 <select class="form-select" formControlName="bt_id">
-  <option value="">Select Business Type</option>
-  <option *ngFor="let type of businessTypes" [value]="type._id">
-    {{ type.business_type }}
-  </option>
-</select>
+                  <select class="form-select" formControlName="bt_id">
+                    <option value="">Select Business Type</option>
+                    <option
+                      *ngFor="let type of businessTypes"
+                      [value]="type._id"
+                    >
+                      {{ type.business_type }}
+                    </option>
+                  </select>
 
                   <div
                     *ngIf="
@@ -315,13 +315,10 @@
                     formControlName="phone_number"
                   />
                 </div>
-              <!-- </div> -->
+                <!-- </div> -->
 
-              <!-- <h6 class="fw-bold text-success mb-3 mt-4">Business Details</h6>
+                <!-- <h6 class="fw-bold text-success mb-3 mt-4">Business Details</h6>
               <div class="row g-3 mb-3"> -->
-         
-
-              
 
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">Business Address</label>
@@ -354,7 +351,7 @@
                     GST Number is required
                   </small>
                 </div>
-                  <div class="col-md-4">
+                <div class="col-md-4">
                   <label class="form-label fw-semibold">Status</label>
                   <select class="form-select" formControlName="status">
                     <option value="">Select Status</option>

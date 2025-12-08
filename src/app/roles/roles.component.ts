@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { BillingService } from '../billing.service';
+import { BusinessService } from '../business.service';
 declare var bootstrap: any;
 @Component({
   selector: 'app-roles',
@@ -28,7 +28,7 @@ toastMessage: any;
 toastType: any;
   selectedRole: any;
 
-  constructor(private api: BillingService, private fb: FormBuilder) {}
+  constructor(private api: BusinessService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user') || '{}');

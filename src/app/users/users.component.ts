@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -39,14 +39,14 @@ export class UsersComponent implements OnInit {
   ];
 
   selectedFiles: { [key: string]: File } = {};
-  logoFile: File | null = null;
+  imageFile: File | null = null;
   idProofFile: File | null = null;
   previewUrl: string = 'assets/default-business.jpg';
   selectedImage: string | undefined;
 
   constructor(
     private service: BusinessService,
-    private api: BillingService,
+   
     private fb: FormBuilder
   ) {}
 
@@ -83,11 +83,12 @@ export class UsersComponent implements OnInit {
 
   // Fetch roles
   getRoles() {
-    this.api.getRoles().subscribe({
+    this.service.getRoles().subscribe({
       next: (res: any) => {
         this.roles = res.data || [];
       },
-      error: (err) => console.error('Error loading roles:', err),
+     error: (err: any) => console.error('Error loading roles:', err),
+
     });
   }
 
@@ -109,14 +110,16 @@ export class UsersComponent implements OnInit {
   openAddModal() {
     this.title = 'Add User';
     this.resetForm();
-    (document.getElementById('userModal') as any)?.classList.add('show');
+    const modal = new bootstrap.Modal(document.getElementById('userModal'));
+modal.show();
+
   }
 
   // Reset form
   resetForm() {
     this.usersForm.reset();
     this.selectedUser = null;
-    this.logoFile = null;
+    this.imageFile = null;
     this.idProofFile = null;
   }
 
@@ -157,7 +160,9 @@ export class UsersComponent implements OnInit {
     this.selectedUser.id_proofUrl = this.getImageUrl(user.id_proof);
 
     this.selectedImage = user.image ? user.image.split('/').pop() : 'No File Chosen';
-    (document.getElementById('userModal') as any)?.classList.add('show');
+    const modal = new bootstrap.Modal(document.getElementById('userModal'));
+modal.show();
+
   }
 
   // Create or Update user
@@ -177,18 +182,21 @@ export class UsersComponent implements OnInit {
     formData.append('password', values.password);
     formData.append('role_id', values.role_id);
     formData.append('business_id', this.business_id);
+    formData.append('_id', this.selectedUser?._id || '');
+
 
     const address = values.address;
     for (const key in address) {
       formData.append(`address[${key}]`, address[key]);
     }
 
-    if (this.logoFile) formData.append('image', this.logoFile);
+    if (this.imageFile) formData.append('image', this.imageFile);
     if (this.idProofFile) formData.append('id_proof', this.idProofFile);
 
-    if (this.selectedUser) {
+    if (this.selectedUser && this.selectedUser._id) {
       // Update
-      this.service.updateUser(this.selectedUser, formData).subscribe({
+        console.log("Updating User ID:", this.selectedUser._id);
+      this.service.updateUser(this.selectedUser._id, formData).subscribe({
         next: () => {
           this.showToast('User updated successfully', 'success');
           this.getUsers();
@@ -227,7 +235,7 @@ onFileChange(event: any, fieldName: string) {
   if (file) {
     this.selectedFiles[fieldName] = file;
     if (fieldName === 'image') {
-      this.logoFile = file;
+      this.imageFile = file;
       this.previewUrl = URL.createObjectURL(file); // show selected file
     }
     if (fieldName === 'id_proof') {

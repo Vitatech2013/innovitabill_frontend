@@ -40,7 +40,6 @@ export class BusinessListComponent implements OnInit {
    private baseUrl = constants.baseUrl;
    toastMessage: string | null = null;
   toastType: string | undefined;
-  
 
   constructor(private fb: FormBuilder, private api: BillingService, private toastr: ToastrService) {}
 
@@ -162,7 +161,6 @@ if (businesslist) {
       },
       error: (err: any) => console.error('Error fetching business types:', err),
     });
-   
   }
 
   getImageUrl(path: string): string {
