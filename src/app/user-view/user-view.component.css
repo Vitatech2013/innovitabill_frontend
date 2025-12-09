@@ -15,5 +15,7 @@
   border-left: 4px solid #3b8651;
   border-right: 4px solid #3b8651;
 }
-
+.dropdown-toggle::after {
+  display: none;
+}
 
