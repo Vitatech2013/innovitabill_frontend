@@ -32,22 +32,22 @@
   (click)="openAddModal()"
 >
   <i class="bi bi-plus-circle"></i>
-  Add new
+  Add New
 </button>
 
 <div class="dashboard">
   <h2 class="title mb-2 p-1 text-center">List of Sub Categories</h2>
   <div class="row">
-    <!-- <div *ngIf="subcategories.length === 0" class="text-center mt-4">
+    <div *ngIf="subcategories.length === 0" class="text-center mt-4">
       <div class="alert alert-info shadow-sm py-3">
         <i class="bi bi-info-circle"></i> No data found.
       </div>
-    </div> -->
+    </div>
 
     <table
-
-      class="table table-bordered table-hover shadow-sm"
-    >
+        *ngIf="subcategories.length > 0"
+        class="table table-bordered table-hover shadow-sm small-table"
+      >
       <thead class="table-success">
         <tr>
           <th style="background: #d4f8d4; color: #0a5c0a">SL.No</th>
@@ -164,7 +164,7 @@
         </div>
 
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="submit" class="btn btn-success">Save</button>
           <button
             type="button"
             class="btn btn-secondary"

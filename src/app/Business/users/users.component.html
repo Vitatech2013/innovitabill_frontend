@@ -32,7 +32,7 @@
     (click)="openAddModal()"
   >
     <i class="bi bi-plus-circle"></i>
-    Add User
+    Add New
   </button>
 
   <div class="dashboard">
@@ -278,7 +278,7 @@
     aria-labelledby="userModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <form [formGroup]="usersForm" (ngSubmit)="createOrUpdateUser()">
           <div class="modal-header">
@@ -433,12 +433,7 @@
                   <option value="inactive">Inactive</option>
                 </select>
               </div>
-            </div>
-
-            <!-- <h6 class="text-primary fw-semibold border-bottom pb-2">
-                Upload Documents
-              </h6> -->
-            <div class="col-md-6 mb-2">
+              <div class="col-md-6 mb-2">
               <label class="form-label fw-semibold"
                 >Image
                 <!-- <span class="text-danger">*</span> -->
@@ -453,6 +448,12 @@
               </label>
               <input type="file" class="form-control" (change)="onFileChange($event, 'id_proof')" accept="image/*" />
             </div>
+            </div>
+
+            <!-- <h6 class="text-primary fw-semibold border-bottom pb-2">
+                Upload Documents
+              </h6> -->
+            
 
             <!-- <div class="col-md-6 mb-2">
               <label class="form-label">Image</label>
@@ -505,6 +506,7 @@
                     type="text"
                     class="form-control"
                     [formControlName]="field.name"
+                    [placeholder]="field.placeholder"
                     (keypress)="allowOnlyLetters($event)"
                   />
                 </div>
@@ -513,7 +515,7 @@
           </div>
 
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-success">Save</button>
             <button
               type="button"
               class="btn btn-secondary"

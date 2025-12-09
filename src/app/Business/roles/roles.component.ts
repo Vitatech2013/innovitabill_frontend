@@ -32,10 +32,10 @@ toastType: any;
   constructor(private api: BusinessService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    console.log('Stored user:', user);
-    this.business_id = user._id;
-    console.log(this.business_id, 'business_id');
+    const b = JSON.parse(localStorage.getItem('user') || '{}');
+    console.log('Stored Business:', b);
+    this.business_id = b._id;
+    console.log('business_id:',this.business_id );
 
     this.roleForm = this.fb.group({
       role_name: ['', Validators.required],

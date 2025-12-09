@@ -17,27 +17,27 @@ import {
 export class BusinessDashboardComponent implements OnInit {
   loggedInBusiness: { name: string; loginTime: string } | null = null;
   timer: any;
-  items: any;
+  
   constructor(private router: Router) {}
   ngOnInit(): void {
-    const stored = localStorage.getItem('users');
+    const stored = localStorage.getItem('user');
 
     if (!stored) {
-      this.router.navigateByUrl('/userlogin');
+      this.router.navigateByUrl('/businesslogin');
       return;
     }
 
     const parsed = JSON.parse(stored);
 
-    const userName =
-      parsed?.data?.user_name ||
-      parsed?.user_name ||
+    const businessName =
+      parsed?.data?.business_name ||
+      parsed?.business_name ||
       parsed?.data?.name ||
       parsed?.name ||
       'Business';
 
     this.loggedInBusiness = {
-      name: userName,
+      name: businessName,
       loginTime: new Date().toLocaleString(),
     };
 
