@@ -112,6 +112,7 @@
               formControlName="role_name"
               class="form-control"
               placeholder="Enter role name"
+              (keypress)="allowOnlyLetters($event)"
             />
             <div
               *ngIf="
@@ -135,6 +136,7 @@
               formControlName="role_number"
               class="form-control"
               placeholder="Enter role number"
+              (keypress)="allowOnlyNumbers($event)"
             />
             <div
               *ngIf="

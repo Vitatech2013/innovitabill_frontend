@@ -51,9 +51,8 @@ export const routes: Routes = [
   },
 
   { path: 'userlogin', component: UserLoginComponent },
-  { path: 'userforgotpassword', component: UserForgotPasswordComponent },
-
-  { path: 'userresetpassword', component: UserResetPasswordComponent },
+  {path:'userforgotpassword',component:UserForgotPasswordComponent},
+  {path:'userresetpassword/:token', component:UserResetPasswordComponent},
 
   {
     path: 'userview',

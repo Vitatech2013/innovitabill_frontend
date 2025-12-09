@@ -19,7 +19,7 @@ import { BillingService } from '../../Services/billing.service';
   styleUrl: './user-forgot-password.component.css',
 })
 export class UserForgotPasswordComponent implements OnInit {
-  forgotForm!: FormGroup;
+  forgotUserForm!: FormGroup;
   loading = false;
   message: string = '';
   constructor(
@@ -28,19 +28,19 @@ export class UserForgotPasswordComponent implements OnInit {
     private service: BillingService
   ) {}
   ngOnInit(): void {
-    this.forgotForm = this.fb.group({
+    this.forgotUserForm = this.fb.group({
       user_email: ['', [Validators.required, Validators.email]],
     });
   }
 
   forgot() {
-    console.log(this.forgotForm.value);
+    console.log(this.forgotUserForm.value);
 
-    if (this.forgotForm.invalid) return;
+    if (this.forgotUserForm.invalid) return;
 
     this.loading = true;
 
-    const email = this.forgotForm.value.user_email;
+    const email = this.forgotUserForm.value.user_email;
 
     this.service.userForgotPassword({ user_email: email }).subscribe({
       next: (res: any) => {

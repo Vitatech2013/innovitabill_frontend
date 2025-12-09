@@ -171,4 +171,16 @@ toastType: any;
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 3000);
   }
+  allowOnlyLetters(event: KeyboardEvent) {
+  const pattern = /^[A-Za-z]$/;
+  if (!pattern.test(event.key)) {
+    event.preventDefault(); // blocks numbers, spaces, special characters
+  }
+}
+allowOnlyNumbers(event: KeyboardEvent) {
+  const pattern = /^[0-9]$/;
+  if (!pattern.test(event.key)) {
+    event.preventDefault(); // blocks letters and special characters
+  }
+}
 }

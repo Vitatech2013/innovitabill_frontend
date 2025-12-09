@@ -1,19 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
+import {
+  Router,
+  RouterLink,
+  RouterModule,
+  RouterOutlet,
+} from '@angular/router';
 
 @Component({
   selector: 'app-business-dashboard',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, RouterLink,RouterModule],
+  imports: [RouterOutlet, CommonModule, RouterLink, RouterModule],
   templateUrl: './business-dashboard.component.html',
   styleUrl: './business-dashboard.component.css',
 })
 export class BusinessDashboardComponent implements OnInit {
-
   loggedInBusiness: { name: string; loginTime: string } | null = null;
   timer: any;
-items: any;
+  items: any;
   constructor(private router: Router) {}
   ngOnInit(): void {
     const stored = localStorage.getItem('users');
@@ -50,13 +54,12 @@ items: any;
       });
     }, 1000);
 
-    console.log('Parsed Business:', parsed);
+    // console.log('Parsed Business:', parsed);
   }
 
-
-   logout() {
-    localStorage.removeItem('business');
-    localStorage.removeItem('businessToken')
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('businessToken');
     this.router.navigate(['/businesslogin']);
   }
 }
