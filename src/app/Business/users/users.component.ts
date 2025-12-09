@@ -350,8 +350,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BusinessService } from '../business.service';
-import { constants } from '../../../constants';
+import { constants } from '../../../../constants';
+import { BusinessService } from '../../Services/business.service';
+
 declare var bootstrap: any;
 
 @Component({

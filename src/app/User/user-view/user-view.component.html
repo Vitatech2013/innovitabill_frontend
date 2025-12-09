@@ -14,9 +14,9 @@
       <div class="ms-auto d-flex align-items-center">
         <div class="me-3 text-white text-end">
           <div class="fw-bold">{{ loggedInUser?.name }}</div>
-          <small>{{ loggedInUser?.loginTime }}</small>
+          
+          <small><b>Role</b> : {{ loggedInUser?.role }}</small>
         </div>
-        
 
         <div class="dropdown">
           <a
@@ -63,7 +63,7 @@
           routerLinkActive="active-btn"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-          <b><i class="bi bi-list-check me-2"></i></b> Items
+          <b><i class="bi bi-list-check me-2"></i></b>Items
         </button>
         <button
           class="btn side-btn text-dark"

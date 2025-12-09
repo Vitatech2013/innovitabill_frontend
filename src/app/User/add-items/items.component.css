@@ -1,0 +1,16 @@
+.scrollable-card {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.scrollable-card::-webkit-scrollbar {
+  width: 6px;
+}
+/* .item-button button {
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.item-button button:last-child {
+  margin-bottom: 0;
+} */

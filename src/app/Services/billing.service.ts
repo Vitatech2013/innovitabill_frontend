@@ -172,7 +172,7 @@ export class BillingService {
     return this.http.post(`${this.baseUrl}/units/unitsadd`, unit);
   }
   getUnits(business_id: string) {
-    return this.http.get(`${this.baseUrl}/units/unitsget`);
+    return this.http.get(`${this.baseUrl}/units/get`);
   }
   updateUnit(id: string, data: any) {
     return this.http.put(`${this.baseUrl}/units/unitsupdate/${id}`, data);
@@ -184,19 +184,19 @@ export class BillingService {
   //users
 
   LoginUser(data: any) {
-    return this.http.post(`${this.baseUrl}/user/userlogin`, data);
+    return this.http.post(`${this.baseUrl}/user/login`, data);
   }
 
   getItems(Business_id: any): Observable<any> {
-    return this.http.get(`${this.baseUrl}/items/getitems`);
+    return this.http.get(`${this.baseUrl}/items/get`);
   }
 
   addItems(data: any) {
-    return this.http.post(`${this.baseUrl}/items/additems`, data);
+    return this.http.post(`${this.baseUrl}/items/add`, data);
   }
 
   getCategories(business_id: string) {
-    return this.http.get(`${this.baseUrl}/categories/categoriesget`);
+    return this.http.get(`${this.baseUrl}/category/get`);
   }
   //
 
@@ -205,7 +205,7 @@ export class BillingService {
   }
 
   getSubCategories() {
-    return this.http.get(`${this.baseUrl}/subcat/getsubcat`);
+    return this.http.get(`${this.baseUrl}/subCategory/get`);
   }
   updateSubcat(id: string, data: any) {
     // Use PUT and include the ID in the URL
@@ -218,29 +218,29 @@ export class BillingService {
 
   //
   getUsers(business_id: string) {
-    return this.http.get(`${this.baseUrl}/user/getuser`);
+    return this.http.get(`${this.baseUrl}/user/get`);
   }
 
   saleslist(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/sales/getSales`);
+    return this.http.get(`${this.baseUrl}/sales/get`);
   }
 
   savesale(data: any) {
-    return this.http.post(`${this.baseUrl}/sales/createsale`, data);
+    return this.http.post(`${this.baseUrl}/sales/add`, data);
   }
 
   updateitems(id: string, data: FormData) {
-    return this.http.put(`${this.baseUrl}/items/updateitems/${id}`, data);
+    return this.http.put(`${this.baseUrl}/items/update/${id}`, data);
   }
   deleteItem(id: String) {
-    return this.http.delete(`${this.baseUrl}/items/deleteitems/${id}`);
+    return this.http.delete(`${this.baseUrl}/items/delete/${id}`);
   }
 
   updateprofile(formData: FormData, id: string) {
-    return this.http.put(`${this.baseUrl}/user/updateuser/${id}`, formData);
+    return this.http.put(`${this.baseUrl}/user/update/${id}`, formData);
   }
   getuserprofile(id: string) {
-    return this.http.get(`${this.baseUrl}/user/userprofile/${id}`);
+    return this.http.get(`${this.baseUrl}/user/profile/${id}`);
   }
   getStatusTypes() {
     return this.http.get(`${this.baseUrl}/status/getstatus`);
@@ -249,11 +249,11 @@ export class BillingService {
     return this.http.get(`${this.baseUrl}/sales/getSalesReport`);
   }
   updatesale(id: string, sale: any) {
-    return this.http.put(`${this.baseUrl}/sales/salesupdate/${id}`, sale);
+    return this.http.put(`${this.baseUrl}/sales/update/${id}`, sale);
   }
   getQuotationData(demoId: string): Observable<any> {
     return this.http.get(
-      `${this.baseUrl}/quotation/getQuotationData/${demoId}`
+      `${this.baseUrl}/quotation/get/${demoId}`
     );
   }
 

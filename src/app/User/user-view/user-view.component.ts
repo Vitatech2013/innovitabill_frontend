@@ -22,7 +22,7 @@ import {
   styleUrl: './user-view.component.css',
 })
 export class UserViewComponent implements OnInit {
-  loggedInUser: { name: string; loginTime: string } | null = null;
+  loggedInUser: { name: string; role:string } | null = null;
   timer: any;
   items: any;
   isCollapsed = false;
@@ -39,7 +39,6 @@ export class UserViewComponent implements OnInit {
     const saved = localStorage.getItem('sidebarCollapsed');
     this.isCollapsed = saved === 'true';
 
-    
     const theme = localStorage.getItem('darkMode');
     this.darkMode = theme === 'true';
 
@@ -53,25 +52,20 @@ export class UserViewComponent implements OnInit {
       parsed?.data?.name ||
       parsed?.name ||
       'User';
+    const userRole =
+      parsed?.data?.role_id?.role_name ||
+      parsed?.role_id?.role_name ||
+      parsed?.data?.role ||
+      parsed?.role ||
+      'Role';
 
     this.loggedInUser = {
       name: userName,
-      loginTime: new Date().toLocaleString(),
+     
+      role: userRole,
     };
 
-    this.timer = setInterval(() => {
-      const now = new Date();
-      this.loggedInUser!.loginTime = now.toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        hour12: true,
-      });
-    }, 1000);
-
+   
     console.log('Parsed User:', parsed);
   }
 
@@ -81,23 +75,21 @@ export class UserViewComponent implements OnInit {
     this.router.navigateByUrl('userlogin');
   }
   toggleSidebar() {
-  // Mobile → open/close sidebar sliding menu
-  if (window.innerWidth < 768) {
-    this.isMobileMenu = !this.isMobileMenu;
-    return;
+    // Mobile → open/close sidebar sliding menu
+    if (window.innerWidth < 768) {
+      this.isMobileMenu = !this.isMobileMenu;
+      return;
+    }
+
+    this.isCollapsed = !this.isCollapsed;
+    localStorage.setItem('sidebarCollapsed', this.isCollapsed.toString());
   }
 
-  
-  this.isCollapsed = !this.isCollapsed;
-  localStorage.setItem('sidebarCollapsed', this.isCollapsed.toString());
-}
+  toggleDarkMode() {
+    this.darkMode = !this.darkMode;
+    localStorage.setItem('darkMode', this.darkMode.toString());
 
-toggleDarkMode() {
-  this.darkMode = !this.darkMode;
-  localStorage.setItem('darkMode', this.darkMode.toString());
-
-  if (this.darkMode) document.body.classList.add('dark');
-  else document.body.classList.remove('dark');
-}
-
+    if (this.darkMode) document.body.classList.add('dark');
+    else document.body.classList.remove('dark');
+  }
 }

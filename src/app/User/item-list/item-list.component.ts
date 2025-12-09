@@ -45,7 +45,7 @@ export class ItemListComponent implements OnInit {
   toastType: string | undefined;
   imagefile: any;
   imagePreviewUrl: string = '';
-   private baseUrl = constants.baseUrl;
+  private baseUrl = constants.baseUrl;
 
   constructor(
     private fb: FormBuilder,
@@ -247,7 +247,7 @@ export class ItemListComponent implements OnInit {
   }
   openViewModal(it: any) {
     this.selectedItems = it;
-    this.selectedItems.imageUrl = this.getImageUrl(it.image); // <-- FIX
+    this.selectedItems.imageUrl = this.getImageUrl(it.image); 
     const modal = new bootstrap.Modal(document.getElementById('ViewModal'));
     modal.show();
   }
