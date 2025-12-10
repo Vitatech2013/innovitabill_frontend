@@ -1,4 +1,4 @@
-<div class="card shadow-sm p-3 mb-3 border-0 small-card">
+<div class="card shadow-sm p-3 mb-3 border-1 small-card">
   <div class="position-fixed top-0 end-0 p-4" style="z-index: 1080">
     <div *ngIf="toastMessage" class="custom-toast" [ngClass]="toastType">
       <div class="d-flex justify-content-between align-items-center">
@@ -20,7 +20,7 @@
   >
     <div class="row g-3">
       <div class="col-md-3">
-        <label class="form-label fw-semibold"
+        <label class="form-label fw-semibold " style="font-size: medium;"
           >Business Name<span class="text-danger">*</span></label
         >
         <input
@@ -29,6 +29,7 @@
           formControlName="business_name"
           placeholder="Enter business name"
           (keydown)="preventSpace($event)"
+          style="height: 45px;"
         />
         <small *ngIf="isInvalid('business_name')" class="text-danger">
           Business Name is required and must be at least 3 letters
@@ -36,7 +37,7 @@
       </div>
 
       <div class="col-md-3">
-        <label class="form-label fw-semibold"
+        <label class="form-label fw-semibold"  style="font-size: medium;"
           >Business Type<span class="text-danger">*</span></label
         >
         <select class="form-select" formControlName="bt_id">
@@ -48,7 +49,7 @@
       </div>
 
       <div class="col-md-3">
-        <label class="form-label fw-semibold">
+        <label class="form-label fw-semibold"  style="font-size: medium;">
           Owner Name <span class="text-danger">*</span>
         </label>
 
@@ -58,6 +59,7 @@
           formControlName="owner_name"
           placeholder="Enter owner name"
           (input)="onNameInput($event)"
+           style="height: 45px;"
         />
 
         <small
@@ -83,7 +85,7 @@
       </div>
 
       <div class="col-md-3">
-        <label class="form-label fw-semibold"
+        <label class="form-label fw-semibold"  style="font-size: medium;"
           >Email<span class="text-danger">*</span></label
         >
         <input
@@ -92,6 +94,7 @@
           formControlName="email"
           placeholder="Enter email"
           (keydown)="preventSpace($event)"
+           style="height: 45px;"
         />
         <small *ngIf="isInvalid('email')" class="text-danger">
           Enter a valid email
@@ -99,22 +102,23 @@
       </div>
 
       <div class="col-md-3">
-        <label class="form-label fw-semibold"
+        <label class="form-label fw-semibold"  style="font-size: medium;"
           >Phone Number<span class="text-danger">*</span></label
         >
         <input
-          type="number"
+          type="text"
           class="form-control"
           formControlName="phone_number"
           placeholder="Enter phone number"
           (keydown)="preventSpace($event)"
+           style="height: 45px;"
         />
         <small *ngIf="isInvalid('phone_number')" class="text-danger">
           Phone number is required
         </small>
       </div>
       <div class="col-md-3">
-        <label class="form-label fw-semibold"
+        <label class="form-label fw-semibold"  style="font-size: medium;"
           >Password <span class="text-danger">*</span></label
         >
         <input
@@ -123,6 +127,7 @@
           formControlName="password"
           placeholder="Enter password"
           (keydown)="preventSpace($event)"
+           style="height: 45px;"
         />
 
         <div
@@ -147,8 +152,8 @@
         </div>
       </div>
 
-      <div class="col-md-3">
-        <label class="form-label fw-semibold"
+      <div class="col-md-3"> 
+        <label class="form-label fw-semibold"  style="font-size: medium;"
           >Registration Number<span class="text-danger">*</span></label
         >
         <input
@@ -157,6 +162,7 @@
           formControlName="registration_number"
           placeholder="Enter registration number"
           (keydown)="preventSpace($event)"
+           style="height: 45px;"
         />
         <small *ngIf="isInvalid('registration_number')" class="text-danger">
           Registration Number is required
@@ -164,7 +170,7 @@
       </div>
 
       <div class="col-md-3">
-        <label class="form-label fw-semibold"
+        <label class="form-label fw-semibold"  style="font-size: medium;"
           >GST Number<span class="text-danger">*</span></label
         >
         <input
@@ -173,6 +179,7 @@
           formControlName="gst_number"
           placeholder="Enter GST number"
           (keydown)="preventSpace($event)"
+           style="height: 45px;"
         />
         <small *ngIf="isInvalid('gst_number')" class="text-danger">
           GST Number is required
@@ -180,13 +187,13 @@
       </div>
 
       <div class="col-12 mt-3">
-        <h6 class="text-primary fw-semibold border-bottom pb-2">Address</h6>
+        <h6 class="text-success fw-semibold border-bottom pb-2">Address</h6>
       </div>
 
       <div formGroupName="address" class="row">
         <div class="col-md-3 mb-4" *ngFor="let field of addressFields">
-          <label class="form-label"
-            >{{ field.label }}<span class="text-danger">*</span></label
+          <label class="form-label fw-semibold" style="font-size: medium;">
+            {{ field.label }}<span class="text-danger">*</span></label
           >
           <input
             type="text"
@@ -194,6 +201,7 @@
             [formControlName]="field.name"
             placeholder="Enter {{ field.label }}"
             (keydown)="preventSpace($event)"
+             style="height: 45px;"
           />
           <div
             class="text-danger small mt-1"
@@ -208,13 +216,13 @@
       </div>
 
       <div class="col-12 mt-3">
-        <h6 class="text-primary fw-semibold border-bottom pb-2">
+        <h6 class="text-success fw-semibold  border-bottom pb-2"  style="font-size: medium;">
           <i class="bi bi-upload me-2"></i> Upload Documents
         </h6>
       </div>
 
       <div class="col-md-3">
-        <label class="form-label fw-semibold"
+        <label class="form-label fw-semibold"  style="font-size: medium;"
           >Logo<span class="text-danger">*</span></label
         >
         <input
@@ -223,6 +231,7 @@
           (change)="onFileChange($event, 'logo_image')"
           accept="image/*"
           (keydown)="preventSpace($event)"
+           style="height: 45px;"
         />
         <!-- <div
             *ngIf="
@@ -243,7 +252,7 @@
       </div>
 
       <div class="col-md-3">
-        <label class="form-label fw-semibold"
+        <label class="form-label fw-semibold"  style="font-size: medium;"
           >PAN<span class="text-danger">*</span></label
         >
         <input
@@ -252,11 +261,12 @@
           (change)="onFileChange($event, 'pan_pdf')"
           accept="application/pdf"
           (keydown)="preventSpace($event)"
+           style="height: 45px;"
         />
       </div>
 
       <div class="col-md-3">
-        <label class="form-label fw-semibold"
+        <label class="form-label fw-semibold"  style="font-size: medium;"
           >Aadhar<span class="text-danger">*</span></label
         >
         <input
@@ -265,11 +275,12 @@
           (change)="onFileChange($event, 'aadhar_pdf')"
           accept="application/pdf"
           (keydown)="preventSpace($event)"
+           style="height: 45px;"
         />
       </div>
 
       <div class="col-md-3">
-        <label class="form-label fw-semibold"
+        <label class="form-label fw-semibold"  style="font-size: medium;"
           >Incorporation Certificate<span class="text-danger">*</span></label
         >
         <input
@@ -278,6 +289,7 @@
           (change)="onFileChange($event, 'certificate_pdf')"
           accept="application/pdf"
           (keydown)="preventSpace($event)"
+           style="height: 45px;"
         />
       </div>
     </div>

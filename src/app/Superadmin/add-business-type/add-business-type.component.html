@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid ">
   <div
     class=" border-0 "
     style="max-width: 700px"
@@ -29,7 +29,7 @@
     >
       <div class="row g-3">
         <div class="col-md-12">
-          <label class="form-label fw-semibold">
+          <label class="form-label fw-semibold" style="font-size: medium;">
             Name <span class="text-danger">*</span>
           </label>
           <input
@@ -38,6 +38,7 @@
             formControlName="business_type"
             placeholder="Enter business type"
             (keydown)="preventSpace($event)"
+            style="height: 45px;"
           />
           <small *ngIf="isInvalid('business_type')" class="text-danger">
             Business Type is required and must be at least 3 letters
@@ -45,7 +46,7 @@
         </div>
 
         <div class="col-md-12">
-          <label class="form-label fw-semibold">
+          <label class="form-label fw-semibold" style="font-size: medium;">
             Business Code <span class="text-danger">*</span>
           </label>
           <input
@@ -54,6 +55,7 @@
             formControlName="business_code"
             placeholder="Enter business code"
             (keydown)="preventSpace($event)"
+            style="height: 45px;"
           />
           <small *ngIf="isInvalid('business_code')" class="text-danger">
             Business code is required and must be at least 3 letters
@@ -62,7 +64,8 @@
       </div>
 
       <div class="row mt-4">
-        <div class="col-6 d-flex justify-content-start ">
+       <div class="col-12 d-flex justify-content-center">
+
           <!-- <button
             type="button"
             class="btn btn-secondary px-4"
@@ -71,7 +74,7 @@
             <i class="bi bi-x-circle me-1"></i> Cancel
           </button> -->
 
-          <button type="submit" class="btn btn-success px-4">
+          <button type="submit" class="btn btn-success px-4 ">
             <i class="bi bi-save me-1"></i>
             {{ selectedBusiness ? "Update" : "Save" }}
           </button>
