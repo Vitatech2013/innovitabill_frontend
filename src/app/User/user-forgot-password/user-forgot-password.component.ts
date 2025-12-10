@@ -7,14 +7,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { BillingService } from '../../Services/billing.service';
 
 
 @Component({
   selector: 'app-user-forgot-password',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
   templateUrl: './user-forgot-password.component.html',
   styleUrl: './user-forgot-password.component.css',
 })

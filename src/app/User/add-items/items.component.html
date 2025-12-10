@@ -135,6 +135,16 @@
       </div>
 
       <div class="col-md-4">
+        <label class="form-label fw-semibold">Categories</label>
+        <select class="form-select" formControlName="category_id">
+          <option value="">Select Categories</option>
+          <option *ngFor="let cat of categories" [value]="cat._id">
+            {{ cat.categories_name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
         <label class="form-label fw-semibold">Sub-Categories</label>
         <select class="form-select" formControlName="sub_category_id">
           <option value="">Select Sub categories</option>
@@ -154,15 +164,7 @@
         </select>
       </div> -->
 
-      <div class="col-md-4">
-        <label class="form-label fw-semibold">Categories</label>
-        <select class="form-select" formControlName="category_id">
-          <option value="">Select Categories</option>
-          <option *ngFor="let cat of categories" [value]="cat._id">
-            {{ cat.categories_name }}
-          </option>
-        </select>
-      </div>
+      
       <div class="col-md-4">
         <label class="form-label fw-semibold">Image</label>
         <input
@@ -179,7 +181,7 @@
         <textarea
         class="form-control"
         rows="1"
-        placeholder="Enter your message"
+        placeholder="Enter your Description"
         formControlName="description"
        
       ></textarea>

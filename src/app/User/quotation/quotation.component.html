@@ -22,6 +22,7 @@
                   <th>Name</th>
                   <th>Email</th>
                   <th>Phone</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -33,6 +34,11 @@
                   <td>{{ c.name }}</td>
                   <td>{{ c.email }}</td>
                   <td>{{ c.phone }}</td>
+                  <td>
+                    <button class="btn btn-success demo-btn" type="button">
+                      Add
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -62,6 +68,7 @@
                     <th>Item</th>
                     <th>Code</th>
                     <th>Price</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -73,6 +80,11 @@
                     <td>{{ i.item_name }}</td>
                     <td>{{ i.item_code }}</td>
                     <td>{{ i.selling_price }}</td>
+                    <td>
+                      <button class="btn btn-success demo-btn" type="button">
+                        Add
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -82,7 +94,7 @@
       </div>
     </div>
 
-    <div class="col-md-5 mt-5">
+    <div class="col-md-5">
       <div id="quotation-content" class="card shadow-sm p-3">
         <div class="d-flex align-items-center mb-4">
           <img

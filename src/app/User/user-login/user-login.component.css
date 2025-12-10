@@ -1,7 +1,7 @@
 .login-container {
- height: 584px;
+  height: 584px;
   width: 100%;
-  background-image: url("../../../assets/images/background image.jpg");
+  background-image: url("../../../assets/images/bgi3.webp");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -13,10 +13,15 @@
 .login-card {
   border-radius: 15px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  border: 1px white solid;
+ 
 }
 
 @media (max-width: 768px) {
   .login-container {
     justify-content: center;
   }
+}
+.card{
+ background-color:transparent;
 }

@@ -5,12 +5,19 @@
 .scrollable-card::-webkit-scrollbar {
   width: 6px;
 }
-/* .item-button button {
-  display: flex;
-  width: 100%;
-  margin-bottom: 10px;
+@media (max-width: 576px) {
+  .item-button button {
+    margin-bottom: 10px; 
+    width: 100%;        
+  }
+  
+  .item-button button.me-2 {
+    margin-right: 0;    
+  }
+  
+  .item-button {
+    display: flex;
+    flex-direction: column; 
+    align-items: stretch;   
+  }
 }
-
-.item-button button:last-child {
-  margin-bottom: 0;
-} */

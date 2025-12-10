@@ -64,7 +64,9 @@
           <div class="cart-buttons">
             <button class="remove" (click)="removeFromCart(item)">−</button>
             <span class="quantity">{{ item.cartQty }}</span>
-            <button class="add" (click)="addToCart(item)" class="btn-success">+</button>
+            <button class="add" (click)="addToCart(item)" class="btn-success">
+              +
+            </button>
           </div>
         </div>
 
@@ -127,4 +129,40 @@
       </div>
     </form>
   </div>
+</div>
+
+<div id="printArea" style="display: none">
+  <h2>{{ business?.name || "Invoice" }}</h2>
+  <p>Date: {{ currentDate }}</p>
+  <p>Invoice No: {{ invoice_number }}</p>
+
+  <hr />
+
+  <p><strong>Customer:</strong> {{ customerForm.value.name }}</p>
+  <p>Phone: {{ customerForm.value.phone }}</p>
+
+  <hr />
+
+  <table width="100%" border="1" cellspacing="0" cellpadding="5">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Qty</th>
+        <th>Rate</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let it of cartItems">
+        <td>{{ it.item_name }}</td>
+        <td>{{ it.cartQty }}</td>
+        <td>₹{{ it.selling_price }}</td>
+        <td>₹{{ getItemTotal(it) }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr />
+
+  <h3>Grand Total: ₹{{ grandTotal }}</h3>
 </div>
