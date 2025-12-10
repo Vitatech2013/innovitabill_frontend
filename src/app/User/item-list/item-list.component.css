@@ -1,0 +1,99 @@
+.low-stock {
+  background-color: #f8d7da !important;
+}
+.medium-stock {
+  background-color: #fff3cd !important;
+}
+.high-stock {
+  background-color: #d4edda !important;
+}
+.modal-dialog {
+  max-width: 90%;
+  margin: 2rem auto;
+}
+
+.modal-header {
+  background-color: #127829;
+  color: #fff;
+  text-align: center;
+  border-bottom: none;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.modal-body .card-body .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.modal-body .card-body .row > div {
+  flex: 1 1 calc(33.333% - 1rem);
+}
+
+.modal-body input.form-control {
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.95rem;
+}
+
+.modal-body .card {
+  border: 1px solid #e0e0e0;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.modal.show .modal-dialog {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+}
+.table-row {
+  border: 1px solid #d9f2d9;
+  border-radius: 8px;
+}
+
+.badge {
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  color: #333 !important;
+}
+
+.table1 th,
+.table1 td {
+  vertical-align: middle !important;
+  padding: 8px 10px;
+  font-size: 14px;
+  width: 150px;
+}
+
+.table1 th {
+  font-weight: 600;
+  background-color: #eafbea !important;
+  color: #333;
+}
+
+.table td a {
+  font-weight: 400;
+}
+.table-wrapper {
+  max-height: calc(100vh - 220px);
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.table-wrapper::-webkit-scrollbar {
+  width: 2  px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #bdbdbd;
+  border-radius: 8px;
+}

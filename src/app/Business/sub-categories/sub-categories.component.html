@@ -1,0 +1,211 @@
+<div class="position-fixed top-1 end-0 p-1" style="z-index: 1080">
+  <div
+    *ngIf="toastMessage"
+    class="toast align-items-center text-light border-0 fade show shadow-lg"
+    [ngClass]="{
+      'bg-success': toastType === 'success',
+      'bg-danger': toastType === 'error',
+      'bg-warning text-dark': toastType === 'warning'
+    }"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+  >
+    <div class="d-flex">
+      <div class="toast-body fw-semibold">
+        {{ toastMessage }}
+      </div>
+      <button
+        type="button"
+        class="btn-close btn-close-white me-2 m-auto"
+        (click)="toastMessage = null"
+        aria-label="Close"
+      ></button>
+    </div>
+  </div>
+</div>
+
+<button
+  class="btn btn-success mb-2"
+  data-bs-toggle="modal"
+  data-bs-target="#subcategoryModel"
+  (click)="openAddModal()"
+>
+  <i class="bi bi-plus-circle"></i>
+  Add New
+</button>
+
+<div class="dashboard">
+  <h2 class="title mb-2 p-1 text-center">List of Sub Categories</h2>
+  <div class="row">
+    <div *ngIf="subcategories.length === 0" class="text-center mt-4">
+      <div class="alert alert-info shadow-sm py-3">
+        <i class="bi bi-info-circle"></i> No data found.
+      </div>
+    </div>
+
+    <table
+        *ngIf="subcategories.length > 0"
+        class="table table-bordered table-hover shadow-sm small-table"
+      >
+      <thead class="table-success">
+        <tr>
+          <th style="background: #d4f8d4; color: #0a5c0a">SL.No</th>
+          <th style="background: #d4f8d4; color: #0a5c0a">Sub Category</th>
+          <th style="background: #d4f8d4; color: #0a5c0a">Code</th>
+          <th style="background: #d4f8d4; color: #0a5c0a">Status</th>
+          <th style="background: #d4f8d4; color: #0a5c0a">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of subcategories; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ c.sub_category_name }}</td>
+          <td>{{ c.sub_category_code }}</td>
+          <td>{{c.status}}</td>
+          <td>
+            <button
+              class="btn btn-sm btn-outline-primary me-2"
+              (click)="edit(c)"
+              data-bs-toggle="modal"
+              data-bs-target="#subcategoryModel"
+            >
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <button
+            class="btn btn-sm btn-outline-danger"
+            (click)="openDeleteModal(c)"
+          >
+            <i class="bi bi-trash"></i>
+          </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="subcategoryModel"
+  tabindex="-1"
+  aria-labelledby="subcategoryModel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <form [formGroup]="subCategoryForm" (ngSubmit)="createOrUpdateSc()">
+        <div class="modal-header">
+          <h5 class="modal-title" id="subcategoryModel">{{ title }}</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            (click)="closeModal()"
+            (keypress)="allowOnlyLetters($event)"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Sub Category Name</label>
+              <input
+                type="text"
+                formControlName="sub_category_name"
+                class="form-control"
+                placeholder="Enter name"
+              />
+              <div
+                *ngIf="
+                  subCategoryForm.controls['sub_category_code']?.touched &&
+                  subCategoryForm.controls['sub_category_code']?.invalid
+                "
+              >
+                <small
+                  *ngIf="subCategoryForm.controls['sub_category_code']?.errors?.['required']"
+                  class="text-danger"
+                  >unitsname is required and must be at least 3 letters
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Code</label>
+              <input
+                type="text"
+                formControlName="sub_category_code"
+                class="form-control"
+                placeholder="Enter code"
+                
+              />
+              <div
+                *ngIf="
+                  subCategoryForm.controls['sub_category_code']?.touched &&
+                  subCategoryForm.controls['sub_category_code']?.invalid
+                "
+              >
+                <small
+                  *ngIf="subCategoryForm.controls['sub_category_code']?.errors?.['required']"
+                  class="text-danger"
+                  >unit is required
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Status</label>
+              <select class="form-select" formControlName="status">
+                <option value="">Select Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Save</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            (click)="closeModal()"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- 🗑️ Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header text-danger">
+        <h5 class="modal-title">Confirm Delete</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        Are you sure you want to delete
+        <strong>{{ selectedcategory?.s_name }}</strong
+        >?
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

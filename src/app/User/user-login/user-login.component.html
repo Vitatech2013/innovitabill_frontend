@@ -1,0 +1,101 @@
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-success px-3">
+  <nav class="navbar-brand" style="cursor: pointer" routerLink="/home">
+    InnoVITA Bill
+  </nav>
+</nav>
+
+<div class="container-fluid login-container">
+  <div class="row w-100">
+    <div class="col-md-6"></div>
+
+    <div class="col-md-6 d-flex justify-content-center">
+      <div class="card login-card p-4" style="width: 20rem">
+        <h2 class="text-center fw-bold text-success mb-4">User Login</h2>
+
+        <form [formGroup]="userForm">
+          <div class="mb-1">
+            <label>Email</label>
+            <input
+              type="email"
+              class="form-control"
+              formControlName="user_email"
+            />
+            <div
+              *ngIf="
+                userForm.controls['user_email']?.touched &&
+                userForm.controls['user_email']?.invalid
+              "
+            >
+              <small
+                *ngIf="userForm.controls['user_email']?.errors?.['required']"
+                class="text-danger"
+                >Email is required</small
+              >
+              <small
+                *ngIf="userForm.controls['user_email']?.errors?.['email']"
+                class="text-danger"
+                >Invalid email format</small
+              >
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label>Password</label>
+            <div class="input-group mb-3">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                type="password"
+                class="form-control"
+                formControlName="password"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                (click)="togglePassword()"
+              >
+                <i
+                  class="bi"
+                  [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"
+                ></i>
+              </button>
+            </div>
+            <div
+              *ngIf="
+                userForm.controls['password']?.touched &&
+                userForm.controls['password']?.invalid
+              "
+            >
+              <small
+                *ngIf="userForm.controls['password']?.errors?.['required']"
+                class="text-danger"
+                >Password is required</small
+              >
+              <small
+                *ngIf="userForm.controls['password']?.errors?.['minlength']"
+                class="text-danger"
+                >Minimum 6 characters</small
+              >
+            </div>
+          </div>
+
+          <a routerLink="/userforgotpassword">Forgot password?</a>
+
+          <div class="text-center mt-4 d-flex gap-3">
+            <button
+              type="button"
+              class="btn btn-success w-75 g-2"
+              (click)="UserLogin()"
+            >
+              Login
+            </button>
+
+            <button type="button" class="btn btn-success w-25" routerLink="/">
+              <i class="bi bi-box-arrow-in-left"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>
