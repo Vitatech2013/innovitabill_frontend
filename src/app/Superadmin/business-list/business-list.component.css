@@ -211,16 +211,29 @@ input[type="file"] {
 }
 
 
-/* table scroll */
-.table-wrapper {
-  width: 100%;
+
+
+
+
+
+/* .table-wrapper {
+  max-height: calc(100vh - 220px);
+  overflow-y: auto;
+  padding-right: 5px;
 }
 
-.table-body-scroll {
-  max-height: 350px;  /* Adjust height as you need */
+.table-wrapper::-webkit-scrollbar {
+  width: 2  px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #bdbdbd;
+  border-radius: 8px;
+} */
+ .scrollable-card {
+  max-height: 80vh; 
   overflow-y: auto;
 }
-
-.table-body-scroll table {
-  margin-bottom: 0;  /* Remove extra margin */
+.scrollable-card::-webkit-scrollbar {
+  width: 6px;
 }

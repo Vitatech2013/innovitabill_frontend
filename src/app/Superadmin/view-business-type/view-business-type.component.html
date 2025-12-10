@@ -1,4 +1,4 @@
-<div class="row  border border-1 rounded p-3">
+<div class="row border border-1 rounded p-3 ">
   <div class="col-sm-3">
     <div>
       <app-add-business-type></app-add-business-type>
@@ -33,64 +33,69 @@
     </div>
 
     <div class="dashboard">
-      <div class="d-flex justify-content-between align-items-center mb-4 position-relative">
+      <div
+        class="d-flex justify-content-between align-items-center mb-4 position-relative"
+      >
+        <h5 class="text-success fw-bold mb-0">
+          <i class="bi bi-building me-2"></i>
+          Business Types
+        </h5>
 
+        <div
+          class="search-container position-absolute top-50 start-50 translate-middle"
+        >
+          <input
+            type="text"
+            class="form-control shadow-sm"
+            placeholder="Search by name, brand, or status..."
+            [(ngModel)]="searchTerm"
+            style="width: 300px"
+          />
+        </div>
+      </div>
 
-  <h5 class="text-success fw-bold mb-0">
-    <i class="bi bi-building me-2"></i>
-    Business Types
-  </h5>
-
-  
-  <div class="search-container position-absolute top-50 start-50 translate-middle">
-    <input
-      type="text"
-      class="form-control shadow-sm"
-      placeholder="Search by name, brand, or status..."
-      [(ngModel)]="searchTerm"
-      style="width: 300px;"
-    />
-  </div>
-
-</div>
-
-
-      <div class="row">
-        <table class="table table-bordered table-hover shadow-sm">
-          <thead class="table-success">
-            <tr>
-              <th style="background: #d4f8d4; color: #0a5c0a">Sl.no</th>
-              <th style="background: #d4f8d4; color: #0a5c0a">Business Type</th>
-              <th style="background: #d4f8d4; color: #0a5c0a">Business Code</th>
-              <th style="background: #d4f8d4; color: #0a5c0a">Status</th>
-              <th style="background: #d4f8d4; color: #0a5c0a">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let b of filteredBusiness(); let i = index">
-              <td>{{ i + 1 }}</td>
-              <td>{{ b.business_type }}</td>
-              <td>{{ b.business_code }}</td>
-              <td>{{ b.status }}</td>
-              <td>
-                <button
-                  class="btn btn-sm btn-outline-primary me-2"
-                  (click)="edit(b)"
-                  data-bs-toggle="modal"
-                  data-bs-target="#roleModal"
-                >
-                  <i class="bi bi-pencil-square"></i>
-                </button>
-                <button
-                  class="btn btn-sm btn-outline-danger"
-                  (click)="DeleteModal(b)"
-                >
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div >
+        <div class="row table-responsive scrollable-card">
+          <table class="table table-bordered table-hover shadow-sm ">
+            <thead class="table-success">
+              <tr>
+                <th style="background: #d4f8d4; color: #0a5c0a">Sl.no</th>
+                <th style="background: #d4f8d4; color: #0a5c0a">
+                  Business Type
+                </th>
+                <th style="background: #d4f8d4; color: #0a5c0a">
+                  Business Code
+                </th>
+                <th style="background: #d4f8d4; color: #0a5c0a">Status</th>
+                <th style="background: #d4f8d4; color: #0a5c0a">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let b of filteredBusiness(); let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ b.business_type }}</td>
+                <td>{{ b.business_code }}</td>
+                <td>{{ b.status }}</td>
+                <td>
+                  <button
+                    class="btn btn-sm btn-outline-primary me-2"
+                    (click)="edit(b)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#roleModal"
+                  >
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="DeleteModal(b)"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -117,10 +122,14 @@
             </div>
 
             <div class="modal-body">
-             <div class="mb-3">
-  <label class="form-label">Business Type</label>
-  <input type="text" class="form-control" formControlName="business_type" placeholder="Enter Business Type" />
-
+              <div class="mb-3">
+                <label class="form-label">Business Type</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="business_type"
+                  placeholder="Enter Business Type"
+                />
 
                 <div
                   *ngIf="
