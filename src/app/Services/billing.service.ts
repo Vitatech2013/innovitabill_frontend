@@ -26,7 +26,7 @@ export class BillingService {
   }
 
   SuperAdminLogin(data: any) {
-    return this.http.post(`${this.baseUrl}/superadmin/superadminlogin`, data);
+    return this.http.post(`${this.baseUrl}/superadmin/login`, data);
   }
 
   forgotPassword(data: any) {
@@ -47,24 +47,24 @@ export class BillingService {
   // business
   addBusiness(data: any) {
     return this.http.post(
-      `${this.baseUrl}/business/businessregistration`,
+      `${this.baseUrl}/business/registration`,
       data
     );
   }
   getBusiness(sid: any) {
     return this.http.get<any[]>(
-      `${this.baseUrl}/business/businessgetbysuperadminid/${sid}`
+      `${this.baseUrl}/business/businessGetBySuperAdminId/${sid}`
     );
   }
 
   updateBusiness(id: string, value: any) {
     return this.http.put(
-      `${this.baseUrl}/business/businessupdate/${id}`,
+      `${this.baseUrl}/business/update/${id}`,
       value
     );
   }
   deletebusiness(id: string) {
-    return this.http.delete(`${this.baseUrl}/business/businessdelete/${id}`);
+    return this.http.delete(`${this.baseUrl}/business/delete/${id}`);
   }
   getBusinessprofile(id: any) {
     return this.http.get(`${this.baseUrl}/business/profile/${id}`);
@@ -78,13 +78,13 @@ export class BillingService {
 
   profileupdate(formData: FormData, id: string) {
     return this.http.put(
-      `${this.baseUrl}/superadmin/superadminupdate/${id}`,
+      `${this.baseUrl}/superadmin/update/${id}`,
       formData
     );
   }
 
   getadminprofile(id: string) {
-    return this.http.get(`${this.baseUrl}/superadmin/superadminprofile/${id}`);
+    return this.http.get(`${this.baseUrl}/superadmin/profile/${id}`);
   }
   getBusinessTypes() {
     return this.http.get(`${this.baseUrl}/businessType/get`);
@@ -103,24 +103,24 @@ export class BillingService {
   //  return this.http.get(`${this.baseUrl}/btypes/btypesupdate/${id}`, data);
   // }
   addBusinessType(data: any) {
-    return this.http.post(`${this.baseUrl}/btypes/addtypes`, data);
+    return this.http.post(`${this.baseUrl}/businessType/add`, data);
   }
 
   updateBusinessType(id: string, data: any) {
-    return this.http.put(`${this.baseUrl}/btypes/btypesupdate/${id}`, data);
+    return this.http.put(`${this.baseUrl}/businessType/update/${id}`, data);
   }
 
   getAllBusinessTypes(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/btypes/getbtypes`);
+    return this.http.get(`${this.baseUrl}/businessType/get`);
   }
 
   deleteBusinessType(id: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/btypes/btypesdelete/${id}`);
+    return this.http.delete(`${this.baseUrl}/businessType/delete/${id}`);
   }
 
   // Demo
   sendDemoMail(data: any) {
-    return this.http.post(`${this.baseUrl}/demo/demoregistration`, data);
+    return this.http.post(`${this.baseUrl}/demo/registration`, data);
   }
 
   //Admins
@@ -189,15 +189,15 @@ export class BillingService {
   }
 
   getItems(Business_id: any): Observable<any> {
-    return this.http.get(`${this.baseUrl}/items/getitems`);
+    return this.http.get(`${this.baseUrl}/items/get`);
   }
 
   addItems(data: any) {
-    return this.http.post(`${this.baseUrl}/items/additems`, data);
+    return this.http.post(`${this.baseUrl}/items/add`, data);
   }
 
   getCategories(business_id: string) {
-    return this.http.get(`${this.baseUrl}/categories/categoriesget`);
+    return this.http.get(`${this.baseUrl}/category/get`);
   }
   //
 
@@ -219,29 +219,29 @@ export class BillingService {
 
   //
   getUsers(business_id: string) {
-    return this.http.get(`${this.baseUrl}/user/getuser`);
+    return this.http.get(`${this.baseUrl}/user/get`);
   }
 
   saleslist(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/sales/getSales`);
+    return this.http.get(`${this.baseUrl}/sales/get`);
   }
 
   savesale(data: any) {
-    return this.http.post(`${this.baseUrl}/sales/createsale`, data);
+    return this.http.post(`${this.baseUrl}/sales/add`, data);
   }
 
   updateitems(id: string, data: FormData) {
-    return this.http.put(`${this.baseUrl}/items/updateitems/${id}`, data);
+    return this.http.put(`${this.baseUrl}/items/update/${id}`, data);
   }
   deleteItem(id: String) {
-    return this.http.delete(`${this.baseUrl}/items/deleteitems/${id}`);
+    return this.http.delete(`${this.baseUrl}/items/delete/${id}`);
   }
 
   updateprofile(formData: FormData, id: string) {
-    return this.http.put(`${this.baseUrl}/user/updateuser/${id}`, formData);
+    return this.http.put(`${this.baseUrl}/user/update/${id}`, formData);
   }
   getuserprofile(id: string) {
-    return this.http.get(`${this.baseUrl}/user/userprofile/${id}`);
+    return this.http.get(`${this.baseUrl}/user/profile/${id}`);
   }
   getStatusTypes() {
     return this.http.get(`${this.baseUrl}/status/getstatus`);
@@ -250,11 +250,11 @@ export class BillingService {
     return this.http.get(`${this.baseUrl}/sales/getSalesReport`);
   }
   updatesale(id: string, sale: any) {
-    return this.http.put(`${this.baseUrl}/sales/salesupdate/${id}`, sale);
+    return this.http.put(`${this.baseUrl}/sales/update/${id}`, sale);
   }
   getQuotationData(demoId: string): Observable<any> {
     return this.http.get(
-      `${this.baseUrl}/quotation/getQuotationData/${demoId}`
+      `${this.baseUrl}/quotation/get/${demoId}`
     );
   }
 

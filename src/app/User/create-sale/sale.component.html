@@ -40,7 +40,7 @@
           </p>
 
           <div class="quantity-control">
-            <button (click)="addToCart(it)">+</button>
+            <button (click)="addToCart(it)" class="btn-success">+</button>
           </div>
         </div>
       </div>
@@ -64,7 +64,7 @@
           <div class="cart-buttons">
             <button class="remove" (click)="removeFromCart(item)">−</button>
             <span class="quantity">{{ item.cartQty }}</span>
-            <button class="add" (click)="addToCart(item)">+</button>
+            <button class="add" (click)="addToCart(item)" class="btn-success">+</button>
           </div>
         </div>
 
@@ -79,7 +79,7 @@
       <div *ngIf="cartItems.length > 0" class="total-summary">
         Grand Total: ₹{{ getTotalBill() }}
         <br />
-        <button class="generate-btn" (click)="toggleCustomerForm()">
+        <button class="generate-btn btn-success" (click)="toggleCustomerForm()">
           Generate Bill
         </button>
       </div>
@@ -89,7 +89,7 @@
 
 <div class="modal" *ngIf="showCustomerForm">
   <div class="modal-content">
-    <h3>Customer Details</h3>
+    <h3 class="bg-success">Customer Details</h3>
     <form [formGroup]="customerForm">
       <div class="row">
         <div class="col">

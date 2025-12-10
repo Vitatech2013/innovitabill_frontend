@@ -1,8 +1,5 @@
 <div class="card shadow-sm p-3 mb-3 border-0 small-card scrollable-card">
-  <h5 class="text-success fw-bold mb-3">
-    <i class="bi bi-list-check"></i>
-    {{ selectedBusiness ? "Update Items" : "Add Items" }}
-  </h5>
+  <h5 class="mb-3">Add Items</h5>
 
   <form
     [formGroup]="addItemsForm"
@@ -37,9 +34,9 @@
       </div>
 
       <div class="col-md-4">
-        <label class="form-label">Units</label>
+        <label class="form-label fw-semibold">Units</label>
         <select class="form-select" formControlName="unit_id">
-          <option [ngValue]="null">Select Units</option>
+          <option Value="">Select Units</option>
           <option *ngFor="let unit of units" [ngValue]="unit._id">
             {{ unit.units_name }}
           </option>
@@ -99,19 +96,6 @@
       </div>
 
       <div class="col-md-4">
-        <label class="form-label fw-semibold">Description</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="description"
-          placeholder="Enter description"
-        />
-        <small *ngIf="isInvalid('description')" class="text-danger">
-          Description is required
-        </small>
-      </div>
-
-      <div class="col-md-4">
         <label class="form-label fw-semibold">Brand Name</label>
         <input
           type="text"
@@ -151,7 +135,7 @@
       </div>
 
       <div class="col-md-4">
-        <label class="form-label">Sub-Categories</label>
+        <label class="form-label fw-semibold">Sub-Categories</label>
         <select class="form-select" formControlName="sub_category_id">
           <option value="">Select Sub categories</option>
           <option *ngFor="let subcat of subCategories" [value]="subcat._id">
@@ -171,7 +155,7 @@
       </div> -->
 
       <div class="col-md-4">
-        <label class="form-label">Categories</label>
+        <label class="form-label fw-semibold">Categories</label>
         <select class="form-select" formControlName="category_id">
           <option value="">Select Categories</option>
           <option *ngFor="let cat of categories" [value]="cat._id">
@@ -190,9 +174,22 @@
           Image is required
         </small>
       </div>
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Description</label>
+        <textarea
+        class="form-control"
+        rows="1"
+        placeholder="Enter your message"
+        formControlName="description"
+       
+      ></textarea>
+        <small *ngIf="isInvalid('description')" class="text-danger">
+          Description is required
+        </small>
+      </div>
     </div>
 
-    <div class="text-end mt-4">
+    <div class="text-end mt-4 item-button">
       <button
         type="button"
         class="btn btn-secondary me-2 px-4"
