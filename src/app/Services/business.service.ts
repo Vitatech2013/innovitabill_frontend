@@ -8,15 +8,12 @@ import { constants } from '../../../constants';
 })
 export class BusinessService {
  
-
-
-
   private baseUrl = constants.baseUrl;
 
   constructor(private http: HttpClient) {}
 
-  login(data: any) {
-    return this.http.post(`${this.baseUrl}/business/businesslogin`, data);
+  businessLogin(data: any) {
+    return this.http.post(`${this.baseUrl}/business/login`, data);
   }
  businessForgotpassword(data: any) {
     return this.http.post(
@@ -52,17 +49,17 @@ export class BusinessService {
   //Roles
 
   getRoles() {
-    return this.http.get(`${this.baseUrl}/role/getrole`);
+    return this.http.get(`${this.baseUrl}/role/get`);
   }
   addRole(newRole: any) {
-    return this.http.post(`${this.baseUrl}/role/addrole`, newRole);
+    return this.http.post(`${this.baseUrl}/role/add`, newRole);
   }
   updateRole(id: string, data: any) {
-    return this.http.put(`${this.baseUrl}/role/roleupdate/${id}`, data);
+    return this.http.put(`${this.baseUrl}/role/update/${id}`, data);
   }
 
   deleteRole(id: string) {
-    return this.http.delete(`${this.baseUrl}/role/roledelete/${id}`);
+    return this.http.delete(`${this.baseUrl}/role/delete/${id}`);
   }
 
   // users
@@ -80,17 +77,17 @@ export class BusinessService {
   // }
 
   createUser(userData: any) {
-    return this.http.post(`${this.baseUrl}/user/userregistration`, userData);
+    return this.http.post(`${this.baseUrl}/user/registration`, userData);
   }
   deleteUser(id: string) {
-    return this.http.delete(`${this.baseUrl}/user/userdelete/${id}`);
+    return this.http.delete(`${this.baseUrl}/user/delete/${id}`);
   }
 updateUser(id: string, payload: any) {
-  return this.http.put(`${this.baseUrl}/user/updateuser/${id}`, payload);
+  return this.http.put(`${this.baseUrl}/user/update/${id}`, payload);
 }
 
   getUser() {
-    return this.http.get(`${this.baseUrl}/user/getuser`);
+    return this.http.get(`${this.baseUrl}/user/get`);
   }
 }
 

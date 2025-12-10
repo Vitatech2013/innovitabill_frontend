@@ -148,19 +148,19 @@ export class BillingService {
   
   //categories
   getcategories() {
-    return this.http.get(`${this.baseUrl}/categories/categoriesget`);
+    return this.http.get(`${this.baseUrl}/category/get`);
   }
   deleteCategory(id: string) {
     return this.http.delete(
-      `${this.baseUrl}/categories/categoriesdelete/${id}`
+      `${this.baseUrl}/category/delete/${id}`
     );
   }
   addCategory(data: any) {
-    return this.http.post(`${this.baseUrl}/categories/categoriesadd`, data);
+    return this.http.post(`${this.baseUrl}/category/add`, data);
   }
   updateCategory(id: string, value: any) {
     return this.http.put(
-      `${this.baseUrl}/categories/categoriesupdate/${id}`,
+      `${this.baseUrl}/category/update/${id}`,
       value
     );
   }
@@ -168,17 +168,18 @@ export class BillingService {
   cashierlogin(value?: any) {
     return this.http.get<any[]>(`${this.baseUrl}/cashier/cashierlogin`);
   }
+  //units
   addUnit(unit: any) {
-    return this.http.post(`${this.baseUrl}/units/unitsadd`, unit);
+    return this.http.post(`${this.baseUrl}/units/add`, unit);
   }
   getUnits(business_id: string) {
     return this.http.get(`${this.baseUrl}/units/get`);
   }
   updateUnit(id: string, data: any) {
-    return this.http.put(`${this.baseUrl}/units/unitsupdate/${id}`, data);
+    return this.http.put(`${this.baseUrl}/units/update/${id}`, data);
   }
   deleteUnit(id: string) {
-    return this.http.delete(`${this.baseUrl}/units/unitsdelete/${id}`);
+    return this.http.delete(`${this.baseUrl}/units/delete/${id}`);
   }
 
   //users
@@ -201,19 +202,19 @@ export class BillingService {
   //
 
   addSubcat(data: any) {
-    return this.http.post(`${this.baseUrl}/subcat/addsubcat`, data);
+    return this.http.post(`${this.baseUrl}/subCategory/add`, data);
   }
 
   getSubCategories() {
     return this.http.get(`${this.baseUrl}/subCategory/get`);
   }
   updateSubcat(id: string, data: any) {
-    // Use PUT and include the ID in the URL
-    return this.http.put(`${this.baseUrl}/subcat/updatesubcat/${id}`, data);
+
+    return this.http.put(`${this.baseUrl}/subCategory/update/${id}`, data);
   }
 
   deleteSubCat(id: string) {
-    return this.http.delete(`${this.baseUrl}/subcat/deletesubcat/${id}`);
+    return this.http.delete(`${this.baseUrl}/subCategory/delete/${id}`);
   }
 
   //

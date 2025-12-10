@@ -42,7 +42,7 @@ export class BusinessLoginComponent implements OnInit {
       return;
     }
 
-    this.service.login(this.businessForm.value).subscribe({
+    this.service.businessLogin(this.businessForm.value).subscribe({
       next: (res: any) => {
         console.log('Login successful', res);
 
@@ -54,7 +54,7 @@ localStorage.setItem('businessToken', JSON.stringify(res.token));
       }
 
         this.router.navigateByUrl('/business-Dashboard', {
-          state: { toast: 'User login successful!' },
+          state: { toast: 'Business login successful!' },
         });
 
         this.showToast('Business login successful!', 'success');
