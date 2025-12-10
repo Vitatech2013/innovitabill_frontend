@@ -1,52 +1,24 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-success px-3">
-  <nav class="navbar-brand" style="cursor: pointer;" routerLink="/home">Billing Software</nav>
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-success px-3">
+  <nav class="navbar-brand" style="cursor: pointer" routerLink="/home">
+    InnoVITA Bill
+  </nav>
 </nav>
 
-<div class="d-flex justify-content-center align-items-center vh-100">
-  <div
-    class="card p-8"
-    style="
-      width: 30rem;
-      height: 25rem;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    "
-  >
-    <div class="container p-3">
-      <div class="position-fixed top-0 end-1 p-5" style="z-index: 1080">
-        <div
-          *ngIf="toastMessage"
-          class="toast align-items-center text-bg-success border-0 fade show"
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
-        >
-          <div class="d-flex">
-            <div class="toast-body">
-              {{ toastMessage }}
-            </div>
-            <button
-              type="button"
-              class="btn-close btn-close-white me-2 m-auto"
-              (click)="toastMessage = null"
-              aria-label="Close"
-            ></button>
-          </div>
-        </div>
-      </div>
-      <h2 class="title p-2 text-center fw-bold text-success">
-        User Login
-      </h2>
+<div class="container-fluid login-container">
+  <div class="row w-100">
+    <div class="col-md-6"></div>
 
-      <form [formGroup]="userForm" class="mb-3">
-        <div class="row mb-3 align-items-center">
-          <label for="email" class="col-sm-3 col-form-label">Email</label>
-          <div class="col-sm-11">
+    <div class="col-md-6 d-flex justify-content-center">
+      <div class="card login-card p-4" style="width: 20rem">
+        <h2 class="text-center fw-bold text-success mb-4">User Login</h2>
+
+        <form [formGroup]="userForm">
+          <div class="mb-1">
+            <label>Email</label>
             <input
               type="email"
-              id="email"
-              formControlName="user_email"
               class="form-control"
+              formControlName="user_email"
             />
             <div
               *ngIf="
@@ -66,17 +38,27 @@
               >
             </div>
           </div>
-        </div>
 
-        <div class="row mb-3 align-items-center">
-          <label for="password" class="col-sm-3 col-form-label">Password</label>
-          <div class="col-sm-11">
-            <input
-              type="password"
-              id="password"
-              formControlName="password"
-              class="form-control"
-            />
+          <div class="mb-3">
+            <label>Password</label>
+            <div class="input-group mb-3">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                type="password"
+                class="form-control"
+                formControlName="password"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                (click)="togglePassword()"
+              >
+                <i
+                  class="bi"
+                  [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"
+                ></i>
+              </button>
+            </div>
             <div
               *ngIf="
                 userForm.controls['password']?.touched &&
@@ -95,20 +77,24 @@
               >
             </div>
           </div>
-        </div>
-        <a routerLink="/userforgotpassword">forgot password?</a>
 
-        <div class="text-center">
-          <button
-            type="button"
-            class="btn btn-success mt-5 w-100"
-             (click)="UserLogin()"
-          >
-            Login
-          </button>
-          
-        </div>
-      </form>
+          <a routerLink="/userforgotpassword">Forgot password?</a>
+
+          <div class="text-center mt-4 d-flex gap-3">
+            <button
+              type="button"
+              class="btn btn-success w-75 g-2"
+              (click)="UserLogin()"
+            >
+              Login
+            </button>
+
+            <button type="button" class="btn btn-success w-25" routerLink="/">
+              <i class="bi bi-box-arrow-in-left"></i>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

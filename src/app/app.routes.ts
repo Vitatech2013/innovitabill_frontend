@@ -17,9 +17,9 @@ import { BusinessListComponent } from './Superadmin/business-list/business-list.
 import { AddBusinessComponent } from './Superadmin/add-business/add-business.component';
 import { AddBusinessTypeComponent } from './Superadmin/add-business-type/add-business-type.component';
 import { ViewBusinessTypeComponent } from './Superadmin/view-business-type/view-business-type.component';
-import { SaleComponent } from './User/sale/sale.component';
+import { SaleComponent } from './User/create-sale/sale.component';
 import { ItemListComponent } from './User/item-list/item-list.component';
-import { ItemsComponent } from './User/items/items.component';
+import { ItemsComponent } from './User/add-items/items.component';
 import { SalesComponent } from './User/sales-list/sales.component';
 import { SaleReportsComponent } from './User/sale-reports/sale-reports.component';
 import { QuotationComponent } from './User/quotation/quotation.component';

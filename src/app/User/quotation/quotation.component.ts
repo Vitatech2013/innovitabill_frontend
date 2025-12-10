@@ -91,7 +91,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   }
 
  loadBusinessDetails() {
-  this.http.get<any>(`${this.baseUrl}/business/businessget`).subscribe({
+  this.http.get<any>(`${this.baseUrl}/business/get`).subscribe({
     next: (b) => {
       if (!b || !b.data || b.data.length === 0) {
         console.warn('No business data found');
@@ -165,7 +165,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
 
   itemsGets() {
     this.http
-      .get(`${this.baseUrl}/items/getitems`)
+      .get(`${this.baseUrl}/items/get`)
       .subscribe((res: any) => {
         this.itemsList = res.data;
       });

@@ -29,6 +29,7 @@ export class UserLoginComponent implements OnInit {
   userForm!: FormGroup;
   toastMessage: string | null = null;
   toastType: string | undefined;
+  showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -99,5 +100,8 @@ export class UserLoginComponent implements OnInit {
     this.toastMessage = message;
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 3000);
+  }
+   togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 }
