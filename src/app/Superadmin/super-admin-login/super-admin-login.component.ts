@@ -18,8 +18,9 @@ import { BillingService } from '../../Services/billing.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-   RouterLink,
-  ],
+    RouterLink,
+    RouterOutlet
+],
   templateUrl: './super-admin-login.component.html',
   styleUrl: './super-admin-login.component.css',
 })
