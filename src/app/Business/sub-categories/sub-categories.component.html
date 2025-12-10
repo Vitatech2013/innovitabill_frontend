@@ -25,18 +25,37 @@
   </div>
 </div>
 
-<button
-  class="btn btn-success mb-2"
-  data-bs-toggle="modal"
-  data-bs-target="#subcategoryModel"
-  (click)="openAddModal()"
->
-  <i class="bi bi-plus-circle"></i>
-  Add New
-</button>
+<div class="col-12">
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+
+    <!-- Heading -->
+    <h4 class="fw-bold text-success mb-0">Available Sub Categories List</h4>
+
+    <!-- Search Bar -->
+    <input
+      type="text"
+      class="form-control shadow-sm"
+      placeholder="Search by name, code or status..."
+      [(ngModel)]="searchTerm"
+      style="max-width: 300px"
+    />
+
+    <!-- Add Button -->
+    <button
+      class="btn btn-success"
+      data-bs-toggle="modal"
+      data-bs-target="#subcategoryModel"
+      (click)="openAddModal()"
+    >
+      <i class="bi bi-plus-circle"></i>
+      Add New
+    </button>
+
+  </div>
+</div>
+
 
 <div class="dashboard">
-  <h2 class="title mb-2 p-1 text-center">List of Sub Categories</h2>
   <div class="row">
     <div *ngIf="subcategories.length === 0" class="text-center mt-4">
       <div class="alert alert-info shadow-sm py-3">
@@ -103,7 +122,7 @@
             data-bs-dismiss="modal"
             aria-label="Close"
             (click)="closeModal()"
-            (keypress)="allowOnlyLetters($event)"
+            
           ></button>
         </div>
 
@@ -116,6 +135,8 @@
                 formControlName="sub_category_name"
                 class="form-control"
                 placeholder="Enter name"
+                (keypress)="blockSpaces($event)"
+                (keypress)="allowOnlyLetters($event)"
               />
               <div
                 *ngIf="
@@ -137,7 +158,7 @@
                 formControlName="sub_category_code"
                 class="form-control"
                 placeholder="Enter code"
-                
+                (keypress)="blockSpaces($event)"
               />
               <div
                 *ngIf="
@@ -152,7 +173,7 @@
                 </small>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 mb-2">
               <label class="form-label fw-semibold">Status</label>
               <select class="form-select" formControlName="status">
                 <option value="">Select Status</option>
@@ -194,7 +215,7 @@
 
       <div class="modal-body">
         Are you sure you want to delete
-        <strong>{{ selectedcategory?.s_name }}</strong
+        <strong>{{ selectedcategory?.sub_category_name }}</strong
         >?
       </div>
 

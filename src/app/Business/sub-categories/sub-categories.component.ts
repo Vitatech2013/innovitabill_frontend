@@ -31,6 +31,7 @@ export class SubCategoriesComponent implements OnInit {
   user_id: any;
   c: any;
   categories_id: any;
+  searchTerm: string = '';
 
   constructor(private fb: FormBuilder, private api: BillingService) {}
 
@@ -222,12 +223,12 @@ confirmDelete() {
   });
 }
 
-allowOnlyLetters(event: KeyboardEvent) {
-  const pattern = /^[A-Za-z]$/;
-  if (!pattern.test(event.key)) {
-    event.preventDefault(); // blocks numbers, spaces, special characters
+  allowOnlyLetters(event: KeyboardEvent) {
+    if (!/^[A-Za-z]$/.test(event.key)) event.preventDefault();
   }
-}
+   blockSpaces(event: KeyboardEvent) {
+    if (event.code === 'Space') event.preventDefault();
+  }
 // allowOnlyNumbers(event: KeyboardEvent) {
 //   const pattern = /^[0-9]$/;
 //   if (!pattern.test(event.key)) {

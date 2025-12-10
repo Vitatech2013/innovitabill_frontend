@@ -28,6 +28,7 @@ export class RolesComponent implements OnInit {
 toastMessage: any;
 toastType: any;
   selectedRole: any;
+  searchTerm: string = '';
 
   constructor(private api: BusinessService, private fb: FormBuilder) {}
 

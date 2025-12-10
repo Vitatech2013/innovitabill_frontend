@@ -7,7 +7,7 @@ import { constants } from '../../../constants';
   providedIn: 'root',
 })
 export class BusinessService {
- 
+
   private baseUrl = constants.baseUrl;
 
   constructor(private http: HttpClient) {}
