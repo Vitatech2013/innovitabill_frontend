@@ -98,7 +98,7 @@
 }
 
 .quantity-control button {
-  background: #28a745;
+ 
   color: #fff;
   border: none;
   padding: 6px 10px;
@@ -107,9 +107,9 @@
   transition: 0.3s;
 }
 
-.quantity-control button:hover {
+/* .quantity-control button:hover {
   background: #218838;
-}
+} */
 
 .selected-card {
   display: flex;
@@ -172,7 +172,7 @@
 }
 
 .cart-buttons .add {
-  background-color: #28a745;
+  /* background-color:green; */
   color: white;
 }
 
@@ -201,7 +201,7 @@
 }
 
 .generate-btn {
-  background-color: #28a745;
+  /* background-color:green; */
   color: white;
   border: none;
   padding: 8px 16px;
@@ -238,7 +238,7 @@
 }
 
 .modal-content h3 {
-  background: #28a745;
+  /* background: green; */
   color: white;
   margin: 0;
   padding: 15px;

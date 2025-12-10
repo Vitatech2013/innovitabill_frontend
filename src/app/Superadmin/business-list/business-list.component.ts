@@ -93,7 +93,7 @@ if (businesslist) {
   }
 
   loadBusiness() {
-    this.api.getBusiness(this.superadmin_id).subscribe({
+    this.api.getBusiness(this.businessID).subscribe({
       next: (res: any) => {
         this.business = res.data || [];
         console.log(this.business);

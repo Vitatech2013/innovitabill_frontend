@@ -32,7 +32,7 @@
 }
 
 body {
-  padding-top: 70px; /* height of navbar */
+  padding-top: 70px; 
 }
 .dropdown-toggle::after {
   display: none !important;
