@@ -9,12 +9,37 @@
     <div class="col-md-6"></div>
 
     <div class="col-md-6 d-flex justify-content-center">
-      <div class="card login-card p-4" style="width: 20rem">
+      <div class="card login-card p-4" style="width: 345px">
+        <div class="d-flex justify-content-start">
+          <img
+            [src]="quotationForm.get('business.logo_image')?.value"
+            alt="Business Logo"
+            style="
+              height: 70px;
+              width: 60px;
+              margin-right: 15px;
+              border: none;
+              border-radius: 6px;
+            "
+            crossorigin="anonymous" 
+          />
+          <p></p>
+          <p
+              class="mb-2 fw-bold"
+              style="color: rgb(249, 248, 247); font-size: 30px; text-align: center"
+            >
+              {{ quotationForm.get("business.business_name")?.value }}
+
+            </p>
+
+
+          
+        </div>
         <h2 class="text-center fw-bold text-success mb-4">User Login</h2>
 
         <form [formGroup]="userForm">
           <div class="mb-1">
-            <label>Email</label>
+            <label class="text-white fw-bold">Email</label>
             <input
               type="email"
               class="form-control"
@@ -40,7 +65,7 @@
           </div>
 
           <div class="mb-3">
-            <label>Password</label>
+            <label class="text-white fw-bold">Password</label>
             <div class="input-group mb-3">
               <input
                 [type]="showPassword ? 'text' : 'password'"
@@ -49,7 +74,7 @@
                 formControlName="password"
               />
               <button
-                class="btn btn-outline-secondary"
+                class="btn btn-secondary"
                 type="button"
                 (click)="togglePassword()"
               >
@@ -78,7 +103,7 @@
             </div>
           </div>
 
-          <a routerLink="/userforgotpassword">Forgot password?</a>
+          <a routerLink="/userforgotpassword" class="fw-bold">Forgot password?</a>
 
           <div class="text-center mt-4 d-flex gap-3">
             <button
