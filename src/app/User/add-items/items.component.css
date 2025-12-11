@@ -21,3 +21,9 @@
     align-items: stretch;   
   }
 }
+.ietm-form{
+  border: 2px black solid;
+}
+.form-control, .form-select{
+  border: 1px black solid;
+}

@@ -43,17 +43,69 @@ export class ItemsComponent implements OnInit {
 
   ngOnInit(): void {
     this.addItemsForm = this.fb.group({
-      item_name: ['', [Validators.required, Validators.minLength(3)]],
-      item_code: ['', [Validators.required, Validators.minLength(3)]],
-      unit_id: ['', [Validators.required]],
-      purchase_price: ['', Validators.required],
-      selling_price: ['', Validators.required],
-      tax_rate: ['', Validators.required],
-      stock_quantity: ['', Validators.required],
-      description: ['', Validators.required],
-      brand_name: ['', Validators.required],
-      discount: ['', Validators.required],
-      min_stock_alert: ['', Validators.required],
+      item_name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.pattern('^[a-zA-Z0-9]+$'),
+        ],
+      ],
+      item_code: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.pattern('^[a-zA-Z0-9]+$'),
+        ],
+      ],
+      unit_id: ['', Validators.required],
+      selling_price: [
+        '',
+        [Validators.required, Validators.pattern('^[0-9]+$')],
+      ],
+      purchase_price: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(
+            '^[a-zA-Z0-9!@#$%^&*()_+\\-=[\\]{};\'":\\\\|,.<>/?]+$'
+          ),
+        ],
+      ],
+      tax_rate: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('^[0-9!@#$%^&*()_+\\-=[\\]{};\'":\\\\|,.<>/?]+$'),
+        ],
+      ],
+      stock_quantity: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('^[0-9!@#$%^&*()_+\\-=[\\]{};\'":\\\\|,.<>/?]+$'),
+        ],
+      ],
+      description: ['', [Validators.required]],
+      brand_name: [
+        '',
+        [Validators.required, Validators.pattern('^[A-Za-z]+$')],
+      ],
+      discount: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('^[0-9!@#$%^&*()_+\\-=[\\]{};\'":\\\\|,.<>/?]+$'),
+        ],
+      ],
+      min_stock_alert: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('^[0-9!@#$%^&*()_+\\-=[\\]{};\'":\\\\|,.<>/?]+$'),
+        ],
+      ],
       category_id: ['', Validators.required],
       sub_category_id: ['', Validators.required],
       image: [''],
@@ -171,5 +223,23 @@ export class ItemsComponent implements OnInit {
 
   onFileSelect(event: any) {
     this.selectedImageFile = event.target.files[0] || null;
+  }
+
+  preventSpace(event: KeyboardEvent) {
+    if (event.key === ' ') {
+      event.preventDefault();
+    }
+  }
+  allowNumbersAndSpecial(event: KeyboardEvent) {
+    const pattern = /^[0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]$/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+  allowOnlyAlphabets(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z]$/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
   }
 }

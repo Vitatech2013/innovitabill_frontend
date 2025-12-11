@@ -97,3 +97,20 @@
   background: #bdbdbd;
   border-radius: 8px;
 }
+.search-box {
+  position: relative;
+  max-width: 300px;
+}
+
+.search-box input {
+  padding-left: 35px;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #6c757d;
+}
