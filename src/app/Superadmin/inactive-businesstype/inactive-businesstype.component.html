@@ -1,0 +1,51 @@
+<div class="container p-3">
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h5 class="text-success fw-bold mb-0">
+    <i class="bi bi-building me-2"></i>Inactive Business Types
+  </h5>
+
+  <a
+    class="btn side-btn text-dark fw-semibold border-1"
+    routerLink="/SuperAdminView/view_business_type"
+    style="background-color: #f3f4f6;"
+  >
+    <b><i class="bi bi-arrow-left-circle me-1"></i></b>
+    Active
+  </a>
+</div>
+
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover shadow-sm align-middle">
+      <thead  class="text-center">
+        <tr>
+          <th style="background: #d4f8d4; color: #0a5c0a">S.no</th>
+          <th style="background: #d4f8d4; color: #0a5c0a">Business Type</th>
+          <th style="background: #d4f8d4; color: #0a5c0a">Code</th>
+          <th style="background: #d4f8d4; color: #0a5c0a">Status</th>
+          <th style="background: #d4f8d4; color: #0a5c0a" class="text-center">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody class="text-center">
+        <tr *ngFor="let b of inactiveBusiness; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td class="fw-semibold">{{ b.business_type }}</td>
+          <td>{{ b.business_code }}</td>
+          <td>
+        
+            <span >{{ b.status }}</span>
+          </td>
+          <td class="text-center">
+            <button
+              class="btn btn-sm btn-outline-danger px-2 py-1"
+              (click)="DeleteModal(b)"
+            >
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

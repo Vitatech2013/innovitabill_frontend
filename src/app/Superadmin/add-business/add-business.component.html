@@ -39,22 +39,39 @@
           (keydown)="preventSpace($event)"
           style="height: 45px;"
         />
+         <small *ngIf="addBusinessForm.get('business_namee')?.hasError('required')" class="text-danger">
+    Business Name  is required
+  </small>
         <small *ngIf="isInvalid('business_name')" class="text-danger">
           Business Name is required and must be at least 3 letters
         </small>
+         <small *ngIf="addBusinessForm.get('business_name')?.hasError('pattern')" class="text-danger">
+    Only alphabets are allowed
+  </small>
       </div>
 
-      <div class="col-md-3">
-        <label class="form-label fw-semibold"  style="font-size: medium;"
-          >Business Type<span class="text-danger">*</span></label
-        >
-        <select class="form-select" formControlName="bt_id">
-          <option value="">Select Business Type</option>
-          <option *ngFor="let type of businessTypes" [value]="type._id">
-            {{ type.business_type }}
-          </option>
-        </select>
-      </div>
+    <div class="col-md-3">
+  <label class="form-label fw-semibold" style="font-size: medium;">
+    Business Type <span class="text-danger">*</span>
+  </label>
+
+  <select class="form-select" formControlName="bt_id">
+    <option value="">Select Business Type</option>
+    <option *ngFor="let type of businessTypes" [value]="type._id">
+      {{ type.business_type }}
+    </option>
+  </select>
+
+  
+  <small
+    *ngIf="addBusinessForm.get('bt_id')?.touched && addBusinessForm.get('bt_id')?.hasError('required')"
+    class="text-danger"
+  >
+    Business Type is required.
+  </small>
+
+</div>
+
 
       <div class="col-md-3">
         <label class="form-label fw-semibold"  style="font-size: medium;">
@@ -124,6 +141,9 @@
         <small *ngIf="isInvalid('phone_number')" class="text-danger">
           Phone number is required
         </small>
+         <small *ngIf="addBusinessForm.get('phone_number')?.hasError('pattern')" class="text-danger">
+    Phone number must be exactly 10 digits
+  </small>
       </div>
       <div class="col-md-3">
         <label class="form-label fw-semibold"  style="font-size: medium;"
@@ -144,12 +164,12 @@
             addBusinessForm.get('password')?.invalid
           "
         >
-          <small
-            class="text-danger"
-            *ngIf="addBusinessForm.get('password')?.errors?.['required']"
-          >
-            Password is required.
-          </small>
+          <small *ngIf="addBusinessForm.get('password')?.hasError('required')" class="text-danger">
+    Password is required
+  </small>
+  <small *ngIf="addBusinessForm.get('password')?.hasError('pattern')" class="text-danger">
+    Password must have at least 1 uppercase, 1 lowercase, and 1 special character
+  </small>
 
           <!-- <small
             class="text-danger"
@@ -172,9 +192,45 @@
           (keydown)="preventSpace($event)"
            style="height: 45px;"
         />
-        <small *ngIf="isInvalid('registration_number')" class="text-danger">
-          Registration Number is required
-        </small>
+   
+<!-- <small *ngIf="isInvalid('registration_number')" class="text-danger">
+  Registration Number is required
+</small>
+
+<small
+  *ngIf="
+    addBusinessForm.get('registration_number')?.touched &&
+    addBusinessForm.get('registration_number')?.hasError('pattern')
+  "
+  class="text-danger"
+>
+  Registration Number format is invalid
+</small> -->
+<small *ngIf="isInvalid('registration_number')" class="text-danger">
+  Registration Number is required
+</small>
+
+<small
+  *ngIf="
+    addBusinessForm.get('registration_number')?.touched &&
+    addBusinessForm.get('registration_number')?.hasError('pattern')
+  "
+  class="text-danger"
+>
+  Registration Number format is invalid. Only letters and numbers allowed.
+</small>
+
+<small
+  *ngIf="
+    addBusinessForm.get('registration_number')?.touched &&
+    addBusinessForm.get('registration_number')?.hasError('minlength')
+  "
+  class="text-danger"
+>
+  Registration Number must be at least 3 characters.
+</small>
+
+
       </div>
 
       <div class="col-md-3">
@@ -198,30 +254,55 @@
         <h6 class="text-success fw-semibold border-bottom pb-2">Address</h6>
       </div>
 
-      <div formGroupName="address" class="row">
-        <div class="col-md-3 mb-4" *ngFor="let field of addressFields">
-          <label class="form-label fw-semibold" style="font-size: medium;">
-            {{ field.label }}<span class="text-danger">*</span></label
-          >
-          <input
-            type="text"
-            class="form-control"
-            [formControlName]="field.name"
-            placeholder="Enter {{ field.label }}"
-            (keydown)="preventSpace($event)"
-             style="height: 45px;"
-          />
-          <div
-            class="text-danger small mt-1"
-            *ngIf="
-              addBusinessForm.get('address.' + field.name)?.invalid &&
-              addBusinessForm.get('address.' + field.name)?.touched
-            "
-          >
-            {{ field.label }} is required.
-          </div>
-        </div>
+<div formGroupName="address" class="row">
+  <div class="col-md-3 mb-4" *ngFor="let field of addressFields">
+
+    <label class="form-label fw-semibold" style="font-size: medium;">
+      {{ field.label }}<span class="text-danger">*</span>
+    </label>
+
+    <input
+      type="text"
+      class="form-control"
+      [formControlName]="field.name"
+      placeholder="Enter {{ field.label }}"
+      style="height: 45px;"
+       (keydown)="preventSpace($event)"
+    />
+
+    <!-- Error Messages -->
+    <div class="text-danger small mt-1"
+      *ngIf="addBusinessForm.get('address.' + field.name)?.touched &&
+             addBusinessForm.get('address.' + field.name)?.invalid">
+
+      <!-- Required -->
+      <div *ngIf="addBusinessForm.get('address.' + field.name)?.hasError('required')">
+        {{ field.label }} is required.
       </div>
+
+      <!-- Min Length -->
+      <div *ngIf="addBusinessForm.get('address.' + field.name)?.hasError('minlength')">
+        {{ field.label }} must be at least 3 characters.
+      </div>
+
+      <!-- Alphabet only errors -->
+      <div *ngIf="(field.name === 'town_Name' ||
+                   field.name === 'mandal_Name' ||
+                   field.name === 'district_Name' ||
+                   field.name === 'state')
+                   && addBusinessForm.get('address.' + field.name)?.hasError('pattern')">
+        Only alphabets are allowed.
+      </div>
+
+      <!-- Pincode only number error -->
+      <div *ngIf="field.name === 'pincode' && addBusinessForm.get('address.' + field.name)?.hasError('pattern')">
+        Only numbers are allowed.
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
       <div class="col-12 mt-3">
         <h6 class="text-success fw-semibold  border-bottom pb-2"  style="font-size: medium;">
@@ -241,6 +322,27 @@
           (keydown)="preventSpace($event)"
            style="height: 45px;"
         />
+     <div
+  *ngIf="
+    addBusinessForm.get('logo_image')?.touched &&
+    addBusinessForm.get('logo_image')?.errors
+  "
+  class="text-danger"
+>
+  <small *ngIf="addBusinessForm.get('logo_image')?.errors?.['required']">
+    Logo is required
+  </small>
+
+  <small *ngIf="addBusinessForm.get('logo_image')?.errors?.['invalidType']">
+    Only JPG, PNG, WEBP allowed
+  </small>
+
+  <small *ngIf="addBusinessForm.get('logo_image')?.errors?.['maxSize']">
+    Max size is 2 MB
+  </small>
+</div>
+
+
         <!-- <div
             *ngIf="
               addBusinessForm.get('logo_image')?.touched &&
@@ -271,6 +373,26 @@
           (keydown)="preventSpace($event)"
            style="height: 45px;"
         />
+        <div
+  *ngIf="
+    addBusinessForm.get('pan_pdf')?.touched &&
+    addBusinessForm.get('pan_pdf')?.errors
+  "
+  class="text-danger"
+>
+  <small *ngIf="addBusinessForm.get('pan_pdf')?.errors?.['required']">
+    PAN file is required
+  </small>
+
+  <small *ngIf="addBusinessForm.get('pan_pdf')?.errors?.['invalidType']">
+    Only PDF files are allowed
+  </small>
+
+  <small *ngIf="addBusinessForm.get('pan_pdf')?.errors?.['maxSize']">
+    Maximum size allowed is 5 MB
+  </small>
+</div>
+
       </div>
 
       <div class="col-md-3">
@@ -285,6 +407,26 @@
           (keydown)="preventSpace($event)"
            style="height: 45px;"
         />
+        <div
+  *ngIf="
+    addBusinessForm.get('aadhar_pdf')?.touched &&
+    addBusinessForm.get('aadhar_pdf')?.errors
+  "
+  class="text-danger"
+>
+  <small *ngIf="addBusinessForm.get('aadhar_pdf')?.errors?.['required']">
+    Aadhar file is required
+  </small>
+
+  <small *ngIf="addBusinessForm.get('aadhar_pdf')?.errors?.['invalidType']">
+    Only PDF files are allowed
+  </small>
+
+  <small *ngIf="addBusinessForm.get('aadhar_pdf')?.errors?.['maxSize']">
+    Maximum size allowed is 5 MB
+  </small>
+</div>
+
       </div>
 
       <div class="col-md-3">
@@ -299,22 +441,45 @@
           (keydown)="preventSpace($event)"
            style="height: 45px;"
         />
+        <div
+  *ngIf="
+    addBusinessForm.get('certificate_pdf')?.touched &&
+    addBusinessForm.get('certificate_pdf')?.errors
+  "
+  class="text-danger"
+>
+  <small *ngIf="addBusinessForm.get('certificate_pdf')?.errors?.['required']">
+    Certificate file is required
+  </small>
+
+  <small *ngIf="addBusinessForm.get('certificate_pdf')?.errors?.['invalidType']">
+    Only PDF files are allowed
+  </small>
+
+  <small *ngIf="addBusinessForm.get('certificate_pdf')?.errors?.['maxSize']">
+    Maximum size allowed is 5 MB
+  </small>
+</div>
+
       </div>
     </div>
 
-    <div class="text-end mt-4">
-      <button
-        type="button"
-        class="btn btn-secondary me-2 px-4"
-        (click)="cancelAdd()"
-      >
-        <i class="bi bi-x-circle me-1"></i> Cancel
-      </button>
+ <div class="mt-4 d-flex flex-column flex-md-row justify-content-md-end gap-2">
 
-      <button type="submit" class="btn btn-success px-4">
-        <i class="bi bi-save me-1"></i>
-        {{ selectedBusiness ? "Update" : "Save" }}
-      </button>
-    </div>
+  <button
+    type="button"
+    class="btn btn-secondary px-4"
+    (click)="cancelAdd()"
+  >
+    <i class="bi bi-x-circle me-1"></i> Cancel
+  </button>
+
+  <button type="submit" class="btn btn-success px-4">
+    <i class="bi bi-save me-1"></i>
+    {{ selectedBusiness ? "Update" : "Save" }}
+  </button>
+
+</div>
+
   </form>
 </div>

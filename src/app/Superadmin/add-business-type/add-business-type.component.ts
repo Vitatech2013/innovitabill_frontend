@@ -38,7 +38,7 @@ export class AddBusinessTypeComponent implements OnInit {
     }
 
     this.addBusinessTypeForm = this.fb.group({
-      business_type: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^\S+$/)]],
+      business_type: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^\S+$/), Validators.pattern(/^[A-Za-z ]+$/) ]],
       business_code: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^\S+$/)]],
     });
   }
@@ -86,7 +86,7 @@ preventSpace(event: KeyboardEvent) {
        this.showToast('Business Type added successfully!', 'success');
 
         this.addBusinessTypeForm.reset();
-        window.location.reload();
+       
         
       },
       error: (err: any) => {
@@ -95,6 +95,7 @@ preventSpace(event: KeyboardEvent) {
       }
     });
   }
+  
 
   isInvalid(controlName: string): boolean {
     const control = this.addBusinessTypeForm.get(controlName);

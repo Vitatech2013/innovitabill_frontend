@@ -53,26 +53,28 @@ export class AddBusinessComponent implements OnInit {
     }
 
     this.addBusinessForm = this.fb.group({
-      business_name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
+      business_name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/),Validators.pattern(/^[A-Za-z ]+$/)]],
       owner_name: ['', [Validators.required, Validators.minLength(3),  Validators.pattern(/^[A-Za-z ]+$/)]],
       email: ['', [Validators.required, Validators.email,Validators.pattern(/^\S+$/)]],
-      phone_number: ['', [Validators.required, Validators.minLength(10),]],
+      phone_number: ['', [Validators.required,  Validators.pattern(/^[0-9]{10}$/)]],
       bt_id: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
-      registration_number: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
-      gst_number: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
-      password: ['', [Validators.required, Validators.minLength(3),    Validators.pattern(/^[A-Za-z0-9!#$%^&*()]+$/)]],
+      registration_number: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/),Validators.pattern(/^[A-Za-z0-9]+$/)]],
+      gst_number: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/),  ]],
+      password: ['', [Validators.required, Validators.minLength(8),    Validators.pattern(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).+$/
+      )]],
       address: this.fb.group({
         house_No: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
-        town_Name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
-        mandal_Name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
-        district_Name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
-        state: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
-        pincode: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
+        town_Name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/),Validators.pattern(/^[A-Za-z ]+$/)]],
+        mandal_Name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/),Validators.pattern(/^[A-Za-z ]+$/)]],
+        district_Name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/),Validators.pattern(/^[A-Za-z ]+$/)]],
+        state: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/),Validators.pattern(/^[A-Za-z ]+$/)]],
+        pincode: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^[0-9]+$/) ]],
       }),
-      logo_image: [''],
-      pan_pdf: [''],
-      aadhar_pdf: [''],
-      certificate_pdf: [''],
+      logo_image: ['', Validators.required],
+      pan_pdf: ['', Validators.required],
+      aadhar_pdf: ['', Validators.required],
+      certificate_pdf: ['', Validators.required],
     });
     this.loadBusinessTypes();
   }
@@ -107,6 +109,44 @@ onNameInput(event: any) {
     if (file) {
       this.selectedFiles[fieldName] = file;
     }
+     const fileType = file.type;
+  const fileSize = file.size / 1024 / 1024; // MB
+
+  // ---------------- IMAGE VALIDATION (Logo) ----------------
+  if (fieldName === 'logo_image') {
+    const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+
+    if (!validImageTypes.includes(fileType)) {
+      this.addBusinessForm.get(fieldName)?.setErrors({ invalidType: true });
+      return;
+    }
+
+    if (fileSize > 2) {
+      this.addBusinessForm.get(fieldName)?.setErrors({ maxSize: true });
+      return;
+    }
+  }
+
+  // ---------------- PDF VALIDATION (PAN, AADHAR, CERTIFICATE) ----------------
+  if (['pan_pdf', 'aadhar_pdf', 'certificate_pdf'].includes(fieldName)) {
+    if (fileType !== 'application/pdf') {
+      this.addBusinessForm.get(fieldName)?.setErrors({ invalidType: true });
+      return;
+    }
+
+    if (fileSize > 5) {
+      this.addBusinessForm.get(fieldName)?.setErrors({ maxSize: true });
+      return;
+    }
+  }
+
+  // If valid → set form value
+  this.addBusinessForm.patchValue({
+    [fieldName]: file
+  });
+
+  this.addBusinessForm.get(fieldName)?.updateValueAndValidity();
+    
   }
 
   cancelAdd() {

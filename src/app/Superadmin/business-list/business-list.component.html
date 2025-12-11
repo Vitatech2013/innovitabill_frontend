@@ -8,19 +8,35 @@
         </div>
       </div>
     </div>
-    <div class="row mb-3">
-      <div class="col-12 d-flex align-items-center justify-content-between">
-        <h4 class="fw-bold text-success mb-0">Available Business List</h4>
+<div class="row mb-3">
+  <div class="col-12 d-flex flex-column flex-md-row align-items-md-center justify-content-between">
 
-        <input
-          type="text"
-          class="form-control shadow-sm mx-3"
-          placeholder="Search by name, brand, or status..."
-          [(ngModel)]="searchTerm"
-          style="max-width: 300px"
-        />
-      </div>
-    </div>
+    <h4 class="fw-bold text-success mb-2 mb-md-0">
+      Available Business List
+    </h4>
+
+
+    <input
+      type="text"
+      class="form-control shadow-sm mb-2 mb-md-0 mx-md-3"
+      placeholder="Search.."
+      [(ngModel)]="searchTerm"
+      style="width: 100%; max-width: 300px"
+    />
+
+   
+    <a
+      class="btn side-btn text-dark fw-semibold border-1"
+      routerLink="/SuperAdminView/add-business"
+      routerLinkActive="active-btn"
+      style="background-color: #f3f4f6;"
+    >
+      <b><i class="bi bi-plus-circle me-1"></i></b>
+      Add Business
+    </a>
+  </div>
+</div>
+
 
     <div class="row">
       <div *ngIf="business.length === 0" class="text-center mt-4">
@@ -39,7 +55,7 @@
                     style="width: 70px"
                     style="background: #d4f8d4; color: #0a5c0a"
                   >
-                    Sl. No
+                    S. No
                   </th>
                   <th style="background: #d4f8d4; color: #0a5c0a">
                     Business Name
@@ -63,7 +79,7 @@
               <tbody>
                 <tr
                   *ngFor="let b of filteredBusiness(); let i = index"
-                  class="align-middle text-center"
+                  class="align-middle text-center h-50"
                 >
                   <td class="fw-semibold">{{ i + 1 }}</td>
                   <td>{{ b.business_name }}</td>
@@ -376,12 +392,14 @@
                   </select>
                 </div>
               </div>
-              
-<h6 class="fw-bold mt-3">Address</h6>
+
+              <h6 class="fw-bold mt-3">Address</h6>
 
               <div formGroupName="address" class="row">
                 <div class="col-md-4 mb-2" *ngFor="let field of addressFields">
-                  <label class="form-label fw-semibold">{{ field.label }}</label>
+                  <label class="form-label fw-semibold">{{
+                    field.label
+                  }}</label>
                   <input
                     type="text"
                     class="form-control"
@@ -390,7 +408,7 @@
                   />
                 </div>
               </div>
-                    <!-- <div formGroupName="address" class="row">
+              <!-- <div formGroupName="address" class="row">
         <div class="col-md-3 mb-4" *ngFor="let field of addressFields">
           <label class="form-label fw-semibold" style="font-size: medium;">
             {{ field.label }}<span class="text-danger">*</span></label
@@ -414,7 +432,7 @@
           </div>
         </div>
       </div> -->
-           
+
               <h6 class="fw-bold text-success mb-3 mt-4">Documents</h6>
               <div class="row g-3">
                 <div class="col-md-4">
