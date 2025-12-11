@@ -69,7 +69,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.loadBusinessDetails();
+    this.getBusinessDetails();
 
     this.getDemoCustomers();
     this.itemsGets();
@@ -90,7 +90,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     }
   }
 
- loadBusinessDetails() {
+ getBusinessDetails() {
   this.http.get<any>(`${this.baseUrl}/business/get`).subscribe({
     next: (b) => {
       if (!b || !b.data || b.data.length === 0) {
@@ -98,7 +98,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
         return;
       }
 
-      const business = b.data[0]; // take first business from array
+      const business = b.data[0]; 
 
       const businessGroup = this.quotationForm.get('business') as FormGroup;
 

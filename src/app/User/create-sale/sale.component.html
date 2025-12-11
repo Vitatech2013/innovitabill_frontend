@@ -1,14 +1,16 @@
 <div class="row">
   <div class="col-md-8">
-    <input
-      type="text"
-      class="form-control mb-3 justify-content-between"
-      placeholder="Search by name, brand, or status..."
-      [(ngModel)]="searchTerm"
-      style="max-width: 300px"
-    />
+    <div class="search-box">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search"
+        [(ngModel)]="searchTerm"
+      />
+      <i class="bi bi-search search-icon"></i>
+    </div>
 
-    <div class="card-container">
+    <div class="card-container mt-2">
       <div
         class="item-card"
         *ngFor="let it of filteredItems()"
@@ -48,40 +50,50 @@
   </div>
 
   <div class="col-md-4">
-    <div class="selected-items">
-      <h4><i class="bi bi-cart4"></i> Cart</h4>
-
-      <div *ngIf="cartItems.length === 0" class="empty">No items added yet</div>
-
-      <div class="selected-card" *ngFor="let item of cartItems">
-        <div class="selected-info">
-          <span class="brand">{{ item.brand_name }}</span>
-          <strong>{{ item.item_name }}</strong>
-          <p>Price: ₹{{ item.selling_price }}</p>
-          <p>Discount: ₹{{ item.discount || 0 }}</p>
-          <p><strong>Total:</strong> ₹{{ getItemTotal(item) }}</p>
-
-          <div class="cart-buttons">
-            <button class="remove" (click)="removeFromCart(item)">−</button>
-            <span class="quantity">{{ item.cartQty }}</span>
-            <button class="add" (click)="addToCart(item)" class="btn-success">+</button>
-          </div>
-        </div>
-
-        <img
-          *ngIf="item.image"
-          [src]="getImageUrl(item.image)"
-          class="cart-img"
-          alt="{{ item.item_name }}"
-        />
+    <div
+      class="selected-items"
+      [ngClass]="{ 'empty-state': cartItems.length === 0 }"
+    >
+      <div *ngIf="cartItems.length === 0" class="empty-wrapper">
+        <h4><i class="bi bi-cart4"></i> Cart</h4>
+        <div class="empty">No items added yet</div>
       </div>
 
-      <div *ngIf="cartItems.length > 0" class="total-summary">
-        Grand Total: ₹{{ getTotalBill() }}
-        <br />
-        <button class="generate-btn btn-success" (click)="toggleCustomerForm()">
-          Generate Bill
-        </button>
+      <div *ngIf="cartItems.length > 0">
+        <h4><i class="bi bi-cart4"></i> Cart</h4>
+
+        <div class="selected-card" *ngFor="let item of cartItems">
+          <div class="selected-info">
+            <span class="brand">{{ item.brand_name }}</span>
+            <strong>{{ item.item_name }}</strong>
+            <p>Price: ₹{{ item.selling_price }}</p>
+            <p>Discount: ₹{{ item.discount || 0 }}</p>
+            <p><strong>Total:</strong> ₹{{ getItemTotal(item) }}</p>
+
+            <div class="cart-buttons">
+              <button class="remove" (click)="removeFromCart(item)">−</button>
+              <span class="quantity">{{ item.cartQty }}</span>
+              <button class="add" (click)="addToCart(item)">+</button>
+            </div>
+          </div>
+
+          <img
+            *ngIf="item.image"
+            [src]="getImageUrl(item.image)"
+            class="cart-img"
+          />
+        </div>
+
+        <div class="total-summary">
+          Grand Total: ₹{{ getTotalBill() }}
+          <br />
+          <button
+            class="generate-btn btn-success"
+            (click)="toggleCustomerForm()"
+          >
+            Generate Bill
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -89,31 +101,61 @@
 
 <div class="modal" *ngIf="showCustomerForm">
   <div class="modal-content">
-    <h3 class="bg-success">Customer Details</h3>
+    <div class="modal-header-custom bg-success">
+      <h3>Customer Details</h3>
+
+      <button
+        type="button"
+        class="btn-close btn-close-dark"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+        (click)="toggleCustomerForm()"
+      ></button>
+    </div>
+
     <form [formGroup]="customerForm">
       <div class="row">
         <div class="col">
           <label>Name</label>
           <input formControlName="name" type="text" />
+          <div
+            *ngIf="
+              customerForm.controls['name']?.touched &&
+              customerForm.controls['name']?.invalid
+            "
+          >
+            <small
+              *ngIf="customerForm.controls['name']?.errors?.['required']"
+              class="text-danger"
+              >Name is required</small
+            >
+            <small
+              *ngIf="customerForm.controls['name']?.errors?.['minlength']"
+              class="text-danger"
+              >Minimum 3 letters</small
+            >
+          </div>
         </div>
+
         <div class="col">
           <label>Phone</label>
-          <input formControlName="phone" type="text" />
-        </div>
-        <div class="col">
-          <label>Email</label>
-          <input formControlName="email" type="email" />
+          <input
+            formControlName="phone"
+            type="text"
+            maxlength="10"
+            (input)="onPhoneInput($event)"
+          />
         </div>
       </div>
 
       <div class="row">
         <div class="col">
-          <label>Address</label>
-          <input formControlName="address" type="text" />
+          <label>Email</label>
+          <input formControlName="email" type="email" />
         </div>
         <div class="col">
-          <label>GST Number</label>
-          <input formControlName="gst_number" type="text" />
+          <label>Address</label>
+          <input formControlName="address" type="text" />
         </div>
       </div>
 
@@ -127,4 +169,40 @@
       </div>
     </form>
   </div>
+</div>
+
+<div id="printArea" style="display: none">
+  <h2>{{ business?.name || "Invoice" }}</h2>
+  <p>Date: {{ currentDate }}</p>
+  <p>Invoice No: {{ invoice_number }}</p>
+
+  <hr />
+
+  <p><strong>Customer:</strong> {{ customerForm.value.name }}</p>
+  <p>Phone: {{ customerForm.value.phone }}</p>
+
+  <hr />
+
+  <table width="100%" border="1" cellspacing="0" cellpadding="5">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Qty</th>
+        <th>Rate</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let it of cartItems">
+        <td>{{ it.item_name }}</td>
+        <td>{{ it.cartQty }}</td>
+        <td>₹{{ it.selling_price }}</td>
+        <td>₹{{ getItemTotal(it) }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr />
+
+  <h3>Grand Total: ₹{{ grandTotal }}</h3>
 </div>

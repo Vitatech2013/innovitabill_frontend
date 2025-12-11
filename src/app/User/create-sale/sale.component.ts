@@ -4,6 +4,7 @@ import {
   FormGroup,
   ReactiveFormsModule,
   FormsModule,
+  Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -11,7 +12,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { constants } from '../../../../constants';
 import { BillingService } from '../../Services/billing.service';
-
 
 @Component({
   selector: 'app-sale',
@@ -36,7 +36,7 @@ export class SaleComponent implements OnInit {
   business_id: string = '';
   toastMessage: string | null = null;
   toastType: string | undefined;
-   private baseUrl = constants.baseUrl;
+  private baseUrl = constants.baseUrl;
 
   constructor(
     private fb: FormBuilder,
@@ -60,11 +60,18 @@ export class SaleComponent implements OnInit {
     }
 
     this.customerForm = this.fb.group({
-      name: [''],
-      phone: [''],
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      phone: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(10),
+          Validators.pattern('^[0-9]*$'),
+        ],
+      ],
       email: [''],
       address: [''],
-      gst_number: [''],
     });
 
     this.getItems();
@@ -265,6 +272,11 @@ export class SaleComponent implements OnInit {
     setTimeout(() => (this.toastMessage = null), 3000);
   }
   getImageUrl(filename: string): string {
-    return `${this.baseUrl}/business_images/${filename}`; 
+    return `${this.baseUrl}/business_images/${filename}`;
   }
+
+  onPhoneInput(event: any) {
+  event.target.value = event.target.value.replace(/[^0-9]/g, '').slice(0, 10);
+  this.customerForm.get('phone')?.setValue(event.target.value);
+}
 }
