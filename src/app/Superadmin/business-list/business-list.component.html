@@ -8,35 +8,33 @@
         </div>
       </div>
     </div>
-<div class="row mb-3">
-  <div class="col-12 d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+    <div class="row mb-3">
+      <div
+        class="col-12 d-flex flex-column flex-md-row align-items-md-center justify-content-between"
+      >
+        <h4 class="fw-bold text-success mb-2 mb-md-0">
+          Available Business List
+        </h4>
 
-    <h4 class="fw-bold text-success mb-2 mb-md-0">
-      Available Business List
-    </h4>
+        <input
+          type="text"
+          class="form-control shadow-sm mb-2 mb-md-0 mx-md-3"
+          placeholder="Search.."
+          [(ngModel)]="searchTerm"
+          style="width: 100%; max-width: 300px"
+        />
 
-
-    <input
-      type="text"
-      class="form-control shadow-sm mb-2 mb-md-0 mx-md-3"
-      placeholder="Search.."
-      [(ngModel)]="searchTerm"
-      style="width: 100%; max-width: 300px"
-    />
-
-   
-    <a
-      class="btn side-btn text-dark fw-semibold border-1"
-      routerLink="/SuperAdminView/add-business"
-      routerLinkActive="active-btn"
-      style="background-color: #f3f4f6;"
-    >
-      <b><i class="bi bi-plus-circle me-1"></i></b>
-      Add Business
-    </a>
-  </div>
-</div>
-
+        <a
+          class="btn side-btn text-dark fw-semibold border-1"
+          routerLink="/SuperAdminView/add-business"
+          routerLinkActive="active-btn"
+          style="background-color: #f3f4f6"
+        >
+          <b><i class="bi bi-plus-circle me-1"></i></b>
+          Add Business
+        </a>
+      </div>
+    </div>
 
     <div class="row">
       <div *ngIf="business.length === 0" class="text-center mt-4">

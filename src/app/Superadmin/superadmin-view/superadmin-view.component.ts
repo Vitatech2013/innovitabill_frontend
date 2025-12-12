@@ -23,7 +23,7 @@ export class SuperadminViewComponent implements OnInit {
 
   ngOnInit(): void {
     const stored = localStorage.getItem('sa');
-  console.log(stored, 'stored');
+    console.log(stored, 'stored');
     if (!stored) {
       this.router.navigateByUrl('/SuperAdminLogin');
       return;
@@ -31,7 +31,6 @@ export class SuperadminViewComponent implements OnInit {
 
     const parsed = JSON.parse(stored);
     console.log(parsed, 'parsed');
-    
 
     this.superadminName = parsed.superadmin_name;
   }
@@ -42,6 +41,4 @@ export class SuperadminViewComponent implements OnInit {
 
     this.router.navigateByUrl('SuperAdminLogin');
   }
-
-
 }
