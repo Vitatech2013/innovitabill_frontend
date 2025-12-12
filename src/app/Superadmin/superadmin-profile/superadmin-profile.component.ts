@@ -27,16 +27,16 @@ export class SuperadminProfileComponent implements OnInit {
   previewUrl: string | ArrayBuffer | null = null;
   private baseUrl = constants.baseUrl;
   addressFields = [
-    { label: 'House No', name: 'house_No' },
-    { label: 'Town Name', name: 'town_Name' },
-    { label: 'Mandal Name', name: 'mandal_Name' },
-    { label: 'District Name', name: 'district_Name' },
-    { label: 'State', name: 'state' },
-    { label: 'Pincode', name: 'pincode' },
+   { name: 'house_No', label: 'House No' },
+    { name: 'town_Name', label: 'Town Name' },
+    { name: 'mandal_Name', label: 'Mandal' },
+    { name: 'district_Name', label: 'District' },
+    { name: 'state', label: 'State' },
+    { name: 'pincode', label: 'Pincode' },
   ];
   profile: any;
   toastMessage: string | null = null;
-  toastType: string | undefined;
+  toastType: any;
 
   constructor(
     private fb: FormBuilder,
@@ -96,7 +96,7 @@ export class SuperadminProfileComponent implements OnInit {
       superadmin_name: this.superadminData.superadmin_name,
       superadmin_number: this.superadminData.superadmin_number,
       superadmin_mail: this.superadminData.superadmin_mail,
-      superadmin_password: this.superadminData.superadmin_password,
+      
       address: this.superadminData.address,
     });
     const modalEl = document.getElementById('editProfileModal');
@@ -132,15 +132,16 @@ export class SuperadminProfileComponent implements OnInit {
     //   'superadmin_password',
     //   this.profileForm.get('superadmin_password')?.value
     // );
-    const password = this.profileForm.get('superadmin_password')?.value;
+    // const password = this.profileForm.get('superadmin_password')?.value;
 
-    if (password && password.trim() !== '') {
-      formData.append('superadmin_password', password);
-    }
-    formData.append(
-      'address',
-      JSON.stringify(this.profileForm.get('address')?.value)
-    );
+    // if (password && password.trim() !== '') {
+    //   formData.append('superadmin_password', password);
+    // }
+    // formData.append(
+    //   'address',
+    //   JSON.stringify(this.profileForm.get('address')?.value)
+    // );
+formData.append('address', JSON.stringify(this.profileForm.value.address));
 
     if (this.selectedImage) {
       formData.append('image', this.selectedImage);
@@ -208,24 +209,48 @@ export class SuperadminProfileComponent implements OnInit {
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 3000);
   }
+fetchAdminData() {
+  if (!this.superadmin_id) return;
 
-  fetchAdminData() {
-    if (!this.superadmin_id) return;
+  this.profileService.getadminprofile(this.superadmin_id).subscribe({
+    next: (res: any) => {
+      this.superadminData = res?.data || res;
 
-    this.profileService.getadminprofile(this.superadmin_id).subscribe({
-      next: (res: any) => {
-        console.log(' Admin profile fetched successfully:', res);
-        this.superadminData = res?.data || res;
+      // Convert image
+      this.previewUrl = this.getImageUrl(this.superadminData.image) + '?t=' + Date.now();
 
-        this.previewUrl =
-          this.getImageUrl(this.superadminData.image) + '?t=' + Date.now();
+      // Patch simple fields
+      this.profileForm.patchValue({
+        superadmin_name: this.superadminData.superadmin_name,
+        superadmin_number: this.superadminData.superadmin_number,
+        superadmin_mail: this.superadminData.superadmin_mail,
+      });
 
-        const { image, ...rest } = this.superadminData;
-        this.profileForm.patchValue(rest);
-      },
-      error: (err) => console.error(' Error fetching admin profile:', err),
-    });
-  }
+      // 🟢 FIX ADDRESS PARSING
+      let parsedAddress: any = {};
+
+      try {
+        parsedAddress = JSON.parse(this.superadminData.address);
+      } catch {
+        parsedAddress = this.superadminData.address; // if already object
+      }
+
+      // Now patch address safely
+      this.profileForm.get('address')?.patchValue({
+        house_No: parsedAddress.house_No || "",
+        town_Name: parsedAddress.town_Name || "",
+        mandal_Name: parsedAddress.mandal_Name || "",
+        district_Name: parsedAddress.district_Name || "",
+        state: parsedAddress.state || "",
+        pincode: parsedAddress.pincode || ""
+      });
+
+    },
+    error: (err) => console.error('Error fetching admin profile:', err),
+  });
+}
+
+
 
   onImageSelected(event: any) {
     const file = event.target.files[0];

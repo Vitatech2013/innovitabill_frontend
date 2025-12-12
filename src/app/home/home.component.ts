@@ -71,13 +71,13 @@ submitted = false;
 
     this.api.sendDemoMail(this.demoForm.value).subscribe({
       next: (res: any) => {
-        this.showToast("Message Registered Successfully! Mail Sent", "success");
+        this.showToast("Message Registered Successfully!", "success");
         this.demoForm.reset();
         this.demoModal?.hide();
       },
       error: (err: any) => {
         console.error(err);
-        this.showToast("Failed to send email", "error");
+        this.showToast("Failed to send ", "error");
       }
     });
   }

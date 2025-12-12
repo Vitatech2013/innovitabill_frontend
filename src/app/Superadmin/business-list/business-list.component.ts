@@ -11,6 +11,7 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { constants } from '../../../../constants';
 import { BillingService } from '../../Services/billing.service';
+import { RouterModule } from '@angular/router';
 
 
 declare var bootstrap: any;
@@ -18,7 +19,7 @@ declare var bootstrap: any;
 @Component({
   selector: 'app-business-list',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule,RouterModule],
   templateUrl: './business-list.component.html',
   styleUrls: ['./business-list.component.css'],
 })
@@ -42,7 +43,14 @@ export class BusinessListComponent implements OnInit {
    private baseUrl = constants.baseUrl;
    toastMessage: string | null = null;
   toastType: string | undefined;
-
+ addressFields = [
+    { name: 'house_No', label: 'House No' },
+    { name: 'town_Name', label: 'Town Name' },
+    { name: 'mandal_Name', label: 'Mandal' },
+    { name: 'district_Name', label: 'District' },
+    { name: 'state', label: 'State' },
+    { name: 'pincode', label: 'Pincode' },
+  ];
 
   constructor(private fb: FormBuilder, private api: BillingService, private toastr: ToastrService) {}
 
@@ -60,7 +68,7 @@ if (businesslist) {
       owner_name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required, Validators.minLength(10),]],
-      address: ['', [Validators.required, Validators.minLength(3)]],
+     
       registration_number: ['', [Validators.required, Validators.minLength(3)]],
       gst_number: ['', [Validators.required, Validators.minLength(3)]],
       bt_id:[''],
@@ -70,6 +78,14 @@ if (businesslist) {
       pan_pdf: [''],
       aadhar_pdf: [''],
       certificate_pdf: [''],
+      address: this.fb.group({
+        house_No: [''],
+        town_Name: [''],
+        mandal_Name: [''],
+        district_Name: [''],
+        state: [''],
+        pincode: [''],
+      }),
     });
     const saData = JSON.parse(localStorage.getItem('sa') || '{}');
     this.superadmin_id = saData._id;
@@ -141,7 +157,14 @@ if (businesslist) {
       phone_number: b.phone_number,
       password: '',
       bt_id: b.bt_id ? b.bt_id._id || b.bt_id : '',
-      address: JSON.stringify(b.address),
+      address: {
+        house_No: b.address?.house_No || '',
+        town_Name: b.address?.town_Name || '',
+        mandal_Name: b.address?.mandal_Name || '',
+        district_Name: b.address?.district_Name || '',
+        state: b.address?.state || '',
+        pincode: b.address?.pincode || '',
+      },
       registration_number: b.registration_number,
       gst_number: b.gst_number,
       status: b.status || b.business_status || b.status?.status || '',
@@ -220,20 +243,20 @@ updateBusiness() {
   const addr = businessForm.address;
   let parsedAddress: any = {};
 
-  if (typeof addr === "string") {
-    const parts = addr.split(",");
-    parsedAddress = {
-      house_No: parts[0]?.trim() || "",
-      town_Name: parts[1]?.trim() || "",
-      mandal_Name: parts[2]?.trim() || "",
-      district_Name: parts[3]?.trim() || "",
-      state: parts[4]?.trim() || "",
-      pincode: parts[5]?.trim() || ""
-    };
-  }
-
-  formData.append("address", JSON.stringify(parsedAddress));
-
+  // if (typeof addr === "string") {
+  //   const parts = addr.split(",");
+  //   parsedAddress = {
+  //     house_No: parts[0]?.trim() || "",
+  //     town_Name: parts[1]?.trim() || "",
+  //     mandal_Name: parts[2]?.trim() || "",
+  //     district_Name: parts[3]?.trim() || "",
+  //     state: parts[4]?.trim() || "",
+  //     pincode: parts[5]?.trim() || ""
+  //   };
+  // }
+ for (const key in businessForm.address) {
+  formData.append(`address[${key}]`, businessForm.address[key]);
+ }
   formData.append("registration_number", businessForm.registration_number || "");
   formData.append("gst_number", businessForm.gst_number || "");
   formData.append("status", businessForm.status || "");
@@ -401,17 +424,17 @@ deleteBusiness(id?: string | null) {
     next: (res: any) => {
       console.log('Business deleted:', res);
 
-      // Reload the business list
+      
       this.loadBusiness();
 
-      // Close the modal
+     
       this.closeModal('deleteBusinessModal');
 
-      // Show success toast
+     
       this.toastMessage = 'Business deleted successfully!';
-      this.toastType = 'bg-success text-white'; // you can define your own class if needed
+      this.toastType = 'bg-success text-white'; 
 
-      // Optional: hide toast after 3 seconds
+      
       setTimeout(() => {
         this.toastMessage = null;
       }, 3000);
@@ -420,7 +443,7 @@ deleteBusiness(id?: string | null) {
     error: (err) => {
       console.error('Error deleting business:', err);
 
-      // Show error toast
+     
       this.toastMessage = 'Failed to delete business!';
       this.toastType = 'bg-danger text-white';
 
@@ -438,6 +461,14 @@ deleteBusiness(id?: string | null) {
       if (modal) modal.hide();
     }
   }
+  allowOnlyLetters(event: KeyboardEvent) {
+    if (!/^[A-Za-z]$/.test(event.key)) event.preventDefault();
+  }
+  preventSpace(event: KeyboardEvent) {
+  if (event.code === 'Space') {
+    event.preventDefault();
+  }
+}
 }
 
 
