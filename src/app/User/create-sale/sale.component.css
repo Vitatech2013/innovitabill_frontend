@@ -245,7 +245,6 @@
   position: relative;
 }
 .modal-header-custom {
-  
   color: white;
   padding: 15px 20px;
   display: flex;
@@ -335,4 +334,25 @@
   transform: translateY(-50%);
   font-size: 18px;
   color: #6c757d;
+}
+.scrollable-cart {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.scrollable-cart::-webkit-scrollbar {
+  width: 2px;
+}
+
+.scrollable-cart::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.scrollable-cart::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 3px;
+}
+
+.scrollable-cart::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

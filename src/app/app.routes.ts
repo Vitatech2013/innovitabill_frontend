@@ -33,6 +33,7 @@ import { RolesComponent } from './Business/roles/roles.component';
 import { UnitsComponent } from './Business/units/units.component';
 import { SubCategoriesComponent } from './Business/sub-categories/sub-categories.component';
 import { InactiveBusinesstypeComponent } from './Superadmin/inactive-businesstype/inactive-businesstype.component';
+import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 
 
 export const routes: Routes = [
@@ -61,7 +62,8 @@ export const routes: Routes = [
     path: 'userview',
     component: UserViewComponent,
     children: [
-      { path: '', component: SaleComponent },
+      {path:'', component:UserDashboardComponent},
+      { path: 'createsale', component: SaleComponent },
       { path: 'userprofile', component: UserProfileComponent },
       {
         path: 'itemlist',

@@ -2,16 +2,14 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
+  Validators,
   ReactiveFormsModule,
   FormsModule,
-  Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
-
 import { Router } from '@angular/router';
-import { constants } from '../../../../constants';
 import { BillingService } from '../../Services/billing.service';
+import { constants } from '../../../../constants';
 
 @Component({
   selector: 'app-sale',
@@ -23,122 +21,81 @@ import { BillingService } from '../../Services/billing.service';
 export class SaleComponent implements OnInit {
   items: any[] = [];
   cartItems: any[] = [];
-  Business_id!: string;
-  user_id!: string;
-  showCustomerForm = false;
   customerForm!: FormGroup;
-  invoice_number!: string;
-  generatedInvoice: any = null;
-  business: any = {};
-  currentDate = new Date().toLocaleString();
+  showCustomerForm = false;
+ business: any = {};
   grandTotal = 0;
-  searchTerm: string = '';
+  searchTerm = '';
+ invoice_number!: string;
   business_id: string = '';
-  toastMessage: string | null = null;
-  toastType: string | undefined;
-  private baseUrl = constants.baseUrl;
+  user_id: string = '';
+
+  currentDate = new Date().toLocaleString();
+  baseUrl = constants.baseUrl;
 
   constructor(
     private fb: FormBuilder,
-    private toastr: ToastrService,
     private service: BillingService,
     private cdr: ChangeDetectorRef,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    const storedUser = localStorage.getItem('business');
-    if (storedUser) {
-      const bid = JSON.parse(storedUser);
-      this.business_id = bid._id || '';
-      console.log('BusinessID:', this.business_id);
-    }
-    const UserStored = localStorage.getItem('users');
-    if (UserStored) {
-      const u = JSON.parse(UserStored);
-      this.user_id = u._id || '';
-    }
+    const storedBusiness = localStorage.getItem('business');
+    if (storedBusiness) this.business_id = JSON.parse(storedBusiness)._id;
+
+    const storedUser = localStorage.getItem('users');
+    if (storedUser) this.user_id = JSON.parse(storedUser)._id;
 
     this.customerForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
-      phone: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(10),
-          Validators.pattern('^[0-9]*$'),
-        ],
-      ],
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       email: [''],
       address: [''],
     });
 
     this.getItems();
-    this.generateInvoiceNumber();
   }
 
-  getItems(): void {
-    this.service.getItems(this.business_id).subscribe({
-      next: (res: any) => {
-        this.items = res.data || [];
-      },
-      error: (err: any) => {
-        console.error('Error fetching items:', err);
-        this.showToast('Failed to load Items', 'Danger');
-      },
+  getItems() {
+    this.service.getItems(this.business_id).subscribe((res: any) => {
+      this.items = res.data || [];
     });
   }
 
-  generateInvoiceNumber() {
-    const randomNum = Math.floor(1000 + Math.random() * 9000);
-    this.invoice_number = `INV-${randomNum}`;
-  }
-
   addToCart(item: any) {
-    if (item.stock_quantity <= 0) {
-      this.showToast('Out Of Stock!', 'Warning');
-      return;
-    }
+    const existing = this.cartItems.find((c) => c._id === item._id);
 
-    const existingItem = this.cartItems.find((c) => c._id === item._id);
-    if (existingItem) {
-      existingItem.cartQty++;
-    } else {
-      this.cartItems.push({ ...item, cartQty: 1 });
-    }
+    if (existing) existing.cartQty++;
+    else this.cartItems.push({ ...item, cartQty: 1 });
 
-    const mainItem = this.items.find((it) => it._id === item._id);
-    if (mainItem) mainItem.stock_quantity--;
-
-    this.updateGrandTotal();
+    item.stock_quantity--;
+    this.updateTotals();
   }
 
   removeFromCart(item: any) {
-    const existingItem = this.cartItems.find((c) => c._id === item._id);
-    if (existingItem) {
-      existingItem.cartQty--;
-      const mainItem = this.items.find((it) => it._id === item._id);
-      if (mainItem) mainItem.stock_quantity++;
+    const existing = this.cartItems.find((c) => c._id === item._id);
+    if (!existing) return;
 
-      if (existingItem.cartQty <= 0) {
-        this.cartItems = this.cartItems.filter((c) => c._id !== item._id);
-      }
+    existing.cartQty--;
+    item.stock_quantity++;
+
+    if (existing.cartQty === 0) {
+      this.cartItems = this.cartItems.filter((c) => c._id !== item._id);
     }
-    this.updateGrandTotal();
+
+    this.updateTotals();
   }
 
-  getItemTotal(item: any): number {
-    const priceAfterDiscount = item.selling_price - (item.discount || 0);
-    const taxAmount = (priceAfterDiscount * (item.tax_rate || 0)) / 100;
-    return (priceAfterDiscount + taxAmount) * item.cartQty;
+  getItemTotal(item: any) {
+    return item.cartQty * item.selling_price;
   }
 
-  getTotalBill(): number {
+  getTotalBill() {
     return this.cartItems.reduce((sum, it) => sum + this.getItemTotal(it), 0);
   }
 
-  updateGrandTotal() {
+  updateTotals() {
     this.grandTotal = this.getTotalBill();
   }
 
@@ -146,137 +103,112 @@ export class SaleComponent implements OnInit {
     this.showCustomerForm = !this.showCustomerForm;
   }
 
-  generateBill() {
-    if (this.cartItems.length === 0) {
-      this.showToast('No items in cart to generate bill.', 'Warning');
-      return;
-    }
-
-    const payload = {
-      invoice_number: this.invoice_number,
-      customer: this.customerForm.value,
-      business_id: this.business_id || null,
-      user_id: this.user_id,
-      discount: this.cartItems.reduce((sum, it) => sum + (it.discount || 0), 0),
-      products: this.cartItems.map((it) => ({
-        item_id: it._id,
-
-        quantity: it.cartQty,
-        selling_price: it.selling_price,
-        tax_rate: it.tax_rate,
-        discount: it.discount || 0,
-      })),
-    };
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      const bid = JSON.parse(storedUser);
-      this.business_id = bid._id || '';
-      console.log('BusinessID:', this.business_id);
-    }
-    this.service.savesale(payload).subscribe({
-      next: () => {
-        this.generatedInvoice = payload;
-        this.grandTotal = this.getTotalBill();
-        this.showCustomerForm = false;
-
-        this.cdr.detectChanges();
-
-        this.showToast('Bill generated successfully!', 'Success');
-        console.log('KEYS IN LOCAL STORAGE:', Object.keys(localStorage));
-
-        console.log('business:', localStorage.getItem('business'));
-        console.log('user:', localStorage.getItem('user'));
-        console.log('users:', localStorage.getItem('users'));
-        console.log('currentUser:', localStorage.getItem('currentUser'));
-        console.log('loginData:', localStorage.getItem('loginData'));
-        setTimeout(() => this.printBill('a4'), 200);
-      },
-      error: (err) => {
-        console.log('PAYLOAD:', payload);
-        console.log('SERVER:', err.error);
-        this.showToast('Failed to generate bill.', 'Danger');
-      },
-    });
+  generateInvoiceNumber() {
+    return 'INV-'  + Math.floor(Math.random() * 9000);
   }
 
-  printBill(type: 'thermal' | 'a4') {
-    const content = document.getElementById('printArea')?.innerHTML;
-
-    if (!content) {
-      this.showToast('Bill content not found.', 'Danger');
+  generateBill() {
+    if (this.cartItems.length === 0) {
+      alert('No items in cart!');
       return;
     }
 
-    const printWindow = window.open('', '', 'width=350,height=600');
+    if (this.customerForm.invalid) {
+      alert('Please enter valid customer details');
+      return;
+    }
+
+    const customer = this.customerForm.value;
+    const invoices: Promise<any>[] = [];
+
+    // Create one invoice per item
+    this.cartItems.forEach((item) => {
+      const payload = {
+        invoice_number: this.generateInvoiceNumber(),
+        customer: customer,
+        business_id: this.business_id,
+        user_id: this.user_id,
+
+        products: [
+          {
+            item_id: item._id,
+            quantity: item.cartQty,
+            selling_price: item.selling_price,
+            discount: item.discount || 0,
+            tax_rate: item.tax_rate || 0,
+          },
+        ],
+
+        discount: 0,
+        payment_status: 'Paid',
+      };
+
+      invoices.push(this.service.savesale(payload).toPromise());
+    });
+
+    // After saving all invoices → print only ONE bill
+    Promise.all(invoices)
+      .then(() => {
+        this.printBill();
+        alert('All invoices saved successfully!');
+        this.resetCart();
+      })
+      .catch((err) => {
+        console.error(err);
+        alert('Error saving invoices!');
+      });
+  }
+
+  printBill() {
+    const content = document.getElementById('printArea')!.innerHTML;
+    const printWindow = window.open('', '', 'width=800,height=600');
 
     if (!printWindow) {
-      this.showToast('Popup blocked! Allow popups to print.', 'Danger');
+      alert('Popup blocked. Allow pop-ups to print.');
       return;
     }
-
-    const thermalCSS = `
-      body {
-        font-family: monospace;
-        width: 260px;
-        margin: 0;
-        padding: 0;
-        font-size: 12px;
-      }
-      img { max-width: 80px; }
-      hr { border-top: 1px dashed #000; }
-  `;
-
-    const a4CSS = `
-      body {
-        font-family: Arial, sans-serif;
-        margin: 40px;
-        padding: 0;
-        font-size: 14px;
-      }
-      img { max-height: 80px; }
-      hr { border-top: 1px solid #000; }
-  `;
-
-    const appliedCSS = type === 'thermal' ? thermalCSS : a4CSS;
 
     printWindow.document.open();
     printWindow.document.write(`
       <html>
       <head>
-          <title>Invoice</title>
-          <style>
-            ${appliedCSS}
-          </style>
+        <title>Invoice</title>
+        <style>
+          body { font-family: Arial; margin: 20px; }
+          table { width: 100%; border-collapse: collapse; }
+          th, td { border: 1px solid #333; padding: 8px; }
+        </style>
       </head>
       <body onload="window.print(); window.close();">
-          ${content}
+        ${content}
       </body>
       </html>
-  `);
+    `);
 
     printWindow.document.close();
+  }
+
+  resetCart() {
+    this.cartItems = [];
+    this.showCustomerForm = false;
   }
 
   filteredItems() {
     if (!this.searchTerm) return this.items;
     const term = this.searchTerm.toLowerCase();
     return this.items.filter((it) =>
-      Object.values(it).some((val) =>
-        val?.toString().toLowerCase().includes(term)
+      Object.values(it).some((v: any) =>
+        v?.toString().toLowerCase().includes(term)
       )
     );
   }
-  showToast(message: string, type: string) {
-    this.toastMessage = message;
-    this.toastType = type;
-    setTimeout(() => (this.toastMessage = null), 3000);
-  }
-  getImageUrl(filename: string): string {
-    return `${this.baseUrl}/business_images/${filename}`;
+
+  getImageUrl(file: string) {
+    return `${this.baseUrl}/business_images/${file}`;
   }
 
-  onPhoneInput(event: any) {
-  event.target.value = event.target.value.replace(/[^0-9]/g, '').slice(0, 10);
-  this.customerForm.get('phone')?.setValue(event.target.value);
-}
+  onPhoneInput(e: any) {
+    e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
+    this.customerForm.controls['phone'].setValue(e.target.value);
+  }
 }
