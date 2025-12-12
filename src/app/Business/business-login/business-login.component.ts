@@ -31,7 +31,16 @@ export class BusinessLoginComponent implements OnInit {
   ngOnInit(): void {
     this.businessForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password:  [
+    '',
+    [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.pattern(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+      ),
+    ],
+  ],
     });
   }
 
@@ -87,5 +96,8 @@ localStorage.setItem('businessToken', JSON.stringify(res.token));
   logout() {
     localStorage.removeItem('token');
     this.router.navigate(['/home']);
+  }
+  blockSpaces(event: KeyboardEvent) {
+    if (event.code === 'Space') event.preventDefault();
   }
 }

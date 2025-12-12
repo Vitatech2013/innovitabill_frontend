@@ -28,6 +28,7 @@ export class CategoriesComponent implements OnInit {
 toastMessage: any;
 toastType: any;
   selectedId: any;
+  searchTerm: string = '';
 
   constructor(private api: BillingService, private fb: FormBuilder) {}
 
@@ -177,10 +178,13 @@ toastType: any;
     event.preventDefault(); // blocks numbers, spaces, special characters
   }
 }
-allowOnlyNumbers(event: KeyboardEvent) {
-  const pattern = /^[0-9]$/;
-  if (!pattern.test(event.key)) {
-    event.preventDefault(); // blocks letters and special characters
+// allowOnlyNumbers(event: KeyboardEvent) {
+//   const pattern = /^[0-9]$/;
+//   if (!pattern.test(event.key)) {
+//     event.preventDefault(); // blocks letters and special characters
+//   }
+// }
+  blockSpaces(event: KeyboardEvent) {
+    if (event.code === 'Space') event.preventDefault();
   }
-}
 }

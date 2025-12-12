@@ -57,6 +57,7 @@
             formControlName="email"
             class="form-control"
             placeholder="Enter your email"
+            (keypress)="blockSpaces($event)"
           />
           <div
             *ngIf="businessForm.controls['email']?.touched && businessForm.controls['email']?.invalid"
@@ -85,6 +86,7 @@
             formControlName="password"
             class="form-control"
             placeholder="Enter your password"
+            (keypress)="blockSpaces($event)"
           />
           <div
             *ngIf="businessForm.controls['password']?.touched && businessForm.controls['password']?.invalid"
@@ -104,7 +106,7 @@
         </div>
 
         <div class="text-start mb-4">
-          <a routerLink="/forgot-password" class="text-success text-decoration-none small"
+          <a routerLink="/business-Forgotpassword" class="text-success text-decoration-none small"
             >Forgot password?</a
           >
         </div>

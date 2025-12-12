@@ -30,6 +30,7 @@ export class UnitsComponent implements OnInit {
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
 selectedUnit: any;
+searchTerm: string = '';
 
   constructor(private api: BillingService, private fb: FormBuilder) {}
 

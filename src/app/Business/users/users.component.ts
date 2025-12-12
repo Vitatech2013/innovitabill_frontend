@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BusinessService } from '../../Services/business.service';
 import { constants } from '../../../../constants';
 declare var bootstrap: any;
@@ -8,7 +8,7 @@ declare var bootstrap: any;
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,FormsModule],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css'],
 })
@@ -22,7 +22,7 @@ export class UsersComponent implements OnInit {
   toastType: 'success' | 'error' | 'warning' = 'success';
   toastMessage: string | null = null;
   private baseUrl = constants.baseUrl;
-
+  searchTerm: string = '';
   addressFields = [
     { name: 'house_No', label: 'House No',placeholder:'Enter H.no' },
     { name: 'town_Name', label: 'Town Name', placeholder:'Enter Town Name' },
@@ -55,7 +55,16 @@ export class UsersComponent implements OnInit {
       user_name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[A-Za-z]+$/)]],
       user_email: ['', [Validators.required, Validators.email]],
       phone_number: ['', [Validators.required, Validators.minLength(10), Validators.pattern(/^[0-9]+$/)]],
-      password: ['', Validators.required],
+      password:  [
+    '',
+    [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.pattern(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+      ),
+    ],
+  ],
       role_id: ['', Validators.required],
       status: ['', Validators.required],
       image: '',
@@ -77,6 +86,7 @@ export class UsersComponent implements OnInit {
       error: (err) => console.error('Error loading roles:', err),
     });
   }
+  
 
   getUsers() {
     this.service.getUser().subscribe((res: any) => {
@@ -251,5 +261,14 @@ export class UsersComponent implements OnInit {
 
   blockSpaces(event: KeyboardEvent) {
     if (event.code === 'Space') event.preventDefault();
+  }
+  filteredBusiness() {
+    if (!this.searchTerm) return this.users;
+    const term = this.searchTerm.toLowerCase();
+    return this.users.filter((user) =>
+      Object.values(user).some((val) =>
+        val?.toString().toLowerCase().includes(term)
+      )
+    );
   }
 }
