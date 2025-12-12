@@ -4,6 +4,16 @@
     <i class="bi bi-building me-2"></i>Inactive Business Types
   </h5>
 
+ <div class="search-container">
+    <input
+      type="text"
+      class="form-control shadow-sm"
+      placeholder="Search..."
+      [(ngModel)]="searchTerm"
+      style="width: 100%; max-width: 300px"
+    />
+  </div>
+
   <a
     class="btn side-btn text-dark fw-semibold border-1"
     routerLink="/SuperAdminView/view_business_type"
@@ -28,7 +38,7 @@
       </thead>
 
       <tbody class="text-center">
-        <tr *ngFor="let b of inactiveBusiness; let i = index">
+        <tr *ngFor="let b of filteredBusiness(); let i = index">
           <td>{{ i + 1 }}</td>
           <td class="fw-semibold">{{ b.business_type }}</td>
           <td>{{ b.business_code }}</td>
