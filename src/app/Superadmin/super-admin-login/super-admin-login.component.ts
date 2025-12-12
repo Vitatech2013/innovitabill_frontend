@@ -18,15 +18,16 @@ import { BillingService } from '../../Services/billing.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-   RouterLink,
-  ],
+    RouterLink,
+    RouterOutlet
+],
   templateUrl: './super-admin-login.component.html',
   styleUrl: './super-admin-login.component.css',
 })
 export class SuperAdminLoginComponent implements OnInit {
   superAdminForm!: FormGroup;
   toastMessage: string | null = null;
-  toastType: string | undefined;
+  toastType: 'success' | 'error' | 'warning' = 'success';
 
   constructor(
     private fb: FormBuilder,
@@ -43,7 +44,7 @@ export class SuperAdminLoginComponent implements OnInit {
 
   SuperAdminLogin() {
     if (this.superAdminForm.invalid) {
-      this.showToast('Please enter valid credentials', 'danger');
+      this.showToast('Please enter valid credentials', 'warning');
       this.superAdminForm.markAllAsTouched();
       return;
     }
@@ -51,16 +52,19 @@ export class SuperAdminLoginComponent implements OnInit {
     this.api.SuperAdminLogin(this.superAdminForm.value).subscribe({
       next: (res: any) => {
         console.log(res, 'Super Admin Login Success');
-
+if(res){
         
         localStorage.setItem('sa', JSON.stringify(res.data));
         localStorage.setItem('sa_token', res.token);
+}
+       
 
         this.showToast('Super Admin Login Success', 'success');
 
         this.router.navigate(['/SuperAdminView'], {
           state: { toast: 'Super Admin login success' },
         });
+        
       },
 
       error: (err: any) => {
@@ -69,20 +73,20 @@ export class SuperAdminLoginComponent implements OnInit {
         if (err.status === 403) {
           this.showToast(
             'Your account is inactive. Please contact system admin.',
-            'danger'
+            'warning'
           );
         } else if (err.status === 401) {
-          this.showToast('Invalid email or password.', 'danger');
+          this.showToast('Invalid email or password.', 'warning');
         } else if (err.status === 500) {
-          this.showToast('Server error! Please try again later.', 'danger');
+          this.showToast('Server error! Please try again later.', 'warning');
         } else {
-          this.showToast('Login failed. Please try again.', 'danger');
+          this.showToast('Login failed. Please try again.', 'warning');
         }
       },
     });
   }
 
-  showToast(message: string, type: string) {
+  showToast(message: string, type: 'success' | 'error' | 'warning' = 'success') {
     this.toastMessage = message;
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 3000);

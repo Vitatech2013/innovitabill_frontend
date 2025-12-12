@@ -32,3 +32,11 @@
     opacity: 1;
   }
 }
+ .scrollable-card {
+  max-height: 80vh; 
+  overflow-y: auto;
+}
+.scrollable-card::-webkit-scrollbar {
+  width: 6px;
+}
+

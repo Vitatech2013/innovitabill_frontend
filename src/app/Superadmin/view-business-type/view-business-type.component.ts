@@ -4,13 +4,14 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 
 import { AddBusinessTypeComponent } from "../add-business-type/add-business-type.component";
 import { BillingService } from '../../Services/billing.service';
+import { RouterLink } from '@angular/router';
 
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-view-business-type',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, AddBusinessTypeComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, AddBusinessTypeComponent,RouterLink],
   templateUrl: './view-business-type.component.html',
   styleUrls: ['./view-business-type.component.css']
 })
@@ -24,7 +25,8 @@ export class ViewBusinessTypeComponent implements OnInit {
   title: string = '';
   selectedB_type: any;
    searchTerm: string = '';
-   
+   inactiveCount: number = 0;
+
   
 
   constructor(private fb: FormBuilder, private api: BillingService) {}
@@ -40,7 +42,14 @@ export class ViewBusinessTypeComponent implements OnInit {
 
   getAllBusinessTypes() {
     this.api.getAllBusinessTypes().subscribe({
-      next: (res: any) => this.b_types = res.data,
+     next: (res: any) => {
+  
+  this.b_types = res.data.filter((b: any) => b.status === 'active');
+
+  
+  this.inactiveCount = res.data.filter((b: any) => b.status === 'inactive').length;
+},
+
       error: (err) => console.error('Fetch error', err)
     });
   }
@@ -104,7 +113,6 @@ filteredBusiness() {
       });
     }
   }
-
 
   DeleteModal(b_type: any) {
     this.selectedB_type = b_type;

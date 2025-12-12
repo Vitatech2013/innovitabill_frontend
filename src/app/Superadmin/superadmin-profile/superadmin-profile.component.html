@@ -1,5 +1,5 @@
 <div class="container mt-4">
-  <h5 class="text-center text-success mb-3">Superadmin Profile</h5>
+  <h5 class="text-center text-success mb-3 fw-bold" >Superadmin Profile</h5>
     <div class="position-fixed top-0 end-0 p-4" style="z-index: 1080;">
   <div
     *ngIf="toastMessage"
@@ -28,7 +28,7 @@
         </h5>
 
         <button
-          class="btn btn-sm btn-primary mt-2"
+          class="btn btn-sm btn-success mt-2"
          
           (click)="profileedit()"
         >
@@ -40,7 +40,7 @@
         <form [formGroup]="profileForm">
           <div class="row">
             <div class="col-md-6 border-end">
-              <h6 class="fw-bold text-primary mb-3">Profile Information</h6>
+              <h6 class="fw-bold text-success mb-3">Profile Information</h6>
 
               <div class="mb-3">
                 <label class="form-label fw-semibold">Name</label>
@@ -84,7 +84,7 @@
             </div>
 
             <div class="col-md-6 ps-md-4">
-              <h6 class="fw-bold text-primary mb-3">Address Details</h6>
+              <h6 class="fw-bold text-success mb-3">Address Details</h6>
               <div formGroupName="address" class="row">
                 <div class="col-md-6 mb-3" *ngFor="let field of addressFields">
                   <label class="form-label fw-semibold">{{

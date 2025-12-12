@@ -1,63 +1,70 @@
 <div class="container-fluid">
-  <div class="row ">
+  <div class="row">
     <nav class="navbar navbar-expand-lg navbar-dark bg-success px-3 fixed-top">
-      <a class="navbar-brand text-white fw-bold" routerLink="/home"
+      <a
+        class="navbar-brand text-white fw-bold"
+        style="cursor: pointer"
+        routerLink="/home"
         >InnoVITA Bill</a
       >
 
       <div class="ms-auto d-flex align-items-center">
         <div class="me-3 text-white text-end">
-          <div class="fw-bold">{{ loggedInUser?.name }}</div>
-          <small>{{ loggedInUser?.loginTime }}</small>
+          <div class="fw-bold">{{ superadminName }}</div>
+          <small class="fw-bold">Role : Superadmin</small>
+
+          <!-- <small>{{ loggedInUser?.loginTime }}</small> -->
         </div>
 
-<div class="dropdown">
-  <a
-    class="nav-link text-white me-3 d-flex align-items-center dropdown-toggle"
-    id="profileDropdown"
-    role="button"
-    data-bs-toggle="dropdown"
-    aria-expanded="false"
-    style="cursor: pointer"
-    title="Profile"
-  >
-    <i class="bi bi-person-circle" style="font-size: 28px"></i>
-  </a>
+        <div class="dropdown">
+          <a
+            class="nav-link text-white me-3 d-flex align-items-center dropdown-toggle"
+            id="profileDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            style="cursor: pointer"
+            title="Profile"
+          >
+            <i class="bi bi-person-circle" style="font-size: 28px"></i>
+          </a>
 
-  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-    <li>
-      <a class="dropdown-item" routerLink="superadmin-profile">
-        <i class="bi bi-person me-2"></i> Profile
-      </a>
-    </li>
- <li><hr class="dropdown-divider" /></li>
-    <li>
-      <a
-        class="dropdown-item"
-        data-bs-toggle="modal"
-        data-bs-target="#logoutModal"
-      >
-        <i class="bi bi-box-arrow-right me-2"></i> Logout
-      </a>
-    </li>
-  </ul>
-</div>
-
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            aria-labelledby="profileDropdown"
+          >
+            <li>
+              <a class="dropdown-item" routerLink="superadmin-profile">
+                <i class="bi bi-person me-2"></i> Profile
+              </a>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a
+                class="dropdown-item"
+                data-bs-toggle="modal"
+                data-bs-target="#logoutModal"
+              >
+                <i class="bi bi-box-arrow-right me-2"></i> Logout
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   </div>
 
-  <div class="modal fade " id="logoutModal" tabindex="-1">
+  <div class="modal fade" id="logoutModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header bg-danger text-white">
+        <!-- <div class="modal-header bg-danger text-white">
           <h5 class="modal-title">Confirm Logout</h5>
           <button
             type="button"
             class="btn-close btn-close-white"
             data-bs-dismiss="modal"
           ></button>
-        </div>
+        </div> -->
 
         <div class="modal-body">
           <p class="mb-0 fs-5">Are you sure you want to logout?</p>
@@ -75,7 +82,9 @@
           <button
             type="button"
             class="btn btn-danger"
-            (click)="confirmLogout()"
+            data-bs-toggle="modal"
+            data-bs-target="#logoutModal"
+            (click)="logout()"
           >
             Yes, Logout
           </button>
@@ -83,7 +92,7 @@
       </div>
     </div>
   </div>
-<!-- <div class="row min-vh-100">
+  <!-- <div class="row min-vh-100">
   <div class="col-md-2 bg-light border-end p-3 min-vh-100">
     <h5 class="text-success">Menu</h5>
     <ul class="nav flex-column mt-3">
@@ -112,9 +121,8 @@
   </div>
 </div> -->
 
-
-<div class="row mt-4 pt-5">
-    <div class="col-md-2 p-4 ">
+  <div class="row mt-4 pt-5">
+    <div class="col-md-2 p-4">
       <div class="d-flex flex-column gap-3 mt-4">
         <button
           class="btn side-btn text-dark"
@@ -122,8 +130,7 @@
           routerLinkActive="active-btn"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-          <b> <i class="bi bi-plus-circle me-1"></i></b>  Add Business
-        
+          <b> <i class="bi bi-plus-circle me-1"></i></b> Add Business
         </button>
         <button
           class="btn side-btn text-dark"
@@ -131,7 +138,7 @@
           routerLinkActive="active-btn"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-         <b><i class="bi bi-list-check me-2"></i></b> View Business
+          <b><i class="bi bi-list-check me-2"></i></b> View Business
         </button>
 
         <button
@@ -140,10 +147,9 @@
           routerLinkActive="active-btn"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-          <b><i class="bi bi-file-earmark-bar-graph me-2"></i></b>  Business Types
+          <b><i class="bi bi-file-earmark-bar-graph me-2"></i></b> Business
+          Types
         </button>
-
-        
       </div>
     </div>
 
@@ -152,11 +158,3 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
-

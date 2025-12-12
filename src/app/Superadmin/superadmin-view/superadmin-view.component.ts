@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
+import {
+  Router,
+  RouterLink,
+  RouterModule,
+  RouterOutlet,
+} from '@angular/router';
 declare var bootstrap: any;
 @Component({
   selector: 'app-superadmin-view',
@@ -10,79 +15,30 @@ declare var bootstrap: any;
   styleUrl: './superadmin-view.component.css',
 })
 export class SuperadminViewComponent implements OnInit {
-
   loggedInUser: { name: string; loginTime: string } | null = null;
   timer: any;
+  superadminName: any;
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
     const stored = localStorage.getItem('sa');
-
+    console.log(stored, 'stored');
     if (!stored) {
       this.router.navigateByUrl('/SuperAdminLogin');
       return;
     }
 
     const parsed = JSON.parse(stored);
+    console.log(parsed, 'parsed');
 
-    
-    const superadminName =
-      parsed?.data?.superadmin_name || 
-      parsed?.superadmin_name ||
-      parsed?.data?.name ||
-      parsed?.name ||
-      'Super Admin';
-
-    this.loggedInUser = {
-      name: superadminName,
-      loginTime: new Date().toLocaleString()
-    };
-
-    
-    this.timer = setInterval(() => {
-      const now = new Date();
-      this.loggedInUser!.loginTime = now.toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        hour12: true
-      });
-    }, 1000);
-
-    console.log('Parsed User:', parsed);
+    this.superadminName = parsed.superadmin_name;
   }
 
   logout() {
     localStorage.removeItem('sa');
     localStorage.removeItem('sa_token');
-   
-    this.router.navigateByUrl ('SuperAdminLogin');
+
+    this.router.navigateByUrl('SuperAdminLogin');
   }
-
-confirmLogout() {
-  const modalEl = document.getElementById('logoutModal');
-  
-  if (modalEl) {
-    const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
-    modal.hide();
-  }
-
-  setTimeout(() => {
-   
-    document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
-
-    
-    document.body.classList.remove('modal-open');
-    document.body.style.removeProperty('padding-right');
-    document.body.style.removeProperty('overflow');
-
-    this.logout();
-  }, 150);
-}
-
-
 }

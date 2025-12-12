@@ -13,10 +13,11 @@ import { BusinessService } from '../../Services/business.service';
   styleUrls: ['./business-forgotpassword.component.css']   // ✔ Corrected (styleUrls)
 })
 export class BusinessForgotpasswordComponent implements OnInit {
+loading: any;
+message: any;
 
-  businessForm!: FormGroup;
-  loading = false;
-  message: string = '';
+  
+forgotForm!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -25,21 +26,22 @@ export class BusinessForgotpasswordComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.businessForm = this.fb.group({
+    this.forgotForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
     });
   }
+  forgot() {
+    console.log(this.forgotForm.value);
 
-  sendOtp() {
-    if (this.businessForm.invalid) {
-      this.message = "Please enter a valid email";
-      return;
-    }
+    if (this.forgotForm.invalid) return;
 
     this.loading = true;
-    const email = this.businessForm.value.email;
 
-    this.service.businessForgotpassword({ email})
+   
+    const email = this.forgotForm.value.email;
+
+
+    this.service.businessForgotpassword({ email: email })
       .subscribe({
         next: (res: any) => {
           this.message = res.message || 'Password reset link sent to your email';
@@ -52,11 +54,7 @@ export class BusinessForgotpasswordComponent implements OnInit {
       });
   }
 
-  // Logout
-  logout(): void {
-    localStorage.removeItem('user');
-    sessionStorage.clear();
-    this.router.navigate(['/home']);
-  }
+
+  
 
 }

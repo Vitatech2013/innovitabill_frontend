@@ -24,33 +24,55 @@
     </div>
   </div>
 </div>
-<button
-  class="btn btn-success mb-3"
-  data-bs-toggle="modal"
-  data-bs-target="#roleModal"
-  (click)="openAddModal()"
->
-  <i class="bi bi-plus-circle"></i>
-  Add Role
-</button>
+<div class="col-12">
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+
+    <!-- Heading -->
+    <h4 class="fw-bold text-success mb-0">Available Roles List</h4>
+
+    <!-- Search Bar -->
+    <input
+      type="text"
+      class="form-control shadow-sm"
+      placeholder="Search by name,role number or status..."
+      [(ngModel)]="searchTerm"
+      style="max-width: 300px"
+    />
+
+    <!-- Add Button -->
+    <button
+      class="btn btn-success"
+      data-bs-toggle="modal"
+      data-bs-target="#roleModal"
+      (click)="openAddModal()"
+    >
+      <i class="bi bi-plus-circle"></i>
+      Add New
+    </button>
+
+  </div>
+</div>
+
 
 <div class="dashboard">
-  <h2 class="title mb-2 p-1 text-center">List of Roles</h2>
 
   <div class="row">
-      <div *ngIf="roles.length === 0" class="text-center mt-4">
-    <div class="alert alert-info shadow-sm py-3">
-      <i class="bi bi-info-circle"></i> No users found.
+    <div *ngIf="roles.length === 0" class="text-center mt-4">
+      <div class="alert alert-info shadow-sm py-3">
+        <i class="bi bi-info-circle"></i> No users found.
+      </div>
     </div>
-  </div>
-     <table *ngIf="roles.length > 0" class="table table-bordered table-hover shadow-sm">
+    <table
+      *ngIf="roles.length > 0"
+      class="table table-bordered table-hover shadow-sm"
+    >
       <thead class="table-success">
         <tr>
-          <th  style="background:#d4f8d4; color:#0a5c0a;">Sl.no</th>
-          <th  style="background:#d4f8d4; color:#0a5c0a;">Role Name</th>
-          <th  style="background:#d4f8d4; color:#0a5c0a;">Role Number</th>
-          <th  style="background:#d4f8d4; color:#0a5c0a;">Status</th>
-          <th  style="background:#d4f8d4; color:#0a5c0a;">Actions</th>
+          <th style="background: #d4f8d4; color: #0a5c0a">Sl.no</th>
+          <th style="background: #d4f8d4; color: #0a5c0a">Role Name</th>
+          <th style="background: #d4f8d4; color: #0a5c0a">Role Number</th>
+          <th style="background: #d4f8d4; color: #0a5c0a">Status</th>
+          <th style="background: #d4f8d4; color: #0a5c0a">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -90,7 +112,7 @@
   aria-labelledby="roleModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <form [formGroup]="roleForm" (ngSubmit)="createOrUpdateRole()">
         <div class="modal-header">
@@ -100,12 +122,12 @@
             class="btn-close"
             data-bs-dismiss="modal"
             aria-label="Close"
-          
           ></button>
         </div>
 
         <div class="modal-body">
-          <div class="mb-3">
+        <div class="row g-3">
+          <div class="col-md-6 mb-2">
             <label class="form-label">Role Name</label>
             <input
               type="text"
@@ -129,7 +151,7 @@
             </div>
           </div>
 
-          <div class="mb-3">
+          <div class="col-md-6 mb-2">
             <label class="form-label">Role Number</label>
             <input
               type="text"
@@ -150,28 +172,27 @@
                 >Role Number is required</small
               >
             </div>
-            </div>
-        <div class="col-md-6">
-              <label class="form-label fw-semibold">Status</label>
-              <select class="form-select" formControlName="status">
-                <option value="">Select Status</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-              </select>
-            </div>
           </div>
-        
+          <div class="col-md-6 mb-2">
+            <label class="form-label fw-semibold">Status</label>
+            <select class="form-select" formControlName="status">
+              <option value="">Select Status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+        </div>
 
         <div class="modal-footer">
           <button
             type="button"
             class="btn btn-secondary"
             data-bs-dismiss="modal"
-           
           >
             Close
           </button>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="submit" class="btn btn-success">Save</button>
         </div>
       </form>
     </div>

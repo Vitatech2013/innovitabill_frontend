@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-success px-3">
-    <nav class="navbar-brand" style="cursor: pointer;" routerLink="/home">InnoVita Bill</nav>
+    <nav class="navbar-brand"  routerLink="/home">InnoVita Bill</nav>
      <!-- <div class="dropdown ms-auto ">
     <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"
  ><i class="bi bi-person"></i>
@@ -50,12 +50,14 @@
 
         <div class="mb-3">
           <label for="email" class="form-label fw-semibold">Email</label>
+          <div class="col-sm-11">
           <input
             type="email"
             id="email"
             formControlName="email"
             class="form-control"
             placeholder="Enter your email"
+            (keypress)="blockSpaces($event)"
           />
           <div
             *ngIf="businessForm.controls['email']?.touched && businessForm.controls['email']?.invalid"
@@ -71,17 +73,20 @@
               >Invalid email format</small
             >
           </div>
+          </div>
         </div>
 
  
-        <div class="mb-3">
+        <div class="row mb-3 align-items-center">
           <label for="password" class="form-label fw-semibold">Password</label>
+          <div class="col-sm-11">
           <input
             type="password"
             id="password"
             formControlName="password"
             class="form-control"
             placeholder="Enter your password"
+            (keypress)="blockSpaces($event)"
           />
           <div
             *ngIf="businessForm.controls['password']?.touched && businessForm.controls['password']?.invalid"
@@ -94,13 +99,14 @@
             <!-- <small
               *ngIf="businessForm.controls['password']?.errors?.['minlength']"
               class="text-danger"
-              >Minimum 6 characters</small -->
-            >
+              >Minimum 6 characters</small
+            > -->
+          </div>
           </div>
         </div>
 
-        <div class="text-end mb-4">
-          <a routerLink="/forgot-password" class="text-success text-decoration-none small"
+        <div class="text-start mb-4">
+          <a routerLink="/business-Forgotpassword" class="text-success text-decoration-none small"
             >Forgot password?</a
           >
         </div>

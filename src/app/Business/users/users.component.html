@@ -25,18 +25,46 @@
       </div>
     </div>
   </div>
-  <button
-    class="btn btn-success mb-2"
-    data-bs-toggle="modal"
-    data-bs-target="#userModal"
-    (click)="openAddModal()"
-  >
-    <i class="bi bi-plus-circle"></i>
-    Add User
-  </button>
 
   <div class="dashboard">
-    <h2 class="title mb-2 p-1 text-center">List of Users</h2>
+    <!-- <h2 class="title mb-2 p-1 text-center">List of Users</h2>
+     <input
+          type="text"
+          class="form-control shadow-sm position-absolute top-50 start-50 translate-middle"
+          placeholder="Search by name, brand, or status..."
+          [(ngModel)]="searchTerm"
+          style="max-width: 300px"
+        /> -->
+    <div class="col-12">
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+
+    <!-- Heading -->
+    <h4 class="fw-bold text-success mb-0">Available Users List</h4>
+
+    <!-- Search Bar -->
+    <input
+      type="text"
+      class="form-control shadow-sm"
+      placeholder="Search by name or status..."
+      [(ngModel)]="searchTerm"
+      style="max-width: 300px"
+    />
+
+    <!-- Add Button -->
+    <button
+      class="btn btn-success"
+      data-bs-toggle="modal"
+      data-bs-target="#userModal"
+      (click)="openAddModal()"
+    >
+      <i class="bi bi-plus-circle"></i>
+      Add New
+    </button>
+
+  </div>
+</div>
+
+     
     <div class="row">
       <div *ngIf="users.length === 0" class="text-center mt-4">
         <div class="alert alert-info shadow-sm py-3">
@@ -278,7 +306,7 @@
     aria-labelledby="userModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <form [formGroup]="usersForm" (ngSubmit)="createOrUpdateUser()">
           <div class="modal-header">
@@ -301,7 +329,7 @@
                   formControlName="user_name"
                   class="form-control"
                   placeholder="Enter user name"
-                   (keypress)="allowOnlyLetters($event)"
+                  (keypress)="allowOnlyLetters($event)"
                   autocomplete="username"
                 />
                 <div
@@ -325,7 +353,6 @@
                   type="email"
                   formControlName="user_email"
                   class="form-control"
-                 
                   placeholder="Enter email"
                 />
                 <div
@@ -392,11 +419,20 @@
                     class="text-danger"
                     >Password is required</small
                   >
+
                   <small
                     *ngIf="usersForm.controls['password']?.errors?.['minlength']"
                     class="text-danger"
-                    >Minimum 6 characters</small
+                    >Minimum 8 characters required</small
                   >
+
+                  <small
+                    *ngIf="usersForm.controls['password']?.errors?.['pattern']"
+                    class="text-danger"
+                  >
+                    Must contain uppercase, lowercase, number & special
+                    character
+                  </small>
                 </div>
               </div>
 
@@ -433,26 +469,35 @@
                   <option value="inactive">Inactive</option>
                 </select>
               </div>
+              <div class="col-md-6 mb-2">
+                <label class="form-label fw-semibold"
+                  >Image
+                  <!-- <span class="text-danger">*</span> -->
+                </label>
+                <input
+                  type="file"
+                  class="form-control"
+                  (change)="onFileChange($event, 'image')"
+                  accept="image/*"
+                />
+              </div>
+              <div class="col-md-6 mb-2">
+                <label class="form-label fw-semibold"
+                  >Id Proof
+                  <!-- <span class="text-danger">*</span> -->
+                </label>
+                <input
+                  type="file"
+                  class="form-control"
+                  (change)="onFileChange($event, 'id_proof')"
+                  accept="image/*"
+                />
+              </div>
             </div>
 
             <!-- <h6 class="text-primary fw-semibold border-bottom pb-2">
                 Upload Documents
               </h6> -->
-            <div class="col-md-6 mb-2">
-              <label class="form-label fw-semibold"
-                >Image
-                <!-- <span class="text-danger">*</span> -->
-              </label>
-              <input type="file" class="form-control" (change)="onFileChange($event, 'image')" accept="image/*" />
-              
-            </div>
-            <div class="col-md-6 mb-2">
-              <label class="form-label fw-semibold"
-                >Id Proof
-                <!-- <span class="text-danger">*</span> -->
-              </label>
-              <input type="file" class="form-control" (change)="onFileChange($event, 'id_proof')" accept="image/*" />
-            </div>
 
             <!-- <div class="col-md-6 mb-2">
               <label class="form-label">Image</label>
@@ -505,7 +550,8 @@
                     type="text"
                     class="form-control"
                     [formControlName]="field.name"
-                    (keypress)="allowOnlyLetters($event)"
+                    [placeholder]="field.placeholder"
+                    (keypress)="blockSpaces($event)"
                   />
                 </div>
               </div>
@@ -513,7 +559,7 @@
           </div>
 
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-success">Save</button>
             <button
               type="button"
               class="btn btn-secondary"
@@ -568,12 +614,7 @@
 </div>
 
 <!-- Image Preview Modal -->
-<div
-  class="modal fade"
-  id="imagePreviewModal"
-  tabindex="-1"
-  aria-hidden="true"
->
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -586,11 +627,7 @@
         ></button>
       </div>
       <div class="modal-body text-center">
-        <img
-          [src]="previewUrl"
-          alt="Preview"
-          class="img-fluid"
-        />
+        <img [src]="previewUrl" alt="Preview" class="img-fluid" />
       </div>
     </div>
   </div>

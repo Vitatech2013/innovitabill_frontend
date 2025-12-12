@@ -38,7 +38,7 @@ export class AddBusinessTypeComponent implements OnInit {
     }
 
     this.addBusinessTypeForm = this.fb.group({
-      business_type: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^\S+$/)]],
+      business_type: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^\S+$/), Validators.pattern(/^[A-Za-z ]+$/) ]],
       business_code: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^\S+$/)]],
     });
   }
@@ -64,7 +64,7 @@ preventSpace(event: KeyboardEvent) {
 
       this.api.updateBusinessType(this.selectedBusiness._id, formData).subscribe({
         next: (res: any) => {
-          this.toastr.success('Business Type Updated Successfully!');
+          this.showToast('Business Type Updated Successfully!', 'success');
           this.addBusinessTypeForm.reset();
           this.selectedBusiness = null;
            window.location.reload();
@@ -74,7 +74,7 @@ preventSpace(event: KeyboardEvent) {
         },
         error: (err: any) => {
           console.error(err);
-          alert('Failed to update business type.');
+          this.showToast('Failed to update business type.', 'error');
         }
       });
 
@@ -83,17 +83,19 @@ preventSpace(event: KeyboardEvent) {
 
     this.api.addBusinessType(formData).subscribe({
       next: (res: any) => {
-        this.showToast('Business Type added successfully!', 'success');
+       this.showToast('Business Type added successfully!', 'success');
+
         this.addBusinessTypeForm.reset();
-        window.location.reload();
+       
         
       },
       error: (err: any) => {
         console.error(err);
-        alert('Failed to add business type.');
+        this.showToast('Failed to add business type.', ' error');
       }
     });
   }
+  
 
   isInvalid(controlName: string): boolean {
     const control = this.addBusinessTypeForm.get(controlName);
