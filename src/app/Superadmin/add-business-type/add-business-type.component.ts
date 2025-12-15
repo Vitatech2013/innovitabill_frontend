@@ -86,7 +86,7 @@ preventSpace(event: KeyboardEvent) {
        this.showToast('Business Type added successfully!', 'success');
 
         this.addBusinessTypeForm.reset();
-       
+        window.location.reload();
         
       },
       error: (err: any) => {

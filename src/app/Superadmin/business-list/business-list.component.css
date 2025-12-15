@@ -258,3 +258,13 @@ input[type="file"] {
   border-left: 4px solid #3b8651;
   border-right: 4px solid #3b8651;
 }
+
+.table-body-scroll {
+  max-height: 350px;     /* adjust height you want */
+  overflow-y: auto;
+}
+
+.table-body-scroll table th,
+.table-body-scroll table td {
+  white-space: nowrap;  /* keeps columns aligned */
+}

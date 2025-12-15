@@ -35,6 +35,7 @@
           </div>
         </div>
       </div>
+      
       <h2 class="title mb-3 p-2 text-center fw-bold text-success">
         Super Admin Login
       </h2>
@@ -99,16 +100,31 @@
         </div>
         <a routerLink="/forgot-password" >forgot password?</a>
 
-        <div class="text-center">
+        <!-- <div class="text-center mt-4 d-flex gap-3">
           <button
             type="button"
-            class="btn btn-success mt-5 w-100"
+            class="btn btn-success mt-5 w-75 g-2"
             (click)="SuperAdminLogin()"
           >
             Login
           </button>
-       
-        </div>
+        <button type="button" class="btn btn-success " routerLink="/">
+              <i class="bi bi-box-arrow-in-left"></i>
+            </button>
+        </div> -->
+         <div class="text-center mt-4 d-flex gap-3">
+            <button
+              type="button"
+              class="btn btn-success w-75 g-2"
+              (click)="SuperAdminLogin()"
+            >
+              Login
+            </button>
+
+            <button type="button" class="btn btn-success " style="width: 60px;" routerLink="/">
+              <i class="bi bi-box-arrow-in-left"></i>
+            </button>
+          </div>
       </form>
     </div>
   </div>

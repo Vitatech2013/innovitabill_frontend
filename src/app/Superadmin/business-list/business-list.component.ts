@@ -124,6 +124,48 @@ if (businesslist) {
     );
     modal.show();
   }
+filterMode: 'active' | 'inactive' = 'active';
+
+showActive() {
+  this.filterMode = 'active';
+}
+
+showInactive() {
+  this.filterMode = 'inactive';
+}
+
+// filteredBusiness() {
+//   return this.business.filter(b => {
+//     if (this.filterMode === 'active') {
+//       return b.status === 'Active';
+//     } else {
+//       return b.status === 'Inactive';
+//     }
+//   });
+// }
+filteredBusiness() {
+
+  
+  let list = this.business.filter(b => {
+    const status = b.status?.toLowerCase().trim();
+    return this.filterMode === 'active'
+      ? status === 'active'
+      : status === 'inactive';
+  });
+
+ 
+  if (this.searchTerm?.trim()) {
+    const term = this.searchTerm.toLowerCase();
+    list = list.filter((b) =>
+      Object.values(b).some((val) =>
+        val?.toString().toLowerCase().includes(term)
+      )
+    );
+  }
+
+  return list;
+}
+
 
   // openViewModal(b: any) {
   //   this.selectedBusiness = b;
@@ -390,15 +432,15 @@ updateBusiness() {
 
 
 
-filteredBusiness() {
-    if (!this.searchTerm) return this.business;
-    const term = this.searchTerm.toLowerCase();
-    return this.business.filter((b) =>
-      Object.values(b).some((val) =>
-        val?.toString().toLowerCase().includes(term)
-      )
-    );
-  }
+// filteredBusiness() {
+//     if (!this.searchTerm) return this.business;
+//     const term = this.searchTerm.toLowerCase();
+//     return this.business.filter((b) =>
+//       Object.values(b).some((val) =>
+//         val?.toString().toLowerCase().includes(term)
+//       )
+//     );
+//   }
 
   onCustomFileSelect(event: any, field: string) {
     const file = event.target.files[0];

@@ -9,31 +9,45 @@
       </div>
     </div>
     <div class="row mb-3">
-      <div
-        class="col-12 d-flex flex-column flex-md-row align-items-md-center justify-content-between"
-      >
-        <h4 class="fw-bold text-success mb-2 mb-md-0">
-          Available Business List
-        </h4>
+ <div
+  class="col-12 d-flex flex-column flex-md-row align-items-md-center justify-content-between"
+>
+  <h4 class="fw-bold text-success mb-2 mb-md-0">
+    Available Business List
+  </h4>
 
-        <input
-          type="text"
-          class="form-control shadow-sm mb-2 mb-md-0 mx-md-3"
-          placeholder="Search.."
-          [(ngModel)]="searchTerm"
-          style="width: 100%; max-width: 300px"
-        />
+  <input
+    type="text"
+    class="form-control shadow-sm mb-2 mb-md-0 mx-md-3"
+    placeholder="Search.."
+    [(ngModel)]="searchTerm"
+    style="width: 100%; max-width: 300px"
+  />
 
-        <a
-          class="btn side-btn text-dark fw-semibold border-1"
-          routerLink="/SuperAdminView/add-business"
-          routerLinkActive="active-btn"
-          style="background-color: #f3f4f6"
-        >
-          <b><i class="bi bi-plus-circle me-1"></i></b>
-          Add Business
-        </a>
-      </div>
+  <button
+    class="btn side-btn text-dark fw-semibold border-1 me-2"
+    style="background-color: #f3f4f6"
+    (click)="showActive()"
+  >
+    <b><i class="bi bi-check-circle me-1"></i></b>
+    Active
+  </button>
+
+  <button
+    class="btn side-btn text-dark fw-semibold border-1"
+    style="background-color: #f3f4f6"
+    (click)="showInactive()"
+  >
+    <b><i class="bi bi-x-circle me-1"></i></b>
+    Inactive
+  </button>
+  <a class="btn side-btn text-dark fw-semibold border-1"
+  routerLink="/SuperAdminView/add-business"
+   routerLinkActive="active-btn" 
+   style="background-color: #f3f4f6" >
+    <b><i class="bi bi-plus-circle me-1"></i></b> Add Business </a>
+</div>
+
     </div>
 
     <div class="row">
@@ -45,7 +59,7 @@
 
       <div class="col-12" *ngIf="business.length > 0">
         <div class="table-wrapper">
-          <div class="table-responsive bg-white p-3 rounded-4">
+          <div class="table-responsive bg-white p-3 rounded-4" style="max-height: 400px; overflow-y: auto;">
             <table class="table table-hover table-bordered align-middle">
               <thead class="table-success text-center">
                 <tr>
@@ -74,55 +88,43 @@
                 </tr>
               </thead>
 
-              <tbody>
-                <tr
-                  *ngFor="let b of filteredBusiness(); let i = index"
-                  class="align-middle text-center h-50"
-                >
-                  <td class="fw-semibold">{{ i + 1 }}</td>
-                  <td>{{ b.business_name }}</td>
-                  <td>{{ b.owner_name }}</td>
-                  <td>{{ b.email }}</td>
-                  <td>{{ b.phone_number }}</td>
-                  <td>{{ getBusinessTypeName(b.bt_id) }}</td>
+<tbody>
+  <tr *ngFor="let b of filteredBusiness(); let i = index">
 
-                  <td>
-                    <span
-                      class="badge px-3 py-2"
-                      [ngClass]="{
-                        'bg-success': b.status === 'Active',
-                        'bg-warning': b.status === 'Pending',
-                        'bg-danger': b.status === 'Inactive'
-                      }"
-                    >
-                      {{ b.status }}
-                    </span>
-                  </td>
+    <td>{{ i + 1 }}</td>
+    <td>{{ b.business_name }}</td>
+    <td>{{ b.owner_name }}</td>
+    <td>{{ b.email }}</td>
+    <td>{{ b.phone_number }}</td>
+    <td>{{ getBusinessTypeName(b.bt_id) }}</td>
+    <td>
+      <span
+        class="badge px-3 py-2"
+        [ngClass]="{
+          'bg-success': b.status === 'Active',
+          'bg-warning': b.status === 'Pending',
+          'bg-danger': b.status === 'Inactive'
+        }"
+      >
+        {{ b.status }}
+      </span>
+    </td>
+    <td>
+      <button class="btn btn-sm btn-outline-info me-1" (click)="openViewModal(b)">
+        <i class="bi bi-eye"></i>
+      </button>
 
-                  <td>
-                    <button
-                      class="btn btn-sm btn-outline-info me-1"
-                      (click)="openViewModal(b)"
-                    >
-                      <i class="bi bi-eye"></i>
-                    </button>
+      <button class="btn btn-sm btn-outline-primary me-1" (click)="editBusiness(b)">
+        <i class="bi bi-pencil-square"></i>
+      </button>
 
-                    <button
-                      class="btn btn-sm btn-outline-primary me-1"
-                      (click)="editBusiness(b)"
-                    >
-                      <i class="bi bi-pencil-square"></i>
-                    </button>
+      <button class="btn btn-sm btn-outline-danger" (click)="openDeleteModal(b._id)">
+        <i class="bi bi-trash"></i>
+      </button>
+    </td>
+  </tr>
+</tbody>
 
-                    <button
-                      class="btn btn-sm btn-outline-danger"
-                      (click)="openDeleteModal(b._id)"
-                    >
-                      <i class="bi bi-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
             </table>
           </div>
         </div>

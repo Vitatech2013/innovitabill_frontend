@@ -110,9 +110,9 @@ onNameInput(event: any) {
       this.selectedFiles[fieldName] = file;
     }
      const fileType = file.type;
-  const fileSize = file.size / 1024 / 1024; // MB
+  const fileSize = file.size / 1024 / 1024; 
 
-  // ---------------- IMAGE VALIDATION (Logo) ----------------
+
   if (fieldName === 'logo_image') {
     const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
 
@@ -127,7 +127,7 @@ onNameInput(event: any) {
     }
   }
 
-  // ---------------- PDF VALIDATION (PAN, AADHAR, CERTIFICATE) ----------------
+ 
   if (['pan_pdf', 'aadhar_pdf', 'certificate_pdf'].includes(fieldName)) {
     if (fileType !== 'application/pdf') {
       this.addBusinessForm.get(fieldName)?.setErrors({ invalidType: true });
@@ -140,7 +140,7 @@ onNameInput(event: any) {
     }
   }
 
-  // If valid → set form value
+
   this.addBusinessForm.patchValue({
     [fieldName]: file
   });

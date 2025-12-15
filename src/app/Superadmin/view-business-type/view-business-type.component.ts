@@ -11,7 +11,7 @@ declare var bootstrap: any;
 @Component({
   selector: 'app-view-business-type',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, AddBusinessTypeComponent,RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, AddBusinessTypeComponent],
   templateUrl: './view-business-type.component.html',
   styleUrls: ['./view-business-type.component.css']
 })
@@ -26,6 +26,9 @@ export class ViewBusinessTypeComponent implements OnInit {
   selectedB_type: any;
    searchTerm: string = '';
    inactiveCount: number = 0;
+  
+filterMode: 'active' | 'inactive' = 'active';
+
 
   
 
@@ -40,19 +43,16 @@ export class ViewBusinessTypeComponent implements OnInit {
     this.getAllBusinessTypes();
   }
 
-  getAllBusinessTypes() {
-    this.api.getAllBusinessTypes().subscribe({
-     next: (res: any) => {
-  
-  this.b_types = res.data.filter((b: any) => b.status === 'active');
+ getAllBusinessTypes() {
+  this.api.getAllBusinessTypes().subscribe({
+    next: (res: any) => {
+      this.b_types = res.data; 
+      this.inactiveCount = res.data.filter((b: any) => b.status === 'inactive').length;
+    },
+    error: (err) => console.error('Fetch error', err)
+  });
+}
 
-  
-  this.inactiveCount = res.data.filter((b: any) => b.status === 'inactive').length;
-},
-
-      error: (err) => console.error('Fetch error', err)
-    });
-  }
 
   openAddModal() {
     this.title = 'Add Business Type';
@@ -60,15 +60,15 @@ export class ViewBusinessTypeComponent implements OnInit {
     this.openModal = true;
   }
 
-filteredBusiness() {
-    if (!this.searchTerm) return this.b_types;
-    const term = this.searchTerm.toLowerCase();
-    return this.b_types.filter((b) =>
-      Object.values(b).some((val) =>
-        val?.toString().toLowerCase().includes(term)
-      )
-    );
-  }
+// filteredBusiness() {
+//     if (!this.searchTerm) return this.b_types;
+//     const term = this.searchTerm.toLowerCase();
+//     return this.b_types.filter((b) =>
+//       Object.values(b).some((val) =>
+//         val?.toString().toLowerCase().includes(term)
+//       )
+//     );
+//   }
 
   edit(b_type: any) {
     this.title = 'Edit Business Type';
@@ -153,4 +153,36 @@ filteredBusiness() {
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 3000);
   }
+
+
+filteredBusiness() {
+  let list = this.b_types.filter(b => {
+    const status = b.status?.toLowerCase().trim();
+    return this.filterMode === 'active'
+      ? status === 'active'
+      : status === 'inactive';
+  });
+
+  if (this.searchTerm?.trim()) {
+    const term = this.searchTerm.toLowerCase();
+    list = list.filter((b) =>
+      Object.values(b).some((val) =>
+        val?.toString().toLowerCase().includes(term)
+      )
+    );
+  }
+
+  return list;
+}
+
+
+
+
+showActive() {
+  this.filterMode = 'active';
+}
+
+showInactive() {
+  this.filterMode = 'inactive';
+}
 }
