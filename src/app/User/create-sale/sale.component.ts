@@ -23,10 +23,10 @@ export class SaleComponent implements OnInit {
   cartItems: any[] = [];
   customerForm!: FormGroup;
   showCustomerForm = false;
- business: any = {};
+  business: any = {};
   grandTotal = 0;
   searchTerm = '';
- invoice_number!: string;
+  invoice_number!: string;
   business_id: string = '';
   user_id: string = '';
 
@@ -64,31 +64,54 @@ export class SaleComponent implements OnInit {
   }
 
   addToCart(item: any) {
-    const existing = this.cartItems.find((c) => c._id === item._id);
+    const originalItem = this.items.find((i) => i._id === item._id);
 
-    if (existing) existing.cartQty++;
-    else this.cartItems.push({ ...item, cartQty: 1 });
+    if (!originalItem || originalItem.stock_quantity <= 0) {
+      alert('Out of stock');
+      return;
+    }
 
-    item.stock_quantity--;
+    const cartItem = this.cartItems.find((c) => c._id === item._id);
+
+    if (cartItem) {
+      cartItem.cartQty++;
+    } else {
+      this.cartItems.push({ ...originalItem, cartQty: 1 });
+    }
+
+    originalItem.stock_quantity--;
+
     this.updateTotals();
   }
 
   removeFromCart(item: any) {
-    const existing = this.cartItems.find((c) => c._id === item._id);
-    if (!existing) return;
+    const cartItem = this.cartItems.find((c) => c._id === item._id);
+    const originalItem = this.items.find((i) => i._id === item._id);
 
-    existing.cartQty--;
-    item.stock_quantity++;
+    if (!cartItem || !originalItem) return;
 
-    if (existing.cartQty === 0) {
+    cartItem.cartQty--;
+    originalItem.stock_quantity++; 
+
+    if (cartItem.cartQty === 0) {
       this.cartItems = this.cartItems.filter((c) => c._id !== item._id);
     }
 
     this.updateTotals();
   }
 
-  getItemTotal(item: any) {
-    return item.cartQty * item.selling_price;
+  getItemTotal(item: any): number {
+    const qty = item.cartQty;
+    const price = item.selling_price;
+    const discount = item.discount || 0;
+    const taxRate = item.tax_rate || 0;
+
+    const baseAmount = qty * price;
+    const discountAmount = qty * discount;
+    const taxableAmount = baseAmount - discountAmount;
+    const taxAmount = (taxableAmount * taxRate) / 100;
+
+    return Math.round(taxableAmount + taxAmount);
   }
 
   getTotalBill() {
@@ -102,9 +125,13 @@ export class SaleComponent implements OnInit {
   toggleCustomerForm() {
     this.showCustomerForm = !this.showCustomerForm;
   }
+  getAvailableStock(itemId: string): number {
+  const originalItem = this.items.find(i => i._id === itemId);
+  return originalItem ? originalItem.stock_quantity : 0;
+}
 
   generateInvoiceNumber() {
-    return 'INV-'  + Math.floor(Math.random() * 9000);
+    return 'INV-' + Math.floor(Math.random() * 9000);
   }
 
   generateBill() {

@@ -69,12 +69,37 @@ export class SalesComponent implements OnInit {
   filteredSales() {
     if (!this.searchTerm) return this.saledata;
 
-    const term = this.searchTerm.toLowerCase();
-    return this.saledata.filter((sal) =>
-      Object.values(sal).some((val) =>
-        val?.toString().toLowerCase().includes(term)
-      )
-    );
+    const term = this.searchTerm.toLowerCase().trim();
+    const paymentStatuses = ['paid', 'partial paid', 'unpaid', 'pending'];
+
+    if (paymentStatuses.includes(term)) {
+      return this.saledata.filter(
+        (sale) => (sale.payment_status || 'pending').toLowerCase() === term
+      );
+    }
+
+    return this.saledata.filter((sale) => {
+      return Object.values(sale).some((val) => {
+        if (val === null || val === undefined) return false;
+
+        if (typeof val === 'object') {
+          if (val !== null) {
+            if ('name' in val && typeof (val as any).name === 'string') {
+              return (val as any).name.toLowerCase().includes(term);
+            }
+
+            if (Array.isArray(val)) {
+              return val.some((p: any) =>
+                (p.item_id?.item_name || '').toLowerCase().includes(term)
+              );
+            }
+          }
+          return false;
+        }
+
+        return val.toString().toLowerCase().includes(term);
+      });
+    });
   }
 
   view(sale: any) {
@@ -121,5 +146,25 @@ export class SalesComponent implements OnInit {
     this.toastMessage = message;
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 3000);
+  }
+  calculateGrandTotal(sale: any): number {
+    if (!sale.product_ids) return 0;
+
+    let total = 0;
+    for (const p of sale.product_ids) {
+      const qty = p.quantity || 0;
+      const price = p.selling_price || 0;
+      const discount = p.discount || 0;
+      const taxRate = p.tax_rate || 0;
+
+      const baseAmount = qty * price;
+      const discountAmount = qty * discount;
+      const taxableAmount = baseAmount - discountAmount;
+      const taxAmount = (taxableAmount * taxRate) / 100;
+
+      total += taxableAmount + taxAmount;
+    }
+
+    return Math.round(total);
   }
 }

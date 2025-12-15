@@ -4,16 +4,16 @@
       class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2"
     >
       <h4 class="mb-3">Sales</h4>
-      
-     <div class="search-box">
-  <input
-    type="text"
-    class="form-control"
-    placeholder="Search"
-    [(ngModel)]="searchTerm"
-  />
-  <i class="bi bi-search search-icon"></i>
-</div>
+
+      <div class="search-box">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search"
+          [(ngModel)]="searchTerm"
+        />
+        <i class="bi bi-search search-icon"></i>
+      </div>
 
       <!-- <a
         class="btn btn-success text-white"
@@ -67,11 +67,7 @@
                 </div>
               </td>
 
-              <!-- <td>
-            <div *ngFor="let p of sale.product_ids">₹{{ p.total }}</div>
-          </td> -->
-
-              <td>₹{{ sale.grand_total }}</td>
+              <td>₹{{ calculateGrandTotal(sale) }}</td>
 
               <td>{{ sale.payment_status || "Pending" }}</td>
 
@@ -139,6 +135,7 @@
                       type="text"
                       class="form-control p-2"
                       formControlName="invoice_number"
+                      [disabled]="true"
                     />
                   </div>
                   <div class="col-md-4">

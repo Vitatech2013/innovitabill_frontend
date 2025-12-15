@@ -7,182 +7,103 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { BillingService } from '../../Services/billing.service';
+import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 
-import { ToastrService } from 'ngx-toastr';
-import { BillingService } from '../../Services/billing.service';
-
 @Component({
-  selector: 'app-items',
+  selector: 'app-create-purchase',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  templateUrl: './items.component.html',
-  styleUrl: './items.component.css',
+  templateUrl: './create-purchase.component.html',
+  styleUrl: './create-purchase.component.css',
 })
-export class ItemsComponent implements OnInit {
-  addItemsForm!: FormGroup;
+export class CreatePurchaseComponent implements OnInit {
+  addPurchaseForm!: FormGroup;
+  selectedImageFile!: File | null;
   selectedFiles: { [key: string]: File } = {};
   business_id: string = '';
   selectedBusiness: any;
-  categories: any[] = [];
-  subCategories: any[] = [];
-  users: any[] = [];
-  allSubCategories: any;
-  units: any;
-  users_id: string = '';
-  toastType: any;
-  toastMessage: any;
-  selectedImageFile!: File | null;
+  addressFields = [
+    { label: 'address_line_1', name: 'address_line_1' },
+    { label: 'address_line_2', name: 'address_line_2' },
+    { label: ' city', name: 'city' },
+    { label: ' state', name: 'state' },
+    { label: 'country', name: 'country' },
+    { label: 'pincode', name: 'pincode', text: 'number' },
+  ];
 
   constructor(
     private fb: FormBuilder,
-    private router: Router,
     private service: BillingService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.addItemsForm = this.fb.group({
-      item_name: [
+    address: this.fb.group({
+      address_line_1: [
         '',
         [
           Validators.required,
           Validators.minLength(3),
-          Validators.pattern('^[a-zA-Z0-9]+$'),
+          Validators.pattern(/^\S+$/),
         ],
       ],
-      item_code: [
+      address_line_2: [
         '',
         [
           Validators.required,
           Validators.minLength(3),
-          Validators.pattern('^[a-zA-Z0-9]+$'),
+          Validators.pattern(/^\S+$/),
+          Validators.pattern(/^[A-Za-z ]+$/),
         ],
       ],
-      unit_id: ['', Validators.required],
-      selling_price: [
-        '',
-        [Validators.required, Validators.pattern('^[0-9]+$')],
-      ],
-      purchase_price: [
+      city: [
         '',
         [
           Validators.required,
-          Validators.pattern('^[0-9!@#$%^&*()_+\\-=[\\]{};\'":\\\\|,.<>/?]+$'),
+          Validators.minLength(3),
+          Validators.pattern(/^\S+$/),
+          Validators.pattern(/^[A-Za-z ]+$/),
         ],
       ],
-      tax_rate: [
+      state: [
         '',
         [
           Validators.required,
-          Validators.pattern('^[0-9!@#$%^&*()_+\\-=[\\]{};\'":\\\\|,.<>/?]+$'),
+          Validators.minLength(3),
+          Validators.pattern(/^\S+$/),
+          Validators.pattern(/^[A-Za-z ]+$/),
         ],
       ],
-      stock_quantity: [
+      country: [
         '',
         [
           Validators.required,
-          Validators.pattern('^[0-9!@#$%^&*()_+\\-=[\\]{};\'":\\\\|,.<>/?]+$'),
+          Validators.minLength(3),
+          Validators.pattern(/^\S+$/),
+          Validators.pattern(/^[A-Za-z ]+$/),
         ],
       ],
-      description: ['', [Validators.required]],
-      brand_name: [
-        '',
-        [Validators.required, Validators.pattern('^[A-Za-z]+$')],
-      ],
-      discount: [
+      pincode: [
         '',
         [
           Validators.required,
-          Validators.pattern('^[0-9!@#$%^&*()_+\\-=[\\]{};\'":\\\\|,.<>/?]+$'),
+          Validators.minLength(3),
+          Validators.pattern(/^[0-9]+$/),
         ],
       ],
-      min_stock_alert: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern('^[0-9!@#$%^&*()_+\\-=[\\]{};\'":\\\\|,.<>/?]+$'),
-        ],
-      ],
-      category_id: ['', Validators.required],
-      sub_category_id: ['', Validators.required],
-      image: [''],
     });
-
-    const storedBusiness = localStorage.getItem('business');
-    if (storedBusiness) {
-      const b = JSON.parse(storedBusiness);
-      this.business_id = b._id;
-      console.log('Business ID:', this.business_id);
-    }
-
-    const storedUsers = localStorage.getItem('users');
-    if (storedUsers) {
-      const u = JSON.parse(storedUsers);
-      this.users_id = u._id || '';
-      console.log('User ID:', this.users_id);
-    }
-
-    this.categoriesGet();
-    this.subCategoriesGet();
-
-    this.unitsGet();
-  }
-
-  showToast(message: string, type: 'success' | 'error' | 'warning') {
-    this.toastMessage = message;
-    this.toastType = type;
-    setTimeout(() => (this.toastMessage = null), 3000);
-  }
-
-  categoriesGet() {
-    this.service.getCategories(this.business_id).subscribe({
-      next: (res: any) => {
-        this.categories = res.data || res;
-        console.log('Categories:', this.categories);
-      },
-      error: (err: any) => console.error('Error loading categories:', err),
-    });
-  }
-
-  unitsGet() {
-    this.service.getUnits(this.business_id).subscribe({
-      next: (res: any) => {
-        console.log('Raw units response', res);
-        this.units = res.data || res;
-        console.log('Units:', this.units);
-      },
-      error: (err: any) => console.error('Error loading units:', err),
-    });
-  }
-
-  subCategoriesGet() {
-    this.service.getSubCategories().subscribe({
-      next: (res: any) => {
-        this.subCategories = res.data || res;
-        console.log('Subcategories:', this.subCategories);
-      },
-      error: (err: any) => console.error('Error loading subcategories:', err),
-    });
-  }
-
-  isInvalid(controlName: string): boolean {
-    const control = this.addItemsForm.get(controlName);
-    return control ? control.touched && control.invalid : false;
-  }
-
-  cancelAdd() {
-    this.addItemsForm.reset();
-    this.selectedFiles = {};
   }
 
   saveItems() {
-    if (this.addItemsForm.invalid) {
-      this.addItemsForm.markAllAsTouched();
+    if (this.addPurchaseForm.invalid) {
+      this.addPurchaseForm.markAllAsTouched();
       return;
     }
 
-    const f = this.addItemsForm.value;
+    const f = this.addPurchaseForm.value;
     const formData = new FormData();
 
     formData.append('item_name', f.item_name);
@@ -200,7 +121,6 @@ export class ItemsComponent implements OnInit {
     formData.append('unit_id', f.unit_id);
 
     formData.append('business_id', this.business_id);
-    formData.append('user_id', this.users_id);
 
     if (this.selectedImageFile) {
       formData.append('image', this.selectedImageFile);
@@ -209,7 +129,7 @@ export class ItemsComponent implements OnInit {
     this.service.addItems(formData).subscribe({
       next: (res) => {
         this.toastr.success('Item added successfully!');
-        this.addItemsForm.reset();
+        this.addPurchaseForm.reset();
         this.selectedImageFile = null;
         window.location.reload();
       },
@@ -217,6 +137,15 @@ export class ItemsComponent implements OnInit {
         this.toastr.error(err.error?.message || 'Failed to add item', 'Error');
       },
     });
+  }
+  isInvalid(controlName: string): boolean {
+    const control = this.addPurchaseForm.get(controlName);
+    return control ? control.touched && control.invalid : false;
+  }
+
+  cancelAdd() {
+    this.addPurchaseForm.reset();
+    this.selectedFiles = {};
   }
 
   onFileSelect(event: any) {
@@ -232,7 +161,7 @@ export class ItemsComponent implements OnInit {
     value = value.replace(/[^A-Za-z ]+/g, '');
 
     input.value = value;
-    this.addItemsForm
+    this.addPurchaseForm
       .get(input.getAttribute('formControlName')!)
       ?.setValue(value, { emitEvent: false });
   }
@@ -249,7 +178,7 @@ export class ItemsComponent implements OnInit {
     );
 
     input.value = value;
-    this.addItemsForm
+    this.addPurchaseForm
       .get(input.getAttribute('formControlName')!)
       ?.setValue(value, { emitEvent: false });
   }
@@ -261,7 +190,7 @@ export class ItemsComponent implements OnInit {
     value = value.replace(/\s+/g, '');
 
     input.value = value;
-    this.addItemsForm
+    this.addPurchaseForm
       .get(input.getAttribute('formControlName')!)
       ?.setValue(value, { emitEvent: false });
   }
@@ -278,7 +207,7 @@ export class ItemsComponent implements OnInit {
     }
 
     input.value = value;
-    this.addItemsForm
+    this.addPurchaseForm
       .get(input.getAttribute('formControlName')!)
       ?.setValue(value, { emitEvent: false });
   }
@@ -289,7 +218,7 @@ export class ItemsComponent implements OnInit {
     value = value.replace(/[^0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/g, '');
 
     input.value = value;
-    this.addItemsForm
+    this.addPurchaseForm
       .get(input.getAttribute('formControlName')!)
       ?.setValue(value, { emitEvent: false });
   }
