@@ -96,6 +96,33 @@ if (businesslist) {
     this.loadBusiness();
   }
 
+  onAddressKeyPress(event: KeyboardEvent, fieldName: string) {
+  const key = event.key;
+
+   if (fieldName === 'house_No') {
+    const regex = /^[a-zA-Z0-9\-\/]$/;
+    if (!regex.test(key)) {
+      event.preventDefault();
+    }
+    return;
+  }
+
+  
+  if (fieldName === 'pincode') {
+    const regex = /^[0-9]$/;
+    if (!regex.test(key)) {
+      event.preventDefault();
+    }
+    return;
+  }
+
+  const regex = /^[a-zA-Z ]$/;
+  if (!regex.test(key)) {
+    event.preventDefault();
+  }
+}
+
+
 
 //   getBusinessTypeName(id: string) {
 //   const type = this.businessTypes.find(t => t._id === id);
@@ -109,13 +136,25 @@ if (businesslist) {
   }
 
   loadBusiness() {
-    this.api.getBusiness(this.businessID).subscribe({
-      next: (res: any) => {
-        this.business = res.data || [];
-        console.log(this.business);
-      },
-    });
-  }
+  this.api.getBusiness(this.businessID).subscribe({
+    next: (res: any) => {
+      this.business = res.data || [];
+
+     
+      this.business.sort(
+        (a: any, b: any) =>
+          new Date(b.createdAt).getTime() -
+          new Date(a.createdAt).getTime()
+      );
+
+      console.log('Sorted business list:', this.business);
+    },
+    error: (err) => {
+      console.error('Error loading business:', err);
+    }
+  });
+}
+
 
   openImageModal(imageUrl: string) {
     this.selectedImage = imageUrl || 'assets/default-business.jpg';
@@ -144,27 +183,36 @@ showInactive() {
 //   });
 // }
 filteredBusiness() {
+  let list = [...this.business];
 
-  
-  let list = this.business.filter(b => {
+  // STATUS FILTER
+  list = list.filter(b => {
     const status = b.status?.toLowerCase().trim();
     return this.filterMode === 'active'
       ? status === 'active'
       : status === 'inactive';
   });
 
- 
+  // SEARCH FILTER
   if (this.searchTerm?.trim()) {
     const term = this.searchTerm.toLowerCase();
-    list = list.filter((b) =>
-      Object.values(b).some((val) =>
+    list = list.filter(b =>
+      Object.values(b).some(val =>
         val?.toString().toLowerCase().includes(term)
       )
     );
   }
 
+  // 🔥 SORT: NEWEST FIRST
+  list.sort(
+    (a: any, b: any) =>
+      new Date(b.createdAt).getTime() -
+      new Date(a.createdAt).getTime()
+  );
+
   return list;
 }
+
 
 
   // openViewModal(b: any) {

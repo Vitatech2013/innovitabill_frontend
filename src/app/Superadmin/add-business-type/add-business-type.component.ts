@@ -38,7 +38,7 @@ export class AddBusinessTypeComponent implements OnInit {
     }
 
     this.addBusinessTypeForm = this.fb.group({
-      business_type: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^\S+$/), Validators.pattern(/^[A-Za-z ]+$/) ]],
+      business_type: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[A-Za-z0-9]+( [A-Za-z0-9]+)*$/)]],
       business_code: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^\S+$/)]],
     });
   }
@@ -46,6 +46,18 @@ preventSpace(event: KeyboardEvent) {
   if (event.code === 'Space') {
     event.preventDefault();
   }
+}
+onNameInput(event: Event, controlName: string) {
+  const input = event.target as HTMLInputElement;
+
+  const value = input.value
+    .replace(/[^A-Za-z0-9 ]/g, '') 
+    .replace(/\s+/g, ' ')          
+    .trimStart();                  
+
+  this.addBusinessTypeForm
+    .get(controlName)
+    ?.setValue(value, { emitEvent: false });
 }
 
   saveBusiness() {

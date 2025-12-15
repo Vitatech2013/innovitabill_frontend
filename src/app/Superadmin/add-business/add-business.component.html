@@ -5,15 +5,17 @@
   </h5>
 </div>
 
-<div class="card shadow-sm p-3 mb-3 border-1 small-card scrollable-card" style="max-height: 600px; overflow-y: auto;">
-  <div class="position-fixed top-0 end-0 p-4" style="z-index: 1080">
-    <div *ngIf="toastMessage" class="custom-toast" [ngClass]="toastType">
-      <div class="d-flex justify-content-between align-items-center">
-        <span>{{ toastMessage }}</span>
-        <button class="btn-close ms-3" (click)="toastMessage = null"></button>
-      </div>
+<div class="position-fixed top-0 end-0 p-4" style="z-index: 1080">
+  <div *ngIf="toastMessage" class="custom-toast" [ngClass]="toastType">
+    <div class="d-flex justify-content-between align-items-center">
+      <span>{{ toastMessage }}</span>
+      <button class="btn-close ms-3" (click)="toastMessage = null"></button>
     </div>
   </div>
+</div>
+
+
+<div class="card shadow-sm p-3 mb-3 border-1 small-card scrollable-card" style=" overflow-y: auto;">
 
   <!-- <h5 class="text-success fw-bold mb-3">
     <i class="bi bi-building me-2"></i>
@@ -26,46 +28,66 @@
     enctype="multipart/form-data"
   >
     <div class="row g-3">
-      <div class="col-md-3">
-        <label class="form-label fw-semibold" style="font-size: medium"
-          >Business Name<span class="text-danger">*</span></label
-        >
-        <input
-          type="text"
-          class="form-control"
-          formControlName="business_name"
-          placeholder="Enter business name"
-          (keydown)="preventSpace($event)"
-          style="height: 45px"
-        />
-        <small
-          *ngIf="addBusinessForm.get('business_namee')?.hasError('required')"
-          class="text-danger"
-        >
-          Business Name is required
-        </small>
-        <small *ngIf="isInvalid('business_name')" class="text-danger">
-          Business Name is required and must be at least 3 letters
-        </small>
-        <small
-          *ngIf="addBusinessForm.get('business_name')?.hasError('pattern')"
-          class="text-danger"
-        >
-          Only alphabets are allowed
-        </small>
-      </div>
+<div class="col-md-3">
+  <label class="form-label fw-semibold" style="font-size: medium">
+    Business Name <span class="text-danger">*</span>
+  </label>
+
+  <input
+    type="text"
+    class="form-control"
+    formControlName="business_name"
+    placeholder="Enter business name"
+    style="height: 45px"
+   (input)="onNameInput($event, 'business_name')"
+  />
+
+  <small
+    *ngIf="
+      addBusinessForm.get('business_name')?.touched &&
+      addBusinessForm.get('business_name')?.hasError('required')
+    "
+    class="text-danger"
+  >
+    Business Name is required
+  </small>
+
+  <small
+    *ngIf="
+      addBusinessForm.get('business_name')?.touched &&
+      addBusinessForm.get('business_name')?.hasError('minlength')
+    "
+    class="text-danger"
+  >
+    Business Name must be at least 3 letters
+  </small>
+
+  <small
+    *ngIf="
+      addBusinessForm.get('business_name')?.touched &&
+      addBusinessForm.get('business_name')?.hasError('pattern')
+    "
+    class="text-danger"
+  >
+    Only alphabets are allowed
+  </small>
+</div>
+
 
       <div class="col-md-3">
         <label class="form-label fw-semibold" style="font-size: medium">
           Business Type <span class="text-danger">*</span>
         </label>
+<select class="form-select" formControlName="bt_id"  style="height: 45px">
+  <option value="">Select Business Type</option>
 
-        <select class="form-select" formControlName="bt_id">
-          <option value="">Select Business Type</option>
-          <option *ngFor="let type of businessTypes" [value]="type._id">
-            {{ type.business_type }}
-          </option>
-        </select>
+  <option *ngFor="let type of activeBusinessTypes" [value]="type._id">
+    {{ type.business_type }}
+  </option>
+</select>
+
+
+
 
         <small
           *ngIf="
@@ -88,7 +110,7 @@
           class="form-control"
           formControlName="owner_name"
           placeholder="Enter owner name"
-          (input)="onNameInput($event)"
+         (input)="onNameInput($event, 'owner_name')"
           style="height: 45px"
         />
 

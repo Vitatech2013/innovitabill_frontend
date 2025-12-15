@@ -4,7 +4,7 @@
   color: #fff;
   min-width: 250px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  animation: fadeIn 0.3s ease-out;
+  /* animation: fadeIn 0.3s ease-out; */
 }
 
 .success {

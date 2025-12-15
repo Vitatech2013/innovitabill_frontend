@@ -11,6 +11,7 @@ import {
 import { Router } from '@angular/router';
 import { BillingService } from '../../Services/billing.service';
 
+
 @Component({
   selector: 'app-add-business',
   standalone: true,
@@ -26,7 +27,7 @@ export class AddBusinessComponent implements OnInit {
   businessTypes: any[] = [];
    toastMessage: string | null = null;
   toastType: string | undefined;
-
+activeBusinessTypes: any[] = [];
   addressFields = [
     { label: 'House No', name: 'house_No' },
     { label: 'Town Name', name: 'town_Name' },
@@ -53,8 +54,8 @@ export class AddBusinessComponent implements OnInit {
     }
 
     this.addBusinessForm = this.fb.group({
-      business_name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/),Validators.pattern(/^[A-Za-z ]+$/)]],
-      owner_name: ['', [Validators.required, Validators.minLength(3),  Validators.pattern(/^[A-Za-z ]+$/)]],
+      business_name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/)]],
+      owner_name: ['', [Validators.required, Validators.minLength(3),  Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/)]],
       email: ['', [Validators.required, Validators.email,Validators.pattern(/^\S+$/)]],
       phone_number: ['', [Validators.required,  Validators.pattern(/^[0-9]{10}$/)]],
       bt_id: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
@@ -83,21 +84,51 @@ export class AddBusinessComponent implements OnInit {
     event.preventDefault();
   }
 }
-onNameInput(event: any) {
-  event.target.value = event.target.value.replace(/[^A-Za-z ]/g, '');
+onNameInput(event: Event, controlName: string) {
+  const input = event.target as HTMLInputElement;
+
+  const value = input.value
+    .replace(/[^A-Za-z ]/g, '') 
+    .replace(/\s+/g, ' ')       
+    .trimStart();                
+
+  this.addBusinessForm
+    .get(controlName)
+    ?.setValue(value, { emitEvent: false });
 }
+// checkEmailExists(): AsyncValidatorFn {
+//   return (control: AbstractControl) => {
+//     const email = control.value;
+//     if (!email) return of(null); // skip if empty
+
+//     return this.api.checkEmail(email).pipe(
+//       map((res: any) => {
+//         // res.exists = true if email exists in backend
+//         return res.exists ? { emailExists: true } : null;
+//       })
+//     );
+//   };
+// }
 
 
-  loadBusinessTypes() {
-    this.api.getBusinessTypes().subscribe({
-      next: (res: any) => {
-        this.businessTypes = res.data || [];
-        console.log('Business Types:', this.businessTypes);
-      },
-      error: (err: any) => console.error('Error fetching business types:', err),
-    });
-    
-  }
+
+loadBusinessTypes() {
+  this.api.getBusinessTypes().subscribe({
+    next: (res: any) => {
+      console.log('API RESPONSE ', res);
+
+      this.activeBusinessTypes = (res.data || []).filter(
+        (type: any) =>
+          type.status?.toLowerCase() === 'active'
+      );
+
+      console.log('ONLY ACTIVE ', this.activeBusinessTypes);
+    },
+    error: (err) => {
+      console.error('Error loading business types', err);
+    }
+  });
+}
 
   isInvalid(controlName: string): boolean {
     const control = this.addBusinessForm.get(controlName);
@@ -196,10 +227,10 @@ onNameInput(event: any) {
   this.api.addBusiness(formData).subscribe({
     next: (res) => {
     this.showToast('Business registered successfully!', 'success');
-setTimeout(() => {
-  this.router.navigate(['SuperAdminView']);
-}, 500);
 
+  setTimeout(() => {
+      this.showToast('Business registered successfully!', 'success');
+    }, 1000);
 
       
     },
@@ -217,7 +248,7 @@ setTimeout(() => {
   
   this.toastMessage = message;
   this.toastType = type;
-  setTimeout(() => (this.toastMessage = null), 3000);
+  setTimeout(() => (this.toastMessage = null), 1000);
 }
 
 

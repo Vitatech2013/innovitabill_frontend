@@ -59,11 +59,11 @@ if(res){
 }
        
 
-        this.showToast('Super Admin Login Success', 'success');
+        // this.showToast('Super Admin Login Success', 'success');
 
-        this.router.navigate(['/SuperAdminView'], {
-          state: { toast: 'Super Admin login success' },
-        });
+      this.router.navigate(['/SuperAdminView'], {
+        state: { toast: 'Super Admin Login Success' },
+      });
         
       },
 

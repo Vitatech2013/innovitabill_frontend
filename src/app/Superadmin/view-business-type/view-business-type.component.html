@@ -70,15 +70,13 @@
   </div>
 
 
-
-
       <div>
         <div
           class="row table-responsive scrollable-card"
           style="max-height: 600px; overflow-y: auto"
         >
           <table class="table table-bordered table-hover shadow-sm">
-            <thead class="table-success">
+            <thead class="table-success text-center">
               <tr>
                 <th style="background: #d4f8d4; color: #0a5c0a">S.no</th>
                 <th style="background: #d4f8d4; color: #0a5c0a">
@@ -91,7 +89,7 @@
                 <th style="background: #d4f8d4; color: #0a5c0a">Actions</th>
               </tr>
             </thead>
-            <tbody >
+            <tbody class="text-center">
               <tr *ngFor="let b of filteredBusiness(); let i = index">
                 <td>{{ i + 1 }}</td>
                 <td>{{ b.business_type }}</td>

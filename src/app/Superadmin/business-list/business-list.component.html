@@ -88,7 +88,7 @@
                 </tr>
               </thead>
 
-<tbody>
+<tbody class="text-center">
   <tr *ngFor="let b of filteredBusiness(); let i = index">
 
     <td>{{ i + 1 }}</td>
@@ -395,19 +395,19 @@
 
               <h6 class="fw-bold mt-3">Address</h6>
 
-              <div formGroupName="address" class="row">
-                <div class="col-md-4 mb-2" *ngFor="let field of addressFields">
-                  <label class="form-label fw-semibold">{{
-                    field.label
-                  }}</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    [formControlName]="field.name"
-                    (keypress)="allowOnlyLetters($event)"
-                  />
-                </div>
-              </div>
+             <div formGroupName="address" class="row">
+  <div class="col-md-4 mb-2" *ngFor="let field of addressFields">
+    <label class="form-label fw-semibold">{{ field.label }}</label>
+
+    <input
+      type="text"
+      class="form-control"
+      [formControlName]="field.name"
+      (keypress)="onAddressKeyPress($event, field.name)"
+    />
+  </div>
+</div>
+
               <!-- <div formGroupName="address" class="row">
         <div class="col-md-3 mb-4" *ngFor="let field of addressFields">
           <label class="form-label fw-semibold" style="font-size: medium;">

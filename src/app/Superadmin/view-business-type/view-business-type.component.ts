@@ -43,15 +43,24 @@ filterMode: 'active' | 'inactive' = 'active';
     this.getAllBusinessTypes();
   }
 
- getAllBusinessTypes() {
+getAllBusinessTypes() {
   this.api.getAllBusinessTypes().subscribe({
     next: (res: any) => {
-      this.b_types = res.data; 
-      this.inactiveCount = res.data.filter((b: any) => b.status === 'inactive').length;
+      // Latest first (assuming createdAt exists)
+      this.b_types = res.data.sort(
+        (a: any, b: any) =>
+          new Date(b.createdAt).getTime() -
+          new Date(a.createdAt).getTime()
+      );
+
+      this.inactiveCount = this.b_types.filter(
+        (b: any) => b.status === 'inactive'
+      ).length;
     },
     error: (err) => console.error('Fetch error', err)
   });
 }
+
 
 
   openAddModal() {
@@ -81,38 +90,83 @@ filterMode: 'active' | 'inactive' = 'active';
     this.openModal = true;
   }
 
- Updatebtype() {
-    if (this.b_typeForm.invalid) return;
+//  Updatebtype() {
+//     if (this.b_typeForm.invalid) return;
 
-    const data = this.b_typeForm.value;
+//     const data = this.b_typeForm.value;
 
-    if (this.selectedTypeId) {
+//     if (this.selectedTypeId) {
     
-      this.api.updateBusinessType(this.selectedTypeId, data).subscribe({
-        next: () => {
-          this.showToast('Business Type updated successfully', 'success');
-          this.getAllBusinessTypes();
+//       this.api.updateBusinessType(this.selectedTypeId, data).subscribe({
+//         next: () => {
+//           this.showToast('Business Type updated successfully', 'success');
+//           this.getAllBusinessTypes();
 
-          const modal = bootstrap.Modal.getInstance(document.getElementById('roleModal'));
-          modal?.hide();
-        },
-        error: () => this.showToast('Failed to update business type', 'error')
-      });
+//           const modal = bootstrap.Modal.getInstance(document.getElementById('roleModal'));
+//           modal?.hide();
+//         },
+//         error: () => this.showToast('Failed to update business type', 'error')
+//       });
 
-    } else {
+//     } else {
      
-      this.api.addBusinessType(data).subscribe({
-        next: () => {
-          this.showToast('Business Type added', 'success');
-          this.getAllBusinessTypes();
+//       this.api.addBusinessType(data).subscribe({
+//         next: () => {
+//           this.showToast('Business Type added', 'success');
+//           this.getAllBusinessTypes();
 
-          const modal = bootstrap.Modal.getInstance(document.getElementById('roleModal'));
-          modal?.hide();
-        },
-        error: () => this.showToast('Failed to add business type', 'error')
-      });
-    }
+//           const modal = bootstrap.Modal.getInstance(document.getElementById('roleModal'));
+//           modal?.hide();
+//         },
+//         error: () => this.showToast('Failed to add business type', 'error')
+//       });
+//     }
+//   }
+Updatebtype() {
+  if (this.b_typeForm.invalid) return;
+
+  const data = this.b_typeForm.value;
+
+  if (this.selectedTypeId) {
+
+    this.api.updateBusinessType(this.selectedTypeId, data).subscribe({
+      next: () => {
+        this.showToast('Business Type updated successfully', 'success');
+        this.getAllBusinessTypes();
+
+        const modalEl = document.getElementById('roleModal');
+        if (modalEl) {
+          const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+          modal.hide();
+        }
+
+        document.body.classList.remove('modal-open');
+        document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+      },
+      error: () => this.showToast('Failed to update business type', 'error')
+    });
+
+  } else {
+
+    this.api.addBusinessType(data).subscribe({
+      next: () => {
+        this.showToast('Business Type added', 'success');
+        this.getAllBusinessTypes();
+
+        const modalEl = document.getElementById('roleModal');
+        if (modalEl) {
+          const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+          modal.hide();
+        }
+
+        document.body.classList.remove('modal-open');
+        document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+      },
+      error: () => this.showToast('Failed to add business type', 'error')
+    });
   }
+}
+
 
   DeleteModal(b_type: any) {
     this.selectedB_type = b_type;

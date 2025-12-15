@@ -29,23 +29,42 @@
     enctype="multipart/form-data"
   >
     <div class="row g-3">
+<div class="col-12">
+  <label class="form-label fw-semibold" style="font-size: medium">
+    Name <span class="text-danger">*</span>
+  </label>
 
-      <div class="col-12">
-        <label class="form-label fw-semibold" style="font-size: medium;">
-          Name <span class="text-danger">*</span>
-        </label>
-        <input
-          type="text"
-          class="form-control w-100"
-          formControlName="business_type"
-          placeholder="Enter business type"
-          (keydown)="preventSpace($event)"
-          style="height: 45px;"
-        />
-         <small *ngIf="isInvalid('business_type')" class="text-danger">
-    Business Type is required and must be at least 3 letters (alphabets only)
+  <input
+    type="text"
+    class="form-control w-100"
+    formControlName="business_type"
+    placeholder="Enter business type"
+    style="height: 45px"
+    (input)="onNameInput($event, 'business_type')"
+  />
+
+  <small
+    *ngIf="
+      addBusinessTypeForm.get('business_type')?.touched &&
+      (addBusinessTypeForm.get('business_type')?.hasError('required') ||
+        addBusinessTypeForm.get('business_type')?.hasError('minlength'))
+    "
+    class="text-danger"
+  >
+    Business Type is required and must be at least 3 characters
   </small>
-      </div>
+
+  <small
+    *ngIf="
+      addBusinessTypeForm.get('business_type')?.touched &&
+      addBusinessTypeForm.get('business_type')?.hasError('pattern')
+    "
+    class="text-danger"
+  >
+    Only alphabets, numbers, and single spaces are allowed
+  </small>
+</div>
+
 
       
       <div class="col-12">

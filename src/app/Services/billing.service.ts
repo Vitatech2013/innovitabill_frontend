@@ -75,6 +75,13 @@ export class BillingService {
       formData
     );
   }
+   checkEmail(email: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/check-email?email=${email}`);
+  }
+//   checkEmail(email: string) {
+//   return this.http.post('/api/check-email', { email });
+// }
+
 
   profileupdate(formData: FormData, id: string) {
     return this.http.put(
