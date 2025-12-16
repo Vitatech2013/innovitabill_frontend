@@ -63,31 +63,31 @@ export class BusinessService {
   }
 
   // users
-  //  addUser(formData: FormData) {
-  //    return this.http.post(`${this.baseUrl}/user/userregistration`, formData);
-  // }
-  //   getUser() {
-  //   return this.http.get(`${this.baseUrl}/user/getuser`);
-  // }
-  //   updateUser(id: string, data: any) {
-  //   return this.http.put(`${this.baseUrl}/role/roleupdate/${id}`, data);
-  // }
-  //   deleteUser(id: string) {
-  //   return this.http.delete(`${this.baseUrl}/user/userdelete/${id}`);
-  // }
-
-  createUser(userData: any) {
-    return this.http.post(`${this.baseUrl}/user/registration`, userData);
+   addUser(formData: FormData) {
+     return this.http.post(`${this.baseUrl}/user/registration`, formData);
   }
-  deleteUser(id: string) {
-    return this.http.delete(`${this.baseUrl}/user/delete/${id}`);
-  }
-updateUser(id: string, payload: any) {
-  return this.http.put(`${this.baseUrl}/user/update/${id}`, payload);
-}
-
-  getUser() {
+    getUser() {
     return this.http.get(`${this.baseUrl}/user/get`);
   }
+    updateUser(id: string, data: any) {
+    return this.http.put(`${this.baseUrl}/user/update/${id}`, data);
+  }
+    deleteUser(id: string) {
+    return this.http.delete(`${this.baseUrl}/user/delete/${id}`);
+  }
+
+//   createUser(userData: any) {
+//     return this.http.post(`${this.baseUrl}/user/registration`, userData);
+//   }
+//   deleteUser(id: string) {
+//     return this.http.delete(`${this.baseUrl}/user/delete/${id}`);
+//   }
+// updateUser(id: string, payload: any) {
+//   return this.http.put(`${this.baseUrl}/user/update/${id}`, payload);
+// }
+
+//   getUser() {
+//     return this.http.get(`${this.baseUrl}/user/get`);
+//   }
 }
 
