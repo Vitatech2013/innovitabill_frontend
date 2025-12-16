@@ -20,7 +20,7 @@ export class AddBusinessTypeComponent implements OnInit {
   superadmin_id: any;
    toastMessage: string | null = null;
   toastType: string | undefined;
-
+businessTypes: any[] = [];
   constructor(
     private api: BillingService, 
     private fb: FormBuilder, 
@@ -41,7 +41,15 @@ export class AddBusinessTypeComponent implements OnInit {
       business_type: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[A-Za-z0-9]+( [A-Za-z0-9]+)*$/)]],
       business_code: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^\S+$/)]],
     });
+     this.getBusinessTypes();
+
+ 
   }
+  getBusinessTypes() {
+  this.api.getBusinessTypes().subscribe((res: any) => {
+    this.businessTypes = res.data; // update your table directly
+  }, (err) => console.error(err));
+}
 preventSpace(event: KeyboardEvent) {
   if (event.code === 'Space') {
     event.preventDefault();
@@ -79,7 +87,7 @@ onNameInput(event: Event, controlName: string) {
           this.showToast('Business Type Updated Successfully!', 'success');
           this.addBusinessTypeForm.reset();
           this.selectedBusiness = null;
-           window.location.reload();
+           this.getBusinessTypes();
             
       const bsmodal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'))
       bsmodal.hide();

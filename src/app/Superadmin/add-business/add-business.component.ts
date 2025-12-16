@@ -228,18 +228,22 @@ loadBusinessTypes() {
     next: (res) => {
     this.showToast('Business registered successfully!', 'success');
 
-  setTimeout(() => {
-      this.showToast('Business registered successfully!', 'success');
-    }, 1000);
+  // setTimeout(() => {
+  //     this.showToast('Business registered successfully!', 'success');
+  //   }, 1000);
 
-      
+      setTimeout(() => {
+  this.router.navigate(['SuperAdminView']);
+}, 500);
+
     },
     error: (err) => {
       console.error('Add failed:', err);
       if (err?.error?.missing_fields) {
         alert('Missing fields: ' + err.error.missing_fields.join(', '));
       } else {
-        alert('Failed to register business.');
+        this.showToast('Failed to register business.', 'error');
+        
       }
     },
   });

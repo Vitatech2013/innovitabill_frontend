@@ -18,6 +18,9 @@ export class SuperadminViewComponent implements OnInit {
   loggedInUser: { name: string; loginTime: string } | null = null;
   timer: any;
   superadminName: any;
+   toastMessage: string | null = null;
+  toastType: 'success' | 'error' | 'warning' = 'success';
+
 
   constructor(private router: Router) {}
 
@@ -33,7 +36,18 @@ export class SuperadminViewComponent implements OnInit {
     console.log(parsed, 'parsed');
 
     this.superadminName = parsed.superadmin_name;
+  // const nav = this.router.getCurrentNavigation();
+  // const state = nav?.extras?.state as { toast?: string };
+
+  // if (state?.toast) {
+  //   this.showToast(state.toast, 'success');
+  // }
   }
+  //   showToast(message: string, type: 'success' | 'error' | 'warning') {
+  //   this.toastMessage = message;
+  //   this.toastType = type;
+  //   setTimeout(() => (this.toastMessage = null), 2000);
+  // }
 
   logout() {
     localStorage.removeItem('sa');

@@ -6,3 +6,19 @@
 .scrollable-card::-webkit-scrollbar {
   width: 6px;
 }
+
+
+.table-scroll-container {
+  max-height: 400px;     /* adjust height as needed */
+  overflow-y: auto;
+  border-radius: 8px;
+}
+
+/* Sticky table header */
+.table-scroll-container thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #d4f8d4;
+  color: #0a5c0a;
+}

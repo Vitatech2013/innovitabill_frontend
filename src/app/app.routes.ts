@@ -89,7 +89,7 @@ export const routes: Routes = [
     path: 'business-Forgotpassword',
     component: BusinessForgotpasswordComponent,
   },
-  { path: 'business-otp', component: BusinessOtpComponent },
+  { path: 'resetPassword', component: BusinessOtpComponent },
 
   {
     path: 'business-Dashboard',

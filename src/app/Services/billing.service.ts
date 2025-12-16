@@ -7,6 +7,12 @@ import { constants } from '../../../constants';
   providedIn: 'root',
 })
 export class BillingService {
+  triggerBusinessTypeRefresh() {
+    throw new Error('Method not implemented.');
+  }
+  getBusinessTypesFromServer() {
+    throw new Error('Method not implemented.');
+  }
   // getQuotationData(demoId: string | null) {
   //   throw new Error('Method not implemented.');
   // }
