@@ -8,11 +8,50 @@
   >
     <div class="row g-4 item-form">
       <div class="col-md-4">
-        <label class="form-label fw-bold">Item Name</label>
+        <label class="form-label fw-bold">Vendor Name</label>
         <input
           type="text"
           class="form-control"
-          formControlName="item_name"
+          formControlName="vendor_name"
+          placeholder="Enter Vendor Name"
+          (input)="onInputAlphabetsOnly($event)"
+        />
+        <small *ngIf="isInvalid('item_name')" class="text-danger">
+          Vendor Name is required and must be at least 3 letters
+        </small>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-bold">Vendor Id</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="vendor_id"
+          placeholder="Enter Vendor Id"
+          (input)="onInputAlphabetsOnly($event)"
+        />
+        <small *ngIf="isInvalid('item_name')" class="text-danger">
+          Vendor Id is required and must be at least 3 letters
+        </small>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-bold">Vendor Type</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="vendor_type"
+          placeholder="Enter vendor Type"
+          (input)="onInputAlphabetsOnly($event)"
+        />
+        <small *ngIf="isInvalid('item_name')" class="text-danger">
+          Vendor Type is required and must be at least 3 letters
+        </small>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-bold">Business Category</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="business_category"
           placeholder="Enter item name"
           (input)="onInputAlphabetsOnly($event)"
         />
@@ -20,184 +59,279 @@
           Item Name is required and must be at least 3 letters
         </small>
       </div>
-
       <div class="col-md-4">
-        <label class="form-label fw-bold">Item Code</label>
+        <label class="form-label fw-bold">Registration Number</label>
         <input
           type="text"
           class="form-control"
-          formControlName="item_code"
-          placeholder="Enter item code"
-          (input)="onInputNoSpaces($event)"
-        />
-        <small *ngIf="isInvalid('item_code')" class="text-danger">
-          Item code is required and must be at least 3 letters
-        </small>
-      </div>
-
-      <!-- <div class="col-md-4">
-        <label class="form-label fw-bold">Units</label>
-        <select class="form-select" formControlName="unit_id">
-          <option Value="">Select Units</option>
-          <option *ngFor="let unit of units" [ngValue]="unit._id">
-            {{ unit.units_name }}
-          </option>
-        </select>
-      </div> -->
-
-      <div class="col-md-4">
-        <label class="form-label fw-bold">Purchase price</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="purchase_price"
-          placeholder="Purchase price"
-          (input)="onInputNumbersOnly($event)"
-        />
-        <small *ngIf="isInvalid('purchase_price')" class="text-danger">
-          Purchase price is required
-        </small>
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label fw-bold">Tax</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="tax_rate"
-          placeholder="Tax rate"
-          (input)="onInputNumbersAndSpecial($event)"
-        />
-
-        <small *ngIf="isInvalid('tax_rate')" class="text-danger">
-          Tax rate is required
-        </small>
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label fw-bold">Stock</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="stock_quantity"
-          placeholder="No.of Quantities"
-          (input)="onInputNumbersOnly($event)"
-        />
-        <small *ngIf="isInvalid('stock_quantity')" class="text-danger">
-          Stock is required
-        </small>
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label fw-bold">Brand Name</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="brand_name"
-          placeholder="Enter Brand name"
+          formControlName="company_registration_number"
+          placeholder="Enter item name"
           (input)="onInputAlphabetsOnly($event)"
         />
-        <small *ngIf="isInvalid('brand_name')" class="text-danger">
-          Brand name is required
+        <small *ngIf="isInvalid('item_name')" class="text-danger">
+          Item Name is required and must be at least 3 letters
         </small>
       </div>
-      <div formGroupName="address" class="row">
-        <div class="col-md-4 mb-4" *ngFor="let field of addressFields">
-          <label class="form-label fw-semibold" style="font-size: medium">
-            {{ field.label }}<span class="text-danger">*</span>
-          </label>
-
-          <input
-            type="text"
-            class="form-control"
-            [formControlName]="field.name"
-            placeholder="Enter {{ field.label }}"
-            style="height: 45px"
-            (input)="onInputNoSpaces($event)"
-          />
-
-          <div
-            class="text-danger small mt-1"
-            *ngIf="
-              addPurchaseForm.get('address.' + field.name)?.touched &&
-              addPurchaseForm.get('address.' + field.name)?.invalid
-            "
-          >
-            <div
-              *ngIf="
-                addPurchaseForm
-                  .get('address.' + field.name)
-                  ?.hasError('required')
-              "
-            >
-              {{ field.label }} is required.
-            </div>
-
-            <div
-              *ngIf="
-                addPurchaseForm
-                  .get('address.' + field.name)
-                  ?.hasError('minlength')
-              "
-            >
-              {{ field.label }} must be at least 3 characters.
-            </div>
-
-            <div
-              *ngIf="
-                (field.name === 'address_line_1' ||
-                  field.name === 'address_line_2' ||
-                  field.name === 'city' ||
-                  field.name === 'state' ||
-                  field.name === 'country') &&
-                addPurchaseForm
-                  .get('address.' + field.name)
-                  ?.hasError('pattern')
-              "
-            >
-              Only alphabets are allowed.
-            </div>
-
-            <div
-              *ngIf="
-                field.name === 'pincode' &&
-                addPurchaseForm
-                  .get('address.' + field.name)
-                  ?.hasError('pattern')
-              "
-            >
-              Only numbers are allowed.
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="col-md-4">
-        <label class="form-label fw-bold">Image</label>
+        <label class="form-label fw-bold">GST Number</label>
         <input
-          type="file"
+          type="text"
           class="form-control"
-          (change)="onFileSelect($event)"
+          formControlName="gst_number"
+          placeholder="Enter item name"
+          (input)="onInputAlphabetsOnly($event)"
         />
-        <small *ngIf="isInvalid('image')" class="text-danger">
-          Image is required
+        <small *ngIf="isInvalid('item_name')" class="text-danger">
+          Item Name is required and must be at least 3 letters
+        </small>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-bold">PAN Number</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="pan_number"
+          placeholder="Enter item name"
+          (input)="onInputAlphabetsOnly($event)"
+        />
+        <small *ngIf="isInvalid('item_name')" class="text-danger">
+          Item Name is required and must be at least 3 letters
         </small>
       </div>
     </div>
+    <div class="row g-4 item-form mt-3">
+      <h3 class="fw-bold">Address Details</h3>
+      <div formGroupName="address" class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Address Line 1</label>
+          <input
+            class="form-control"
+            formControlName="address_line_1 "
+            placeholder=" Enter your Address"
+          />
+          <small
+            *ngIf="isInvalid('address.address_line_1')"
+            class="text-danger"
+          >
+            Required
+          </small>
+        </div>
 
-    <div class="text-end mt-4 item-button">
-      <button
-        type="button"
-        class="btn btn-secondary me-2 px-4"
-        (click)="cancelAdd()"
-      >
-        <i class="bi bi-x-circle me-1"></i> Cancel
-      </button>
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Address Line 2</label>
+          <input
+            class="form-control"
+            formControlName="address_line_2"
+            placeholder="Enter your Address "
+          />
+        </div>
 
-      <button type="submit" class="btn btn-success px-4">
-        <i class="bi bi-save me-1"></i>
-        {{ selectedBusiness ? "Update" : "Save" }}
-      </button>
+        <div class="col-md-4">
+          <label class="form-label fw-bold">City</label>
+          <input
+            class="form-control"
+            formControlName="city"
+            placeholder="Enter your City"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-bold">State</label>
+          <input
+            class="form-control"
+            formControlName="state"
+            placeholder="Enter your State"
+          />
+        </div>
+
+        <div class="col-md-4 fw-bold">
+          <label class="form-label">Country</label>
+          <input
+            class="form-control"
+            formControlName="country"
+            placeholder="Enter your country"
+          />
+        </div>
+
+        <div class="col-md-4 fw-bold">
+          <label class="form-label">Pincode</label>
+          <input
+            class="form-control"
+            formControlName="pincode"
+            placeholder="Enter your Pincode"
+          />
+        </div>
+      </div>
+
+      <div class="row g-4 item-form mt-3">
+        <h3 class="fw-bold">Contact</h3>
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Contact Person Name</label>
+          <input
+            class="form-control"
+            formControlName="contact_person_name"
+            placeholder="Enter Person Name"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Email</label>
+          <input
+            class="form-control"
+            formControlName="email"
+            placeholder="Enter Email"
+          />
+          <small *ngIf="isInvalid('contact.email')" class="text-danger">
+            Invalid email
+          </small>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Mobile Number</label>
+          <input
+            class="form-control"
+            formControlName="mobile_number"
+            placeholder="Enter Mobile Number"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Alternate Mobile Number</label>
+          <input
+            class="form-control"
+            formControlName="alternate_mobile_number"
+            placeholder="Enter Alternate Mobile Number"
+          />
+        </div>
+      </div>
+
+      <div class="row g-4 item-form mt-3">
+        <h3 class="fw-bold">Item Details</h3>
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Item Name</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="item_name"
+            placeholder="Enter item name"
+            (input)="onInputAlphabetsOnly($event)"
+          />
+          <small *ngIf="isInvalid('item_name')" class="text-danger">
+            Item Name is required and must be at least 3 letters
+          </small>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Item Code</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="item_code"
+            placeholder="Enter item code"
+            (input)="onInputNoSpaces($event)"
+          />
+          <small *ngIf="isInvalid('item_code')" class="text-danger">
+            Item code is required and must be at least 3 letters
+          </small>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Units</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="units"
+            placeholder="Enter Units"
+            (input)="onInputNoSpaces($event)"
+          />
+          <small *ngIf="isInvalid('item_code')" class="text-danger">
+            Units is required and must be at least 3 letters
+          </small>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Purchase price</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="purchased_price"
+            placeholder="Purchase price"
+            (input)="onInputNumbersOnly($event)"
+          />
+          <small *ngIf="isInvalid('purchase_price')" class="text-danger">
+            Purchase price is required
+          </small>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Tax</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="tax_rate"
+            placeholder="Tax rate"
+            (input)="onInputNumbersAndSpecial($event)"
+          />
+
+          <small *ngIf="isInvalid('tax_rate')" class="text-danger">
+            Tax rate is required
+          </small>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Stock</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="stock_quantity"
+            placeholder="No.of Quantities"
+            (input)="onInputNumbersOnly($event)"
+          />
+          <small *ngIf="isInvalid('stock_quantity')" class="text-danger">
+            Stock is required
+          </small>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Brand Name</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="brand_name"
+            placeholder="Enter Brand name"
+            (input)="onInputAlphabetsOnly($event)"
+          />
+          <small *ngIf="isInvalid('brand_name')" class="text-danger">
+            Brand name is required
+          </small>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label fw-bold">Image</label>
+          <input
+            type="file"
+            class="form-control"
+            (change)="onFileSelect($event)"
+          />
+          <small *ngIf="isInvalid('image')" class="text-danger">
+            Image is required
+          </small>
+        </div>
+      </div>
+
+      <div class="text-end mt-4 item-button">
+        <button
+          type="button"
+          class="btn btn-secondary me-2 px-4"
+          (click)="cancelAdd()"
+        >
+          <i class="bi bi-x-circle me-1"></i> Cancel
+        </button>
+
+        <button type="submit" class="btn btn-success px-4">
+          <i class="bi bi-save me-1"></i>
+          {{ selectedBusiness ? "Update" : "Save" }}
+        </button>
+      </div>
     </div>
   </form>
 </div>

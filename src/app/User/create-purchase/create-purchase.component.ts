@@ -25,12 +25,12 @@ export class CreatePurchaseComponent implements OnInit {
   business_id: string = '';
   selectedBusiness: any;
   addressFields = [
-    { label: 'address_line_1', name: 'address_line_1' },
-    { label: 'address_line_2', name: 'address_line_2' },
-    { label: ' city', name: 'city' },
-    { label: ' state', name: 'state' },
-    { label: 'country', name: 'country' },
-    { label: 'pincode', name: 'pincode', text: 'number' },
+    { label: 'Address Line 1', name: 'address_line_1' },
+    { label: 'Address Line 2', name: 'address_line_2' },
+    { label: 'City', name: 'city' },
+    { label: 'Country', name: 'country' },
+    { label: 'State', name: 'state' },
+    { label: 'Pincode', name: 'pincode' },
   ];
 
   constructor(
@@ -41,60 +41,141 @@ export class CreatePurchaseComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    address: this.fb.group({
-      address_line_1: [
+    this.addPurchaseForm = this.fb.group({
+      item_name: [
         '',
         [
           Validators.required,
           Validators.minLength(3),
-          Validators.pattern(/^\S+$/),
+          Validators.pattern('^[a-zA-Z0-9]+$'),
         ],
       ],
-      address_line_2: [
+      item_code: [
         '',
         [
           Validators.required,
           Validators.minLength(3),
-          Validators.pattern(/^\S+$/),
-          Validators.pattern(/^[A-Za-z ]+$/),
+          Validators.pattern('^[a-zA-Z0-9]+$'),
         ],
       ],
-      city: [
+      purchased_price: [
         '',
         [
           Validators.required,
-          Validators.minLength(3),
-          Validators.pattern(/^\S+$/),
-          Validators.pattern(/^[A-Za-z ]+$/),
+          Validators.pattern('^[0-9!@#$%^&*()_+\\-=[\\]{};\'":\\\\|,.<>/?]+$'),
         ],
       ],
-      state: [
+      tax_rate: [
         '',
         [
           Validators.required,
-          Validators.minLength(3),
-          Validators.pattern(/^\S+$/),
-          Validators.pattern(/^[A-Za-z ]+$/),
+          Validators.pattern('^[0-9!@#$%^&*()_+\\-=[\\]{};\'":\\\\|,.<>/?]+$'),
         ],
       ],
-      country: [
+      stock_quantity: [
         '',
         [
           Validators.required,
-          Validators.minLength(3),
-          Validators.pattern(/^\S+$/),
-          Validators.pattern(/^[A-Za-z ]+$/),
+          Validators.pattern('^[0-9!@#$%^&*()_+\\-=[\\]{};\'":\\\\|,.<>/?]+$'),
         ],
       ],
-      pincode: [
+      brand_name: [
         '',
-        [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.pattern(/^[0-9]+$/),
-        ],
+        [Validators.required, Validators.pattern('^[A-Za-z]+$')],
       ],
+      units: ['', Validators.required],
+      image: [''],
+      address: this.fb.group({
+        address_line_1: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern(/^\S+$/),
+          ],
+        ],
+        address_line_2: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern(/^\S+$/),
+            Validators.pattern(/^[A-Za-z ]+$/),
+          ],
+        ],
+        city: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern(/^\S+$/),
+            Validators.pattern(/^[A-Za-z ]+$/),
+          ],
+        ],
+        country: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern(/^\S+$/),
+            Validators.pattern(/^[A-Za-z ]+$/),
+          ],
+        ],
+        state: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern(/^\S+$/),
+            Validators.pattern(/^[A-Za-z ]+$/),
+          ],
+        ],
+        pincode: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern(/^[0-9]+$/),
+          ],
+        ],
+      }),
+      contact: this.fb.group({
+        contact_person_name: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern('^[a-zA-Z0-9]+$'),
+          ],
+        ],
+        email: [
+          '',
+          [Validators.required, Validators.email, Validators.pattern(/^\S+$/)],
+        ],
+        mobile_number: [
+          '',
+          [Validators.required, Validators.pattern(/^[0-9]{10}$/)],
+        ],
+        alternate_mobile_number: [
+          '',
+          [Validators.required, Validators.pattern(/^[0-9]{10}$/)],
+        ],
+      }),
+      vendor_name: ['', Validators.required],
+      vendor_id: ['', Validators.required],
+      vendor_type: ['', Validators.required],
+      business_category: ['', Validators.required],
+      company_registration_number: ['', Validators.required],
+      gst_number: ['', Validators.required],
+      pan_number: ['', Validators.required],
     });
+
+    const storedBusiness = localStorage.getItem('business');
+    if (storedBusiness) {
+      const b = JSON.parse(storedBusiness);
+      this.business_id = b._id;
+      console.log('Business ID:', this.business_id);
+    }
   }
 
   saveItems() {
@@ -108,23 +189,35 @@ export class CreatePurchaseComponent implements OnInit {
 
     formData.append('item_name', f.item_name);
     formData.append('item_code', f.item_code);
-    formData.append('purchase_price', f.purchase_price);
-    formData.append('selling_price', f.selling_price);
+    formData.append('purchased_price', f.purchase_price);
+    formData.append('vendor_name', f.vendor_name);
     formData.append('tax_rate', f.tax_rate);
     formData.append('stock_quantity', f.stock_quantity);
-    formData.append('discount', f.discount);
-    formData.append('min_stock_alert', f.min_stock_alert);
-    formData.append('description', f.description);
+    formData.append('vendor_id', f.vendor_id);
+    formData.append('vendor_type', f.vendor_type);
+    formData.append('business_category', f.business_category);
     formData.append('brand_name', f.brand_name);
-    formData.append('category_id', f.category_id);
-    formData.append('sub_category_id', f.sub_category_id);
-    formData.append('unit_id', f.unit_id);
+    formData.append('gst_number', f.gst_number);
+    formData.append('pan_number', f.pan_number);
+    formData.append('units', f.units);
 
     formData.append('business_id', this.business_id);
 
     if (this.selectedImageFile) {
       formData.append('image', this.selectedImageFile);
     }
+    Object.keys(this.addPurchaseForm.controls).forEach((key) => {
+      const control = this.addPurchaseForm.get(key);
+
+      if (key === 'address') {
+        const addr = control?.value;
+        formData.append('address', JSON.stringify(addr));
+      } else {
+        if (control?.value && typeof control.value === 'string') {
+          formData.append(key, control.value);
+        }
+      }
+    });
 
     this.service.addItems(formData).subscribe({
       next: (res) => {

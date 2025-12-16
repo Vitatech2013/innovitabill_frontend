@@ -28,7 +28,7 @@ import { BillingService } from '../../Services/billing.service';
 export class SalesComponent implements OnInit {
   saledata: any[] = [];
   searchTerm: string = '';
-  editForm!: FormGroup;
+  viewForm!: FormGroup;
   iid: any;
   paymentForm!: FormGroup;
   sid: any;
@@ -44,7 +44,7 @@ export class SalesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.editForm = this.fb.group({
+    this.viewForm = this.fb.group({
       invoice_number: ['', Validators.required],
       name: ['', Validators.required],
       item_name: ['', Validators.required],
@@ -105,7 +105,7 @@ export class SalesComponent implements OnInit {
   view(sale: any) {
     const firstProduct = sale.product_ids?.[0] || {};
 
-    this.editForm.patchValue({
+    this.viewForm.patchValue({
       invoice_number: sale.invoice_number,
       name: sale.customer_id?.name || '',
       item_name: firstProduct.item_id?.item_name || '',
