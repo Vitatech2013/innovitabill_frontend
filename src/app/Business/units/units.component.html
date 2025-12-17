@@ -124,13 +124,14 @@
          <div class="row g-3">
           <div class="col-md-6 mb-2">
             <label class="form-label">Unit Name</label>
-            <input
-              type="text"
-              formControlName="units_name"
-              class="form-control"
-              (keypress)="allowOnlyLetters($event)"
-              placeholder="Enter name"
-            />
+         <input
+  type="text"
+  formControlName="units_name"
+  class="form-control"
+  placeholder="Enter name"
+  (input)="onNameInput($event, 'units_name')"
+/>
+
              <div
             *ngIf="UnitForm.controls['units_name']?.touched && UnitForm.controls['units_name']?.invalid"
           >

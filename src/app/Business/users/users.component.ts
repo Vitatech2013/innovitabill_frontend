@@ -126,6 +126,32 @@ export class UsersComponent implements OnInit {
     modalInstance.show();
   }
 }
+allowLettersAndSpace(event: KeyboardEvent) {
+  const char = String.fromCharCode(event.which || event.keyCode);
+
+  // Allow only alphabets and space
+  if (!/^[a-zA-Z ]$/.test(char)) {
+    event.preventDefault();
+  }
+}
+onNameInput(event: any, controlName: string) {
+  let value = event.target.value;
+
+  value = value
+    // allow only letters and spaces
+    .replace(/[^a-zA-Z ]/g, '')
+    // remove starting spaces
+    .replace(/^\s+/g, '')
+    // allow only one space between words
+    .replace(/\s{2,}/g, ' ');
+
+  this.usersForm.get(controlName)?.setValue(value, {
+    emitEvent: false
+  });
+}
+
+
+
 
   resetForm() {
     this.usersForm.reset();
@@ -231,6 +257,25 @@ export class UsersComponent implements OnInit {
     this.selectedUser = user;
     new bootstrap.Modal(document.getElementById('deleteModal')).show();
   }
+// getUsers() {
+//   this.service.getUser().subscribe((res: any) => {
+//     this.users = (res.data || [])
+//       .map((u: any) => ({
+//         ...u,
+//         imageUrl: this.getImageUrl(u.image),
+//         id_proofUrl: this.getImageUrl(u.id_proof),
+//       }))
+//       .sort(
+//         (a: any, b: any) =>
+//           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+//       );
+
+//     // optional: auto-select latest user
+//     this.selectedUser = this.users.length ? this.users[0] : null;
+//   });
+// }
+
+
 
   confirmDelete() {
     if (!this.selectedUser) return;

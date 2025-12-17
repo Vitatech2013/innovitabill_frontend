@@ -42,7 +42,7 @@ toastType: any;
     }
 
     this.categoryForm = this.fb.group({
-      categories_name: ['', Validators.required],
+      categories_name: ['', [Validators.required,  Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/)]],
       categories_code: ['', Validators.required],
       status:['',Validators.required],
       user_id: [''],
@@ -53,15 +53,50 @@ toastType: any;
     this.getAllCategories();
   }
 
+  // getAllCategories() {
+  //   this.api.getcategories().subscribe({
+  //     next: (res: any) => {
+  //       this.categories = res.data || res;
+  //       console.log('Categories Loaded:', this.categories);
+  //     },
+  //     error: (err) => console.error('Error Loading:', err),
+  //   });
+  // }
   getAllCategories() {
-    this.api.getcategories().subscribe({
-      next: (res: any) => {
-        this.categories = res.data || res;
-        console.log('Categories Loaded:', this.categories);
-      },
-      error: (err) => console.error('Error Loading:', err),
-    });
+  this.api.getcategories().subscribe({
+    next: (res: any) => {
+      this.categories = (res.data || res)
+        .sort(
+          (a: any, b: any) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+
+      console.log('Categories Loaded (Latest First):', this.categories);
+    },
+    error: (err) => console.error('Error Loading:', err),
+  });
+}
+
+allowLettersAndSpace(event: KeyboardEvent) {
+   const allowedKeys = [
+    'Backspace',
+    'Delete',
+    'ArrowLeft',
+    'ArrowRight',
+    'Tab'
+  ];
+
+  if (allowedKeys.includes(event.key)) {
+    return;
   }
+
+  if (!/^[a-zA-Z ]$/.test(event.key)) {
+    event.preventDefault();
+  }
+}
+
+
+
 
   openAddModal() {
     this.title = 'Add Category';
@@ -69,6 +104,19 @@ toastType: any;
     this.categoryForm.reset();
     (document.getElementById('CategoryModal') as any)?.classList.add('show');
   }
+onNameInput(event: any, controlName: string) {
+   const input = event.target as HTMLInputElement;
+
+    const value = input.value
+      .replace(/[^A-Za-z ]/g, '')
+      .replace(/\s+/g, ' ')
+      .trimStart();
+
+    this.categoryForm
+      .get(controlName)
+      ?.setValue(value, { emitEvent: false });
+}
+
 
   edit(cat: any) {
     this.title = 'Edit Category';

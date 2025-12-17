@@ -325,13 +325,14 @@
               <div class="col-md-6 mb-2">
                 <label class="form-label">User Name</label>
                 <input
-                  type="text"
-                  formControlName="user_name"
-                  class="form-control"
-                  placeholder="Enter user name"
-                  (keypress)="allowOnlyLetters($event)"
-                  autocomplete="username"
-                />
+  type="text"
+  formControlName="user_name"
+  class="form-control"
+  placeholder="Enter user name"
+  (input)="onNameInput($event, 'user_name')"
+  autocomplete="username"
+/>
+
                 <div
                   *ngIf="
                     usersForm.controls['user_name']?.touched &&

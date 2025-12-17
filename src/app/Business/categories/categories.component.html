@@ -125,13 +125,15 @@
           <div class="row g-3">
           <div class="col-md-6 mb-2">
             <label class="form-label">Category Name</label>
-            <input
-              type="text"
-              formControlName="categories_name"
-              class="form-control"
-              placeholder="Enter Category Name"
-              (keypress)="allowOnlyLetters($event)"
-            />
+         <input
+  type="text"
+  formControlName="categories_name"
+  class="form-control"
+  placeholder="Enter Category Name"
+  (keydown)="allowLettersAndSpace($event)"
+  (input)="onNameInput($event, 'categories_name')"
+/>
+
             <div
               *ngIf="
                 categoryForm.controls['categories_name']?.touched &&

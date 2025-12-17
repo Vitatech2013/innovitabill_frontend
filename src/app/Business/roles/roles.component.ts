@@ -39,7 +39,7 @@ toastType: any;
     console.log('business_id:',this.business_id );
 
     this.roleForm = this.fb.group({
-      role_name: ['', Validators.required],
+      role_name: ['', [Validators.required, Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/)]],
       role_number: ['', Validators.required],
       status:['',Validators.required],
     });
@@ -47,15 +47,29 @@ toastType: any;
     this.getAllRoles();
   }
 
+  // getAllRoles(): void {
+  //   this.api.getRoles().subscribe({
+  //     next: (res: any) => {
+  //       this.roles = res.data;
+  //       console.log('Roles loaded:', res.data);
+  //     },
+  //     error: (err) => console.error('Error loading roles:', err),
+  //   });
+  // }
   getAllRoles(): void {
-    this.api.getRoles().subscribe({
-      next: (res: any) => {
-        this.roles = res.data;
-        console.log('Roles loaded:', res.data);
-      },
-      error: (err) => console.error('Error loading roles:', err),
-    });
-  }
+  this.api.getRoles().subscribe({
+    next: (res: any) => {
+      this.roles = (res.data || []).sort(
+        (a: any, b: any) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
+      console.log('Roles loaded (Latest First):', this.roles);
+    },
+    error: (err) => console.error('Error loading roles:', err),
+  });
+}
+
 
   openAddModal(): void {
     this.title = 'Add Role';
@@ -63,7 +77,18 @@ toastType: any;
     this.openModel = true;
   }
 
- 
+onNameInput(event: any, controlName: string) {
+  let value = event.target.value;
+
+  // Remove leading spaces
+  value = value.replace(/^\s+/g, '');
+
+  // Replace multiple spaces with single space
+  value = value.replace(/\s{2,}/g, ' ');
+
+  this.roleForm.get(controlName)?.setValue(value, { emitEvent: false });
+}
+
 
 //   createOrUpdateRole(): void {
 //   if (this.roleForm.invalid) {
@@ -213,11 +238,15 @@ this.selectedRole = roles;
     setTimeout(() => (this.toastMessage = null), 3000);
   }
 allowOnlyLetters(event: KeyboardEvent) {
-  const pattern = /^[A-Za-z]$/;
-  if (!pattern.test(event.key)) {
-    event.preventDefault(); // blocks numbers, spaces, special characters
+  const charCode = event.which || event.keyCode;
+  const char = String.fromCharCode(charCode);
+
+  // Allow letters and space
+  if (!/^[a-zA-Z ]$/.test(char)) {
+    event.preventDefault();
   }
 }
+
 allowOnlyNumbers(event: KeyboardEvent) {
   const pattern = /^[0-9]$/;
   if (!pattern.test(event.key)) {

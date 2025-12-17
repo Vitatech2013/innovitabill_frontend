@@ -135,6 +135,7 @@
               class="form-control"
               placeholder="Enter role name"
               (keypress)="allowOnlyLetters($event)"
+              (input)="onNameInput($event, 'role_name')"
             />
             <div
               *ngIf="

@@ -59,11 +59,14 @@ if(res){
 }
        
 
-        this.showToast('Super Admin Login Success', 'success');
+  sessionStorage.setItem('toastMessage', 'Super Admin Login Success');
+  sessionStorage.setItem('toastType', 'success');
 
-      this.router.navigate(['/SuperAdminView'], {
-        state: { toast: 'Super Admin Login Success' },
-      });
+  
+  this.router.navigate(['/SuperAdminView']);
+      // this.router.navigate(['/SuperAdminView'], {
+      //   state: { toast: 'Super Admin Login Success' },
+      // });
      
 
 // setTimeout(() => {

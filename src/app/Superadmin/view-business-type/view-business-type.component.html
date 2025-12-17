@@ -1,12 +1,12 @@
-<div class="row border border-1 rounded p-3 ">
+<div class="row border border-1 rounded p-3">
   <div class="col-sm-3">
     <div>
       <app-add-business-type></app-add-business-type>
     </div>
   </div>
   <div class="col-sm-9">
-    <div class="position-fixed top-1 end-0 p-1" style="z-index: 1080 ">
-      <div
+    <div class="position-fixed top-1 end-0 p-1" style="z-index: 1080">
+      <div  class="custom-toast"
         *ngIf="toastMessage"
         class="toast align-items-center text-light border-0 fade show shadow-lg"
         [ngClass]="{
@@ -32,91 +32,79 @@
       </div>
     </div>
 
-    <div class="dashboard ">
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3 flex-md-nowrap">
+    <div class="dashboard">
+      <div
+        class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3 flex-md-nowrap"
+      >
+        <h5 class="text-success fw-bold mb-0">
+          <i class="bi bi-building me-2"></i> Business Types
+        </h5>
 
-  <h5 class="text-success fw-bold mb-0">
-    <i class="bi bi-building me-2"></i> Business Types
-  </h5>
+        <input
+          type="text"
+          class="form-control shadow-sm"
+          placeholder="Search..."
+          [(ngModel)]="searchTerm"
+          style="max-width: 250px"
+        />
 
-  
-
-    <input
-      type="text"
-      class="form-control shadow-sm"
-      placeholder="Search..."
-      [(ngModel)]="searchTerm"
-      style="max-width: 250px;"
-    />
-
-   <button
-    class="btn side-btn text-dark fw-semibold border-1 me-2"
-    style="background-color: #f3f4f6"
-    (click)="showActive()"
-  >
-    <b><i class="bi bi-check-circle me-1"></i></b>
-    Active
-  </button>
-
-  <button
-    class="btn side-btn text-dark fw-semibold border-1"
-    style="background-color: #f3f4f6"
-    (click)="showInactive()"
-  >
-    <b><i class="bi bi-x-circle me-1"></i></b>
-    Inactive
-  </button>
-
-  </div>
-
-
-     
-        <div
-          class="row table-responsive  table-scroll-container"
- 
+        <button
+          class="btn side-btn text-dark fw-semibold border-1 me-2"
+          style="background-color: #f3f4f6"
+          (click)="showActive()"
         >
-          <table class="table table-bordered table-hover shadow-sm ">
-            <thead class="table-success text-center ">
-              <tr>
-                <th style="background: #d4f8d4; color: #0a5c0a">S.no</th>
-                <th style="background: #d4f8d4; color: #0a5c0a">
-                  Business Type
-                </th>
-                <th style="background: #d4f8d4; color: #0a5c0a">
-                  Business Code
-                </th>
-                <th style="background: #d4f8d4; color: #0a5c0a">Status</th>
-                <th style="background: #d4f8d4; color: #0a5c0a">Actions</th>
-              </tr>
-            </thead>
-            <tbody class="text-center">
-              <tr *ngFor="let b of filteredBusiness(); let i = index">
-                <td>{{ i + 1 }}</td>
-                <td>{{ b.business_type }}</td>
-                <td>{{ b.business_code }}</td>
-                <td>{{ b.status }}</td>
-                <td>
-                  <button
-                    class="btn btn-sm btn-outline-primary me-2"
-                    (click)="edit(b)"
-                    data-bs-toggle="modal"
-                    data-bs-target="#roleModal"
-                  >
-                    <i class="bi bi-pencil-square"></i>
-                  </button>
-                  <button
-                    class="btn btn-sm btn-outline-danger"
-                    (click)="DeleteModal(b)"
-                  >
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+          <b><i class="bi bi-check-circle me-1"></i></b>
+          Active
+        </button>
+
+        <button
+          class="btn side-btn text-dark fw-semibold border-1"
+          style="background-color: #f3f4f6"
+          (click)="showInactive()"
+        >
+          <b><i class="bi bi-x-circle me-1"></i></b>
+          Inactive
+        </button>
       </div>
-   
+
+      <div class="row table-responsive table-scroll-container">
+        <table class="table table-bordered table-hover shadow-sm">
+          <thead class="table-success text-center">
+            <tr>
+              <th style="background: #d4f8d4; color: #0a5c0a">S.no</th>
+              <th style="background: #d4f8d4; color: #0a5c0a">Business Type</th>
+              <th style="background: #d4f8d4; color: #0a5c0a">Business Code</th>
+              <th style="background: #d4f8d4; color: #0a5c0a">Status</th>
+              <th style="background: #d4f8d4; color: #0a5c0a">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="text-center">
+            <tr *ngFor="let b of filteredBusiness(); let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ b.business_type }}</td>
+              <td>{{ b.business_code }}</td>
+              <td>{{ b.status }}</td>
+              <td>
+                <button
+                  class="btn btn-sm btn-outline-primary me-2"
+                  (click)="edit(b)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#roleModal"
+                >
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="DeleteModal(b)"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
     <div
       class="modal fade"
@@ -148,6 +136,7 @@
                   class="form-control"
                   formControlName="business_type"
                   placeholder="Enter Business Type"
+                  (input)="removeLongSpaces($event, 'business_type')"
                 />
 
                 <div
@@ -171,7 +160,8 @@
                   type="text"
                   formControlName="business_code"
                   class="form-control"
-                  placeholder="Enter business_code"
+                  placeholder="Enter Business Code"
+                  (input)="removeLongSpaces($event, 'business_code')"
                 />
                 <div
                   *ngIf="

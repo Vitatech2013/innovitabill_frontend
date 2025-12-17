@@ -11,7 +11,6 @@ import {
 import { Router } from '@angular/router';
 import { BillingService } from '../../Services/billing.service';
 
-
 @Component({
   selector: 'app-add-business',
   standalone: true,
@@ -25,16 +24,16 @@ export class AddBusinessComponent implements OnInit {
   superadmin_id: string = '';
   selectedBusiness: any;
   businessTypes: any[] = [];
-   toastMessage: string | null = null;
+  toastMessage: string | null = null;
   toastType: string | undefined;
-activeBusinessTypes: any[] = [];
+  activeBusinessTypes: any[] = [];
   addressFields = [
     { label: 'House No', name: 'house_No' },
     { label: 'Town Name', name: 'town_Name' },
     { label: 'Mandal Name', name: 'mandal_Name' },
     { label: 'District Name', name: 'district_Name' },
     { label: 'State', name: 'state' },
-    { label: 'pincode', name: 'pincode',text: 'number' },
+    { label: 'pincode', name: 'pincode', text: 'number' },
   ];
 
   constructor(
@@ -54,23 +53,118 @@ activeBusinessTypes: any[] = [];
     }
 
     this.addBusinessForm = this.fb.group({
-      business_name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/)]],
-      owner_name: ['', [Validators.required, Validators.minLength(3),  Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/)]],
-      email: ['', [Validators.required, Validators.email,Validators.pattern(/^\S+$/)]],
-      phone_number: ['', [Validators.required,  Validators.pattern(/^[0-9]{10}$/)]],
-      bt_id: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
-      registration_number: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/),Validators.pattern(/^[A-Za-z0-9]+$/)]],
-      gst_number: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/),  ]],
-      password: ['', [Validators.required, Validators.minLength(8),    Validators.pattern(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).+$/
-      )]],
+      business_name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/),
+        ],
+      ],
+      owner_name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/),
+        ],
+      ],
+      email: [
+        '',
+        [Validators.required, Validators.email, Validators.pattern(/^\S+$/)],
+      ],
+      phone_number: [
+        '',
+        [Validators.required, Validators.pattern(/^[0-9]{10}$/)],
+      ],
+      bt_id: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.pattern(/^\S+$/),
+        ],
+      ],
+      registration_number: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.pattern(/^\S+$/),
+          Validators.pattern(/^[A-Za-z0-9]+$/),
+        ],
+      ],
+      gst_number: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.pattern(/^\S+$/),
+        ],
+      ],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).+$/
+          ),
+        ],
+      ],
       address: this.fb.group({
-        house_No: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/)]],
-        town_Name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/),Validators.pattern(/^[A-Za-z ]+$/)]],
-        mandal_Name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/),Validators.pattern(/^[A-Za-z ]+$/)]],
-        district_Name: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/),Validators.pattern(/^[A-Za-z ]+$/)]],
-        state: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^\S+$/),Validators.pattern(/^[A-Za-z ]+$/)]],
-        pincode: ['', [Validators.required, Validators.minLength(3),Validators.pattern(/^[0-9]+$/) ]],
+        house_No: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern(/^\S+$/),
+          ],
+        ],
+        town_Name: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern(/^\S+$/),
+            Validators.pattern(/^[A-Za-z ]+$/),
+          ],
+        ],
+        mandal_Name: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern(/^\S+$/),
+            Validators.pattern(/^[A-Za-z ]+$/),
+          ],
+        ],
+        district_Name: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern(/^\S+$/),
+            Validators.pattern(/^[A-Za-z ]+$/),
+          ],
+        ],
+        state: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern(/^\S+$/),
+            Validators.pattern(/^[A-Za-z ]+$/),
+          ],
+        ],
+        pincode: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.pattern(/^[0-9]+$/),
+          ],
+        ],
       }),
       logo_image: ['', Validators.required],
       pan_pdf: ['', Validators.required],
@@ -80,55 +174,52 @@ activeBusinessTypes: any[] = [];
     this.loadBusinessTypes();
   }
   preventSpace(event: KeyboardEvent) {
-  if (event.code === 'Space') {
-    event.preventDefault();
-  }
-}
-onNameInput(event: Event, controlName: string) {
-  const input = event.target as HTMLInputElement;
-
-  const value = input.value
-    .replace(/[^A-Za-z ]/g, '') 
-    .replace(/\s+/g, ' ')       
-    .trimStart();                
-
-  this.addBusinessForm
-    .get(controlName)
-    ?.setValue(value, { emitEvent: false });
-}
-// checkEmailExists(): AsyncValidatorFn {
-//   return (control: AbstractControl) => {
-//     const email = control.value;
-//     if (!email) return of(null); // skip if empty
-
-//     return this.api.checkEmail(email).pipe(
-//       map((res: any) => {
-//         // res.exists = true if email exists in backend
-//         return res.exists ? { emailExists: true } : null;
-//       })
-//     );
-//   };
-// }
-
-
-
-loadBusinessTypes() {
-  this.api.getBusinessTypes().subscribe({
-    next: (res: any) => {
-      console.log('API RESPONSE ', res);
-
-      this.activeBusinessTypes = (res.data || []).filter(
-        (type: any) =>
-          type.status?.toLowerCase() === 'active'
-      );
-
-      console.log('ONLY ACTIVE ', this.activeBusinessTypes);
-    },
-    error: (err) => {
-      console.error('Error loading business types', err);
+    if (event.code === 'Space') {
+      event.preventDefault();
     }
-  });
-}
+  }
+  onNameInput(event: Event, controlName: string) {
+    const input = event.target as HTMLInputElement;
+
+    const value = input.value
+      .replace(/[^A-Za-z ]/g, '')
+      .replace(/\s+/g, ' ')
+      .trimStart();
+
+    this.addBusinessForm
+      .get(controlName)
+      ?.setValue(value, { emitEvent: false });
+  }
+  // checkEmailExists(): AsyncValidatorFn {
+  //   return (control: AbstractControl) => {
+  //     const email = control.value;
+  //     if (!email) return of(null); // skip if empty
+
+  //     return this.api.checkEmail(email).pipe(
+  //       map((res: any) => {
+  //         // res.exists = true if email exists in backend
+  //         return res.exists ? { emailExists: true } : null;
+  //       })
+  //     );
+  //   };
+  // }
+
+  loadBusinessTypes() {
+    this.api.getBusinessTypes().subscribe({
+      next: (res: any) => {
+        console.log('API RESPONSE ', res);
+
+        this.activeBusinessTypes = (res.data || []).filter(
+          (type: any) => type.status?.toLowerCase() === 'active'
+        );
+
+        console.log('ONLY ACTIVE ', this.activeBusinessTypes);
+      },
+      error: (err) => {
+        console.error('Error loading business types', err);
+      },
+    });
+  }
 
   isInvalid(controlName: string): boolean {
     const control = this.addBusinessForm.get(controlName);
@@ -140,121 +231,111 @@ loadBusinessTypes() {
     if (file) {
       this.selectedFiles[fieldName] = file;
     }
-     const fileType = file.type;
-  const fileSize = file.size / 1024 / 1024; 
+    const fileType = file.type;
+    const fileSize = file.size / 1024 / 1024;
 
+    if (fieldName === 'logo_image') {
+      const validImageTypes = [
+        'image/jpeg',
+        'image/png',
+        'image/jpg',
+        'image/webp',
+      ];
 
-  if (fieldName === 'logo_image') {
-    const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+      if (!validImageTypes.includes(fileType)) {
+        this.addBusinessForm.get(fieldName)?.setErrors({ invalidType: true });
+        return;
+      }
 
-    if (!validImageTypes.includes(fileType)) {
-      this.addBusinessForm.get(fieldName)?.setErrors({ invalidType: true });
-      return;
+      if (fileSize > 2) {
+        this.addBusinessForm.get(fieldName)?.setErrors({ maxSize: true });
+        return;
+      }
     }
 
-    if (fileSize > 2) {
-      this.addBusinessForm.get(fieldName)?.setErrors({ maxSize: true });
-      return;
+    if (['pan_pdf', 'aadhar_pdf', 'certificate_pdf'].includes(fieldName)) {
+      if (fileType !== 'application/pdf') {
+        this.addBusinessForm.get(fieldName)?.setErrors({ invalidType: true });
+        return;
+      }
+
+      if (fileSize > 5) {
+        this.addBusinessForm.get(fieldName)?.setErrors({ maxSize: true });
+        return;
+      }
     }
-  }
 
- 
-  if (['pan_pdf', 'aadhar_pdf', 'certificate_pdf'].includes(fieldName)) {
-    if (fileType !== 'application/pdf') {
-      this.addBusinessForm.get(fieldName)?.setErrors({ invalidType: true });
-      return;
-    }
+    this.addBusinessForm.patchValue({
+      [fieldName]: file,
+    });
 
-    if (fileSize > 5) {
-      this.addBusinessForm.get(fieldName)?.setErrors({ maxSize: true });
-      return;
-    }
-  }
-
-
-  this.addBusinessForm.patchValue({
-    [fieldName]: file
-  });
-
-  this.addBusinessForm.get(fieldName)?.updateValueAndValidity();
-    
+    this.addBusinessForm.get(fieldName)?.updateValueAndValidity();
   }
 
   cancelAdd() {
-  this.addBusinessForm.reset();
-  this.addBusinessForm.get('address')?.reset();
-  this.selectedFiles = {};
-  this.showToast('Form cleared', 'error');
-}
-
-
- saveBusiness() {
-  if (this.addBusinessForm.invalid) {
-   this.showToast('Please fill all required fields correctly.', 'error');
-  this.addBusinessForm.markAllAsTouched();
-    return;
+    this.addBusinessForm.reset();
+    this.addBusinessForm.get('address')?.reset();
+    this.selectedFiles = {};
+    this.showToast('Form cleared', 'error');
   }
 
-  const formData = new FormData();
-
-  Object.keys(this.addBusinessForm.controls).forEach((key) => {
-    const control = this.addBusinessForm.get(key);
-
-    if (key === 'address') {
-      const addr = control?.value;
-      formData.append('address', JSON.stringify(addr));
-    } else {
-      
-      if (control?.value && typeof control.value === 'string') {
-        formData.append(key, control.value);
-      }
+  saveBusiness() {
+    if (this.addBusinessForm.invalid) {
+      this.showToast('Please fill all required fields correctly.', 'error');
+      this.addBusinessForm.markAllAsTouched();
+      return;
     }
-  });
 
+    const formData = new FormData();
 
-  formData.append('superadmin_id', this.superadmin_id);
+    Object.keys(this.addBusinessForm.controls).forEach((key) => {
+      const control = this.addBusinessForm.get(key);
 
-
-  for (const key in this.selectedFiles) {
-    formData.append(key, this.selectedFiles[key]);
-  }
-
- formData.forEach((value, key) => {
-  console.log(key, value);
-});
-
-
-  this.api.addBusiness(formData).subscribe({
-    next: (res) => {
-    this.showToast('Business registered successfully!', 'success');
-
-  // setTimeout(() => {
-  //     this.showToast('Business registered successfully!', 'success');
-  //   }, 1000);
-
-      setTimeout(() => {
-  this.router.navigate(['SuperAdminView']);
-}, 500);
-
-    },
-    error: (err) => {
-      console.error('Add failed:', err);
-      if (err?.error?.missing_fields) {
-        alert('Missing fields: ' + err.error.missing_fields.join(', '));
+      if (key === 'address') {
+        const addr = control?.value;
+        formData.append('address', JSON.stringify(addr));
       } else {
-        this.showToast('Failed to register business.', 'error');
-        
+        if (control?.value && typeof control.value === 'string') {
+          formData.append(key, control.value);
+        }
       }
-    },
-  });
-}
- showToast(message: string, type: string = 'success') {
-  
-  this.toastMessage = message;
-  this.toastType = type;
-  setTimeout(() => (this.toastMessage = null), 1000);
-}
+    });
 
+    formData.append('superadmin_id', this.superadmin_id);
 
+    for (const key in this.selectedFiles) {
+      formData.append(key, this.selectedFiles[key]);
+    }
 
+    formData.forEach((value, key) => {
+      console.log(key, value);
+    });
+
+    this.api.addBusiness(formData).subscribe({
+      next: (res) => {
+        this.showToast('Business registered successfully!', 'success');
+
+        // setTimeout(() => {
+        //     this.showToast('Business registered successfully!', 'success');
+        //   }, 1000);
+
+        setTimeout(() => {
+          this.router.navigate(['SuperAdminView']);
+        }, 500);
+      },
+      error: (err) => {
+        console.error('Add failed:', err);
+        if (err?.error?.missing_fields) {
+          alert('Missing fields: ' + err.error.missing_fields.join(', '));
+        } else {
+          this.showToast('Failed to register business.', 'error');
+        }
+      },
+    });
+  }
+  showToast(message: string, type: string = 'success') {
+    this.toastMessage = message;
+    this.toastType = type;
+    setTimeout(() => (this.toastMessage = null), 1000);
+  }
 }

@@ -32,9 +32,6 @@ import { CategoriesComponent } from './Business/categories/categories.component'
 import { RolesComponent } from './Business/roles/roles.component';
 import { UnitsComponent } from './Business/units/units.component';
 import { SubCategoriesComponent } from './Business/sub-categories/sub-categories.component';
-import { InactiveBusinesstypeComponent } from './Superadmin/inactive-businesstype/inactive-businesstype.component';
-import { InactiveBusinessComponent } from './inactive-business/inactive-business.component';
-
 
 export const routes: Routes = [
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
@@ -50,14 +47,12 @@ export const routes: Routes = [
       { path: 'superadmin-profile', component: SuperadminProfileComponent },
       { path: 'add_business_type', component: AddBusinessTypeComponent },
       { path: 'view_business_type', component: ViewBusinessTypeComponent },
-      {path: 'inactive_businesstype', component: InactiveBusinesstypeComponent},
-      {path:'inactive_business', component: InactiveBusinessComponent}
     ],
   },
 
   { path: 'userlogin', component: UserLoginComponent },
-  {path:'userforgotpassword',component:UserForgotPasswordComponent},
-  {path:'userresetpassword/:token', component:UserResetPasswordComponent},
+  { path: 'userforgotpassword', component: UserForgotPasswordComponent },
+  { path: 'userresetpassword/:token', component: UserResetPasswordComponent },
 
   {
     path: 'userview',
