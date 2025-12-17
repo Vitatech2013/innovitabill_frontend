@@ -1,83 +1,236 @@
+<h4 class="mb-2 fw-bold">Purchase Creation</h4>
 <div class="card shadow-sm p-3 mb-2 small-card scrollable-card">
-  <h4 class="mb-2 fw-bold">Purchase Creation</h4>
-
   <form
     [formGroup]="addPurchaseForm"
-    (ngSubmit)="saveItems()"
+    (ngSubmit)="savePurchase()"
     enctype="multipart/form-data"
   >
-    <div class="row g-4 item-form">
+    <div class="row g-3">
+      <h5 class="fw-bold">Vendor Details</h5>
+
       <div class="col-md-4">
-        <label class="form-label fw-bold">Vendor Name</label>
+        <label class="form-label fw-bold"
+          >Vendor Name
+          <span class="text-danger">*</span>
+        </label>
         <input
-          type="text"
           class="form-control"
           formControlName="vendor_name"
           placeholder="Enter Vendor Name"
-          (input)="onInputAlphabetsOnly($event)"
         />
-        <small *ngIf="isInvalid('item_name')" class="text-danger">
-          Vendor Name is required and must be at least 3 letters
-        </small>
       </div>
+
       <div class="col-md-4">
-        <label class="form-label fw-bold">Vendor Id</label>
+        <label class="form-label fw-bold"
+          >Vendor Type
+          <span class="text-danger">*</span>
+        </label>
         <input
-          type="text"
-          class="form-control"
-          formControlName="vendor_id"
-          placeholder="Enter Vendor Id"
-          (input)="onInputAlphabetsOnly($event)"
-        />
-        <small *ngIf="isInvalid('item_name')" class="text-danger">
-          Vendor Id is required and must be at least 3 letters
-        </small>
-      </div>
-      <div class="col-md-4">
-        <label class="form-label fw-bold">Vendor Type</label>
-        <input
-          type="text"
           class="form-control"
           formControlName="vendor_type"
-          placeholder="Enter vendor Type"
-          (input)="onInputAlphabetsOnly($event)"
+          placeholder="Enter Vendor type"
         />
-        <small *ngIf="isInvalid('item_name')" class="text-danger">
-          Vendor Type is required and must be at least 3 letters
-        </small>
       </div>
+
       <div class="col-md-4">
-        <label class="form-label fw-bold">Business Category</label>
+        <label class="form-label fw-bold"
+          >Business Category
+          <span class="text-danger">*</span>
+        </label>
         <input
-          type="text"
           class="form-control"
           formControlName="business_category"
-          placeholder="Enter item name"
-          (input)="onInputAlphabetsOnly($event)"
+          placeholder="Enter Business Category"
         />
-        <small *ngIf="isInvalid('item_name')" class="text-danger">
-          Item Name is required and must be at least 3 letters
-        </small>
       </div>
+
       <div class="col-md-4">
-        <label class="form-label fw-bold">Registration Number</label>
+        <label class="form-label fw-bold"
+          >GST Number
+          <span class="text-danger">*</span>
+        </label>
         <input
-          type="text"
-          class="form-control"
-          formControlName="company_registration_number"
-          placeholder="Enter item name"
-          (input)="onInputAlphabetsOnly($event)"
-        />
-        <small *ngIf="isInvalid('item_name')" class="text-danger">
-          Item Name is required and must be at least 3 letters
-        </small>
-      </div>
-      <div class="col-md-4">
-        <label class="form-label fw-bold">GST Number</label>
-        <input
-          type="text"
           class="form-control"
           formControlName="gst_number"
+          placeholder="Enter GST Number"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >PAN Number
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          class="form-control"
+          formControlName="pan_number"
+          placeholder=" PAN Number"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Company Reg No
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          class="form-control"
+          formControlName="company_registration_number"
+          placeholder="Enter Comapny Registration Number"
+        />
+      </div>
+    </div>
+
+    <div class="row g-3 mt-3" formGroupName="address">
+      <h5 class="fw-bold">Address</h5>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Address Line 1
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Address Line 1"
+          formControlName="address_line_1"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Address Line 2
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Address Line 2"
+          formControlName="address_line_2"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >City
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="City"
+          formControlName="city"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >State
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="State"
+          formControlName="state"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Country
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Country"
+          formControlName="country"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Pincode
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Pincode"
+          formControlName="pincode"
+        />
+      </div>
+    </div>
+
+    <div class="row g-3 mt-3" formGroupName="contact">
+      <h5 class="fw-bold">Contact</h5>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Contact Person Name
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Contact Person"
+          formControlName="contact_person_name"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Email
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Email"
+          formControlName="email"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Mobile Number
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Mobile"
+          formControlName="mobile_number"
+        />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Alternate Mobile Number
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          type="number"
+          class="form-control"
+          placeholder="Alternate Mobile"
+          formControlName="alternate_mobile_number"
+        />
+      </div>
+    </div>
+
+    <div class="row g-4 item-form mt-3">
+      <h5 class="fw-bold">Item Details</h5>
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Item Name
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="item_name"
           placeholder="Enter item name"
           (input)="onInputAlphabetsOnly($event)"
         />
@@ -85,253 +238,222 @@
           Item Name is required and must be at least 3 letters
         </small>
       </div>
+
       <div class="col-md-4">
-        <label class="form-label fw-bold">PAN Number</label>
+        <label class="form-label fw-bold"
+          >Item Code
+          <span class="text-danger">*</span>
+        </label>
         <input
           type="text"
           class="form-control"
-          formControlName="pan_number"
-          placeholder="Enter item name"
+          formControlName="item_code"
+          placeholder="Enter item code"
+          (input)="onInputNoSpaces($event)"
+        />
+        <small *ngIf="isInvalid('item_code')" class="text-danger">
+          Item code is required and must be at least 3 letters
+        </small>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Units
+          <span class="text-danger">*</span>
+        </label>
+        <select class="form-select" formControlName="unit_id">
+          <option Value="">Select Units</option>
+          <option *ngFor="let unit of units" [ngValue]="unit._id">
+            {{ unit.units_name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Price
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="selling_price"
+          placeholder="Enter selling price"
+          (input)="onInputNumbersOnly($event)"
+        />
+        <small *ngIf="isInvalid('selling_price')" class="text-danger">
+          Selling price is required
+        </small>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Purchase price
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="purchase_price"
+          placeholder="Purchase price"
+          (input)="onInputNumbersOnly($event)"
+        />
+        <small *ngIf="isInvalid('purchase_price')" class="text-danger">
+          Purchase price is required
+        </small>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Tax
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="tax_rate"
+          placeholder="Tax rate"
+          (input)="onInputNumbersAndSpecial($event)"
+        />
+
+        <small *ngIf="isInvalid('tax_rate')" class="text-danger">
+          Tax rate is required
+        </small>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Stock
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="stock_quantity"
+          placeholder="No.of Quantities"
+          (input)="onInputNumbersOnly($event)"
+        />
+        <small *ngIf="isInvalid('stock_quantity')" class="text-danger">
+          Stock is required
+        </small>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Brand Name
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="brand_name"
+          placeholder="Enter Brand name"
           (input)="onInputAlphabetsOnly($event)"
         />
-        <small *ngIf="isInvalid('item_name')" class="text-danger">
-          Item Name is required and must be at least 3 letters
+        <small *ngIf="isInvalid('brand_name')" class="text-danger">
+          Brand name is required
+        </small>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Discount
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="discount"
+          placeholder="Enter discount"
+          (input)="onInputNumbersAndSpecial($event)"
+        />
+        <small *ngIf="isInvalid('discount')" class="text-danger">
+          Discount is required
+        </small>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Stock Alert
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="min_stock_alert"
+          placeholder="Enter alert stock"
+          (input)="onInputNumbersAndSpecial($event)"
+        />
+        <small *ngIf="isInvalid('min_stock_alert')" class="text-danger">
+          Alert stock is required
+        </small>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Categories
+          <span class="text-danger">*</span>
+        </label>
+        <select class="form-select" formControlName="category_id">
+          <option value="">Select Categories</option>
+          <option *ngFor="let cat of categories" [value]="cat._id">
+            {{ cat.categories_name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Sub-Categories
+          <span class="text-danger">*</span>
+        </label>
+        <select class="form-select" formControlName="sub_category_id">
+          <option value="">Select Sub categories</option>
+          <option *ngFor="let subcat of subCategories" [value]="subcat._id">
+            {{ subcat.sub_category_name }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Image
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="file"
+          class="form-control"
+          (change)="onFileSelect($event)"
+        />
+        <small *ngIf="isInvalid('image')" class="text-danger">
+          Image is required
+        </small>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Description
+          <span class="text-danger">*</span>
+        </label>
+        <textarea
+          class="form-control"
+          rows="1"
+          placeholder="Enter your Description"
+          formControlName="description"
+        ></textarea>
+        <small *ngIf="isInvalid('description')" class="text-danger">
+          Description is required
         </small>
       </div>
     </div>
-    <div class="row g-4 item-form mt-3">
-      <h3 class="fw-bold">Address Details</h3>
-      <div formGroupName="address" class="row g-3">
-        <div class="col-md-4">
-          <label class="form-label fw-bold">Address Line 1</label>
-          <input
-            class="form-control"
-            formControlName="address_line_1 "
-            placeholder=" Enter your Address"
-          />
-          <small
-            *ngIf="isInvalid('address.address_line_1')"
-            class="text-danger"
-          >
-            Required
-          </small>
-        </div>
 
-        <div class="col-md-4">
-          <label class="form-label fw-bold">Address Line 2</label>
-          <input
-            class="form-control"
-            formControlName="address_line_2"
-            placeholder="Enter your Address "
-          />
-        </div>
-
-        <div class="col-md-4">
-          <label class="form-label fw-bold">City</label>
-          <input
-            class="form-control"
-            formControlName="city"
-            placeholder="Enter your City"
-          />
-        </div>
-
-        <div class="col-md-4">
-          <label class="form-label fw-bold">State</label>
-          <input
-            class="form-control"
-            formControlName="state"
-            placeholder="Enter your State"
-          />
-        </div>
-
-        <div class="col-md-4 fw-bold">
-          <label class="form-label">Country</label>
-          <input
-            class="form-control"
-            formControlName="country"
-            placeholder="Enter your country"
-          />
-        </div>
-
-        <div class="col-md-4 fw-bold">
-          <label class="form-label">Pincode</label>
-          <input
-            class="form-control"
-            formControlName="pincode"
-            placeholder="Enter your Pincode"
-          />
-        </div>
-      </div>
-
-      <div class="row g-4 item-form mt-3">
-        <h3 class="fw-bold">Contact</h3>
-        <div class="col-md-4">
-          <label class="form-label fw-bold">Contact Person Name</label>
-          <input
-            class="form-control"
-            formControlName="contact_person_name"
-            placeholder="Enter Person Name"
-          />
-        </div>
-
-        <div class="col-md-4">
-          <label class="form-label fw-bold">Email</label>
-          <input
-            class="form-control"
-            formControlName="email"
-            placeholder="Enter Email"
-          />
-          <small *ngIf="isInvalid('contact.email')" class="text-danger">
-            Invalid email
-          </small>
-        </div>
-
-        <div class="col-md-4">
-          <label class="form-label fw-bold">Mobile Number</label>
-          <input
-            class="form-control"
-            formControlName="mobile_number"
-            placeholder="Enter Mobile Number"
-          />
-        </div>
-
-        <div class="col-md-4">
-          <label class="form-label fw-bold">Alternate Mobile Number</label>
-          <input
-            class="form-control"
-            formControlName="alternate_mobile_number"
-            placeholder="Enter Alternate Mobile Number"
-          />
-        </div>
-      </div>
-
-      <div class="row g-4 item-form mt-3">
-        <h3 class="fw-bold">Item Details</h3>
-        <div class="col-md-4">
-          <label class="form-label fw-bold">Item Name</label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="item_name"
-            placeholder="Enter item name"
-            (input)="onInputAlphabetsOnly($event)"
-          />
-          <small *ngIf="isInvalid('item_name')" class="text-danger">
-            Item Name is required and must be at least 3 letters
-          </small>
-        </div>
-
-        <div class="col-md-4">
-          <label class="form-label fw-bold">Item Code</label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="item_code"
-            placeholder="Enter item code"
-            (input)="onInputNoSpaces($event)"
-          />
-          <small *ngIf="isInvalid('item_code')" class="text-danger">
-            Item code is required and must be at least 3 letters
-          </small>
-        </div>
-        <div class="col-md-4">
-          <label class="form-label fw-bold">Units</label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="units"
-            placeholder="Enter Units"
-            (input)="onInputNoSpaces($event)"
-          />
-          <small *ngIf="isInvalid('item_code')" class="text-danger">
-            Units is required and must be at least 3 letters
-          </small>
-        </div>
-
-        <div class="col-md-4">
-          <label class="form-label fw-bold">Purchase price</label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="purchased_price"
-            placeholder="Purchase price"
-            (input)="onInputNumbersOnly($event)"
-          />
-          <small *ngIf="isInvalid('purchase_price')" class="text-danger">
-            Purchase price is required
-          </small>
-        </div>
-
-        <div class="col-md-4">
-          <label class="form-label fw-bold">Tax</label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="tax_rate"
-            placeholder="Tax rate"
-            (input)="onInputNumbersAndSpecial($event)"
-          />
-
-          <small *ngIf="isInvalid('tax_rate')" class="text-danger">
-            Tax rate is required
-          </small>
-        </div>
-
-        <div class="col-md-4">
-          <label class="form-label fw-bold">Stock</label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="stock_quantity"
-            placeholder="No.of Quantities"
-            (input)="onInputNumbersOnly($event)"
-          />
-          <small *ngIf="isInvalid('stock_quantity')" class="text-danger">
-            Stock is required
-          </small>
-        </div>
-
-        <div class="col-md-4">
-          <label class="form-label fw-bold">Brand Name</label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="brand_name"
-            placeholder="Enter Brand name"
-            (input)="onInputAlphabetsOnly($event)"
-          />
-          <small *ngIf="isInvalid('brand_name')" class="text-danger">
-            Brand name is required
-          </small>
-        </div>
-
-        <div class="col-md-4">
-          <label class="form-label fw-bold">Image</label>
-          <input
-            type="file"
-            class="form-control"
-            (change)="onFileSelect($event)"
-          />
-          <small *ngIf="isInvalid('image')" class="text-danger">
-            Image is required
-          </small>
-        </div>
-      </div>
-
-      <div class="text-end mt-4 item-button">
-        <button
-          type="button"
-          class="btn btn-secondary me-2 px-4"
-          (click)="cancelAdd()"
-        >
-          <i class="bi bi-x-circle me-1"></i> Cancel
-        </button>
-
-        <button type="submit" class="btn btn-success px-4">
-          <i class="bi bi-save me-1"></i>
-          {{ selectedBusiness ? "Update" : "Save" }}
-        </button>
-      </div>
+    <div class="text-end mt-4">
+      <button
+        class="btn btn-secondary me-2"
+        type="button"
+        (click)="cancelAdd()"
+      >
+        Cancel
+      </button>
+      <button class="btn btn-success" type="submit">Save Purchase</button>
     </div>
   </form>
 </div>

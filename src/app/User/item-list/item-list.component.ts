@@ -268,18 +268,38 @@ export class ItemListComponent implements OnInit {
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 3000);
   }
-  openImageModal(imagePath: string | undefined) {
-    this.imagePreviewUrl = this.getImageUrl(imagePath || '');
-    const modal = new bootstrap.Modal(
-      document.getElementById('imagePreviewModal')
-    );
-    modal.show();
+  openImageModal(imagePath?: string) {
+    if (!imagePath) {
+      return;
+    }
+
+    this.imagePreviewUrl = this.getImageUrl(imagePath);
+
+    const modalEl = document.getElementById('imagePreviewModal');
+    if (modalEl) {
+      const modal = new bootstrap.Modal(modalEl);
+      modal.show();
+    }
   }
-  getImageUrl(path: string): string {
-    if (!path) return 'assets/default-business.jpg';
-    const cleanPath = path.replace(/\\/g, '/');
-    return cleanPath.includes('business_images/')
-      ? `${this.baseUrl}/${cleanPath}`
-      : `${this.baseUrl}/business_images/${cleanPath}`;
+  getImageUrl(path?: string): string {
+  if (!path) {
+    return 'assets/default-business.jpg';
   }
+
+  // normalize Windows paths
+  const cleanPath = path.replace(/\\/g, '/');
+
+  // if backend already sends full or relative folder path
+  if (cleanPath.startsWith('http')) {
+    return cleanPath;
+  }
+
+  if (cleanPath.includes('business_images/')) {
+    return `${this.baseUrl}/${cleanPath}`;
+  }
+
+  // if only filename is sent
+  return `${this.baseUrl}/business_images/${cleanPath}`;
+}
+
 }

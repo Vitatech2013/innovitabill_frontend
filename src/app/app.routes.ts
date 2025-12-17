@@ -64,6 +64,7 @@ export const routes: Routes = [
     component: UserViewComponent,
     children: [
       {path:'', component:UserDashboardComponent},
+      {path:'userdashboard',component:UserDashboardComponent},
       { path: 'createsale', component: SaleComponent },
       { path: 'userprofile', component: UserProfileComponent },
       {

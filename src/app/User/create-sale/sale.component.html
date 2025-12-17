@@ -132,7 +132,9 @@
     <form [formGroup]="customerForm">
       <div class="row">
         <div class="col">
-          <label>Name</label>
+          <label>Name
+            <span class="text-danger">*</span>
+          </label>
           <input formControlName="name" type="text" />
           <div
             *ngIf="
@@ -154,7 +156,9 @@
         </div>
 
         <div class="col">
-          <label>Phone</label>
+          <label>Phone
+            <span class="text-danger">*</span>
+          </label>
           <input
             formControlName="phone"
             type="text"
@@ -166,11 +170,13 @@
 
       <div class="row">
         <div class="col">
-          <label>Email</label>
+          <label>Email
+            <span class="text-danger">*</span>
+          </label>
           <input formControlName="email" type="email" />
         </div>
         <div class="col">
-          <label>Address</label>
+          <label>Address <span class="text-danger">*</span></label>
           <input formControlName="address" type="text" />
         </div>
       </div>
