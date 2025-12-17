@@ -62,17 +62,7 @@
                   <td>{{ u.user_name }}</td>
                   <td>{{ u.user_email }}</td>
                   <td>{{ u.phone_number }}</td>
-                  <td>
-                    <span
-                      class="badge px-3 py-2"
-                      [ngClass]="{
-                        'bg-success': u.status === 'active',
-                        'bg-danger': u.status === 'inactive',
-                      }"
-                    >
-                      {{ u.status }}
-                    </span>
-                  </td>
+                  <td>{{ u.status }}</td>
                   <td>
                     <button
                       class="btn btn-sm btn-outline-info me-1"
@@ -138,34 +128,43 @@
                     <th>Id Proof</th>
                   </tr>
                 </thead>
-                <tbody *ngIf="selectedUser">
+                <tbody *ngIf="selectedUserData">
                   <tr>
-                    <td>{{ selectedUser.user_name }}</td>
-                    <td>{{ selectedUser.user_email }}</td>
-                    <td>{{ selectedUser.phone_number }}</td>
+                    <td>{{ selectedUserData.user_name }}</td>
+                    <td>{{ selectedUserData.user_email }}</td>
+                    <td>{{ selectedUserData.phone_number }}</td>
 
                     <td>
-                      {{ selectedUser.address?.house_No }},
-                      {{ selectedUser.address?.town_Name }},
-                      {{ selectedUser.address?.mandal_Name }} -
-                      {{ selectedUser.address?.district_Name }},
-                      {{ selectedUser.address?.state }},
-                      {{ selectedUser.address?.pincode }}
+                      {{ selectedUserData.address?.house_No }},
+                      {{ selectedUserData.address?.town_Name }},
+                      {{ selectedUserData.address?.mandal_Name }} -
+                      {{ selectedUserData.address?.district_Name }},
+                      {{ selectedUserData.address?.state }},
+                      {{ selectedUserData.address?.pincode }}
+                    </td>
+
+                    <td>{{ selectedUserData.status }}</td>
+
+                    <td>{{ selectedUserData.role_id?.role_name }}</td>
+                    <td>
+                      <img
+                        *ngIf="selectedUserData?.image"
+                        [src]="imageBaseUrl + selectedUserData.image"
+                        width="80"
+                        height="80"
+                        class="rounded border"
+                      />
                     </td>
 
                     <td>
-                      <span
-                        class="badge px-3 py-2"
-                        [ngClass]="{
-                          'bg-success': selectedUser.status === 'active',
-                          'bg-danger': selectedUser.status === 'inactive'
-                        }"
-                      >
-                        {{ selectedUser.status }}
-                      </span>
+                      <img
+                        *ngIf="selectedUserData?.id_proof"
+                        [src]="imageBaseUrl + selectedUserData.id_proof"
+                        width="80"
+                        height="80"
+                        class="rounded border"
+                      />
                     </td>
-
-                    <td>{{ selectedUser.role_id?.role_name }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -194,19 +193,23 @@
     >
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg rounded-4">
-          <div class="modal-header bg-light text-dark">
-            <h5 class="modal-title fw-bold" id="AddModal">Add New</h5>
+          <div class="modal-header text-dark">
+            <h5 class="modal-title fw-bold" id="AddModalLabel">Add New</h5>
             <button
               type="button"
               class="btn-close btn-close-dark"
               data-bs-dismiss="modal"
             ></button>
           </div>
-          <div class="modal-body bg-light">
-            <form [formGroup]="userForm" enctype="multipart/form-data">
+          <div class="modal-body">
+            <form
+              [formGroup]="userForm"
+              enctype="multipart/form-data"
+              (ngSubmit)="createUser()"
+            >
               <div class="row g-3 mb-3">
                 <div class="col-md-4">
-                  <label class="form-label fw-semibold">User Name</label>
+                  <label class="form-label">User Name</label>
                   <input
                     type="text"
                     class="form-control"
@@ -265,7 +268,8 @@
                     class="form-control"
                     placeholder="Enter phone number"
                     autocomplete="phone number"
-                    (keypress)="allowOnlyNumbers($event)"
+                    maxlength="10"
+                    (keydown)="onlyDigits($event, 10)"
                   />
                   <div
                     *ngIf="
@@ -276,8 +280,16 @@
                     <small
                       *ngIf="userForm.controls['phone_number']?.errors?.['required']"
                       class="text-danger"
-                      >Phone Number is required</small
                     >
+                      Phone Number is required
+                    </small>
+
+                    <small
+                      *ngIf="userForm.controls['phone_number']?.errors?.['pattern']"
+                      class="text-danger"
+                    >
+                      Phone Number must be exactly 10 digits
+                    </small>
                   </div>
                 </div>
                 <div class="col-md-4">
@@ -349,15 +361,99 @@
                     <option value="inactive">Inactive</option>
                   </select>
                 </div>
+
+                <!-- Address -->
+                <div class="col-12">
+                  <h6 class="fw-bold mt-3">Address</h6>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">House No</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="house_No"
+                    placeholder="House No"
+                  />
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Town Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="town_Name"
+                    placeholder="Town Name"
+                  />
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Mandal Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="mandal_Name"
+                    placeholder="Mandal Name"
+                  />
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">District Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="district_Name"
+                    placeholder="District Name"
+                  />
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">State</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="state"
+                    placeholder="State"
+                  />
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Pincode</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="pincode"
+                    placeholder="Pincode"
+                    inputmode="numeric"
+                    maxlength="6"
+                    (keydown)="onlyDigits($event, 6)"
+                  />
+                </div>
+
+                <div class="col-12">
+                  <h6 class="fw-bold mt-3">Documents</h6>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Image</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    (change)="onImageSelect($event)"
+                  />
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">ID Proof</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    (change)="onIdProofSelect($event)"
+                  />
+                </div>
               </div>
               <div class="modal-footer">
-                <button
-                  type="submit"
-                  class="btn btn-success"
-                  (click)="createUser()"
-                >
-                  Create
-                </button>
+                <button type="submit" class="btn btn-success">Create</button>
+
                 <button
                   type="button"
                   class="btn btn-secondary"
@@ -382,7 +478,7 @@
     >
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg rounded-4">
-          <div class="modal-header bg-light text-dark">
+          <div class="modal-header text-dark">
             <h5 class="modal-title fw-bold" id="editModalLabel">Edit User</h5>
             <button
               type="button"
@@ -391,12 +487,12 @@
             ></button>
           </div>
 
-          <div class="modal-body bg-light">
-            <form [formGroup]="userForm" enctype="multipart/form-data">
-              <h6 class="fw-bold text-success mb-3">User Details</h6>
+          <div class="modal-body">
+            <form [formGroup]="userForm" (ngSubmit)="saveUser()">
+              <h6 class="fw-bold text-dark mb-3">User Details</h6>
               <div class="row g-3 mb-3">
                 <div class="col-md-4">
-                  <label class="form-label fw-semibold">User Nam</label>
+                  <label class="form-label">User Name</label>
                   <input
                     type="text"
                     class="form-control"
@@ -451,7 +547,8 @@
                     class="form-control"
                     placeholder="Enter phone number"
                     autocomplete="phone number"
-                    (keypress)="allowOnlyNumbers($event)"
+                    maxlength="10"
+                    (keydown)="onlyDigits($event, 10)"
                   />
                   <div
                     *ngIf="
@@ -535,15 +632,98 @@
                     <option value="inactive">Inactive</option>
                   </select>
                 </div>
+
+                <!-- Address -->
+                <div class="col-12">
+                  <h6 class="fw-bold mt-3">Address</h6>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">House No</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="house_No"
+                    placeholder="House No"
+                  />
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Town Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="town_Name"
+                    placeholder="Town Name"
+                  />
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Mandal Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="mandal_Name"
+                    placeholder="Mandal Name"
+                  />
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">District Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="district_Name"
+                    placeholder="District Name"
+                  />
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">State</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="state"
+                    placeholder="State"
+                  />
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Pincode</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="pincode"
+                    placeholder="Pincode"
+                    maxlength="6"
+                    (keydown)="onlyDigits($event, 6)"
+                  />
+                </div>
+
+                <div class="col-12">
+                  <h6 class="fw-bold mt-3">Documents</h6>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Image</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    (change)="onImageSelect($event)"
+                  />
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">ID Proof</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    (change)="onIdProofSelect($event)"
+                  />
+                </div>
               </div>
               <div class="modal-footer">
-                <button
-                  type="submit"
-                  class="btn btn-success"
-                  (click)="saveUser()"
-                >
-                  Save
-                </button>
+                <button type="submit" class="btn btn-success">Save</button>
+
                 <button
                   type="button"
                   class="btn btn-secondary"
@@ -556,41 +736,41 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header text-danger">
-              <h5 class="modal-title">Confirm Delete</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-              ></button>
-            </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header text-danger">
+            <h5 class="modal-title">Confirm Delete</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
 
-            <div class="modal-body">
-              Are you sure you want to delete
-              <strong>{{ selectedUser?.user_name }}</strong
-              >?
-            </div>
+          <div class="modal-body">
+            Are you sure you want to delete
+            <strong>{{ selectedUserData?.user_name }}</strong
+            >?
+          </div>
 
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                class="btn btn-danger"
-                (click)="confirmDelete()"
-              >
-                Delete
-              </button>
-            </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              (click)="confirmDelete()"
+            >
+              Delete
+            </button>
           </div>
         </div>
       </div>

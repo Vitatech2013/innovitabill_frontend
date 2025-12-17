@@ -29,22 +29,6 @@ export class BusinessService {
     );
   }
 
-//   createUser(userData: any) {
-//     return this.http.post(`${this.baseUrl}/user/userregistration`, userData);
-//   }
-//   deleteUser(id: string) {
-//     return this.http.delete(`${this.baseUrl}/user/userdelete/${id}`);
-//   }
-// //   updateUser(selectedUser: any, payload: any) {
-// //   return this.http.put(`user/updateuser/${selectedUser._id}`, payload);
-// // }
-// updateUser(selectedUser: any, userdata: any) {
-//   return this.http.put(`http://localhost:3009/user/updateuser/${selectedUser._id}`,userdata);
-// }
-
-//   getUser() {
-//     return this.http.get(`${this.baseUrl}/user/getuser`);
-//   }
 
   //Roles
 
@@ -63,31 +47,21 @@ export class BusinessService {
   }
 
   // users
-   addUser(formData: FormData) {
-     return this.http.post(`${this.baseUrl}/user/registration`, formData);
-  }
+ addUser(payload: FormData) {
+  console.log('API payload sent');
+  return this.http.post(`${this.baseUrl}/user/registration`, payload);
+}
     getUser() {
     return this.http.get(`${this.baseUrl}/user/get`);
   }
-    updateUser(id: string, data: any) {
-    return this.http.put(`${this.baseUrl}/user/update/${id}`, data);
-  }
+   updateUser(id: string, data: any) {
+  return this.http.put(`${this.baseUrl}/user/update/${id}`, data);
+}
+
     deleteUser(id: string) {
     return this.http.delete(`${this.baseUrl}/user/delete/${id}`);
   }
 
-//   createUser(userData: any) {
-//     return this.http.post(`${this.baseUrl}/user/registration`, userData);
-//   }
-//   deleteUser(id: string) {
-//     return this.http.delete(`${this.baseUrl}/user/delete/${id}`);
-//   }
-// updateUser(id: string, payload: any) {
-//   return this.http.put(`${this.baseUrl}/user/update/${id}`, payload);
-// }
 
-//   getUser() {
-//     return this.http.get(`${this.baseUrl}/user/get`);
-//   }
 }
 
