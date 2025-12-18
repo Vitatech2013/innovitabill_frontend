@@ -134,11 +134,11 @@ export class SalesComponent implements OnInit {
   update() {
     this.service.updatesale(this.sid, this.paymentForm.value).subscribe({
       next: (res: any) => {
-        this.showToast('Payment Status  Updated successfully!', 'Success');
+        this.toastr.success('Payment Status  Updated successfully!', 'Success');
         window.location.reload();
       },
       error: (err: any) => {
-        this.showToast('Payment Status Update Failed!', 'Danger');
+        this.toastr.error('Payment Status Update Failed!', 'Danger');
       },
     });
   }

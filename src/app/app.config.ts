@@ -14,13 +14,19 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     provideAnimations(),
-    
+
     importProvidersFrom(
       BrowserAnimationsModule,
       ToastrModule.forRoot({
         timeOut: 3000,
-        positionClass: 'toast-top-center',
+        positionClass: 'toast-top-right',
         preventDuplicates: true,
+        toastClass: 'ngx-toastr custom-toast', 
+        titleClass: 'toast-title',
+        messageClass: 'toast-message',
+       closeButton: true,
+        progressBar: true,
+        newestOnTop: true,
       })
     ),
   ],

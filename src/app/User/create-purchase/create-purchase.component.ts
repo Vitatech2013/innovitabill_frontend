@@ -16,18 +16,16 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './create-purchase.component.html',
-  styleUrl: './create-purchase.component.css',
+  styleUrls: ['./create-purchase.component.css'], // fixed typo styleUrl -> styleUrls
 })
 export class CreatePurchaseComponent implements OnInit {
   addPurchaseForm!: FormGroup;
-  selectedImageFile: File | null = null;
+  selectedImage: File | null = null; // use only this variable for selected image
   business_id = '';
-  selectedBusiness: any;
-  selectedImage!: File | null;
-  user_id!: string;
+  user_id = '';
   categories: any[] = [];
   subCategories: any[] = [];
-   units: any;
+  units: any;
 
   constructor(
     private fb: FormBuilder,
@@ -80,10 +78,11 @@ export class CreatePurchaseComponent implements OnInit {
       discount: [''],
       min_stock_alert: [''],
       description: [''],
+      // Removed image: [''] from form controls — file input handled separately
     });
-     this.categoriesGet();
-    this.subCategoriesGet();
 
+    this.categoriesGet();
+    this.subCategoriesGet();
     this.unitsGet();
   }
 
@@ -117,7 +116,7 @@ export class CreatePurchaseComponent implements OnInit {
         this.router.navigate(['/userdashboard']);
       },
       error: (err) => {
-        this.toastr.error(err.error?.message || 'Error creating purchase');
+        this.toastr.error('Error creating purchase', 'Error');
       },
     });
   }
@@ -129,13 +128,20 @@ export class CreatePurchaseComponent implements OnInit {
 
   cancelAdd() {
     this.addPurchaseForm.reset();
-    this.selectedImageFile = null;
+    this.selectedImage = null;
   }
 
-  onFileSelect(event: any) {
-    this.selectedImageFile = event.target.files[0] || null;
+  // Updated onFileSelect to set selectedImage
+  onFileSelect(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedImage = input.files[0];
+    } else {
+      this.selectedImage = null;
+    }
   }
-   categoriesGet() {
+
+  categoriesGet() {
     this.service.getCategories(this.business_id).subscribe({
       next: (res: any) => {
         this.categories = res.data || res;
@@ -148,7 +154,6 @@ export class CreatePurchaseComponent implements OnInit {
   unitsGet() {
     this.service.getUnits(this.business_id).subscribe({
       next: (res: any) => {
-        console.log('Raw units response', res);
         this.units = res.data || res;
         console.log('Units:', this.units);
       },
@@ -165,8 +170,7 @@ export class CreatePurchaseComponent implements OnInit {
       error: (err: any) => console.error('Error loading subcategories:', err),
     });
   }
-
-  onInputAlphabetsOnly(event: Event) {
+    onInputAlphabetsOnly(event: Event) {
     const input = event.target as HTMLInputElement;
     let value = input.value;
 
@@ -236,4 +240,6 @@ export class CreatePurchaseComponent implements OnInit {
       .get(input.getAttribute('formControlName')!)
       ?.setValue(value, { emitEvent: false });
   }
+
+ 
 }

@@ -35,6 +35,7 @@ import { SubCategoriesComponent } from './Business/sub-categories/sub-categories
 import { InactiveBusinesstypeComponent } from './Superadmin/inactive-businesstype/inactive-businesstype.component';
 import { UserDashboardComponent } from './User/user-dashboard/user-dashboard.component';
 import { CreatePurchaseComponent } from './User/create-purchase/create-purchase.component';
+import { PurchaseListComponent } from './User/purchase-list/purchase-list.component';
 
 
 export const routes: Routes = [
@@ -77,6 +78,7 @@ export const routes: Routes = [
         path: 'saleslist',
         component: SalesComponent,
       },
+      {path:'purchaselist',component:PurchaseListComponent},
       { path: 'salereports', component: SaleReportsComponent },
       {
         path: 'sale',

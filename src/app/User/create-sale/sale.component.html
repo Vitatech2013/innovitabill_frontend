@@ -1,5 +1,7 @@
 <div class="row">
+  <!-- LEFT : ITEMS LIST -->
   <div class="col-md-8">
+    <!-- Search -->
     <div class="search-box">
       <input
         type="text"
@@ -10,45 +12,88 @@
       <i class="bi bi-search search-icon"></i>
     </div>
 
-    <div class="card-container mt-2">
-      <div
-        class="item-card"
-        *ngFor="let it of filteredItems()"
-        [ngClass]="{
-          'low-stock': it.stock_quantity <= 5,
-          'medium-stock': it.stock_quantity > 5 && it.stock_quantity <= 15,
-          'high-stock': it.stock_quantity > 15
-        }"
-      >
-        <div class="card-header">
-          <div class="left-header">
-            <span class="brand">{{ it.brand_name }}</span>
-            <h3>{{ it.item_name }}</h3>
-          </div>
+    <!-- ITEMS TABLE -->
+    <div class="table-responsive mt-2">
+      <table class="table table-hover align-middle item-table">
+        <thead class="table-light">
+          <tr>
+            <th>Image</th>
+            <th>Brand</th>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Discount</th>
+            <th>Tax</th>
+            <th>Stock</th>
+            <th>Action</th>
+          </tr>
+        </thead>
 
-          <img
-            *ngIf="it.image"
-            [src]="getImageUrl(it.image)"
-            class="item-img-small"
-          />
-        </div>
+        <tbody>
+          <tr
+            *ngFor="let it of filteredItems()"
+            [ngClass]="{
+              'stock-low': it.stock_quantity <= 10,
+              'stock-medium': it.stock_quantity > 10 && it.stock_quantity <= 15,
+              'stock-high': it.stock_quantity > 15
+            }"
+          >
+            <td class="image-cell">
+              <div class="image-wrapper">
+                <img
+                  *ngIf="it.image"
+                  [src]="getImageUrl(it.image)"
+                  class="item-img-table"
+                />
 
-        <div class="card-body">
-          <p><strong>Price:</strong> ₹{{ it.selling_price }}</p>
-          <p><strong>Discount:</strong> ₹{{ it.discount || 0 }}</p>
-          <p><strong>Tax:</strong> {{ it.tax_rate }}%</p>
-          <p>
-            <strong>Available:</strong> {{ it.stock_quantity }} {{ it.unit }}
-          </p>
+                
+                <span
+                  *ngIf="it.stock_quantity < 10"
+                  class="stock-dot red"
+                  title="Critical stock"
+                ></span>
 
-          <div class="quantity-control">
-            <button (click)="addToCart(it)" class="btn-success">+</button>
-          </div>
-        </div>
-      </div>
+                
+                <span
+                  *ngIf="it.stock_quantity >= 10 && it.stock_quantity < 20"
+                  class="stock-dot orange"
+                  title="Low stock"
+                ></span>
+              </div>
+            </td>
+
+            <td>{{ it.brand_name }}</td>
+            <td>{{ it.item_name }}</td>
+            <td>₹{{ it.selling_price }}</td>
+            <td>₹{{ it.discount || 0 }}</td>
+            <td>{{ it.tax_rate }}%</td>
+            <td>
+              {{ it.stock_quantity }} {{ it.unit }}
+              <span
+                *ngIf="it.stock_quantity < 10"
+                class="stock-dot red"
+                title="Critical stock"
+              ></span>
+
+              <!-- 🟠 Low stock -->
+              <span
+                *ngIf="it.stock_quantity >= 10 && it.stock_quantity < 20"
+                class="stock-dot orange"
+                title="Low stock"
+              ></span>
+            </td>
+
+            <td>
+              <button class="btn btn-sm btn-success" (click)="addToCart(it)">
+                +
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
+  <!-- RIGHT : CART -->
   <div class="col-md-4">
     <div
       class="selected-items scrollable-cart"
@@ -115,6 +160,7 @@
   </div>
 </div>
 
+<!-- CUSTOMER MODAL -->
 <div class="modal" *ngIf="showCustomerForm">
   <div class="modal-content">
     <div class="modal-header-custom bg-success">
@@ -123,7 +169,6 @@
       <button
         type="button"
         class="btn-close btn-close-dark"
-        data-bs-dismiss="modal"
         aria-label="Close"
         (click)="toggleCustomerForm()"
       ></button>
@@ -132,33 +177,12 @@
     <form [formGroup]="customerForm">
       <div class="row">
         <div class="col">
-          <label>Name
-            <span class="text-danger">*</span>
-          </label>
+          <label>Name <span class="text-danger">*</span></label>
           <input formControlName="name" type="text" />
-          <div
-            *ngIf="
-              customerForm.controls['name']?.touched &&
-              customerForm.controls['name']?.invalid
-            "
-          >
-            <small
-              *ngIf="customerForm.controls['name']?.errors?.['required']"
-              class="text-danger"
-              >Name is required</small
-            >
-            <small
-              *ngIf="customerForm.controls['name']?.errors?.['minlength']"
-              class="text-danger"
-              >Minimum 3 letters</small
-            >
-          </div>
         </div>
 
         <div class="col">
-          <label>Phone
-            <span class="text-danger">*</span>
-          </label>
+          <label>Phone <span class="text-danger">*</span></label>
           <input
             formControlName="phone"
             type="text"
@@ -170,13 +194,11 @@
 
       <div class="row">
         <div class="col">
-          <label>Email
-            <span class="text-danger">*</span>
-          </label>
+          <label>Email </label>
           <input formControlName="email" type="email" />
         </div>
         <div class="col">
-          <label>Address <span class="text-danger">*</span></label>
+          <label>Address</label>
           <input formControlName="address" type="text" />
         </div>
       </div>
@@ -193,6 +215,7 @@
   </div>
 </div>
 
+<!-- PRINT AREA -->
 <div id="printArea" style="display: none">
   <h2>{{ business?.name || "Invoice" }}</h2>
   <p>Date: {{ currentDate }}</p>
