@@ -26,8 +26,9 @@
 </div>
 
 <div class="col-12">
-  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-
+  <div
+    class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3"
+  >
     <!-- Heading -->
     <h4 class="fw-bold text-success mb-0">Available Sub Categories List</h4>
 
@@ -42,7 +43,28 @@
 
     <!-- Add Button -->
     <button
-      class="btn btn-success"
+      class="btn"
+      [ngClass]="statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'"
+      (click)="statusFilter = 'active'"
+    >
+    <i class="bi bi-check-circle"></i>
+
+
+      Active
+    </button>
+
+    <button
+      class="btn"
+      [ngClass]="statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'"
+      (click)="statusFilter = 'inactive'"
+    >
+    <i class="bi bi-x-circle"></i>
+
+      Inactive
+    </button>
+
+    <button
+      class="btn btn-light"
       data-bs-toggle="modal"
       data-bs-target="#subcategoryModel"
       (click)="openAddModal()"
@@ -50,10 +72,8 @@
       <i class="bi bi-plus-circle"></i>
       Add New
     </button>
-
   </div>
 </div>
-
 
 <div class="dashboard">
   <div class="row">
@@ -63,47 +83,55 @@
       </div>
     </div>
 
-    <table
-        *ngIf="subcategories.length > 0"
-        class="table table-bordered table-hover shadow-sm small-table align-middle text-center"
-      >
-      <thead class="table-success">
-        <tr>
-          <th style="background: #d4f8d4; color: #0a5c0a">SL.No</th>
-          <th style="background: #d4f8d4; color: #0a5c0a">Sub Category</th>
-          <th style="background: #d4f8d4; color: #0a5c0a">Code</th>
-          <th style="background: #d4f8d4; color: #0a5c0a">Status</th>
-          <th style="background: #d4f8d4; color: #0a5c0a">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-                  *ngFor="let c of filteredUser(); let i = index"
-                  class="align-middle text-center"
-                >
-          <td>{{ i + 1 }}</td>
-          <td>{{ c.sub_category_name }}</td>
-          <td>{{ c.sub_category_code }}</td>
-          <td>{{c.status}}</td>
-          <td>
-            <button
-              class="btn btn-sm btn-outline-primary me-2"
-              (click)="edit(c)"
-              data-bs-toggle="modal"
-              data-bs-target="#subcategoryModel"
-            >
-              <i class="bi bi-pencil-square"></i>
-            </button>
-            <button
-            class="btn btn-sm btn-outline-danger"
-            (click)="openDeleteModal(c)"
+    <div class="col-12" *ngIf="subcategories.length > 0">
+      <div class="table-wrapper">
+        <div class="table-responsive bg-white p-3 rounded-4">
+          <table
+            *ngIf="subcategories.length > 0"
+            class="table table-bordered table-hover shadow-sm small-table align-middle text-center"
           >
-            <i class="bi bi-trash"></i>
-          </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <thead class="table-success">
+              <tr>
+                <th style="background: #d4f8d4; color: #0a5c0a">SL.No</th>
+                <th style="background: #d4f8d4; color: #0a5c0a">
+                  Sub Category
+                </th>
+                <th style="background: #d4f8d4; color: #0a5c0a">Code</th>
+                <th style="background: #d4f8d4; color: #0a5c0a">Status</th>
+                <th style="background: #d4f8d4; color: #0a5c0a">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let c of filteredUser(); let i = index"
+                class="align-middle text-center"
+              >
+                <td>{{ i + 1 }}</td>
+                <td>{{ c.sub_category_name }}</td>
+                <td>{{ c.sub_category_code }}</td>
+                <td>{{ c.status }}</td>
+                <td>
+                  <button
+                    class="btn btn-sm btn-outline-primary me-2"
+                    (click)="edit(c)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#subcategoryModel"
+                  >
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="openDeleteModal(c)"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -125,7 +153,6 @@
             data-bs-dismiss="modal"
             aria-label="Close"
             (click)="closeModal()"
-            
           ></button>
         </div>
 
@@ -188,7 +215,10 @@
         </div>
 
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success">Save</button>
+          <button type="submit" class="btn btn-success">
+            {{ selectedcategory ? "Update" : "Create" }}
+          </button>
+
           <button
             type="button"
             class="btn btn-secondary"

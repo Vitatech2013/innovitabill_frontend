@@ -25,7 +25,7 @@ export class UnitsComponent implements OnInit {
   user_id: string = '';
   selectedId: string | null = null;
   title = 'Add Unit';
-
+  statusFilter: 'active' | 'inactive' = 'active'; 
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
 selectedUnit: any;
@@ -150,6 +150,13 @@ searchTerm: string = '';
       )
     );
   }
+
+ filteredByStatus() {
+  if (!this.units) return [];
+  return this.units.filter(u =>
+    this.statusFilter ? u.status === this.statusFilter : true
+  );
+}
 
 
 

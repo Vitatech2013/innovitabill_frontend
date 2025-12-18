@@ -23,7 +23,6 @@ export class SubCategoriesComponent implements OnInit {
  subcategories: any[] = [];
   selectedcategory: any;
   title: any;
-
   toastMessage: any;
   toastType: any;
   openModel = false;
@@ -32,7 +31,7 @@ export class SubCategoriesComponent implements OnInit {
   c: any;
   categories_id: any;
   searchTerm: string = '';
-
+  statusFilter: 'active' | 'inactive' = 'active';
   constructor(private fb: FormBuilder, private api: BillingService) {}
 
   ngOnInit(): void {
@@ -210,6 +209,11 @@ edit(data: any) {
       )
     );
   }
+    filteredByStatus(): any[] {
+  return this.filteredUser().filter(
+    (u: any) => u?.status === this.statusFilter
+  );
+}
 
 openDeleteModal(cats: any) {
     this.selectedcategory = cats;
