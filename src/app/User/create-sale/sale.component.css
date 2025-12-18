@@ -145,39 +145,81 @@
   color: #777;
 }
 
-.selected-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: #f8f9fa;
-  border-radius: 10px;
-  padding: 12px;
-  border-left: 5px solid #28a745;
-  margin-bottom: 15px;
-  justify-content: space-between;
-}
-
-.cart-img {
+.cart-image {
   width: 70px;
   height: 70px;
-  object-fit: contain;
+ 
   background: #fff;
   border-radius: 6px;
-  padding: 6px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cart-image img {
+  max-width: 70px;
+  max-height: 70px;
+  object-fit: contain;
 }
 
-.selected-info strong {
+.selected-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px;
+  border-left: 6px solid #dc3545;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 15px;
+}
+
+.cart-header {
+  margin-bottom: 8px;
+}
+
+.cart-brand {
+  font-size: 14px;
+  color: #888;
+  display: block;
+}
+
+.cart-item-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #222;
+}
+
+.cart-divider {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 5px 0 5px;
+}
+
+.cart-body p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.cart-total {
   font-size: 16px;
-  margin-bottom: 5px;
+  color: #000;
+  margin-top: 8px;
 }
 
 .cart-buttons {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
   align-items: center;
+  margin-top: 10px;
 }
+.cart-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.cart-left {
+  display: flex;
+  flex-direction: column;
+}
+
 
 .cart-buttons .quantity {
   font-weight: bold;
@@ -245,7 +287,6 @@
   position: relative;
 }
 .modal-header-custom {
-  
   color: white;
   padding: 15px 20px;
   display: flex;
@@ -335,4 +376,39 @@
   transform: translateY(-50%);
   font-size: 18px;
   color: #6c757d;
+}
+.scrollable-cart {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.scrollable-cart::-webkit-scrollbar {
+  width: 2px;
+}
+
+.scrollable-cart::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.scrollable-cart::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 3px;
+}
+
+.scrollable-cart::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.brand {
+  display: block;
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 2px;
+}
+
+.item-name {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  color: #222;
+  line-height: 1.2;
 }

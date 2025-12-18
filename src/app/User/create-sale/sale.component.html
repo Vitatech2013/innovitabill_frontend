@@ -51,7 +51,7 @@
 
   <div class="col-md-4">
     <div
-      class="selected-items"
+      class="selected-items scrollable-cart"
       [ngClass]="{ 'empty-state': cartItems.length === 0 }"
     >
       <div *ngIf="cartItems.length === 0" class="empty-wrapper">
@@ -63,25 +63,41 @@
         <h4><i class="bi bi-cart4"></i> Cart</h4>
 
         <div class="selected-card" *ngFor="let item of cartItems">
-          <div class="selected-info">
-            <span class="brand">{{ item.brand_name }}</span>
-            <strong>{{ item.item_name }}</strong>
-            <p>Price: ₹{{ item.selling_price }}</p>
-            <p>Discount: ₹{{ item.discount || 0 }}</p>
-            <p><strong>Total:</strong> ₹{{ getItemTotal(item) }}</p>
+          <div class="cart-content">
+            <div class="cart-left">
+              <span class="cart-brand">{{ item.brand_name }}</span>
+              <div class="cart-item-name">{{ item.item_name }}</div>
+            </div>
 
-            <div class="cart-buttons">
-              <button class="remove" (click)="removeFromCart(item)">−</button>
-              <span class="quantity">{{ item.cartQty }}</span>
-              <button class="add" (click)="addToCart(item)">+</button>
+            <div class="cart-image">
+              <img
+                *ngIf="item.image"
+                [src]="getImageUrl(item.image)"
+                alt="item"
+              />
             </div>
           </div>
 
-          <img
-            *ngIf="item.image"
-            [src]="getImageUrl(item.image)"
-            class="cart-img"
-          />
+          <hr class="cart-divider" />
+
+          <div class="cart-body">
+            <p><strong>Price:</strong> ₹{{ item.selling_price }}</p>
+            <p><strong>Discount:</strong> ₹{{ item.discount || 0 }}</p>
+            <p><strong>Tax:</strong> {{ item.tax_rate || 0 }}%</p>
+            <p>
+              <strong>Available:</strong>
+              {{ getAvailableStock(item._id) }}
+            </p>
+            <p class="cart-total fs-4">
+              <strong>Total:</strong> ₹{{ getItemTotal(item) }}
+            </p>
+          </div>
+
+          <div class="cart-buttons">
+            <button class="remove" (click)="removeFromCart(item)">−</button>
+            <span class="quantity">{{ item.cartQty }}</span>
+            <button class="add" (click)="addToCart(item)">+</button>
+          </div>
         </div>
 
         <div class="total-summary">
@@ -116,7 +132,9 @@
     <form [formGroup]="customerForm">
       <div class="row">
         <div class="col">
-          <label>Name</label>
+          <label>Name
+            <span class="text-danger">*</span>
+          </label>
           <input formControlName="name" type="text" />
           <div
             *ngIf="
@@ -138,7 +156,9 @@
         </div>
 
         <div class="col">
-          <label>Phone</label>
+          <label>Phone
+            <span class="text-danger">*</span>
+          </label>
           <input
             formControlName="phone"
             type="text"
@@ -150,11 +170,13 @@
 
       <div class="row">
         <div class="col">
-          <label>Email</label>
+          <label>Email
+            <span class="text-danger">*</span>
+          </label>
           <input formControlName="email" type="email" />
         </div>
         <div class="col">
-          <label>Address</label>
+          <label>Address <span class="text-danger">*</span></label>
           <input formControlName="address" type="text" />
         </div>
       </div>

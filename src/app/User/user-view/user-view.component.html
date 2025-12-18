@@ -55,7 +55,7 @@
   </div>
 
   <div class="row mt-5 pt-4">
-    <div class="col-md-2 p-4">
+    <div class="col-md-2">
       <div class="d-flex flex-column gap-3 mt-4">
         <button
           class="btn side-btn text-dark"
@@ -108,10 +108,18 @@
         >
           <b> <i class="bi bi-file-earmark"></i></b> Quotation
         </button>
+         <button
+          class="btn side-btn text-dark"
+          routerLink="/userview/purchase"
+          routerLinkActive="active-btn"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <b> <i class="bi bi-bag"></i></b>  Sale Purchase
+        </button>
       </div>
     </div>
 
-    <div class="col-md-10 p-4">
+    <div class="col-md-10 ">
       <router-outlet></router-outlet>
     </div>
   </div>
