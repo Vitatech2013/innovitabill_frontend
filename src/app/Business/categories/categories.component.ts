@@ -146,6 +146,15 @@ toastType: any;
       });
     }
   }
+    filteredUser() {
+    if (!this.searchTerm) return this.categories;
+    const term = this.searchTerm.toLowerCase();
+    return this.categories.filter((u: any) =>
+      Object.values(u).some((val) =>
+        val?.toString().toLowerCase().includes(term)
+      )
+    );
+  }
   openDeleteModal(cats: any) {
     this.selectedId = cats;
     const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
@@ -155,7 +164,7 @@ toastType: any;
     if (!this.selectedId) return;
     this.api.deleteCategory(this.selectedId._id).subscribe({
       next: () => {
-                this.showToast(' Soft deleted successfully', 'success');
+                this.showToast('category deleted successfully', 'success');
 
         this.getAllCategories();
         const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));

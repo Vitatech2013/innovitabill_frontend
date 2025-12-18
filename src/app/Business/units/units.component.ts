@@ -19,7 +19,6 @@ declare var bootstrap: any;
 })
 export class UnitsComponent implements OnInit {
 
-
   UnitForm!: FormGroup;
   units: any[] = [];
   business_id: string = '';
@@ -47,7 +46,13 @@ searchTerm: string = '';
 
 
     this.UnitForm = this.fb.group({
-      units_name: ['', Validators.required],
+      units_name: [
+    '',
+    [
+      Validators.required,
+      Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/)
+    ]
+  ],
       unit: ['', Validators.required],
       user_id: [''],
       business_id: [''],
@@ -136,6 +141,16 @@ searchTerm: string = '';
       });
     }
   }
+  filteredUser() {
+    if (!this.searchTerm) return this.units;
+    const term = this.searchTerm.toLowerCase();
+    return this.units.filter((u: any) =>
+      Object.values(u).some((val) =>
+        val?.toString().toLowerCase().includes(term)
+      )
+    );
+  }
+
 
 
   // delete(id: string) {
@@ -196,6 +211,13 @@ if (!this.selectedUnit) return;
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 3000);
   }
+  removeFirstSpace() {
+  const c = this.UnitForm.get('units_name');
+  if (c?.value?.startsWith(' ')) {
+    c.setValue(c.value.trimStart(), { emitEvent: false });
+  }
+}
+
   allowOnlyLetters(event: KeyboardEvent) {
   const pattern = /^[A-Za-z]$/;
   if (!pattern.test(event.key)) {
