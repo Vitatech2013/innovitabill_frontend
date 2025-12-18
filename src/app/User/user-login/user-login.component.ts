@@ -60,6 +60,7 @@ export class UserLoginComponent implements OnInit {
     this.userForm = this.fb.group({
       user_email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
+      rememberMe: [false],
     });
     this.getBusinessDetails();
   }

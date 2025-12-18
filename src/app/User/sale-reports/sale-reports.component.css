@@ -1,59 +1,7 @@
-/* basic container */
-.container {
-  max-width: 1100px;
-  margin: 12px auto;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-  background: transparent;
+.nav-link {
+  cursor: pointer;
 }
-
-/* card & inner */
 .card {
-  background: transparent;
-  border: none;
-  padding: 0;
-}
-.card-inner {
-  background: #fff;
-  padding: 14px;
-  border-radius: 8px;
-  border: 1px solid #e6e6e6;
-}
-
-/* chart container ensures canvas can grow without breaking layout */
-.chart-wrap {
-  width: 100%;
-  min-height: 160px; /* mobile comfortable minimum */
-  max-height: 260px; /* desktop visual limit */
-  position: relative;
-}
-
-/* make canvas responsive */
-canvas {
-  display: block;
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* small screens adjustments */
-@media (max-width: 768px) {
-  .container { padding: 12px; }
-  .chart-wrap { min-height: 140px; max-height: 220px; }
-}
-
-
-#pdfPreviewModal img {
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
-}
- .card {
-  border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-}
-
-apx-chart {
-  width: 100%;
-  height: 300px;
+  max-height: 600px;
+  overflow-y: auto;
 }

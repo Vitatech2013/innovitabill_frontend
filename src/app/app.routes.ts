@@ -32,6 +32,9 @@ import { CategoriesComponent } from './Business/categories/categories.component'
 import { RolesComponent } from './Business/roles/roles.component';
 import { UnitsComponent } from './Business/units/units.component';
 import { SubCategoriesComponent } from './Business/sub-categories/sub-categories.component';
+import { UserDashboardComponent } from './User/user-dashboard/user-dashboard.component';
+import { CreatePurchaseComponent } from './User/create-purchase/create-purchase.component';
+
 
 export const routes: Routes = [
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
@@ -58,7 +61,9 @@ export const routes: Routes = [
     path: 'userview',
     component: UserViewComponent,
     children: [
-      { path: '', component: SaleComponent },
+      {path:'', component:UserDashboardComponent},
+      {path:'userdashboard',component:UserDashboardComponent},
+      { path: 'createsale', component: SaleComponent },
       { path: 'userprofile', component: UserProfileComponent },
       {
         path: 'itemlist',
@@ -76,6 +81,7 @@ export const routes: Routes = [
         component: SaleComponent,
       },
       { path: 'quotation', component: QuotationComponent },
+      {path:'purchase',component:CreatePurchaseComponent}
     ],
   },
 

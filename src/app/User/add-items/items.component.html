@@ -8,13 +8,15 @@
   >
     <div class="row g-4 item-form">
       <div class="col-md-4">
-        <label class="form-label fw-bold">Item Name</label>
+        <label class="form-label fw-bold">Item Name
+          <span class="text-danger">*</span>
+        </label>
         <input
           type="text"
           class="form-control"
           formControlName="item_name"
           placeholder="Enter item name"
-          (keypress)="preventSpace($event)"
+          (input)="onInputAlphabetsOnly($event)"
         />
         <small *ngIf="isInvalid('item_name')" class="text-danger">
           Item Name is required and must be at least 3 letters
@@ -22,13 +24,15 @@
       </div>
 
       <div class="col-md-4">
-        <label class="form-label fw-bold">Item Code</label>
+        <label class="form-label fw-bold">Item Code
+          <span class="text-danger">*</span>
+        </label>
         <input
           type="text"
           class="form-control"
           formControlName="item_code"
           placeholder="Enter item code"
-          (keypress)="preventSpace($event)"
+          (input)="onInputNoSpaces($event)"
         />
         <small *ngIf="isInvalid('item_code')" class="text-danger">
           Item code is required and must be at least 3 letters
@@ -36,7 +40,9 @@
       </div>
 
       <div class="col-md-4">
-        <label class="form-label fw-bold">Units</label>
+        <label class="form-label fw-bold">Units
+          <span class="text-danger">*</span>
+        </label>
         <select class="form-select" formControlName="unit_id">
           <option Value="">Select Units</option>
           <option *ngFor="let unit of units" [ngValue]="unit._id">
@@ -46,13 +52,15 @@
       </div>
 
       <div class="col-md-4">
-        <label class="form-label fw-bold">Price</label>
+        <label class="form-label fw-bold">Price
+          <span class="text-danger">*</span>
+        </label>
         <input
           type="text"
           class="form-control"
           formControlName="selling_price"
           placeholder="Enter selling price"
-          (keypress)="preventSpace($event)"
+          (input)="onInputNumbersOnly($event)"
         />
         <small *ngIf="isInvalid('selling_price')" class="text-danger">
           Selling price is required
@@ -60,13 +68,15 @@
       </div>
 
       <div class="col-md-4">
-        <label class="form-label fw-bold">Purchase price</label>
+        <label class="form-label fw-bold">Purchase price
+          <span class="text-danger">*</span>
+        </label>
         <input
           type="text"
           class="form-control"
           formControlName="purchase_price"
           placeholder="Purchase price"
-          (keypress)="preventSpace($event)"
+          (input)="onInputNumbersOnly($event)"
         />
         <small *ngIf="isInvalid('purchase_price')" class="text-danger">
           Purchase price is required
@@ -74,28 +84,32 @@
       </div>
 
       <div class="col-md-4">
-        <label class="form-label fw-bold">Tax</label>
+        <label class="form-label fw-bold">Tax
+          <span class="text-danger">*</span>
+        </label>
         <input
           type="text"
           class="form-control"
           formControlName="tax_rate"
           placeholder="Tax rate"
-          (keypress)="preventSpace($event)"
-          (keypress)="allowNumbersAndSpecial($event)"
+          (input)="onInputNumbersAndSpecial($event)"
         />
+
         <small *ngIf="isInvalid('tax_rate')" class="text-danger">
           Tax rate is required
         </small>
       </div>
 
       <div class="col-md-4">
-        <label class="form-label fw-bold">Stock</label>
+        <label class="form-label fw-bold">Stock
+          <span class="text-danger">*</span>
+        </label>
         <input
-          type="number"
+          type="text"
           class="form-control"
           formControlName="stock_quantity"
-          placeholder="No.of Quantitys"
-          (keypress)="preventSpace($event)"
+          placeholder="No.of Quantities"
+          (input)="onInputNumbersOnly($event)"
         />
         <small *ngIf="isInvalid('stock_quantity')" class="text-danger">
           Stock is required
@@ -103,14 +117,15 @@
       </div>
 
       <div class="col-md-4">
-        <label class="form-label fw-bold">Brand Name</label>
+        <label class="form-label fw-bold">Brand Name
+          <span class="text-danger">*</span>
+        </label>
         <input
           type="text"
           class="form-control"
           formControlName="brand_name"
           placeholder="Enter Brand name"
-          (keypress)="preventSpace($event)"
-           (keypress)="allowOnlyAlphabets($event)"
+          (input)="onInputAlphabetsOnly($event)"
         />
         <small *ngIf="isInvalid('brand_name')" class="text-danger">
           Brand name is required
@@ -118,14 +133,15 @@
       </div>
 
       <div class="col-md-4">
-        <label class="form-label fw-bold">Discount</label>
+        <label class="form-label fw-bold">Discount
+          <span class="text-danger">*</span>
+        </label>
         <input
           type="text"
           class="form-control"
           formControlName="discount"
           placeholder="Enter discount"
-          (keypress)="preventSpace($event)"
-          (keypress)="allowNumbersAndSpecial($event)"
+          (input)="onInputNumbersAndSpecial($event)"
         />
         <small *ngIf="isInvalid('discount')" class="text-danger">
           Discount is required
@@ -133,15 +149,15 @@
       </div>
 
       <div class="col-md-4">
-        <label class="form-label fw-bold">Stock Alert</label>
+        <label class="form-label fw-bold">Stock Alert
+          <span class="text-danger">*</span>
+        </label>
         <input
           type="text"
           class="form-control"
           formControlName="min_stock_alert"
           placeholder="Enter alert stock"
-          (keypress)="preventSpace($event)"
-          (keypress)="allowNumbersAndSpecial($event)"
-          
+          (input)="onInputNumbersAndSpecial($event)"
         />
         <small *ngIf="isInvalid('min_stock_alert')" class="text-danger">
           Alert stock is required
@@ -149,7 +165,9 @@
       </div>
 
       <div class="col-md-4">
-        <label class="form-label fw-bold">Categories</label>
+        <label class="form-label fw-bold">Categories
+          <span class="text-danger">*</span>
+        </label>
         <select class="form-select" formControlName="category_id">
           <option value="">Select Categories</option>
           <option *ngFor="let cat of categories" [value]="cat._id">
@@ -159,7 +177,9 @@
       </div>
 
       <div class="col-md-4">
-        <label class="form-label fw-bold">Sub-Categories</label>
+        <label class="form-label fw-bold">Sub-Categories
+          <span class="text-danger">*</span>
+        </label>
         <select class="form-select" formControlName="sub_category_id">
           <option value="">Select Sub categories</option>
           <option *ngFor="let subcat of subCategories" [value]="subcat._id">
@@ -168,7 +188,9 @@
         </select>
       </div>
       <div class="col-md-4">
-        <label class="form-label fw-bold">Image</label>
+        <label class="form-label fw-bold">Image
+          <span class="text-danger">*</span>
+        </label>
         <input
           type="file"
           class="form-control"
@@ -179,7 +201,9 @@
         </small>
       </div>
       <div class="col-md-4">
-        <label class="form-label fw-bold">Description</label>
+        <label class="form-label fw-bold">Description
+          <span class="text-danger">*</span>
+        </label>
         <textarea
           class="form-control"
           rows="1"

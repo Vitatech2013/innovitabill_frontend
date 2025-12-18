@@ -68,9 +68,7 @@ export class ItemsComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.pattern(
-            '^[a-zA-Z0-9!@#$%^&*()_+\\-=[\\]{};\'":\\\\|,.<>/?]+$'
-          ),
+          Validators.pattern('^[0-9!@#$%^&*()_+\\-=[\\]{};\'":\\\\|,.<>/?]+$'),
         ],
       ],
       tax_rate: [
@@ -225,21 +223,74 @@ export class ItemsComponent implements OnInit {
     this.selectedImageFile = event.target.files[0] || null;
   }
 
-  preventSpace(event: KeyboardEvent) {
-    if (event.key === ' ') {
-      event.preventDefault();
-    }
+  onInputAlphabetsOnly(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+
+    value = value.replace(/^\s+/, '');
+
+    value = value.replace(/[^A-Za-z ]+/g, '');
+
+    input.value = value;
+    this.addItemsForm
+      .get(input.getAttribute('formControlName')!)
+      ?.setValue(value, { emitEvent: false });
   }
-  allowNumbersAndSpecial(event: KeyboardEvent) {
-    const pattern = /^[0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]$/;
-    if (!pattern.test(event.key)) {
-      event.preventDefault();
-    }
+
+  onInputAlphabetsNumbersSpecial(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+
+    value = value.replace(/^\s+/, '');
+
+    value = value.replace(
+      /[^A-Za-z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/? ]+/g,
+      ''
+    );
+
+    input.value = value;
+    this.addItemsForm
+      .get(input.getAttribute('formControlName')!)
+      ?.setValue(value, { emitEvent: false });
   }
-  allowOnlyAlphabets(event: KeyboardEvent) {
-    const pattern = /^[A-Za-z]$/;
-    if (!pattern.test(event.key)) {
-      event.preventDefault();
+
+  onInputNoSpaces(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+
+    value = value.replace(/\s+/g, '');
+
+    input.value = value;
+    this.addItemsForm
+      .get(input.getAttribute('formControlName')!)
+      ?.setValue(value, { emitEvent: false });
+  }
+
+  onInputNumbersOnly(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+
+    value = value.replace(/[^0-9.]/g, '');
+
+    const parts = value.split('.');
+    if (parts.length > 2) {
+      value = parts.shift() + '.' + parts.join('');
     }
+
+    input.value = value;
+    this.addItemsForm
+      .get(input.getAttribute('formControlName')!)
+      ?.setValue(value, { emitEvent: false });
+  }
+  onInputNumbersAndSpecial(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value;
+
+    value = value.replace(/[^0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/g, '');
+
+    input.value = value;
+    this.addItemsForm
+      .get(input.getAttribute('formControlName')!)
+      ?.setValue(value, { emitEvent: false });
   }
 }

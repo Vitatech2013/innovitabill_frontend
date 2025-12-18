@@ -227,16 +227,28 @@ export class ItemListComponent implements OnInit {
       );
     }
 
-    const term = this.searchTerm.toLowerCase();
+    const term = this.searchTerm.toLowerCase().trim();
+    const statuses = ['active', 'inactive', 'pending'];
+
+    if (statuses.includes(term)) {
+      return this.items
+        .filter((it) => it.status?.toLowerCase() === term)
+        .sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+    }
 
     return this.items
-      .filter((it) =>
-        Object.values(it).some((val) =>
-          val?.toString().toLowerCase().includes(term)
-        )
-      )
+      .filter((it) => {
+        return (
+          it.item_name?.toLowerCase().includes(term) ||
+          it.item_code?.toLowerCase().includes(term) ||
+          it.brand_name?.toLowerCase().includes(term) ||
+          it.status?.toLowerCase().includes(term) ||
+          false
+        );
+      })
       .sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
   }
+
   onCustomFileSelect(event: any, key: string) {
     const file = event.target.files[0];
     if (file) {
@@ -247,7 +259,7 @@ export class ItemListComponent implements OnInit {
   }
   openViewModal(it: any) {
     this.selectedItems = it;
-    this.selectedItems.imageUrl = this.getImageUrl(it.image); 
+    this.selectedItems.imageUrl = this.getImageUrl(it.image);
     const modal = new bootstrap.Modal(document.getElementById('ViewModal'));
     modal.show();
   }
@@ -256,18 +268,38 @@ export class ItemListComponent implements OnInit {
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 3000);
   }
-  openImageModal(imagePath: string | undefined) {
-    this.imagePreviewUrl = this.getImageUrl(imagePath || '');
-    const modal = new bootstrap.Modal(
-      document.getElementById('imagePreviewModal')
-    );
-    modal.show();
+  openImageModal(imagePath?: string) {
+    if (!imagePath) {
+      return;
+    }
+
+    this.imagePreviewUrl = this.getImageUrl(imagePath);
+
+    const modalEl = document.getElementById('imagePreviewModal');
+    if (modalEl) {
+      const modal = new bootstrap.Modal(modalEl);
+      modal.show();
+    }
   }
-  getImageUrl(path: string): string {
-    if (!path) return 'assets/default-business.jpg';
-    const cleanPath = path.replace(/\\/g, '/');
-    return cleanPath.includes('business_images/')
-      ? `${this.baseUrl}/${cleanPath}`
-      : `${this.baseUrl}/business_images/${cleanPath}`;
+  getImageUrl(path?: string): string {
+  if (!path) {
+    return 'assets/default-business.jpg';
   }
+
+  // normalize Windows paths
+  const cleanPath = path.replace(/\\/g, '/');
+
+  // if backend already sends full or relative folder path
+  if (cleanPath.startsWith('http')) {
+    return cleanPath;
+  }
+
+  if (cleanPath.includes('business_images/')) {
+    return `${this.baseUrl}/${cleanPath}`;
+  }
+
+  // if only filename is sent
+  return `${this.baseUrl}/business_images/${cleanPath}`;
+}
+
 }

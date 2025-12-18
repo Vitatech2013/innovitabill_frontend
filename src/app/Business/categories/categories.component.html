@@ -34,7 +34,7 @@
     <input
       type="text"
       class="form-control shadow-sm"
-      placeholder="Search by name, code or status..."
+      placeholder="Search..."
       [(ngModel)]="searchTerm"
       style="max-width: 300px"
     />
@@ -63,7 +63,7 @@
       <i class="bi bi-info-circle"></i> No users found.
     </div>
   </div>
-   <table *ngIf="categories.length > 0" class="table table-bordered table-hover shadow-sm">
+   <table *ngIf="categories.length > 0" class="table table-bordered table-hover shadow-sm align-middle text-center">
     <thead class="table-success">
       <tr>
         <th  style="background:#d4f8d4; color:#0a5c0a;">Sl.No</th>
@@ -74,7 +74,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let c of categories; let i = index">
+      <tr
+                  *ngFor="let c of filteredUser(); let i = index"
+                  class="align-middle text-center"
+                >
         <td>{{ i + 1 }}</td>
         <td>{{ c.categories_name }}</td>
         <td>{{ c.categories_code }}</td>

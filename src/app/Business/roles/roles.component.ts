@@ -203,6 +203,16 @@ createOrUpdateRole(): void {
   //   });
   // }
 
+    filteredUser() {
+    if (!this.searchTerm) return this.roles;
+    const term = this.searchTerm.toLowerCase();
+    return this.roles.filter((u: any) =>
+      Object.values(u).some((val) =>
+        val?.toString().toLowerCase().includes(term)
+      )
+    );
+  }
+
   resetForm(): void {
     this.roleForm.reset();
     this.selectedUserId = null;
@@ -253,5 +263,8 @@ allowOnlyNumbers(event: KeyboardEvent) {
     event.preventDefault(); // blocks letters and special characters
   }
 }
+   blockSpaces(event: KeyboardEvent) {
+    if (event.code === 'Space') event.preventDefault();
+  }
 
 }

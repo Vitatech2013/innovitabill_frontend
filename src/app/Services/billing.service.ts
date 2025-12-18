@@ -284,4 +284,7 @@ export class BillingService {
       data
     );
   }
+  addPurchase(data: any) {
+    return this.http.post(`${this.baseUrl}/vendor/add`, data);
+  }
 }

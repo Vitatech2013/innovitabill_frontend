@@ -1,49 +1,39 @@
-<div class="container" id="report-content">
-  <h2 class="mb-4 text-center">Sales Reports</h2>
+<div class="container mt-3">
 
-  <div class="row">
-    <div class="col-md-6 mb-4">
-      <div class="card p-3">
-        <h4 class="text-center mb-2">Daily Sales</h4>
-        <apx-chart
-          [series]="dailySeries"
-          [chart]="chartOptions"
-          [xaxis]="dailyXAxis"
-        ></apx-chart>
-      </div>
-    </div>
+  <!-- Tabs -->
+  <ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+      <button class="nav-link" [class.active]="activeTab==='daily'" (click)="setTab('daily')">Daily</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" [class.active]="activeTab==='weekly'" (click)="setTab('weekly')">Weekly</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" [class.active]="activeTab==='monthly'" (click)="setTab('monthly')">Monthly</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" [class.active]="activeTab==='yearly'" (click)="setTab('yearly')">Yearly</button>
+    </li>
+  </ul>
 
-    <div class="col-md-6 mb-4">
-      <div class="card p-3">
-        <h4 class="text-center mb-2">Weekly Sales</h4>
-        <apx-chart
-          [series]="weeklySeries"
-          [chart]="chartOptions"
-          [xaxis]="weeklyXAxis"
-        ></apx-chart>
-      </div>
-    </div>
+  <!-- Report Card -->
+  <div class="card p-3">
 
-    <div class="col-md-6 mb-4">
-      <div class="card p-3">
-        <h4 class="text-center mb-2">Monthly Sales</h4>
-        <apx-chart
-          [series]="monthlySeries"
-          [chart]="chartOptions"
-          [xaxis]="monthlyXAxis"
-        ></apx-chart>
-      </div>
-    </div>
+    <h4 class="text-center mb-3 text-capitalize">
+      {{ activeTab }} Sales Report
+    </h4>
 
-    <div class="col-md-6 mb-4">
-      <div class="card p-3">
-        <h4 class="text-center mb-2">Yearly Sales</h4>
-        <apx-chart
-          [series]="yearlySeries"
-          [chart]="chartOptions"
-          [xaxis]="yearlyXAxis"
-        ></apx-chart>
-      </div>
+    <!-- Chart -->
+    <apx-chart
+      [series]="chartSeries"
+      [chart]="chartOptions"
+      [xaxis]="chartXAxis">
+    </apx-chart>
+
+    <div class="text-end mt-3">
+      <button class="btn btn-danger me-2" (click)="downloadPDF()">Download PDF</button>
+      <button class="btn btn-success" (click)="downloadExcel()">Download Excel</button>
     </div>
   </div>
+
 </div>

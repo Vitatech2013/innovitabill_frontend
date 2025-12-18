@@ -1,4 +1,4 @@
-<div class="position-fixed top-1 end-0 p-1" style="z-index: 1080;">
+<div class="position-fixed top-1 end-0 p-1" style="z-index: 1080">
   <div
     *ngIf="toastMessage"
     class="toast align-items-center text-light border-0 fade show shadow-lg"
@@ -25,10 +25,10 @@
   </div>
 </div>
 
-
 <div class="col-12">
-  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-
+  <div
+    class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3"
+  >
     <!-- Heading -->
     <h4 class="fw-bold text-success mb-0">Available Units List</h4>
 
@@ -36,7 +36,7 @@
     <input
       type="text"
       class="form-control shadow-sm"
-      placeholder="Search by name, unit or status..."
+      placeholder="Search..."
       [(ngModel)]="searchTerm"
       style="max-width: 300px"
     />
@@ -51,30 +51,34 @@
       <i class="bi bi-plus-circle"></i>
       Add New
     </button>
-
   </div>
 </div>
 
-
 <div class="dashboard">
   <div class="row">
-     <div *ngIf="units.length === 0" class="text-center mt-4">
-    <div class="alert alert-info shadow-sm py-3">
-      <i class="bi bi-info-circle"></i> No users found.
+    <div *ngIf="units.length === 0" class="text-center mt-4">
+      <div class="alert alert-info shadow-sm py-3">
+        <i class="bi bi-info-circle"></i> No users found.
+      </div>
     </div>
-  </div>
-     <table *ngIf="units.length > 0" class="table table-bordered table-hover shadow-sm small-table ">
+    <table
+      *ngIf="units.length > 0"
+      class="table table-bordered table-hover shadow-sm small-table align-middle text-center"
+    >
       <thead class="table-success">
         <tr>
-          <th  style="background:#d4f8d4; color:#0a5c0a;">SL.No</th>
-          <th  style="background:#d4f8d4; color:#0a5c0a;">Unit Name</th>
-          <th  style="background:#d4f8d4; color:#0a5c0a;">Unit</th>
-          <th  style="background:#d4f8d4; color:#0a5c0a;">Status</th>
-          <th  style="background:#d4f8d4; color:#0a5c0a;">Actions</th>
+          <th style="background: #d4f8d4; color: #0a5c0a">SL.No</th>
+          <th style="background: #d4f8d4; color: #0a5c0a">Unit Name</th>
+          <th style="background: #d4f8d4; color: #0a5c0a">Unit Code</th>
+          <th style="background: #d4f8d4; color: #0a5c0a">Status</th>
+          <th style="background: #d4f8d4; color: #0a5c0a">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let u of units; let i = index">
+        <tr
+          *ngFor="let u of filteredUser(); let i = index"
+          class="align-middle text-center"
+        >
           <td>{{ i + 1 }}</td>
           <td>{{ u.units_name }}</td>
           <td>{{ u.unit }}</td>
@@ -88,9 +92,12 @@
             >
               <i class="bi bi-pencil-square"></i>
             </button>
-               <button class="btn btn-sm btn-outline-danger" (click)="openDeleteModal(u)">
-            <i class="bi bi-trash"></i>
-          </button>
+            <button
+              class="btn btn-sm btn-outline-danger"
+              (click)="openDeleteModal(u)"
+            >
+              <i class="bi bi-trash"></i>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -107,7 +114,6 @@
 >
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
-
       <form [formGroup]="UnitForm" (ngSubmit)="createOrUpdateUnit()">
         <div class="modal-header">
           <h5 class="modal-title" id="unitModel">{{ title }}</h5>
@@ -121,49 +127,51 @@
         </div>
 
         <div class="modal-body">
-         <div class="row g-3">
-          <div class="col-md-6 mb-2">
-            <label class="form-label">Unit Name</label>
-         <input
-  type="text"
-  formControlName="units_name"
-  class="form-control"
-  placeholder="Enter name"
-  (input)="onNameInput($event, 'units_name')"
-/>
+          <div class="row g-3">
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Unit Name</label>
+              <input
+                type="text"
+                formControlName="units_name"
+                class="form-control"
+                placeholder="Enter name"
+                (input)="removeFirstSpace()"
+              />
 
-             <div
-            *ngIf="UnitForm.controls['units_name']?.touched && UnitForm.controls['units_name']?.invalid"
-          >
-            <small
-              *ngIf="UnitForm.controls['units_name']?.errors?.['required']"
-              class="text-danger"
-              >unitsname is required and must be at least 3 letters </small
-            >
-          
-          </div>
-          </div>
-          <div class="col-md-6 mb-2">
-            <label class="form-label">Unit</label>
-            <input
-              type="text"
-              formControlName="unit"
-              class="form-control"
-              placeholder="Enter unit"
-              (keypress)="allowOnlyNumbers($event)"
-            />
-                  <div
-            *ngIf="UnitForm.controls['unit']?.touched && UnitForm.controls['unit']?.invalid"
-          >
-            <small
-              *ngIf="UnitForm.controls['unit']?.errors?.['required']"
-              class="text-danger"
-              >unit is required  </small
-            >
-          
-          </div>
-          </div>
-           <div class="col-md-6 mb-2">
+              <div
+                *ngIf="
+                  UnitForm.controls['units_name']?.touched &&
+                  UnitForm.controls['units_name']?.invalid
+                "
+              >
+                <small class="text-danger">
+                  Only letters allowed. Space only between words.
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Unit code</label>
+              <input
+                type="text"
+                formControlName="unit"
+                class="form-control"
+                placeholder="Enter unit"
+                (keypress)="allowOnlyNumbers($event)"
+              />
+              <div
+                *ngIf="
+                  UnitForm.controls['unit']?.touched &&
+                  UnitForm.controls['unit']?.invalid
+                "
+              >
+                <small
+                  *ngIf="UnitForm.controls['unit']?.errors?.['required']"
+                  class="text-danger"
+                  >unit is required
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6 mb-2">
               <label class="form-label fw-semibold">Status</label>
               <select class="form-select" formControlName="status">
                 <option value="">Select Status</option>
@@ -171,18 +179,11 @@
                 <option value="inactive">Inactive</option>
               </select>
             </div>
-         </div>
+          </div>
         </div>
 
-       
         <div class="modal-footer">
-          <button
-            type="submit"
-            class="btn btn-success"
-           
-          >
-            Save
-          </button>
+          <button type="submit" class="btn btn-success">Save</button>
           <button
             type="button"
             class="btn btn-secondary"

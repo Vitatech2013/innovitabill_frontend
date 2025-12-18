@@ -229,6 +229,15 @@ edit(data: any) {
   const modal = new bootstrap.Modal(document.getElementById('subcategoryModel'));
   modal.show();
 }
+  filteredUser() {
+    if (!this.searchTerm) return this.subcategories;
+    const term = this.searchTerm.toLowerCase();
+    return this.subcategories.filter((u: any) =>
+      Object.values(u).some((val) =>
+        val?.toString().toLowerCase().includes(term)
+      )
+    );
+  }
 
 openDeleteModal(cats: any) {
     this.selectedcategory = cats;
