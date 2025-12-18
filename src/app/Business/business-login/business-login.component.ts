@@ -46,49 +46,95 @@ export class BusinessLoginComponent implements OnInit {
     });
   }
 
-  login() {
-    if (this.businessForm.invalid) {
-      this.businessForm.markAllAsTouched();
-      this.showToast('Please fill all required fields correctly!', 'warning');
-      return;
-    }
+//   login() {
+//     if (this.businessForm.invalid) {
+//       this.businessForm.markAllAsTouched();
+//       this.showToast('Please fill all required fields correctly!', 'warning');
+//       return;
+//     }
 
-    this.service.businessLogin(this.businessForm.value).subscribe({
-      next: (res: any) => {
-        console.log('Login successful', res);
+//     this.service.businessLogin(this.businessForm.value).subscribe({
+//       next: (res: any) => {
+//         console.log('Login successful', res);
+
+//       if (res) {
+//        localStorage.setItem('user', JSON.stringify(res.data));   // ⭐ FIXED
+// localStorage.setItem('businessToken', JSON.stringify(res.token));
+
+
+//       }
+
+//         this.router.navigateByUrl('/business-Dashboard', {
+//           state: { toast: 'Business login successful!' },
+//         });
+
+//         this.showToast('Business login successful!', 'success');
+//       },
+
+//       // error: (err: any) => {
+//       //   console.error('User login failed', err);
+
+//       //   if (err.status === 403) {
+//       //     this.showToast(
+//       //       'Your account is inactive. Please contact admin.',
+//       //       'warning'
+//       //     );
+//       //   } else if (err.status === 401) {
+//       //     this.showToast('Invalid email or password.', 'warning');
+//       //   } else if (err.status === 500) {
+//       //     this.showToast('Server error! Please try again later.', 'warning');
+//       //   } else {
+//       //     this.showToast('Login failed. Please try again.', 'warning');
+//       //   }
+//       // },
+//     });
+//   }
+login() {
+  if (this.businessForm.invalid) {
+    this.businessForm.markAllAsTouched();
+    this.showToast('Please fill all required fields correctly!', 'warning');
+    return;
+  }
+
+  this.service.businessLogin(this.businessForm.value).subscribe({
+    next: (res: any) => {
+      console.log('Login successful', res);
 
       if (res) {
-       localStorage.setItem('user', JSON.stringify(res.data));   // ⭐ FIXED
-localStorage.setItem('businessToken', JSON.stringify(res.token));
-
-
+        localStorage.setItem('user', JSON.stringify(res.data));
+        localStorage.setItem('businessToken', res.token);
       }
 
-        this.router.navigateByUrl('/business-Dashboard', {
-          state: { toast: 'Business login successful!' },
-        });
+      // ✅ SAVE TOAST FOR DASHBOARD PAGE
+      sessionStorage.setItem(
+        'toastMessage',
+        'Business login successful!'
+      );
+      sessionStorage.setItem('toastType', 'success');
 
-        this.showToast('Business login successful!', 'success');
-      },
+      // ✅ NAVIGATE
+      this.router.navigateByUrl('/business-Dashboard');
+    },
 
-      error: (err: any) => {
-        console.error('User login failed', err);
+    error: (err: any) => {
+      console.error('User login failed', err);
 
-        if (err.status === 403) {
-          this.showToast(
-            'Your account is inactive. Please contact admin.',
-            'warning'
-          );
-        } else if (err.status === 401) {
-          this.showToast('Invalid email or password.', 'warning');
-        } else if (err.status === 500) {
-          this.showToast('Server error! Please try again later.', 'warning');
-        } else {
-          this.showToast('Login failed. Please try again.', 'warning');
-        }
-      },
-    });
-  }
+      if (err.status === 403) {
+        this.showToast(
+          'Your account is inactive. Please contact admin.',
+          'warning'
+        );
+      } else if (err.status === 401) {
+        this.showToast('Invalid email or password.', 'warning');
+      } else if (err.status === 500) {
+        this.showToast('Server error! Please try again later.', 'warning');
+      } else {
+        this.showToast('Login failed. Please try again.', 'warning');
+      }
+    },
+  });
+}
+
 
   showToast(message: string, type: 'success' | 'error' | 'warning') {
     this.toastMessage = message;

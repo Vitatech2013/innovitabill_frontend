@@ -36,6 +36,9 @@ export class UsersComponent implements OnInit {
   imageFile: File | null = null;
   idProofFile: File | null = null;
   imageBaseUrl = 'http://localhost:3009/business_images/';
+  imageFileName: string = '';
+idProofFileName: string = '';
+
 
   constructor(
     private fb: FormBuilder,
@@ -51,7 +54,8 @@ export class UsersComponent implements OnInit {
       console.log('businessID:', this.business_id);
     }
     this.userForm = this.fb.group({
-      user_name: ['', [Validators.required, Validators.minLength(3)]],
+      user_name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/),
+]],
       user_email: ['', [Validators.required, Validators.email]],
       phone_number: [
         '',
@@ -67,7 +71,7 @@ export class UsersComponent implements OnInit {
           Validators.required,
           Validators.pattern(
             /^(?!\s)(?!.*\(\s)(?!.*\s\))[a-zA-Z0-9!@#$%^&*(),.?":{}|<>_\-\/\\ ]+$/
-          ),
+          ),   Validators.pattern(/^(?!\s)(?!.*\s{2,}).+$/),
         ],
       ],
       town_Name: ['', Validators.required],
@@ -112,6 +116,50 @@ export class UsersComponent implements OnInit {
   //   );
   // }
 
+  allowLettersAndSingleSpace(event: KeyboardEvent) {
+  const input = event.target as HTMLInputElement;
+  const value = input.value;
+  const key = event.key;
+
+
+  if (key.length > 1) return;
+
+  if (/^[A-Za-z]$/.test(key)) return;
+
+
+  if (
+    key === ' ' &&
+    value.length > 0 &&
+    value[value.length - 1] !== ' '
+  ) {
+    return;
+  }
+
+  event.preventDefault();
+}
+allowSingleSpace(event: KeyboardEvent) {
+  const input = event.target as HTMLInputElement;
+  const key = event.key;
+  const value = input.value;
+
+  // allow control keys (backspace, arrows, delete)
+  if (key.length > 1) return;
+
+  // ❌ block space at start
+  if (key === ' ' && value.length === 0) {
+    event.preventDefault();
+    return;
+  }
+
+  // ❌ block multiple spaces
+  if (key === ' ' && value[value.length - 1] === ' ') {
+    event.preventDefault();
+    return;
+  }
+}
+
+
+
   openAddModal() {
     this.title = 'Add User';
     this.selectedUserId = null;
@@ -145,26 +193,26 @@ export class UsersComponent implements OnInit {
     );
   }
 
-  editUser(u: any) {
-    this.selectedUserId = u._id; // ✅ USER ID
+  // editUser(u: any) {
+  //   this.selectedUserId = u._id; // ✅ USER ID
 
-    this.userForm.patchValue({
-      user_name: u.user_name,
-      user_email: u.user_email,
-      phone_number: u.phone_number,
-      role_id: u.role_id?._id || '',
-      status: u.status,
-      house_No: u.address?.house_No,
-      town_Name: u.address?.town_Name,
-      mandal_Name: u.address?.mandal_Name,
-      district_Name: u.address?.district_Name,
-      state: u.address?.state,
-      pincode: u.address?.pincode,
-    });
+  //   this.userForm.patchValue({
+  //     user_name: u.user_name,
+  //     user_email: u.user_email,
+  //     phone_number: u.phone_number,
+  //     role_id: u.role_id?._id || '',
+  //     status: u.status,
+  //     house_No: u.address?.house_No,
+  //     town_Name: u.address?.town_Name,
+  //     mandal_Name: u.address?.mandal_Name,
+  //     district_Name: u.address?.district_Name,
+  //     state: u.address?.state,
+  //     pincode: u.address?.pincode,
+  //   });
 
-    const modal = new bootstrap.Modal(document.getElementById('editModal'));
-    modal.show();
-  }
+  //   const modal = new bootstrap.Modal(document.getElementById('editModal'));
+  //   modal.show();
+  // }
 
   // createUser(): void {
   //   console.log('Create button clicked'); // 👈 MUST appear
@@ -199,6 +247,34 @@ export class UsersComponent implements OnInit {
   //     }
   //   );
   // }
+
+
+editUser(u: any) {
+  this.selectedUserId = u._id;
+
+  this.userForm.patchValue({
+    user_name: u.user_name,
+    user_email: u.user_email,
+    phone_number: u.phone_number,
+    role_id: u.role_id?._id || '',
+    status: u.status,
+    house_No: u.address?.house_No,
+    town_Name: u.address?.town_Name,
+    mandal_Name: u.address?.mandal_Name,
+    district_Name: u.address?.district_Name,
+    state: u.address?.state,
+    pincode: u.address?.pincode,
+  });
+
+  // ✅ FILE NAMES (important)
+  this.imageFileName = u.image || '';
+  this.idProofFileName = u.id_proof || '';
+
+  const modal = new bootstrap.Modal(document.getElementById('editModal'));
+  modal.show();
+}
+
+
 
   createUser(): void {
     // 1️⃣ Validate form

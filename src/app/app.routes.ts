@@ -36,7 +36,9 @@ import { UserDashboardComponent } from './User/user-dashboard/user-dashboard.com
 import { CreatePurchaseComponent } from './User/create-purchase/create-purchase.component';
 
 
+
 export const routes: Routes = [
+   { path: '', redirectTo: 'SuperAdminLogin', pathMatch: 'full' },
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
@@ -109,3 +111,4 @@ export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
 ];
+

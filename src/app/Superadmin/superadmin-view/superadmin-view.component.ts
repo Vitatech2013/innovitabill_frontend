@@ -45,7 +45,7 @@ export class SuperadminViewComponent implements OnInit {
   if (message) {
     this.showToast(message, type || 'success');
 
-    // ✅ CLEAR AFTER SHOW
+  
     sessionStorage.removeItem('toastMessage');
     sessionStorage.removeItem('toastType');
   }

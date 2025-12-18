@@ -210,14 +210,14 @@
               <div class="row g-3 mb-3">
                 <div class="col-md-4">
                   <label class="form-label">User Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="user_name"
-                    placeholder="Enter User Name"
-                    (keypress)="blockSpaces($event)"
-                    (keypress)="allowOnlyLetters($event)"
-                  />
+                <input
+  type="text"
+  class="form-control"
+  formControlName="user_name"
+  placeholder="Enter User Name"
+  (keypress)="allowLettersAndSingleSpace($event)"
+/>
+
                   <div
                     *ngIf="
                       userForm.controls['user_name']?.touched &&
@@ -369,11 +369,13 @@
                 <div class="col-md-4">
                   <label class="form-label">House No</label>
                   <input
-                    type="text"
-                    class="form-control"
-                    formControlName="house_No"
-                    placeholder="House No"
-                  />
+  type="text"
+  class="form-control"
+  formControlName="house_No"
+  placeholder="House No"
+  (keypress)="allowSingleSpace($event)"
+/>
+
                 </div>
 
                 <div class="col-md-4">
@@ -383,6 +385,7 @@
                     class="form-control"
                     formControlName="town_Name"
                     placeholder="Town Name"
+                     (keypress)="allowLettersAndSingleSpace($event)"
                   />
                 </div>
 
@@ -393,6 +396,7 @@
                     class="form-control"
                     formControlName="mandal_Name"
                     placeholder="Mandal Name"
+                     (keypress)="allowLettersAndSingleSpace($event)"
                   />
                 </div>
 
@@ -403,6 +407,7 @@
                     class="form-control"
                     formControlName="district_Name"
                     placeholder="District Name"
+                     (keypress)="allowLettersAndSingleSpace($event)"
                   />
                 </div>
 
@@ -413,6 +418,7 @@
                     class="form-control"
                     formControlName="state"
                     placeholder="State"
+                     (keypress)="allowLettersAndSingleSpace($event)"
                   />
                 </div>
 
@@ -703,26 +709,66 @@
                   <h6 class="fw-bold mt-3">Documents</h6>
                 </div>
 
-                <div class="col-md-4">
-                  <label class="form-label">Image</label>
-                  <input
-                    type="file"
-                    class="form-control"
-                    (change)="onImageSelect($event)"
-                  />
-                </div>
+<div class="col-md-4">
+  <label class="form-label">Image</label>
 
-                <div class="col-md-4">
-                  <label class="form-label">ID Proof</label>
-                  <input
-                    type="file"
-                    class="form-control"
-                    (change)="onIdProofSelect($event)"
-                  />
-                </div>
+  <div class="input-group">
+    <button
+      type="button"
+      class="btn btn-outline-secondary  " style="background-color: whitesmoke;"
+      (click)="imageInput.click()"
+    >
+      Choose File
+    </button>
+
+    <input
+      type="text"
+      class="form-control"
+      [value]="imageFileName || 'No file chosen'"
+      readonly
+    />
+  </div>
+
+  <input
+    type="file"
+    hidden
+    #imageInput
+    (change)="onImageSelect($event)"
+  />
+</div>
+
+<div class="col-md-4">
+  <label class="form-label">ID Proof</label>
+
+  <div class="input-group">
+    <button
+      type="button"
+      class="btn btn-outline-secondary " style="background-color: whitesmoke;"
+      (click)="idInput.click()"
+    >
+      Choose File
+    </button>
+
+    <input
+      type="text"
+      class="form-control"
+      [value]="idProofFileName || 'No file chosen'"
+      readonly
+    />
+  </div>
+
+  <input
+    type="file"
+    hidden
+    #idInput
+    (change)="onIdProofSelect($event)"
+  />
+</div>
+
+
               </div>
               <div class="modal-footer">
-                <button type="submit" class="btn btn-success">Save</button>
+                <button type="submit" class="btn btn-success">Update</button>
 
                 <button
                   type="button"

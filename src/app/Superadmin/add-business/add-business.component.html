@@ -156,12 +156,14 @@
           >Phone Number<span class="text-danger">*</span></label
         >
         <input
-          type="text"
-          class="form-control"
-          formControlName="phone_number"
-          placeholder="Enter phone number"
-          (keydown)="preventSpace($event)"
-          style="height: 45px"
+           type="text"
+  class="form-control"
+  formControlName="phone_number"
+  placeholder="Enter phone number"
+  maxlength="10"
+  inputmode="numeric"
+  (keypress)="allowOnlyDigits($event)"
+  style="height: 45px"
         />
         <small *ngIf="isInvalid('phone_number')" class="text-danger">
           Phone number is required
@@ -303,7 +305,7 @@
             (keydown)="preventSpace($event)"
           />
 
-          <!-- Error Messages -->
+         
           <div
             class="text-danger small mt-1"
             *ngIf="
@@ -311,7 +313,7 @@
               addBusinessForm.get('address.' + field.name)?.invalid
             "
           >
-            <!-- Required -->
+         
             <div
               *ngIf="
                 addBusinessForm
@@ -322,7 +324,7 @@
               {{ field.label }} is required.
             </div>
 
-            <!-- Min Length -->
+          
             <div
               *ngIf="
                 addBusinessForm
@@ -330,10 +332,10 @@
                   ?.hasError('minlength')
               "
             >
-              {{ field.label }} must be at least 3 characters.
+              {{ field.label }} must be at least 6 characters.
             </div>
 
-            <!-- Alphabet only errors -->
+         
             <div
               *ngIf="
                 (field.name === 'town_Name' ||

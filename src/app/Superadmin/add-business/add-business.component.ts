@@ -162,7 +162,7 @@ export class AddBusinessComponent implements OnInit {
           [
             Validators.required,
             Validators.minLength(3),
-            Validators.pattern(/^[0-9]+$/),
+            Validators.pattern(/^[0-9]{6}$/),
           ],
         ],
       }),
@@ -190,6 +190,16 @@ export class AddBusinessComponent implements OnInit {
       .get(controlName)
       ?.setValue(value, { emitEvent: false });
   }
+  allowOnlyDigits(event: KeyboardEvent) {
+  const key = event.key;
+
+  if (key.length > 1) return;
+
+  if (!/^\d$/.test(key)) {
+    event.preventDefault();
+  }
+}
+
   // checkEmailExists(): AsyncValidatorFn {
   //   return (control: AbstractControl) => {
   //     const email = control.value;
