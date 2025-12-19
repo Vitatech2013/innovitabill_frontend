@@ -8,33 +8,25 @@ import {
   Validators,
 } from '@angular/forms';
 declare var bootstrap: any;
-
-import {
-  Router,
-  RouterLink,
-  RouterLinkActive,
-  RouterOutlet,
-} from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-
 import { BillingService } from '../../Services/billing.service';
+import { ToastrService } from 'ngx-toastr';
 import { constants } from '../../../../constants';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-item-list',
+  selector: 'app-purchase-list',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterOutlet],
-  templateUrl: './item-list.component.html',
-  styleUrl: './item-list.component.css',
+  templateUrl: './purchase-list.component.html',
+  styleUrls: ['./purchase-list.component.css'],
 })
-export class ItemListComponent implements OnInit {
+export class PurchaseListComponent implements OnInit {
   items: any[] = [];
   editForm!: FormGroup;
   searchTerm: string = '';
   eid: any;
-  selectedItems: any;
+  selectedPurchases: any;
   business_id: string = '';
-  allSubCategories: any[] = [];
   subCategories: any[] = [];
   selectedImage: string | undefined;
   selectedFiles: Record<string, File> = {};
@@ -42,15 +34,14 @@ export class ItemListComponent implements OnInit {
   categories: any[] = [];
   units: any;
 
-  imagefile: any;
   imagePreviewUrl: string = '';
   private baseUrl = constants.baseUrl;
 
   constructor(
-    private fb: FormBuilder,
     private service: BillingService,
-    private router: Router,
-    private toastr: ToastrService
+    private fb: FormBuilder,
+    private toastr: ToastrService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -61,7 +52,7 @@ export class ItemListComponent implements OnInit {
       console.log('BusinessID:', this.business_id);
     }
     this.initForm();
-    this.loadItems();
+    this.loadPurchases();
     this.categoriesGet();
     this.subCategoriesGet();
     this.usersGet();
@@ -70,6 +61,13 @@ export class ItemListComponent implements OnInit {
 
   private initForm() {
     this.editForm = this.fb.group({
+      // Vendor details
+      vendor_name: ['', [Validators.required, Validators.minLength(3)]],
+      vendor_type: ['', Validators.required],
+      business_category: ['', Validators.required],
+      company_registration_number: [''],
+
+      // Item details
       brand_name: ['', [Validators.required, Validators.minLength(3)]],
       item_name: ['', [Validators.required, Validators.minLength(3)]],
       unit_id: ['', [Validators.required]],
@@ -83,59 +81,67 @@ export class ItemListComponent implements OnInit {
       purchase_price: ['', Validators.required],
       category_id: ['', Validators.required],
       sub_category_id: ['', Validators.required],
-      // business_id: ['', Validators.required],
       min_stock_alert: ['', Validators.required],
       image: [''],
     });
   }
+
   isInvalid(controlName: string): boolean {
     const control = this.editForm.get(controlName);
     return control ? control.touched && control.invalid : false;
   }
 
-  private loadItems() {
-    this.service.getItems(this.business_id).subscribe({
+  private loadPurchases() {
+    this.service.getPurchases(this.business_id).subscribe({
       next: (res: any) => {
-        console.log('Items fetched:', res);
-        this.items = res?.data || [];
+        console.log('Purchases fetched:', res);
+        // Use populated purchases from backend
+        this.items = res?.purchases || [];
       },
-      error: (err) => console.error('Error loading items:', err),
+      error: (err) => console.error('Error loading Purchases:', err),
     });
   }
 
-  editItem(it: any) {
-    console.log('Edit data', it);
-    this.eid = it._id;
+  editItem(purchase: any) {
+    this.eid = purchase._id;
 
+    // Patch vendor details
     this.editForm.patchValue({
-      item_name: it.item_name,
-      brand_name: it.brand_name,
-      stock_quantity: it.stock_quantity,
-      selling_price: it.selling_price,
-      status: it.status?.toLowerCase(),
-      item_code: it.item_code,
-      unit_id: it.unit_id?._id,
-      purchase_price: it.purchase_price,
-      tax_rate: it.tax_rate,
-      description: it.description,
-      discount: it.discount,
-      min_stock_alert: it.min_stock_alert,
-      category_id: it.category_id?._id,
-      sub_category_id: it.sub_category_id?._id,
+      vendor_name: purchase.vendor_id?.vendor_name || '',
+      vendor_type: purchase.vendor_id?.vendor_type || '',
+      business_category: purchase.vendor_id?.business_category || '',
+      company_registration_number:
+        purchase.vendor_id?.company_registration_number || '',
+
+      // Patch item details
+      item_name: purchase.item_id?.item_name || '',
+      brand_name: purchase.item_id?.brand_name || '',
+      stock_quantity: purchase.item_id?.stock_quantity || '',
+      selling_price: purchase.item_id?.selling_price || '',
+      status: purchase.status?.toLowerCase() || '',
+      item_code: purchase.item_id?.item_code || '',
+      unit_id: purchase.item_id?.unit_id?._id || '',
+      purchase_price: purchase.purchase_price || '',
+      tax_rate: purchase.tax_rate || '',
+      description: purchase.item_id?.description || '',
+      discount: purchase.item_id?.discount || '',
+      min_stock_alert: purchase.item_id?.min_stock_alert || '',
+      category_id: purchase.item_id?.category_id?._id || '',
+      sub_category_id: purchase.item_id?.sub_category_id?._id || '',
     });
-    this.selectedImage = it.image
-      ? it.image.split('/').pop()
+
+    this.selectedImage = purchase.item_id?.image
+      ? purchase.item_id.image.split('/').pop()
       : 'No file chosen';
 
-    console.log('Editing item:', it);
     const modal = new bootstrap.Modal(document.getElementById('editItemModal'));
     modal.show();
   }
+
   categoriesGet() {
     this.service.getCategories(this.business_id).subscribe({
       next: (res: any) => {
         this.categories = res.data || res;
-        console.log('Categories:', this.categories);
       },
       error: (err: any) => console.error('Error loading categories:', err),
     });
@@ -144,9 +150,7 @@ export class ItemListComponent implements OnInit {
   unitsGet() {
     this.service.getUnits(this.business_id).subscribe({
       next: (res: any) => {
-        console.log('Raw units response', res);
         this.units = res.data || res;
-        console.log('Units:', this.units);
       },
       error: (err: any) => console.error('Error loading units:', err),
     });
@@ -155,9 +159,7 @@ export class ItemListComponent implements OnInit {
   subCategoriesGet() {
     this.service.getSubCategories().subscribe({
       next: (res: any) => {
-        console.log('Raw users response', res);
         this.subCategories = res.data || res;
-        console.log('Subcategories:', this.subCategories);
       },
       error: (err: any) => console.error('Error loading subcategories:', err),
     });
@@ -166,19 +168,20 @@ export class ItemListComponent implements OnInit {
   usersGet() {
     this.service.getUsers(this.business_id).subscribe({
       next: (res: any) => {
-        console.log('Raw user response:', res);
         this.users = res.data || res;
-        console.log('Users:', this.users);
       },
       error: (err: any) => console.error('Error loading users:', err),
     });
   }
 
- updateItems() {
+ updatePurchase() {
+  if (this.editForm.invalid) return;
+  
+
   const formData = new FormData();
 
-  Object.keys(this.editForm.value).forEach((key) => {
-    if (key !== 'image') {
+  Object.keys(this.editForm.value).forEach(key => {
+    if (this.editForm.value[key] !== null) {
       formData.append(key, this.editForm.value[key]);
     }
   });
@@ -187,44 +190,29 @@ export class ItemListComponent implements OnInit {
     formData.append('image', this.selectedFiles['image']);
   }
 
-  this.service.updateitems(this.eid, formData).subscribe({
-    next: () => {
-      this.toastr.success('Item Updated Successfully', 'Success');
+  const purchaseId = this.editForm.value.purchase_id;
 
-      
-      const modalEl = document.getElementById('editItemModal');
-      const modal = bootstrap.Modal.getInstance(modalEl!);
-      modal?.hide();
-
-      
-      this.router.navigate(['/userview/itemlist']);
-      this.loadItems();
-    },
-    error: (err) => {
-      console.log(err);
-      this.toastr.error('Update Failed');
-    },
-  });
+  this.service.updatePurchase(purchaseId, formData)
+    .subscribe({
+      next: () => {
+        this.toastr.success('Purchase updated successfully');
+        this.loadPurchases(); 
+        console.log(" UPDATE PURCHASE API HIT ");
+      },
+      error: err => {
+        console.error(err);
+        this.toastr.error('Update failed');
+      }
+    });
 }
 
-  deleteItem(it: any) {
-    if (confirm(`Are you sure you want to delete ${it.item_name}?`)) {
-      this.service.deleteItem(it._id).subscribe({
-        next: () => {
-          this.toastr.success('Item moved to Inactive ', 'Success');
-          this.loadItems();
-          window.location.reload();
-        },
-        error: (err: any) => console.error('Delete failed:', err),
-      });
-    }
-  }
+ 
 
   isCreatingInvoice(): boolean {
     return this.router.url.includes('/itemlist/items');
   }
 
-  filteredItems() {
+  filteredPurchase() {
     let data = [...this.items];
     data.sort(
       (a, b) =>
@@ -240,12 +228,14 @@ export class ItemListComponent implements OnInit {
     }
     return data.filter(
       (it) =>
-        it.item_name?.toLowerCase().includes(term) ||
-        it.item_code?.toLowerCase().includes(term) ||
-        it.brand_name?.toLowerCase().includes(term) ||
-        it.status?.toLowerCase().includes(term)
+        it.item_id?.item_name?.toLowerCase().includes(term) ||
+        it.item_id?.item_code?.toLowerCase().includes(term) ||
+        it.item_id?.brand_name?.toLowerCase().includes(term) ||
+        it.status?.toLowerCase().includes(term) ||
+        it.vendor_id?.vendor_name?.toLowerCase().includes(term)
     );
   }
+
   onCustomFileSelect(event: any, key: string) {
     const file = event.target.files[0];
     if (file) {
@@ -254,23 +244,28 @@ export class ItemListComponent implements OnInit {
       this.selectedImage = file.name;
     }
   }
-  openViewModal(it: any) {
-    this.selectedItems = it;
-    this.selectedItems.imageUrl = this.getImageUrl(it.image);
+
+  openViewModal(purchase: any) {
+    this.selectedPurchases = purchase;
+    const itemImage = purchase.item_id?.image;
+    this.selectedPurchases.imageUrl = this.getImageUrl(itemImage);
+
     const modal = new bootstrap.Modal(document.getElementById('ViewModal'));
     modal.show();
   }
+
   openImageModal(imagePath?: string) {
     if (!imagePath) {
       return;
     }
-    this.imagePreviewUrl = this.getImageUrl(imagePath);
+    this.imagePreviewUrl = imagePath;
     const modalEl = document.getElementById('imagePreviewModal');
     if (modalEl) {
       const modal = new bootstrap.Modal(modalEl);
       modal.show();
     }
   }
+
   getImageUrl(path?: string): string {
     if (!path) {
       return 'assets/default-business.jpg';

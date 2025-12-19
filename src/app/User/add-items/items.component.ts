@@ -30,8 +30,7 @@ export class ItemsComponent implements OnInit {
   allSubCategories: any;
   units: any;
   users_id: string = '';
-  toastType: any;
-  toastMessage: any;
+
   selectedImageFile!: File | null;
 
   constructor(
@@ -129,11 +128,7 @@ export class ItemsComponent implements OnInit {
     this.unitsGet();
   }
 
-  showToast(message: string, type: 'success' | 'error' | 'warning') {
-    this.toastMessage = message;
-    this.toastType = type;
-    setTimeout(() => (this.toastMessage = null), 3000);
-  }
+  
 
   categoriesGet() {
     this.service.getCategories(this.business_id).subscribe({
@@ -208,13 +203,13 @@ export class ItemsComponent implements OnInit {
 
     this.service.addItems(formData).subscribe({
       next: (res) => {
-        this.toastr.success('Item added successfully!');
+        this.toastr.success('Item added successfully!','Success');
         this.addItemsForm.reset();
         this.selectedImageFile = null;
         window.location.reload();
       },
       error: (err) => {
-        this.toastr.error(err.error?.message || 'Failed to add item', 'Error');
+       this.toastr.error("Failed to add Items",'Error')
       },
     });
   }

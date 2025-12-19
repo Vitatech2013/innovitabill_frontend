@@ -4,7 +4,7 @@
       <div
         class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2"
       >
-        <h4 class="mb-3">Available Items</h4>
+        <h4 class="mb-3">Purchase List</h4>
 
         <div class="search-box">
           <input
@@ -24,56 +24,43 @@
           >
             <thead class="table-success">
               <tr>
+                <th>Vendor Name</th>
+                <th>Vendor Type</th>
                 <th>Item Name</th>
                 <th>Brand</th>
-                <th>Price (₹)</th>
-
-                <th>Available Quantity</th>
+                <th>Quantity</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr
-                *ngFor="let it of filteredItems()"
-                [ngClass]="{
-                  'low-stock': it.stock_quantity <= 5,
-                  'medium-stock':
-                    it.stock_quantity > 5 && it.stock_quantity <= 15,
-                  'high-stock': it.stock_quantity > 15
-                }"
-              >
-                <td>{{ it.item_name }}</td>
-                <td>{{ it.brand_name }}</td>
-                <td>₹{{ it.selling_price }}</td>
-
-                <td>{{ it.stock_quantity }}</td>
-                <td>{{ it.status }}</td>
+              <tr *ngFor="let purchase of filteredPurchase()">
+                <td>{{ purchase.vendor_id?.vendor_name }}</td>
+                <td>{{ purchase.vendor_id?.vendor_type }}</td>
+                <td>{{ purchase.item_id?.item_name }}</td>
+                <td>{{ purchase.item_id?.brand_name }}</td>
+                <td>{{ purchase.item_id?.stock_quantity }}</td>
+                <td>{{ purchase.item_id?.status }}</td>
                 <td>
                   <div class="d-flex justify-content-center gap-2">
                     <button
                       class="btn btn-sm btn-success me-2"
-                      (click)="openViewModal(it)"
+                      (click)="openViewModal(purchase)"
                     >
                       <b><i class="bi bi-eye"></i></b>
                     </button>
                     <button
                       class="btn btn-sm btn-warning me-2"
-                      (click)="editItem(it)"
+                      (click)="editItem(purchase)"
                     >
                       <i class="bi bi-pencil"></i>
                     </button>
-                    <button
-                      class="btn btn-sm btn-danger"
-                      (click)="deleteItem(it)"
-                    >
-                      <i class="bi bi-trash"></i>
-                    </button>
+                    
                   </div>
                 </td>
               </tr>
-              <tr *ngIf="filteredItems().length === 0">
-                <td colspan="6" class="text-muted">No items found.</td>
+              <tr *ngIf="filteredPurchase().length === 0">
+                <td colspan="7" class="text-muted">No items found.</td>
               </tr>
             </tbody>
           </table>
@@ -82,7 +69,7 @@
     </div>
     <router-outlet></router-outlet>
 
-    <!--View modal-->
+    <!-- View modal -->
     <div
       class="modal fade"
       id="ViewModal"
@@ -93,7 +80,7 @@
       <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content border-0 shadow-sm rounded-3">
           <div class="modal-header">
-            <h5 class="modal-title" id="ViewModalLabel">Item Details</h5>
+            <h5 class="modal-title" id="ViewModalLabel">Purchase Details</h5>
             <button
               type="button"
               class="btn-close"
@@ -104,58 +91,60 @@
 
           <div class="modal-body p-3">
             <div class="table-responsive">
-              <table
-                class="table1 table-bordered align-middle file-center mb-0"
-              >
+              <table class="table table-bordered align-middle text-center mb-0">
                 <thead class="table-success">
                   <tr>
+                    <th>Vendor Name</th>
+                    <th>Vendor Type</th>
+                    <th>Business Category</th>
                     <th>Item Name</th>
                     <th>Item Code</th>
-
                     <th>Purchase Price</th>
-                    <th>Selling Price</th>
                     <th>Tax</th>
-                    <th>Qunatity</th>
-                    <th>Description</th>
+                    <th>Quantity</th>
                     <th>Brand Name</th>
                     <th>Discount</th>
-                    <th>Stock Alert</th>
                     <th>Image</th>
                     <th>Status</th>
                   </tr>
                 </thead>
-                <tbody *ngIf="selectedItems">
+                <tbody *ngIf="selectedPurchases">
                   <tr>
-                    <td>{{ selectedItems.item_name }}</td>
-                    <td>{{ selectedItems.item_code }}</td>
-
-                    <td>{{ selectedItems.purchase_price }}</td>
-                    <td>{{ selectedItems.selling_price }}</td>
-                    <td>{{ selectedItems.tax_rate }}</td>
-                    <td>{{ selectedItems.stock_quantity }}</td>
-                    <td>{{ selectedItems.description }}</td>
-                    <td>{{ selectedItems.brand_name }}</td>
-                    <td>{{ selectedItems.discount }}</td>
-                    <td>{{ selectedItems.min_stock_alert }}</td>
+                    <td>{{ selectedPurchases.vendor_id?.vendor_name }}</td>
+                    <td>{{ selectedPurchases.vendor_id?.vendor_type }}</td>
+                    <td>
+                      {{ selectedPurchases.vendor_id?.business_category }}
+                    </td>
+                    <td>{{ selectedPurchases.item_id?.item_name }}</td>
+                    <td>{{ selectedPurchases.item_id?.item_code }}</td>
+                    <td>{{ selectedPurchases.purchase_price }}</td>
+                    <td>{{ selectedPurchases.tax_rate }}</td>
+                    <td>{{ selectedPurchases.item_id?.stock_quantity }}</td>
+                    <td>{{ selectedPurchases.item_id?.brand_name }}</td>
+                    <td>{{ selectedPurchases.item_id?.discount }}</td>
                     <td>
                       <img
-                        [src]="selectedItems.imageUrl"
+                        [src]="getImageUrl(selectedPurchases.item_id?.image)"
                         alt="Item Image"
                         class="img-thumbnail item-image"
-                        (click)="openImageModal(selectedItems.imageUrl)"
+                        (click)="
+                          openImageModal(
+                            getImageUrl(selectedPurchases.item_id?.image)
+                          )
+                        "
                       />
                     </td>
                     <td>
                       <span
                         class="badge file-dark"
                         [ngClass]="{
-                          'bg-success': selectedItems.status === 'Active',
-                          'bg-warning': selectedItems.status === 'Pending',
-                          'bg-danger': selectedItems.status === 'Inactive'
+                          'bg-success': selectedPurchases.status === 'Active',
+                          'bg-warning': selectedPurchases.status === 'Pending',
+                          'bg-danger': selectedPurchases.status === 'Inactive'
                         }"
                       >
-                        {{ selectedItems.status }}</span
-                      >
+                        {{ selectedPurchases.item_id?.status }}
+                      </span>
                     </td>
                   </tr>
                 </tbody>
@@ -187,7 +176,7 @@
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg rounded-4">
           <div class="modal-header bg-success text-white">
-            <h5 class="modal-title" id="editItemModalLabel">Edit Item</h5>
+            <h5 class="modal-title" id="editItemModalLabel">Edit Purchase</h5>
             <button
               type="button"
               class="btn-close btn-close-white"
@@ -199,6 +188,61 @@
           <div class="modal-body">
             <form [formGroup]="editForm" enctype="multipart/form-data">
               <div class="row g-3">
+                <h3 class="fw-bold mt-3">Vendor Details</h3>
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Vendor Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="vendor_name"
+                    placeholder="Enter item name"
+                  />
+                  <small *ngIf="isInvalid('item_name')" class="text-danger">
+                    Item Name is required and must be at least 3 letters
+                  </small>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Vendor Type</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="vendor_type"
+                    placeholder="Enter item name"
+                  />
+                  <small *ngIf="isInvalid('item_name')" class="text-danger">
+                    Item Name is required and must be at least 3 letters
+                  </small>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold"
+                    >Business Category</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="business_category"
+                    placeholder="Enter item name"
+                  />
+                  <small *ngIf="isInvalid('item_name')" class="text-danger">
+                    Item Name is required and must be at least 3 letters
+                  </small>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold"
+                    >Registration Number</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="company_registration_number"
+                    placeholder="Enter item name"
+                  />
+                  <small *ngIf="isInvalid('item_name')" class="text-danger">
+                    Item Name is required and must be at least 3 letters
+                  </small>
+                </div>
+
+                <h3 class="mt-3 fw-bold">Item details</h3>
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">Item Name</label>
                   <input
@@ -404,9 +448,9 @@
 
               <div class="text-center mt-4">
                 <button
-                  type="button"
+                  type="submit"
                   class="btn btn-success w-50 p-2"
-                  (click)="updateItems()"
+                  (click)="updatePurchase()"
                 >
                   Update Item
                 </button>
