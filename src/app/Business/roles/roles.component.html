@@ -25,8 +25,9 @@
   </div>
 </div>
 <div class="col-12">
-  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-
+  <div
+    class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3"
+  >
     <!-- Heading -->
     <h4 class="fw-bold text-success mb-0">Available Roles List</h4>
 
@@ -41,7 +42,24 @@
 
     <!-- Add Button -->
     <button
-      class="btn btn-success"
+      class="btn"
+      [ngClass]="statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'"
+      (click)="statusFilter = 'active'"
+    >
+    <i class="bi bi-check-circle"></i>
+      Active
+    </button>
+
+    <button
+      class="btn"
+      [ngClass]="statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'"
+      (click)="statusFilter = 'inactive'"
+    >
+    <i class="bi bi-x-circle"></i>
+      Inactive
+    </button>
+    <button
+      class="btn btn-light"
       data-bs-toggle="modal"
       data-bs-target="#roleModal"
       (click)="openAddModal()"
@@ -49,60 +67,64 @@
       <i class="bi bi-plus-circle"></i>
       Add New
     </button>
-
   </div>
 </div>
 
-
 <div class="dashboard">
-
   <div class="row">
     <div *ngIf="roles.length === 0" class="text-center mt-4">
       <div class="alert alert-info shadow-sm py-3">
-        <i class="bi bi-info-circle"></i> No users found.
+        <i class="bi bi-info-circle"></i> No data found.
       </div>
     </div>
-    <table
-      *ngIf="roles.length > 0"
-      class="table table-bordered table-hover shadow-sm align-middle text-center"
-    >
-      <thead class="table-success">
-        <tr>
-          <th style="background: #d4f8d4; color: #0a5c0a">Sl.no</th>
-          <th style="background: #d4f8d4; color: #0a5c0a">Role Name</th>
-          <th style="background: #d4f8d4; color: #0a5c0a">Role Number</th>
-          <th style="background: #d4f8d4; color: #0a5c0a">Status</th>
-          <th style="background: #d4f8d4; color: #0a5c0a">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-                  *ngFor="let r of filteredUser(); let i = index"
-                  class="align-middle text-center"
-                >
-          <td>{{ i + 1 }}</td>
-          <td>{{ r.role_name }}</td>
-          <td>{{ r.role_number }}</td>
-          <td>{{ r.status }}</td>
-          <td>
-            <button
-              class="btn btn-sm btn-outline-primary me-2"
-              (click)="edit(r)"
-              data-bs-toggle="modal"
-              data-bs-target="#roleModal"
-            >
-              <i class="bi bi-pencil-square"></i>
-            </button>
-            <button
-              class="btn btn-sm btn-outline-danger"
-              (click)="openDeleteModal(r)"
-            >
-              <i class="bi bi-trash"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+
+    <div class="col-12" *ngIf="roles.length > 0">
+      <div class="table-wrapper">
+        <div class="table-responsive bg-white p-3 rounded-4">
+          <table
+            *ngIf="roles.length > 0"
+            class="table table-bordered table-hover shadow-sm align-middle text-center"
+          >
+            <thead class="table-success">
+              <tr>
+                <th style="background: #d4f8d4; color: #0a5c0a">Sl.no</th>
+                <th style="background: #d4f8d4; color: #0a5c0a">Role Name</th>
+                <th style="background: #d4f8d4; color: #0a5c0a">Role Number</th>
+                <th style="background: #d4f8d4; color: #0a5c0a">Status</th>
+                <th style="background: #d4f8d4; color: #0a5c0a">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let r of filteredByStatus(); let i = index"
+                class="align-middle text-center"
+              >
+                <td>{{ i + 1 }}</td>
+                <td>{{ r.role_name }}</td>
+                <td>{{ r.role_number }}</td>
+                <td>{{ r.status }}</td>
+                <td>
+                  <button
+                    class="btn btn-sm btn-outline-primary me-2"
+                    (click)="edit(r)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#roleModal"
+                  >
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="openDeleteModal(r)"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -129,63 +151,62 @@
         </div>
 
         <div class="modal-body">
-        <div class="row g-3">
-          <div class="col-md-6 mb-2">
-            <label class="form-label">Role Name</label>
-            <input
-              type="text"
-              formControlName="role_name"
-              class="form-control"
-              placeholder="Enter role name"
-              (keypress)="allowOnlyLetters($event)"
-            />
-            <div
-              *ngIf="
-                roleForm.controls['role_name']?.touched &&
-                roleForm.controls['role_name']?.invalid
-              "
-            >
-              <small
-                *ngIf="roleForm.controls['role_name']?.errors?.['required']"
-                class="text-danger"
+          <div class="row g-3">
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Role Name</label>
+              <input
+                type="text"
+                formControlName="role_name"
+                class="form-control"
+                placeholder="Enter role name"
+                (keypress)="allowOnlyLetters($event)"
+              />
+              <div
+                *ngIf="
+                  roleForm.controls['role_name']?.touched &&
+                  roleForm.controls['role_name']?.invalid
+                "
               >
-                Role Name is required and must be at least 3 letters</small
-              >
+                <small
+                  *ngIf="roleForm.controls['role_name']?.errors?.['required']"
+                  class="text-danger"
+                >
+                  Role Name is required and must be at least 3 letters</small
+                >
+              </div>
             </div>
-          </div>
 
-          <div class="col-md-6 mb-2">
-            <label class="form-label">Role Number</label>
-            <input
-              type="text"
-              formControlName="role_number"
-              class="form-control"
-              placeholder="Enter role number"
-              (keypress)="blockSpaces($event)"
-              
-            />
-            <div
-              *ngIf="
-                roleForm.controls['role_number']?.touched &&
-                roleForm.controls['role_number']?.invalid
-              "
-            >
-              <small
-                *ngIf="roleForm.controls['role_number']?.errors?.['required']"
-                class="text-danger"
-                >Role Number is required</small
+            <div class="col-md-6 mb-2">
+              <label class="form-label">Role Number</label>
+              <input
+                type="text"
+                formControlName="role_number"
+                class="form-control"
+                placeholder="Enter role number"
+                (keypress)="blockSpaces($event)"
+              />
+              <div
+                *ngIf="
+                  roleForm.controls['role_number']?.touched &&
+                  roleForm.controls['role_number']?.invalid
+                "
               >
+                <small
+                  *ngIf="roleForm.controls['role_number']?.errors?.['required']"
+                  class="text-danger"
+                  >Role Number is required</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6 mb-2">
+              <label class="form-label fw-semibold">Status</label>
+              <select class="form-select" formControlName="status">
+                <option value="">Select Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
             </div>
           </div>
-          <div class="col-md-6 mb-2">
-            <label class="form-label fw-semibold">Status</label>
-            <select class="form-select" formControlName="status">
-              <option value="">Select Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
-          </div>
-        </div>
         </div>
 
         <div class="modal-footer">
@@ -196,7 +217,9 @@
           >
             Close
           </button>
-          <button type="submit" class="btn btn-success">Save</button>
+          <button type="submit" class="btn btn-success">
+            {{ selectedUserId ? "Update" : "Create" }}
+          </button>
         </div>
       </form>
     </div>

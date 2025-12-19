@@ -29,6 +29,7 @@ toastMessage: any;
 toastType: any;
   selectedId: any;
   searchTerm: string = '';
+  statusFilter: 'active' | 'inactive' = 'active';
 
   constructor(private api: BillingService, private fb: FormBuilder) {}
 
@@ -90,17 +91,6 @@ toastType: any;
   }
 
 
-  // delete(id: string) {
-  //   if (!confirm('Are you sure you want to delete this category?')) return;
-  //   this.api.deleteCategory(id).subscribe({
-  //     next: () => {
-  //       alert('Category deleted successfully');
-  //       this.getAllCategories();
-  //     },
-  //     error: (err) => console.error('Delete error', err),
-  //   });
-  // }
-
   createOrUpdateCategory() {
     if (this.categoryForm.invalid) {
       this.categoryForm.markAllAsTouched();
@@ -155,6 +145,11 @@ toastType: any;
       )
     );
   }
+  filteredByStatus(): any[] {
+  return this.filteredUser().filter(
+    (u: any) => u?.status === this.statusFilter
+  );
+}
   openDeleteModal(cats: any) {
     this.selectedId = cats;
     const modal = new bootstrap.Modal(document.getElementById('deleteModal'));

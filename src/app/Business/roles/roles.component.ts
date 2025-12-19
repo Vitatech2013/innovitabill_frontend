@@ -29,6 +29,7 @@ toastMessage: any;
 toastType: any;
   selectedRole: any;
   searchTerm: string = '';
+  statusFilter: 'active' | 'inactive' = 'active';
 
   constructor(private api: BusinessService, private fb: FormBuilder) {}
 
@@ -62,39 +63,6 @@ toastType: any;
     this.resetForm();
     this.openModel = true;
   }
-
- 
-
-//   createOrUpdateRole(): void {
-//   if (this.roleForm.invalid) {
-//     this.roleForm.markAllAsTouched();
-//     this.showToast('Please fill all required fields!', 'warning');
-//     return;
-//   }
-
-//   const newRole = {
-//     ...this.roleForm.value,
-//     business_id: this.business_id,
-//   };
-
-//   this.api.addRole(newRole).subscribe({
-//     next: (res) => {
-//       this.showToast('Role saved successfully!', 'success');
-//       this.roleForm.reset();
-//       this.getAllRoles();
-
-//       // ✅ CLOSE BOOTSTRAP MODAL PROPERLY
-//       const modalEl = document.getElementById('roleModal');
-//       const modal = bootstrap.Modal.getInstance(modalEl);
-//       modal.hide();
-//     },
-//     error: (err) => {
-//       console.error('Error saving:', err);
-//       if (err.status === 401)
-//         this.showToast('Unauthorized! Please log in again.', 'error');
-//     },
-//   });
-// }
 
 createOrUpdateRole(): void {
   if (this.roleForm.invalid) {
@@ -163,21 +131,6 @@ createOrUpdateRole(): void {
     });
     this.openModel = true;
   }
-
-  // delete(id: string): void {
-  //   if (!confirm('Are you sure you want to delete this role?')) return;
-
-  //   this.api.deleteRole(id).subscribe({
-  //     next: () => {
-  //       alert('Role deleted successfully');
-  //       this.getAllRoles();
-  //     },
-  //     error: (err) => {
-  //       console.error('Delete error:', err);
-  //     },
-  //   });
-  // }
-
     filteredUser() {
     if (!this.searchTerm) return this.roles;
     const term = this.searchTerm.toLowerCase();
@@ -187,6 +140,11 @@ createOrUpdateRole(): void {
       )
     );
   }
+  filteredByStatus(): any[] {
+  return this.filteredUser().filter(
+    (u: any) => u?.status === this.statusFilter
+  );
+}
 
   resetForm(): void {
     this.roleForm.reset();
