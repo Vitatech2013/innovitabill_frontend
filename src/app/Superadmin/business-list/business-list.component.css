@@ -181,7 +181,7 @@ input[type="file"] {
 }
 
 .custom-toast.success {
-  background: #28a745; 
+  background: #28a745;   
 }
 
 .custom-toast.error {
@@ -200,20 +200,10 @@ input[type="file"] {
 }
 
 
-
-
-
-
-
 /* view modal */
 .table-success{
   background-color: #d4f8d4;
 }
-
-
-
-
-
 
 
 /* .table-wrapper {

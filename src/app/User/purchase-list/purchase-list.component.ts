@@ -70,18 +70,18 @@ export class PurchaseListComponent implements OnInit {
       // Item details
       brand_name: ['', [Validators.required, Validators.minLength(3)]],
       item_name: ['', [Validators.required, Validators.minLength(3)]],
-      unit_id: ['', [Validators.required]],
+      unit_id: [''],
       selling_price: ['', [Validators.required]],
       tax_rate: ['', [Validators.required]],
       stock_quantity: ['', [Validators.required]],
       description: ['', [Validators.required]],
       discount: ['', [Validators.required]],
-      status: ['', Validators.required],
+      status: [''],
       item_code: ['', Validators.required],
       purchase_price: ['', Validators.required],
-      category_id: ['', Validators.required],
-      sub_category_id: ['', Validators.required],
-      min_stock_alert: ['', Validators.required],
+      category_id: [''],
+      sub_category_id: [''],
+      min_stock_alert: [''],
       image: [''],
     });
   }
@@ -174,37 +174,95 @@ export class PurchaseListComponent implements OnInit {
     });
   }
 
- updatePurchase() {
-  if (this.editForm.invalid) return;
+//  updatePurchase() {
+//   if (this.editForm.invalid) return;
   
 
+//   const formData = new FormData();
+
+//   Object.keys(this.editForm.value).forEach(key => {
+//     if (this.editForm.value[key] !== null) {
+//       formData.append(key, this.editForm.value[key]);
+//     }
+//   });
+
+//   if (this.selectedFiles['image']) {
+//     formData.append('image', this.selectedFiles['image']);
+//   }
+
+//   const purchaseId = this.editForm.value.purchase_id;
+
+//   this.service.updatePurchase(purchaseId, formData)
+//     .subscribe({
+//       next: () => {
+//         this.toastr.success('Purchase updated successfully');
+//         this.loadPurchases(); 
+//         console.log(" UPDATE PURCHASE API HIT ");
+//       },
+//       error: err => {
+//         console.error(err);
+//         this.toastr.error('Update failed');
+//       }
+//     });
+// }
+updatePurchase() {
+  // 1️⃣ Debugging: check if function is called
+  console.log('UPDATE CLICKED');
+  console.log('Form Valid:', this.editForm.valid);
+  console.log('Form Value:', this.editForm.value);
+
+  // 2️⃣ Stop if form is invalid
+  if (this.editForm.invalid) {
+    this.toastr.error('Please fill all required fields correctly');
+    return;
+  }
+
+  // 3️⃣ Create FormData for API
   const formData = new FormData();
 
-  Object.keys(this.editForm.value).forEach(key => {
-    if (this.editForm.value[key] !== null) {
-      formData.append(key, this.editForm.value[key]);
-    }
-  });
+  // Append all non-null / non-undefined form values
+console.log('Invalid Controls:', this.editForm.controls);
+Object.keys(this.editForm.controls).forEach(key => {
+  if (this.editForm.controls[key].invalid) {
+    console.warn(`${key} is invalid`);
+  }
+});
 
-  if (this.selectedFiles['image']) {
+
+
+  // Append image if selected
+  if (this.selectedFiles && this.selectedFiles['image']) {
     formData.append('image', this.selectedFiles['image']);
   }
 
+  // Append purchase_id explicitly if backend expects in body
   const purchaseId = this.editForm.value.purchase_id;
+  if (purchaseId) {
+    formData.append('purchase_id', purchaseId);
+  }
 
+  // 4️⃣ Call the service to update
   this.service.updatePurchase(purchaseId, formData)
     .subscribe({
-      next: () => {
+      next: (res) => {
+        console.log('UPDATE PURCHASE API HIT', res);
         this.toastr.success('Purchase updated successfully');
-        this.loadPurchases(); 
-        console.log(" UPDATE PURCHASE API HIT ");
+        this.loadPurchases(); // refresh the list
+        this.selectedPurchases = null; // reset selection
+        // Close modal manually if using Bootstrap
+        const editModal: any = document.getElementById('editItemModal');
+        if (editModal) {
+          const modal = bootstrap.Modal.getInstance(editModal);
+          modal?.hide();
+        }
       },
-      error: err => {
-        console.error(err);
-        this.toastr.error('Update failed');
+      error: (err) => {
+        console.error('UPDATE PURCHASE ERROR', err);
+        this.toastr.error('Update failed. Please try again');
       }
     });
 }
+
 
  
 
