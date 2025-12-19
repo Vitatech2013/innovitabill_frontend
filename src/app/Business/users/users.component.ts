@@ -21,11 +21,12 @@ declare var bootstrap: any;
   styleUrls: ['./users.component.css'],
 })
 export class UsersComponent implements OnInit {
-  selectedUserId: string | null = null; // edit / update
-  selectedUserData: any = null; // view modal
-  toastMessage: any;
-  toastType: any;
+  selectedUserId: string | null = null;
+  selectedUserData: any = null;
+  toastMessage: string | null = null;
+  toastType: 'success' | 'error' | 'warning' = 'success';
   searchTerm: string = '';
+  statusFilter: 'active' | 'inactive' = 'active';
   users: any[] = [];
   u: any;
   deleteId: string | null = null;
@@ -54,14 +55,23 @@ idProofFileName: string = '';
       console.log('businessID:', this.business_id);
     }
     this.userForm = this.fb.group({
-      user_name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/),
-]],
+      user_name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/),
+        ],
+      ],
       user_email: ['', [Validators.required, Validators.email]],
       phone_number: [
         '',
         [Validators.required, Validators.pattern(/^[0-9]{10}$/)],
       ],
-      password: [''],
+      password: [
+        '',
+        [Validators.required, Validators.minLength(4), Validators.maxLength(8),Validators.pattern(/^[A-Za-z0-9]{4,8}$/)],
+      ],
       role_id: ['', Validators.required],
       status: ['active'],
 
@@ -78,13 +88,7 @@ idProofFileName: string = '';
       mandal_Name: ['', Validators.required],
       district_Name: ['', Validators.required],
       state: ['', Validators.required],
-      pincode: [
-  '',
-  [
-    Validators.required,
-    Validators.pattern(/^[0-9]{6}$/)
-  ]
-],
+      pincode: ['', [Validators.required, Validators.pattern(/^[0-9]{6}$/)]],
     });
 
     this.loadUsers();
@@ -105,60 +109,6 @@ idProofFileName: string = '';
       error: (err) => console.error('Error loading users:', err),
     });
   }
-
-  // filteredUser() {
-  //   if (!this.searchTerm) return this.users;
-  //   const term = this.searchTerm.toLowerCase();
-  //   return this.users.filter((u: any) =>
-  //     Object.values(u).some((val) =>
-  //       val?.toString().toLowerCase().includes(term)
-  //     )
-  //   );
-  // }
-
-  allowLettersAndSingleSpace(event: KeyboardEvent) {
-  const input = event.target as HTMLInputElement;
-  const value = input.value;
-  const key = event.key;
-
-
-  if (key.length > 1) return;
-
-  if (/^[A-Za-z]$/.test(key)) return;
-
-
-  if (
-    key === ' ' &&
-    value.length > 0 &&
-    value[value.length - 1] !== ' '
-  ) {
-    return;
-  }
-
-  event.preventDefault();
-}
-allowSingleSpace(event: KeyboardEvent) {
-  const input = event.target as HTMLInputElement;
-  const key = event.key;
-  const value = input.value;
-
-  // allow control keys (backspace, arrows, delete)
-  if (key.length > 1) return;
-
-  // ❌ block space at start
-  if (key === ' ' && value.length === 0) {
-    event.preventDefault();
-    return;
-  }
-
-  // ❌ block multiple spaces
-  if (key === ' ' && value[value.length - 1] === ' ') {
-    event.preventDefault();
-    return;
-  }
-}
-
-
 
   openAddModal() {
     this.title = 'Add User';
@@ -192,6 +142,11 @@ allowSingleSpace(event: KeyboardEvent) {
       )
     );
   }
+  filteredByStatus(): any[] {
+    return this.filteredUser().filter(
+      (u: any) => u?.status === this.statusFilter
+    );
+  }
 
   // editUser(u: any) {
   //   this.selectedUserId = u._id; // ✅ USER ID
@@ -214,86 +169,20 @@ allowSingleSpace(event: KeyboardEvent) {
   //   modal.show();
   // }
 
-  // createUser(): void {
-  //   console.log('Create button clicked'); // 👈 MUST appear
-
-  //   if (this.userForm.invalid) {
-  //     console.log('Form invalid', this.userForm.value);
-  //     this.userForm.markAllAsTouched();
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-
-  //   Object.keys(this.userForm.value).forEach((key) => {
-  //     const value = this.userForm.value[key];
-  //     if (value !== null && value !== undefined) {
-  //       formData.append(key, String(value));
-  //     }
-  //   });
-
-  //   formData.append('image', this.imageFile);
-  //   formData.append('id_proof', this.idProofFile);
-
-  //   console.log('FormData ready');
-
-  //   this.service.addUser(formData).subscribe(
-  //     (res: any) => {
-  //       console.log('User created successfully', res);
-  //       this.userForm.reset();
-  //     },
-  //     (err: any) => {
-  //       console.error('Error creating user', err);
-  //     }
-  //   );
-  // }
-
-
-editUser(u: any) {
-  this.selectedUserId = u._id;
-
-  this.userForm.patchValue({
-    user_name: u.user_name,
-    user_email: u.user_email,
-    phone_number: u.phone_number,
-    role_id: u.role_id?._id || '',
-    status: u.status,
-    house_No: u.address?.house_No,
-    town_Name: u.address?.town_Name,
-    mandal_Name: u.address?.mandal_Name,
-    district_Name: u.address?.district_Name,
-    state: u.address?.state,
-    pincode: u.address?.pincode,
-  });
-
-  // ✅ FILE NAMES (important)
-  this.imageFileName = u.image || '';
-  this.idProofFileName = u.id_proof || '';
-
-  const modal = new bootstrap.Modal(document.getElementById('editModal'));
-  modal.show();
-}
-
-
-
   createUser(): void {
-    // 1️⃣ Validate form
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
+      this.showToast('Please fill all required fields correctly', 'warning');
       console.log('✅ createUser() fired');
 
       return;
     }
-
-    // 2️⃣ Validate files
     if (!this.imageFile || !this.idProofFile) {
       alert('Image and ID Proof are required');
       return;
     }
 
     const formData = new FormData();
-
-    // 3️⃣ Append user fields
     formData.append('user_name', this.userForm.value.user_name);
     formData.append('user_email', this.userForm.value.user_email);
     formData.append('phone_number', this.userForm.value.phone_number);
@@ -301,12 +190,10 @@ editUser(u: any) {
     formData.append('role_id', this.userForm.value.role_id);
     formData.append('status', this.userForm.value.status);
 
-    // 4️⃣ Append business ID
     if (this.business_id) {
       formData.append('business_id', this.business_id);
     }
 
-    // 5️⃣ Append address as JSON
     const address = {
       house_No: this.userForm.value.house_No,
       town_Name: this.userForm.value.town_Name,
@@ -317,28 +204,27 @@ editUser(u: any) {
     };
     formData.append('address', JSON.stringify(address));
 
-    // 6️⃣ Append files
     formData.append('image', this.imageFile);
     formData.append('id_proof', this.idProofFile);
 
-    // 🔍 Debug (compare with Postman)
     formData.forEach((value, key) => console.log(key, value));
 
-    // 7️⃣ API Call
     this.service.addUser(formData).subscribe({
       next: (res: any) => {
         console.log('User created successfully', res);
-        alert('User created successfully');
+        // alert('User created successfully');
+        this.showToast('User created successfully', 'success');
 
         this.userForm.reset();
         this.imageFile = null;
         this.idProofFile = null;
 
-        this.loadUsers(); // refresh table
+        this.loadUsers();
       },
       error: (err) => {
         console.error('Create User Error:', err);
-        alert(err.error?.message || 'Failed to create user');
+        // alert(err.error?.message || 'Failed to create user');
+        this.showToast('failed to create', 'error');
       },
     });
   }
@@ -365,6 +251,10 @@ editUser(u: any) {
 
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
+      this.showToast(
+        'Please fill all the required fields correctly',
+        'warning'
+      );
       console.log('SAVE CLICKED');
       return;
     }
@@ -399,7 +289,8 @@ editUser(u: any) {
     this.service.updateUser(this.selectedUserId, formData).subscribe({
       next: (res) => {
         console.log('User updated successfully', res);
-        alert('User updated successfully');
+        // alert('User updated successfully');
+        this.showToast('User updated successfully', 'success');
 
         this.userForm.reset();
         this.selectedUserId = null;
@@ -411,6 +302,7 @@ editUser(u: any) {
       error: (err) => {
         console.error('Update error', err);
         alert(err.error?.message || 'Update failed');
+        this.showToast('Update failed', 'error');
       },
     });
   }
@@ -421,19 +313,19 @@ editUser(u: any) {
   }
 
   openViewModal(u: any) {
-    console.log('VIEW USER DATA 👉', u);
+    console.log('VIEW USER DATA', u);
     this.selectedUserData = { ...u };
 
     const modal = new bootstrap.Modal(document.getElementById('viewModal'));
     modal.show();
   }
 
-  openDeleteModal(id: string) {
-    this.deleteId = id;
+  openDeleteModal(user: any) {
+    this.selectedUserData = user;
+
     const modalEl = document.getElementById('deleteModal');
     if (modalEl) {
-      let modal = bootstrap.Modal.getInstance(modalEl);
-      if (!modal) modal = new bootstrap.Modal(modalEl);
+      const modal = new bootstrap.Modal(modalEl);
       modal.show();
     }
   }
@@ -458,25 +350,26 @@ editUser(u: any) {
 
 
   confirmDelete() {
-    if (!this.selectedUserId) return;
+    if (!this.selectedUserData?._id) return;
+
     this.service.deleteUser(this.selectedUserData._id).subscribe({
       next: () => {
-        // this.showToast('Unit soft deleted successfully', 'success');
-        // this.UnitForm.markAllAsTouched()
-
         this.loadUsers();
+        console.log('User deleted successfully');
+        // alert('User updated successfully');
+        this.showToast('User deleted successfully', 'success');
 
         const modalEl = document.getElementById('deleteModal');
         if (modalEl) {
           const modal = bootstrap.Modal.getInstance(modalEl);
           modal?.hide();
         }
+
         this.selectedUserData = null;
       },
-
       error: (err) => {
         console.error('Delete error', err);
-        //  this.showToast('Failed to delete unit', 'error');
+        this.showToast('Failed to delete', 'error');
       },
     });
   }
@@ -484,16 +377,19 @@ editUser(u: any) {
   allowOnlyLetters(event: KeyboardEvent) {
     if (!/^[A-Za-z]$/.test(event.key)) event.preventDefault();
   }
-onlyDigits(event: KeyboardEvent, max: number) {
-  const el = event.target as HTMLInputElement;
-  if (event.key.length > 1) return;           // backspace, arrows
-  if (!/\d/.test(event.key) || el.value.length >= max)
-    event.preventDefault();
-}
-
-
+  onlyDigits(event: KeyboardEvent, max: number) {
+    const el = event.target as HTMLInputElement;
+    if (event.key.length > 1) return; // backspace, arrows
+    if (!/\d/.test(event.key) || el.value.length >= max) event.preventDefault();
+  }
 
   blockSpaces(event: KeyboardEvent) {
     if (event.code === 'Space') event.preventDefault();
+  }
+
+  showToast(message: string, type: 'success' | 'error' | 'warning') {
+    this.toastMessage = message;
+    this.toastType = type;
+    setTimeout(() => (this.toastMessage = null), 3000);
   }
 }

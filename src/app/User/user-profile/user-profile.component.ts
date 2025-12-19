@@ -9,6 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { constants } from '../../../../constants';
 import { BillingService } from '../../Services/billing.service';
+import { ToastrService } from 'ngx-toastr';
 
 declare var bootstrap: any;
 @Component({
@@ -34,15 +35,15 @@ export class UserProfileComponent implements OnInit {
   profile: any;
   user_id: any;
   userData: any;
-  toastMessage: string | null = null;
-  toastType: string | undefined;
+ 
   private baseUrl = constants.baseUrl;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private service: BillingService,
-    private location: Location
+    private location: Location,
+    private toastr:ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -93,7 +94,7 @@ export class UserProfileComponent implements OnInit {
 
   getUserProfile() {
     if (this.profileForm.invalid) {
-      this.showToast('Please fill all required feilds!', 'Danger');
+      this.toastr.warning('Please fill all required feilds!', 'Danger');
       return;
     }
 
@@ -110,7 +111,7 @@ export class UserProfileComponent implements OnInit {
 
     this.service.updateprofile(formData, this.user_id).subscribe({
       next: (res: any) => {
-        this.showToast('Profile Updated Successfully', 'success');
+        this.toastr.success('Profile Updated Successfully', 'success');
         this.fetchUserData();
 
         const modalEl = document.getElementById('editProfileModal');
@@ -135,13 +136,15 @@ export class UserProfileComponent implements OnInit {
             if (container instanceof HTMLElement)
               container.style.filter = 'none';
           }
+          this.toastr.success("Profile Updated Successfully")
+
         });
         window.location.reload();
       },
 
       error: (err) => {
         console.error(err);
-        this.showToast('Profile Update Failed!', 'Danger');
+        this.toastr.error('Profile Update Failed!', 'Danger');
       },
     });
   }
@@ -188,9 +191,5 @@ export class UserProfileComponent implements OnInit {
       : '';
   }
 
-  showToast(message: string, type: string) {
-    this.toastMessage = message;
-    this.toastType = type;
-    setTimeout(() => (this.toastMessage = null), 3000);
-  }
+ 
 }

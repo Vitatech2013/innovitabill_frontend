@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { BillingService } from '../../Services/billing.service';
 import { constants } from '../../../../constants';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sale',
@@ -37,7 +38,8 @@ export class SaleComponent implements OnInit {
     private fb: FormBuilder,
     private service: BillingService,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -67,7 +69,7 @@ export class SaleComponent implements OnInit {
     const originalItem = this.items.find((i) => i._id === item._id);
 
     if (!originalItem || originalItem.stock_quantity <= 0) {
-      alert('Out of stock');
+      this.toastr.warning('Out of stock', 'Warning');
       return;
     }
 
@@ -91,7 +93,7 @@ export class SaleComponent implements OnInit {
     if (!cartItem || !originalItem) return;
 
     cartItem.cartQty--;
-    originalItem.stock_quantity++; 
+    originalItem.stock_quantity++;
 
     if (cartItem.cartQty === 0) {
       this.cartItems = this.cartItems.filter((c) => c._id !== item._id);
@@ -126,9 +128,9 @@ export class SaleComponent implements OnInit {
     this.showCustomerForm = !this.showCustomerForm;
   }
   getAvailableStock(itemId: string): number {
-  const originalItem = this.items.find(i => i._id === itemId);
-  return originalItem ? originalItem.stock_quantity : 0;
-}
+    const originalItem = this.items.find((i) => i._id === itemId);
+    return originalItem ? originalItem.stock_quantity : 0;
+  }
 
   generateInvoiceNumber() {
     return 'INV-' + Math.floor(Math.random() * 9000);
@@ -136,12 +138,12 @@ export class SaleComponent implements OnInit {
 
   generateBill() {
     if (this.cartItems.length === 0) {
-      alert('No items in cart!');
+      this.toastr.warning('No items in cart!', 'Warning');
       return;
     }
 
     if (this.customerForm.invalid) {
-      alert('Please enter valid customer details');
+      this.toastr.warning('Please enter valid details', 'Warning');
       return;
     }
 
@@ -177,12 +179,12 @@ export class SaleComponent implements OnInit {
     Promise.all(invoices)
       .then(() => {
         this.printBill();
-        alert('All invoices saved successfully!');
+        this.toastr.success('All invoices saved successfully!', 'Success');
         this.resetCart();
       })
       .catch((err) => {
         console.error(err);
-        alert('Error saving invoices!');
+        this.toastr.error('Error saving invoices!', 'Error');
       });
   }
 
@@ -221,12 +223,30 @@ export class SaleComponent implements OnInit {
   }
 
   filteredItems() {
-    if (!this.searchTerm) return this.items;
-    const term = this.searchTerm.toLowerCase();
-    return this.items.filter((it) =>
-      Object.values(it).some((v: any) =>
-        v?.toString().toLowerCase().includes(term)
-      )
+    let data = [...this.items];
+
+    data.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+
+    if (!this.searchTerm) {
+      return data;
+    }
+
+    const term = this.searchTerm.toLowerCase().trim();
+    const statuses = ['active', 'inactive', 'pending'];
+
+    if (statuses.includes(term)) {
+      return data.filter((it) => it.status?.toLowerCase() === term);
+    }
+
+    return data.filter(
+      (it) =>
+        it.item_name?.toLowerCase().includes(term) ||
+        it.item_code?.toLowerCase().includes(term) ||
+        it.brand_name?.toLowerCase().includes(term) ||
+        it.status?.toLowerCase().includes(term)
     );
   }
 

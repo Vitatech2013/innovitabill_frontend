@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { BillingService } from '../../Services/billing.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -25,7 +26,8 @@ export class UserForgotPasswordComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private service: BillingService
+    private service: BillingService,
+    private toastr:ToastrService
   ) {}
   ngOnInit(): void {
     this.forgotUserForm = this.fb.group({
@@ -45,10 +47,12 @@ export class UserForgotPasswordComponent implements OnInit {
     this.service.userForgotPassword({ user_email: email }).subscribe({
       next: (res: any) => {
         this.message = res.message || 'Password reset link sent to your email';
+        this.toastr.success('Reset link sent to you Mail!')
         this.loading = false;
       },
       error: (err) => {
         this.message = err.error?.message || 'Something went wrong';
+        this.toastr.error("Somethig Went Wrong")
         this.loading = false;
       },
     });

@@ -34,8 +34,7 @@ import { constants } from '../../../../constants';
 })
 export class UserLoginComponent implements OnInit {
   userForm!: FormGroup;
-  toastMessage: string | null = null;
-  toastType: string | undefined;
+  
   showPassword: boolean = false;
   quotationForm!: FormGroup;
   private baseUrl = constants.baseUrl;
@@ -93,7 +92,7 @@ export class UserLoginComponent implements OnInit {
   }
   UserLogin() {
     if (this.userForm.invalid) {
-      this.showToast('Please enter valid credentials', 'danger');
+     this.toastr.warning("Please Enter Valid Credentials",'Warning')
       this.userForm.markAllAsTouched();
       return;
     }
@@ -115,7 +114,9 @@ export class UserLoginComponent implements OnInit {
           console.warn(' Warning: business_id not found in login response');
         }
 
-        this.showToast('User Login Success', 'success');
+       this.toastr.success('User Login Success','Success',{
+            positionClass: 'toast-top-right',
+          });
 
         this.router.navigate(['/userview'], {
           state: { toast: 'User login success' },
@@ -125,27 +126,23 @@ export class UserLoginComponent implements OnInit {
       error: (err: any) => {
         console.error('User login failed', err);
 
-        if (err.status === 403) {
-          this.showToast(
+        if (err.status === 401) {
+          this.toastr.error('Invalid email or password', 'Login Failed');
+        } else if (err.status === 403) {
+          this.toastr.error(
             'Your account is inactive. Please contact admin.',
-            'danger'
+            'Access Denied'
           );
-        } else if (err.status === 401) {
-          this.showToast('Invalid email or password.', 'danger');
         } else if (err.status === 500) {
-          this.showToast('Server error! Please try again later.', 'danger');
+          this.toastr.error('Server error! Please try again later.', 'Error');
         } else {
-          this.showToast('Login failed. Please try again.', 'danger');
+          this.toastr.error('Login failed. Please try again.', 'Error');
         }
       },
     });
   }
 
-  showToast(message: string, type: string) {
-    this.toastMessage = message;
-    this.toastType = type;
-    setTimeout(() => (this.toastMessage = null), 3000);
-  }
+ 
   togglePassword() {
     this.showPassword = !this.showPassword;
   }
