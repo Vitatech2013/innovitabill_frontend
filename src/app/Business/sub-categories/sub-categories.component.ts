@@ -60,13 +60,41 @@ export class SubCategoriesComponent implements OnInit {
   //   });
   // }
 
-  getallSc() {
-    this.api.getSubCategories().subscribe((res: any) => {
-      console.log('API Full Response:', res);
-      this.subcategories = res?.data ?? [];
+  // getallSc() {
+  //   this.api.getSubCategories().subscribe((res: any) => {
+  //     console.log('API Full Response:', res);
+  //     this.subcategories = res?.data ?? [];
    
-    });
+  //   });
+  // }
+  onNameInput(event: any, controlName: string) {
+  let value = event.target.value;
+
+  // Remove leading spaces
+  value = value.replace(/^\s+/g, '');
+
+  // Replace multiple spaces with single space
+  value = value.replace(/\s{2,}/g, ' ');
+
+  this.subCategoryForm.get(controlName)?.setValue(value, { emitEvent: false });
+}
+allowLettersAndSpace(event: KeyboardEvent) {
+   const allowedKeys = [
+    'Backspace',
+    'Delete',
+    'ArrowLeft',
+    'ArrowRight',
+    'Tab'
+  ];
+
+  if (allowedKeys.includes(event.key)) {
+    return;
   }
+
+  if (!/^[a-zA-Z ]$/.test(event.key)) {
+    event.preventDefault();
+  }
+}
 
   openAddModal(): void {
     this.title = 'Add subcategory';
@@ -242,6 +270,16 @@ confirmDelete() {
    blockSpaces(event: KeyboardEvent) {
     if (event.code === 'Space') event.preventDefault();
   }
+  getallSc() {
+  this.api.getSubCategories().subscribe((res: any) => {
+    const data = res?.data ?? [];
+
+    this.subcategories = data.sort(
+      (a: any, b: any) => (a._id < b._id ? 1 : -1)
+    );
+  });
+}
+
 // allowOnlyNumbers(event: KeyboardEvent) {
 //   const pattern = /^[0-9]$/;
 //   if (!pattern.test(event.key)) {

@@ -6,3 +6,51 @@
 .scrollable-card::-webkit-scrollbar {
   width: 6px;
 }
+
+
+.table-scroll-container {
+  max-height: 400px;     /* adjust height as needed */
+  overflow-y: auto;
+  border-radius: 8px;
+}
+
+/* Sticky table header */
+.table-scroll-container thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #d4f8d4;
+  color: #0a5c0a;
+}
+
+
+/* toastr */
+.custom-toast {
+  padding: 14px 20px;
+  border-radius: 6px;
+  color: white;
+  min-width: 300px;
+  font-size: 15px;
+  font-weight: 500;
+  animation: slide-in 0.4s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.custom-toast.success {
+  background: #28a745; 
+}
+
+.custom-toast.error {
+  background: #dc3545; 
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(150%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

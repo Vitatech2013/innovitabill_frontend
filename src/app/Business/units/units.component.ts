@@ -64,19 +64,65 @@ searchTerm: string = '';
   }
 
  
+  // getAllUnits() {
+  //   this.api.getUnits(this.business_id).subscribe({
+  //     next: (res: any) => {
+  //       this.units = res.data || res;
+  //       console.log('Units loaded:', this.units);
+  //       // this.showToast('Units loaded successfully', 'success');
+  //     },
+  //     error: (err) => {
+  //       console.error('Error loading units:', err);
+  //       this.showToast('Failed to load units', 'error');
+  //     },
+  //   });
+  // }
   getAllUnits() {
-    this.api.getUnits(this.business_id).subscribe({
-      next: (res: any) => {
-        this.units = res.data || res;
-        console.log('Units loaded:', this.units);
-        // this.showToast('Units loaded successfully', 'success');
-      },
-      error: (err) => {
-        console.error('Error loading units:', err);
-        this.showToast('Failed to load units', 'error');
-      },
-    });
+  this.api.getUnits(this.business_id).subscribe({
+    next: (res: any) => {
+      this.units = (res.data || []).sort(
+        (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      console.log('Units loaded:', this.units);
+    },
+    error: (err) => {
+      console.error('Error loading units:', err);
+      this.showToast('Failed to load units', 'error');
+    },
+  });
+}
+
+
+allowLettersAndSpace(event: KeyboardEvent) {
+   const allowedKeys = [
+    'Backspace',
+    'Delete',
+    'ArrowLeft',
+    'ArrowRight',
+    'Tab'
+  ];
+
+  if (allowedKeys.includes(event.key)) {
+    return;
   }
+
+  if (!/^[a-zA-Z ]$/.test(event.key)) {
+    event.preventDefault();
+  }
+}
+onNameInput(event: any, controlName: string) {
+  let value = event.target.value;
+
+  // Remove leading spaces
+  value = value.replace(/^\s+/g, '');
+
+  // Replace multiple spaces with single space
+  value = value.replace(/\s{2,}/g, ' ');
+
+  this.UnitForm.get(controlName)?.setValue(value, { emitEvent: false });
+}
+
+
 
   openAddModal() {
     this.title = 'Add Unit';

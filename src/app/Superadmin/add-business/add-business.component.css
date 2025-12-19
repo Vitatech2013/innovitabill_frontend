@@ -40,3 +40,26 @@
   width: 6px;
 }
 
+
+
+/* Prevent page scrolling */
+body {
+  overflow: hidden;
+}
+
+/* Card scroll only */
+.business-card {
+  height: calc(100vh - 180px); /* adjust based on header */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Smooth scrolling */
+.business-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.business-card::-webkit-scrollbar-thumb {
+  
+  border-radius: 10px;
+}

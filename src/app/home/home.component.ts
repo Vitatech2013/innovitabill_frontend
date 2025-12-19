@@ -44,11 +44,35 @@ submitted = false;
   ngOnInit(): void {
     this.demoForm = this.fb.group({
       name: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.minLength(10)]],
+      phone: ['', [Validators.required,   Validators.pattern('^[0-9]{10}$')]],
       email: ['', [Validators.required, Validators.email]],
       message: ['', Validators.required],
     });
   }
+allowOnlyNumbers(event: KeyboardEvent) {
+  const charCode = event.which ? event.which : event.keyCode;
+
+  if (charCode < 48 || charCode > 57) {
+    event.preventDefault();
+  }
+}
+ preventSpace(event: KeyboardEvent) {
+  if (event.code === 'Space') {
+    event.preventDefault();
+  }
+}
+onNameInput(event: Event, controlName: string) {
+  const input = event.target as HTMLInputElement;
+
+  const value = input.value
+    .replace(/[^A-Za-z ]/g, '') 
+    .replace(/\s+/g, ' ')       
+    .trimStart();                
+
+  this.demoForm
+    .get(controlName)
+    ?.setValue(value, { emitEvent: false });
+}
 
   ngAfterViewInit(): void {
     const modalElement = document.getElementById('demoModal');

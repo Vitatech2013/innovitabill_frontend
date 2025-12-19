@@ -129,7 +129,7 @@
     </button>
   </div>
 
-  <
+  
   <div class="modal fade" id="demoModal" tabindex="-1" aria-labelledby="demoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content rounded-4 shadow-lg border-0">
@@ -149,6 +149,7 @@
         class="form-control"
         formControlName="name"
         placeholder="Enter your name"
+       (input)="onNameInput($event, 'name')"
         [ngClass]="{
           'is-invalid':
             demoForm.get('name')?.invalid &&
@@ -172,6 +173,7 @@
         class="form-control"
         formControlName="email"
         placeholder="Enter your email"
+        (keydown)="preventSpace($event)"
         [ngClass]="{
           'is-invalid':
             demoForm.get('email')?.invalid &&
@@ -198,16 +200,21 @@
     <div class="mb-3 text-start">
       <label class="form-label">Phone</label>
       <input
-        type="text"
-        class="form-control"
-        formControlName="phone"
-        placeholder="Enter your phone"
-        [ngClass]="{
-          'is-invalid':
-            demoForm.get('phone')?.invalid &&
-            (demoForm.get('phone')?.touched || submitted)
-        }"
-      />
+  type="text"
+  class="form-control"
+  formControlName="phone"
+  placeholder="Enter your phone"
+  maxlength="10"
+  inputmode="numeric"
+  pattern="[0-9]*"
+  (keypress)="allowOnlyNumbers($event)"
+  [ngClass]="{
+    'is-invalid':
+      demoForm.get('phone')?.invalid &&
+      (demoForm.get('phone')?.touched || submitted)
+  }"
+/>
+
 
       <div class="invalid-feedback" *ngIf="
         demoForm.get('phone')?.errors?.['required'] &&
@@ -216,12 +223,13 @@
         Phone number is required.
       </div>
 
-      <div class="invalid-feedback" *ngIf="
-        demoForm.get('phone')?.errors?.['minlength'] &&
-        (demoForm.get('phone')?.touched || submitted)
-      ">
-        Phone number must be at least 10 digits.
-      </div>
+     <div class="invalid-feedback" *ngIf="
+  demoForm.get('phone')?.errors?.['pattern'] &&
+  (demoForm.get('phone')?.touched || submitted)
+">
+  Phone number must contain only 10 digits.
+</div>
+
     </div>
 
    
@@ -232,6 +240,7 @@
         rows="3"
         placeholder="Enter your message"
         formControlName="message"
+        (input)="onNameInput($event, 'message')"
         [ngClass]="{
           'is-invalid':
             demoForm.get('message')?.invalid &&
@@ -240,11 +249,19 @@
       ></textarea>
 
       <div class="invalid-feedback" *ngIf="
-        demoForm.get('message')?.errors?.['required'] &&
-        (demoForm.get('message')?.touched || submitted)
-      ">
-        Message is required.
-      </div>
+  demoForm.get('message')?.errors?.['required'] &&
+  (demoForm.get('message')?.touched || submitted)
+">
+  Message is required
+</div>
+
+<div class="invalid-feedback" *ngIf="
+  demoForm.get('message')?.errors?.['pattern'] &&
+  (demoForm.get('message')?.touched || submitted)
+">
+  Only alphabets and spaces are allowed
+</div>
+
     </div>
 
     <div class="text-end">

@@ -32,13 +32,14 @@ import { CategoriesComponent } from './Business/categories/categories.component'
 import { RolesComponent } from './Business/roles/roles.component';
 import { UnitsComponent } from './Business/units/units.component';
 import { SubCategoriesComponent } from './Business/sub-categories/sub-categories.component';
-import { InactiveBusinesstypeComponent } from './Superadmin/inactive-businesstype/inactive-businesstype.component';
 import { UserDashboardComponent } from './User/user-dashboard/user-dashboard.component';
 import { CreatePurchaseComponent } from './User/create-purchase/create-purchase.component';
 import { PurchaseListComponent } from './User/purchase-list/purchase-list.component';
 
 
+
 export const routes: Routes = [
+   { path: '', redirectTo: 'SuperAdminLogin', pathMatch: 'full' },
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
@@ -52,13 +53,12 @@ export const routes: Routes = [
       { path: 'superadmin-profile', component: SuperadminProfileComponent },
       { path: 'add_business_type', component: AddBusinessTypeComponent },
       { path: 'view_business_type', component: ViewBusinessTypeComponent },
-      {path: 'inactive_businesstype', component: InactiveBusinesstypeComponent}
     ],
   },
 
   { path: 'userlogin', component: UserLoginComponent },
-  {path:'userforgotpassword',component:UserForgotPasswordComponent},
-  {path:'userresetpassword/:token', component:UserResetPasswordComponent},
+  { path: 'userforgotpassword', component: UserForgotPasswordComponent },
+  { path: 'userresetpassword/:token', component: UserResetPasswordComponent },
 
   {
     path: 'userview',
@@ -94,7 +94,7 @@ export const routes: Routes = [
     path: 'business-Forgotpassword',
     component: BusinessForgotpasswordComponent,
   },
-  { path: 'business-otp', component: BusinessOtpComponent },
+  { path: 'resetPassword', component: BusinessOtpComponent },
 
   {
     path: 'business-Dashboard',
@@ -113,3 +113,4 @@ export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
 ];
+

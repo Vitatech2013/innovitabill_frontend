@@ -19,7 +19,7 @@ import { BillingService } from '../../Services/billing.service';
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
-    RouterOutlet
+   RouterOutlet
 ],
   templateUrl: './super-admin-login.component.html',
   styleUrl: './super-admin-login.component.css',
@@ -59,11 +59,20 @@ if(res){
 }
        
 
-        this.showToast('Super Admin Login Success', 'success');
+  sessionStorage.setItem('toastMessage', 'Super Admin Login Success');
+  sessionStorage.setItem('toastType', 'success');
 
-        this.router.navigate(['/SuperAdminView'], {
-          state: { toast: 'Super Admin login success' },
-        });
+  
+  this.router.navigate(['/SuperAdminView']);
+      // this.router.navigate(['/SuperAdminView'], {
+      //   state: { toast: 'Super Admin Login Success' },
+      // });
+     
+
+// setTimeout(() => {
+//   this.router.navigate(['/SuperAdminView']);
+// }, 1500);
+
         
       },
 
@@ -89,6 +98,6 @@ if(res){
   showToast(message: string, type: 'success' | 'error' | 'warning' = 'success') {
     this.toastMessage = message;
     this.toastType = type;
-    setTimeout(() => (this.toastMessage = null), 3000);
+    setTimeout(() => (this.toastMessage = null), 1500);
   }
 }

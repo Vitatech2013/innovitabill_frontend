@@ -14,27 +14,31 @@
     "
   >
     <div class="container p-3">
-      <div class="position-fixed top-0 end-1 p-5" style="z-index: 1080">
-        <div
-          *ngIf="toastMessage"
-          class="toast align-items-center text-bg-success border-0 fade show"
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
-        >
-          <div class="d-flex">
-            <div class="toast-body">
-              {{ toastMessage }}
-            </div>
-            <button
-              type="button"
-              class="btn-close btn-close-white me-2 m-auto"
-              (click)="toastMessage = null"
-              aria-label="Close"
-            ></button>
-          </div>
-        </div>
+      <div class="position-fixed top-0 end-0 p-3" style="z-index: 1080">
+      <div
+  *ngIf="toastMessage"
+  class="toast align-items-center text-white show"
+  [ngClass]="{
+    'bg-success': toastType === 'success',
+    'bg-warning': toastType === 'warning',
+    'bg-danger': toastType === 'error'
+  }"
+  role="alert"
+>
+  <div class="d-flex">
+    <div class="toast-body">
+      {{ toastMessage }}
+    </div>
+    <button
+      type="button"
+      class="btn-close btn-close-white me-2 m-auto"
+      (click)="toastMessage = null"
+    ></button>
+  </div>
+</div>
+
       </div>
+      
       <h2 class="title mb-3 p-2 text-center fw-bold text-success">
         Super Admin Login
       </h2>
@@ -99,16 +103,31 @@
         </div>
         <a routerLink="/forgot-password" >forgot password?</a>
 
-        <div class="text-center">
+        <!-- <div class="text-center mt-4 d-flex gap-3">
           <button
             type="button"
-            class="btn btn-success mt-5 w-100"
+            class="btn btn-success mt-5 w-75 g-2"
             (click)="SuperAdminLogin()"
           >
             Login
           </button>
-       
-        </div>
+        <button type="button" class="btn btn-success " routerLink="/">
+              <i class="bi bi-box-arrow-in-left"></i>
+            </button>
+        </div> -->
+         <div class="text-center mt-4 d-flex gap-3">
+            <button
+              type="button"
+              class="btn btn-success w-75 g-2"
+              (click)="SuperAdminLogin()"
+            >
+              Login
+            </button>
+
+            <button type="button" class="btn btn-success " style="width: 60px;" routerLink="/">
+              <i class="bi bi-box-arrow-in-left"></i>
+            </button>
+          </div>
       </form>
     </div>
   </div>

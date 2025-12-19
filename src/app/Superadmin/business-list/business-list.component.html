@@ -24,14 +24,30 @@
           style="width: 100%; max-width: 300px"
         />
 
+        <button
+          class="btn side-btn text-dark fw-semibold border-1 me-2"
+          style="background-color: #f3f4f6"
+          (click)="showActive()"
+        >
+          <b><i class="bi bi-check-circle me-1"></i></b>
+          Active
+        </button>
+
+        <button
+          class="btn side-btn text-dark fw-semibold border-1"
+          style="background-color: #f3f4f6"
+          (click)="showInactive()"
+        >
+          <b><i class="bi bi-x-circle me-1"></i></b>
+          Inactive
+        </button>
         <a
           class="btn side-btn text-dark fw-semibold border-1"
           routerLink="/SuperAdminView/add-business"
           routerLinkActive="active-btn"
           style="background-color: #f3f4f6"
         >
-          <b><i class="bi bi-plus-circle me-1"></i></b>
-          Add Business
+          <b><i class="bi bi-plus-circle me-1"></i></b> Add Business
         </a>
       </div>
     </div>
@@ -45,7 +61,10 @@
 
       <div class="col-12" *ngIf="business.length > 0">
         <div class="table-wrapper">
-          <div class="table-responsive bg-white p-3 rounded-4">
+          <div
+            class="table-responsive bg-white p-3 rounded-4"
+            style="max-height: 400px; overflow-y: auto"
+          >
             <table class="table table-hover table-bordered align-middle">
               <thead class="table-success text-center">
                 <tr>
@@ -74,18 +93,14 @@
                 </tr>
               </thead>
 
-              <tbody>
-                <tr
-                  *ngFor="let b of filteredBusiness(); let i = index"
-                  class="align-middle text-center h-50"
-                >
-                  <td class="fw-semibold">{{ i + 1 }}</td>
+              <tbody class="text-center">
+                <tr *ngFor="let b of filteredBusiness(); let i = index">
+                  <td>{{ i + 1 }}</td>
                   <td>{{ b.business_name }}</td>
                   <td>{{ b.owner_name }}</td>
                   <td>{{ b.email }}</td>
                   <td>{{ b.phone_number }}</td>
                   <td>{{ getBusinessTypeName(b.bt_id) }}</td>
-
                   <td>
                     <span
                       class="badge px-3 py-2"
@@ -98,7 +113,6 @@
                       {{ b.status }}
                     </span>
                   </td>
-
                   <td>
                     <button
                       class="btn btn-sm btn-outline-info me-1"
@@ -288,6 +302,8 @@
                     type="text"
                     class="form-control"
                     formControlName="business_name"
+                    placeholder="Enter Business Name"
+                    (input)="sanitizeNameInput($event, 'business_name')"
                   />
                 </div>
 
@@ -324,6 +340,7 @@
                     type="text"
                     class="form-control"
                     formControlName="owner_name"
+                    (input)="sanitizeNameInput($event, 'owner_name')"
                   />
                 </div>
 
@@ -339,11 +356,16 @@
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">Phone Number</label>
                   <input
-                    type="number"
+                    type="text"
                     class="form-control"
                     formControlName="phone_number"
+                    maxlength="10"
+                    inputmode="numeric"
+                    pattern="[0-9]{10}"
+                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"
                   />
                 </div>
+
                 <!-- </div> -->
 
                 <!-- <h6 class="fw-bold text-success mb-3 mt-4">Business Details</h6>
@@ -366,6 +388,8 @@
                     type="text"
                     class="form-control"
                     formControlName="registration_number"
+                    placeholder="Enter Registration Number"
+                    (input)="removeLongSpaces($event, 'registration_number')"
                   />
                 </div>
 
@@ -375,6 +399,8 @@
                     type="text"
                     class="form-control"
                     formControlName="gst_number"
+                    placeholder="Enter GST Number"
+                    (input)="removeLongSpaces($event, 'gst_number')"
                   />
                   <small *ngIf="isInvalid('gst_number')" class="text-danger">
                     GST Number is required
@@ -398,14 +424,16 @@
                   <label class="form-label fw-semibold">{{
                     field.label
                   }}</label>
+
                   <input
                     type="text"
                     class="form-control"
                     [formControlName]="field.name"
-                    (keypress)="allowOnlyLetters($event)"
+                    (input)="sanitizeAddressInput($event, field.name)"
                   />
                 </div>
               </div>
+
               <!-- <div formGroupName="address" class="row">
         <div class="col-md-3 mb-4" *ngFor="let field of addressFields">
           <label class="form-label fw-semibold" style="font-size: medium;">

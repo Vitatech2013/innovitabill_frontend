@@ -7,6 +7,12 @@ import { constants } from '../../../constants';
   providedIn: 'root',
 })
 export class BillingService {
+  triggerBusinessTypeRefresh() {
+    throw new Error('Method not implemented.');
+  }
+  getBusinessTypesFromServer() {
+    throw new Error('Method not implemented.');
+  }
   // getQuotationData(demoId: string | null) {
   //   throw new Error('Method not implemented.');
   // }
@@ -75,6 +81,13 @@ export class BillingService {
       formData
     );
   }
+   checkEmail(email: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/check-email?email=${email}`);
+  }
+//   checkEmail(email: string) {
+//   return this.http.post('/api/check-email', { email });
+// }
+
 
   profileupdate(formData: FormData, id: string) {
     return this.http.put(

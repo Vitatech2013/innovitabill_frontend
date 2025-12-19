@@ -17,7 +17,8 @@ import {
 export class BusinessDashboardComponent implements OnInit {
   loggedInBusiness: { name: string; loginTime: string } | null = null;
   timer: any;
-  
+  toastMessage: string | null = null;
+  toastType: 'success' | 'error' | 'warning' = 'success';
   constructor(private router: Router) {}
   ngOnInit(): void {
     const stored = localStorage.getItem('user');
@@ -40,21 +41,40 @@ export class BusinessDashboardComponent implements OnInit {
       name: businessName,
       loginTime: new Date().toLocaleString(),
     };
+     const message = sessionStorage.getItem('toastMessage');
+  const type = sessionStorage.getItem('toastType') as
+    | 'success'
+    | 'warning'
+    | 'error';
 
-    this.timer = setInterval(() => {
-      const now = new Date();
-      this.loggedInBusiness!.loginTime = now.toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        hour12: true,
-      });
-    }, 1000);
+  if (message) {
+    this.showToast(message, type || 'success');
+
+  
+    sessionStorage.removeItem('toastMessage');
+    sessionStorage.removeItem('toastType');
+  }
+
+    // this.timer = setInterval(() => {
+    //   const now = new Date();
+    //   this.loggedInBusiness!.loginTime = now.toLocaleString('en-US', {
+    //     year: 'numeric',
+    //     month: 'numeric',
+    //     day: 'numeric',
+    //     hour: 'numeric',
+    //     minute: 'numeric',
+    //     second: 'numeric',
+    //     hour12: true,
+    //   });
+    // }, 1000);
 
     // console.log('Parsed Business:', parsed);
+  }
+
+     showToast(message: string, type: 'success' | 'error' | 'warning') {
+    this.toastMessage = message;
+    this.toastType = type;
+    setTimeout(() => (this.toastMessage = null), 2000);
   }
 
   logout() {

@@ -52,7 +52,7 @@ update() {
       this.loading = false;
       this.showToast('success', 'Password reset successfully!');
       setTimeout(() => {
-        this.router.navigate(['/SuperAdminLogin']);
+        this.router.navigate(['/businesslogin']);
       }, 1000);
     },
     error: () => {

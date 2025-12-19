@@ -81,7 +81,32 @@
         </div>
       </div>
     </nav>
-
+<div
+  class="toast-container position-fixed end-0 p-2"
+  style="top: 60px; z-index: 1200"
+>
+  <div
+    *ngIf="toastMessage"
+    class="toast show align-items-center text-white compact-toast"
+    [ngClass]="{
+      'bg-success': toastType === 'success',
+      'bg-warning': toastType === 'warning',
+      'bg-danger': toastType === 'error'
+    }"
+    role="alert"
+  >
+    <div class="d-flex align-items-center">
+      <div class="toast-body compact-body">
+        {{ toastMessage }}
+      </div>
+      <button
+        type="button"
+        class="btn-close btn-close-white compact-close"
+        (click)="toastMessage = null"
+      ></button>
+    </div>
+  </div>
+</div>
   </div>
  
 
