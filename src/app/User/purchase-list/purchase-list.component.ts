@@ -55,12 +55,14 @@ export class PurchaseListComponent implements OnInit {
     this.loadPurchases();
     this.categoriesGet();
     this.subCategoriesGet();
-    this.usersGet();
     this.unitsGet();
   }
 
   private initForm() {
     this.editForm = this.fb.group({
+      purchase_id: [''],
+      vendor_id: [''],
+      item_id: [''],
       // Vendor details
       vendor_name: ['', [Validators.required, Validators.minLength(3)]],
       vendor_type: ['', Validators.required],
@@ -107,6 +109,9 @@ export class PurchaseListComponent implements OnInit {
 
     // Patch vendor details
     this.editForm.patchValue({
+      purchase_id: purchase._id,
+      vendor_id: purchase.vendor_id?._id,
+      item_id: purchase.item_id?._id,
       vendor_name: purchase.vendor_id?.vendor_name || '',
       vendor_type: purchase.vendor_id?.vendor_type || '',
       business_category: purchase.vendor_id?.business_category || '',
@@ -165,48 +170,35 @@ export class PurchaseListComponent implements OnInit {
     });
   }
 
-  usersGet() {
-    this.service.getUsers(this.business_id).subscribe({
-      next: (res: any) => {
-        this.users = res.data || res;
-      },
-      error: (err: any) => console.error('Error loading users:', err),
-    });
-  }
+  updatePurchase() {
+    if (this.editForm.invalid) return;
 
- updatePurchase() {
-  if (this.editForm.invalid) return;
-  
+    const raw = this.editForm.getRawValue();
+    const formData = new FormData();
 
-  const formData = new FormData();
-
-  Object.keys(this.editForm.value).forEach(key => {
-    if (this.editForm.value[key] !== null) {
-      formData.append(key, this.editForm.value[key]);
-    }
-  });
-
-  if (this.selectedFiles['image']) {
-    formData.append('image', this.selectedFiles['image']);
-  }
-
-  const purchaseId = this.editForm.value.purchase_id;
-
-  this.service.updatePurchase(purchaseId, formData)
-    .subscribe({
-      next: () => {
-        this.toastr.success('Purchase updated successfully');
-        this.loadPurchases(); 
-        console.log(" UPDATE PURCHASE API HIT ");
-      },
-      error: err => {
-        console.error(err);
-        this.toastr.error('Update failed');
+    Object.entries(raw).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && key !== 'image') {
+        formData.append(key, String(value)); // ✅ FIX
       }
     });
-}
 
- 
+    if (this.selectedFiles?.['image'] instanceof File) {
+      formData.append('image', this.selectedFiles['image']); // ✅ File only
+    }
+
+    const purchaseId = raw.purchase_id;
+
+    this.service.updatePurchase(purchaseId, formData).subscribe({
+      next: () => {
+        this.toastr.success('Purchase updated successfully');
+        this.loadPurchases();
+      },
+      error: (err) => {
+        console.error(err);
+        this.toastr.error('Update failed');
+      },
+    });
+  }
 
   isCreatingInvoice(): boolean {
     return this.router.url.includes('/itemlist/items');
