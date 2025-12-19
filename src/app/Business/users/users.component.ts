@@ -148,26 +148,26 @@ idProofFileName: string = '';
     );
   }
 
-  // editUser(u: any) {
-  //   this.selectedUserId = u._id; // ✅ USER ID
+  editUser(u: any) {
+    this.selectedUserId = u._id; // ✅ USER ID
 
-  //   this.userForm.patchValue({
-  //     user_name: u.user_name,
-  //     user_email: u.user_email,
-  //     phone_number: u.phone_number,
-  //     role_id: u.role_id?._id || '',
-  //     status: u.status,
-  //     house_No: u.address?.house_No,
-  //     town_Name: u.address?.town_Name,
-  //     mandal_Name: u.address?.mandal_Name,
-  //     district_Name: u.address?.district_Name,
-  //     state: u.address?.state,
-  //     pincode: u.address?.pincode,
-  //   });
+    this.userForm.patchValue({
+      user_name: u.user_name,
+      user_email: u.user_email,
+      phone_number: u.phone_number,
+      role_id: u.role_id?._id || '',
+      status: u.status,
+      house_No: u.address?.house_No,
+      town_Name: u.address?.town_Name,
+      mandal_Name: u.address?.mandal_Name,
+      district_Name: u.address?.district_Name,
+      state: u.address?.state,
+      pincode: u.address?.pincode,
+    });
 
-  //   const modal = new bootstrap.Modal(document.getElementById('editModal'));
-  //   modal.show();
-  // }
+    const modal = new bootstrap.Modal(document.getElementById('editModal'));
+    modal.show();
+  }
 
   createUser(): void {
     if (this.userForm.invalid) {
