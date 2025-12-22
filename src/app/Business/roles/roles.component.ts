@@ -29,7 +29,7 @@ toastMessage: any;
 toastType: any;
   selectedRole: any;
   searchTerm: string = '';
-  statusFilter: 'active' | 'inactive' = 'active';
+  statusFilter: 'active' | 'inactive'|'all' = 'all';
 
   constructor(private api: BusinessService, private fb: FormBuilder) {}
 
@@ -155,6 +155,9 @@ createOrUpdateRole(): void {
     );
   }
   filteredByStatus(): any[] {
+     if (this.statusFilter === 'all') {
+    return this.filteredUser();
+  }
   return this.filteredUser().filter(
     (u: any) => u?.status === this.statusFilter
   );

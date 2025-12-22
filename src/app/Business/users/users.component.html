@@ -46,6 +46,16 @@
         <button
           class="btn"
           [ngClass]="
+            statusFilter === 'all' ? 'btn-light' : 'btn btn-light'
+          "
+          (click)="statusFilter = 'all'"
+        >
+          <i class="bi bi-check-circle"></i>
+          All
+        </button>
+        <button
+          class="btn"
+          [ngClass]="
             statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'
           "
           (click)="statusFilter = 'active'"
@@ -930,6 +940,7 @@
     class="form-control"
     accept="image/*"
     (change)="onImageSelect($event)"
+    
   />
 
   <small class="text-muted">
