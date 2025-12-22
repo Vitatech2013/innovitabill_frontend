@@ -55,12 +55,14 @@ export class PurchaseListComponent implements OnInit {
     this.loadPurchases();
     this.categoriesGet();
     this.subCategoriesGet();
-    this.usersGet();
     this.unitsGet();
   }
 
   private initForm() {
     this.editForm = this.fb.group({
+      purchase_id: [''],
+      vendor_id: [''],
+      item_id: [''],
       // Vendor details
       vendor_name: ['', [Validators.required, Validators.minLength(3)]],
       vendor_type: ['', Validators.required],
@@ -107,6 +109,9 @@ export class PurchaseListComponent implements OnInit {
 
     // Patch vendor details
     this.editForm.patchValue({
+      purchase_id: purchase._id,
+      vendor_id: purchase.vendor_id?._id,
+      item_id: purchase.item_id?._id,
       vendor_name: purchase.vendor_id?.vendor_name || '',
       vendor_type: purchase.vendor_id?.vendor_type || '',
       business_category: purchase.vendor_id?.business_category || '',
@@ -165,106 +170,42 @@ export class PurchaseListComponent implements OnInit {
     });
   }
 
-  usersGet() {
-    this.service.getUsers(this.business_id).subscribe({
-      next: (res: any) => {
-        this.users = res.data || res;
-      },
-      error: (err: any) => console.error('Error loading users:', err),
-    });
-  }
+  updatePurchase() {
+    if (this.editForm.invalid) return;
 
-//  updatePurchase() {
-//   if (this.editForm.invalid) return;
+
+ updatePurchase() {
+  if (this.editForm.invalid) return;
   
 
-//   const formData = new FormData();
-
-//   Object.keys(this.editForm.value).forEach(key => {
-//     if (this.editForm.value[key] !== null) {
-//       formData.append(key, this.editForm.value[key]);
-//     }
-//   });
-
-//   if (this.selectedFiles['image']) {
-//     formData.append('image', this.selectedFiles['image']);
-//   }
-
-//   const purchaseId = this.editForm.value.purchase_id;
-
-//   this.service.updatePurchase(purchaseId, formData)
-//     .subscribe({
-//       next: () => {
-//         this.toastr.success('Purchase updated successfully');
-//         this.loadPurchases(); 
-//         console.log(" UPDATE PURCHASE API HIT ");
-//       },
-//       error: err => {
-//         console.error(err);
-//         this.toastr.error('Update failed');
-//       }
-//     });
-// }
-updatePurchase() {
-  // 1️⃣ Debugging: check if function is called
-  console.log('UPDATE CLICKED');
-  console.log('Form Valid:', this.editForm.valid);
-  console.log('Form Value:', this.editForm.value);
-
-  // 2️⃣ Stop if form is invalid
-  if (this.editForm.invalid) {
-    this.toastr.error('Please fill all required fields correctly');
-    return;
-  }
-
-  // 3️⃣ Create FormData for API
   const formData = new FormData();
 
-  // Append all non-null / non-undefined form values
-console.log('Invalid Controls:', this.editForm.controls);
-Object.keys(this.editForm.controls).forEach(key => {
-  if (this.editForm.controls[key].invalid) {
-    console.warn(`${key} is invalid`);
-  }
-});
+  Object.keys(this.editForm.value).forEach(key => {
+    if (this.editForm.value[key] !== null) {
+      formData.append(key, this.editForm.value[key]);
+    }
+  });
 
-
-
-  // Append image if selected
-  if (this.selectedFiles && this.selectedFiles['image']) {
+  if (this.selectedFiles['image']) {
     formData.append('image', this.selectedFiles['image']);
   }
 
-  // Append purchase_id explicitly if backend expects in body
   const purchaseId = this.editForm.value.purchase_id;
-  if (purchaseId) {
-    formData.append('purchase_id', purchaseId);
-  }
 
-  // 4️⃣ Call the service to update
   this.service.updatePurchase(purchaseId, formData)
     .subscribe({
-      next: (res) => {
-        console.log('UPDATE PURCHASE API HIT', res);
+      next: () => {
         this.toastr.success('Purchase updated successfully');
-        this.loadPurchases(); // refresh the list
-        this.selectedPurchases = null; // reset selection
-        // Close modal manually if using Bootstrap
-        const editModal: any = document.getElementById('editItemModal');
-        if (editModal) {
-          const modal = bootstrap.Modal.getInstance(editModal);
-          modal?.hide();
-        }
+        this.loadPurchases(); 
+        console.log(" UPDATE PURCHASE API HIT ");
       },
-      error: (err) => {
-        console.error('UPDATE PURCHASE ERROR', err);
-        this.toastr.error('Update failed. Please try again');
+      error: err => {
+        console.error(err);
+        this.toastr.error('Update failed');
       }
     });
 }
 
-
- 
 
   isCreatingInvoice(): boolean {
     return this.router.url.includes('/itemlist/items');

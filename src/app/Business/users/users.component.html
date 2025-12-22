@@ -25,16 +25,11 @@
   </div>
 </div>
 
+
+
 <div class="container-fluid scrollable-card">
   <div class="dashboard">
-    <div class="position-fixed top-0 end-0 p-4" style="z-index: 1080">
-      <div *ngIf="toastMessage" class="custom-toast" [ngClass]="toastType">
-        <div class="d-flex justify-content-between align-items-center">
-          <span>{{ toastMessage }}</span>
-          <button class="btn-close ms-3" (click)="toastMessage = null"></button>
-        </div>
-      </div>
-    </div>
+    
     <div class="row mb-3">
       <div
         class="col-12 d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3"
@@ -262,7 +257,7 @@
               >
                 <div class="row g-3 mb-3">
                   <div class="col-md-4">
-                    <label class="form-label">User Name</label>
+                    <label class="form-label">User Name<span class="text-danger">*</span></label>
                     <input
                       type="text"
                       class="form-control"
@@ -300,7 +295,7 @@
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <label class="form-label">Email</label>
+                    <label class="form-label">Email<span class="text-danger">*</span></label>
                     <input
                       type="email"
                       formControlName="user_email"
@@ -327,7 +322,7 @@
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <label class="form-label">Phone Number</label>
+                    <label class="form-label">Phone Number<span class="text-danger">*</span></label>
                     <input
                       type="text"
                       formControlName="phone_number"
@@ -360,7 +355,7 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Password</label>
+                    <label class="form-label">Password<span class="text-danger">*</span></label>
                     <input
                       type="password"
                       formControlName="password"
@@ -399,7 +394,7 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Role</label>
+                    <label class="form-label">Role<span class="text-danger">*</span></label>
 
                     <select class="form-select" formControlName="role_id">
                       <option value="">Select Role</option>
@@ -436,7 +431,7 @@
                     <h6 class="fw-bold mt-3">Address</h6>
                   </div>
                   <div class="col-md-4">
-                    <label class="form-label">House No</label>
+                    <label class="form-label">House No<span class="text-danger">*</span></label>
                     <input
                       type="text"
                       class="form-control"
@@ -455,7 +450,7 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Town Name</label>
+                    <label class="form-label">Town Name<span class="text-danger">*</span></label>
                     <input
                       type="text"
                       class="form-control"
@@ -474,7 +469,7 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Mandal Name</label>
+                    <label class="form-label">Mandal Name<span class="text-danger">*</span></label>
                     <input
                       type="text"
                       class="form-control"
@@ -493,7 +488,7 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">District Name</label>
+                    <label class="form-label">District Name<span class="text-danger">*</span></label>
                     <input
                       type="text"
                       class="form-control"
@@ -512,7 +507,7 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">State</label>
+                    <label class="form-label">State<span class="text-danger">*</span></label>
                     <input
                       type="text"
                       class="form-control"
@@ -531,7 +526,7 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Pincode</label>
+                    <label class="form-label">Pincode<span class="text-danger">*</span></label>
                     <input
                       type="text"
                       class="form-control"
@@ -563,7 +558,7 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Image</label>
+                    <label class="form-label">Image<span class="text-danger">*</span></label>
                     <input
                       type="file"
                       class="form-control"
@@ -573,7 +568,7 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">ID Proof</label>
+                    <label class="form-label">ID Proof<span class="text-danger">*</span></label>
                     <input
                       type="file"
                       class="form-control"
@@ -622,7 +617,7 @@
                 <h6 class="fw-bold text-dark mb-3">User Details</h6>
                 <div class="row g-3 mb-3">
                   <div class="col-md-4">
-                    <label class="form-label">User Name</label>
+                    <label class="form-label">User Name<span class="text-danger">*</span></label>
                     <input
                       type="text"
                       class="form-control"
@@ -657,7 +652,7 @@
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <label class="form-label">Email</label>
+                    <label class="form-label">Email<span class="text-danger">*</span></label>
                     <input
                       type="email"
                       formControlName="user_email"
@@ -683,7 +678,7 @@
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <label class="form-label">Phone Number</label>
+                    <label class="form-label">Phone Number<span class="text-danger">*</span></label>
                     <input
                       type="text"
                       formControlName="phone_number"
@@ -752,7 +747,7 @@
                   </div>
                 </div> -->
                   <div class="col-md-4">
-                    <label class="form-label">Role</label>
+                    <label class="form-label">Role<span class="text-danger">*</span></label>
 
                     <select class="form-select" formControlName="role_id">
                       <option value="">Select Role</option>
@@ -789,7 +784,7 @@
                     <h6 class="fw-bold mt-3">Address</h6>
                   </div>
                   <div class="col-md-4">
-                    <label class="form-label">House No</label>
+                    <label class="form-label">House No<span class="text-danger">*</span></label>
                     <input
                       type="text"
                       class="form-control"
@@ -808,7 +803,7 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Town Name</label>
+                    <label class="form-label">Town Name<span class="text-danger">*</span></label>
                     <input
                       type="text"
                       class="form-control"
@@ -827,7 +822,7 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Mandal Name</label>
+                    <label class="form-label">Mandal Name<span class="text-danger">*</span></label>
                     <input
                       type="text"
                       class="form-control"
@@ -846,7 +841,7 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">District Name</label>
+                    <label class="form-label">District Name<span class="text-danger">*</span></label>
                     <input
                       type="text"
                       class="form-control"
@@ -865,7 +860,7 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">State</label>
+                    <label class="form-label">State<span class="text-danger">*</span></label>
                     <input
                       type="text"
                       class="form-control"
@@ -884,7 +879,7 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Pincode</label>
+                    <label class="form-label">Pincode<span class="text-danger">*</span></label>
                     <input
                       type="text"
                       class="form-control"
@@ -914,23 +909,64 @@
                     <h6 class="fw-bold mt-3">Documents</h6>
                   </div>
 
-                  <div class="col-md-4">
-                    <label class="form-label">Image</label>
-                    <input
-                      type="file"
-                      class="form-control"
-                      (change)="onImageSelect($event)"
-                    />
-                  </div>
+<!-- IMAGE -->
+<div class="col-md-4">
+  <label class="form-label">Image</label>
 
-                  <div class="col-md-4">
-                    <label class="form-label">ID Proof</label>
-                    <input
-                      type="file"
-                      class="form-control"
-                      (change)="onIdProofSelect($event)"
-                    />
-                  </div>
+  <!-- Existing Image Preview -->
+  <div *ngIf="existingImageUrl" class="mb-2">
+    <img
+      [src]="existingImageUrl"
+      width="80"
+      height="80"
+      class="rounded border"
+    />
+    <div class="text-success small">Current image</div>
+  </div>
+
+  <!-- File input always empty -->
+  <input
+    type="file"
+    class="form-control"
+    accept="image/*"
+    (change)="onImageSelect($event)"
+  />
+
+  <small class="text-muted">
+    Select new image only if you want to change
+  </small>
+</div>
+
+
+
+
+<div class="col-md-4">
+  <label class="form-label">
+    ID Proof <span class="text-danger">*</span>
+  </label>
+
+  <!-- EXISTING ID PROOF PREVIEW -->
+  <div *ngIf="existingIdProofUrl" class="mb-2">
+    <img
+      [src]="existingIdProofUrl"
+      width="80"
+      height="80"
+      class="rounded border"
+    />
+  </div>
+
+  <input
+    type="file"
+    class="form-control"
+    accept="image/*"
+    (change)="onIdProofSelect($event)"
+  />
+  <small class="text-muted">
+    Leave empty to keep existing ID proof
+  </small>
+</div>
+
+
                 </div>
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-success">Save</button>
