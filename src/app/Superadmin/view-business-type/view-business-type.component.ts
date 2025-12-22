@@ -38,7 +38,7 @@ export class ViewBusinessTypeComponent implements OnInit {
   searchTerm: string = '';
   inactiveCount: number = 0;
 
-  filterMode: 'active' | 'inactive' = 'active';
+  filterMode: 'active' | 'inactive' | 'all'= 'all';
 
   constructor(private fb: FormBuilder, private api: BillingService) {}
 
@@ -229,12 +229,18 @@ export class ViewBusinessTypeComponent implements OnInit {
   }
 
   filteredBusiness() {
-    let list = this.b_types.filter((b) => {
-      const status = b.status?.toLowerCase().trim();
-      return this.filterMode === 'active'
-        ? status === 'active'
-        : status === 'inactive';
-    });
+     let list = this.b_types;
+
+  if (this.filterMode === 'active') {
+    list = list.filter(
+      (b) => b.status?.toLowerCase().trim() === 'active'
+    );
+  } 
+  else if (this.filterMode === 'inactive') {
+    list = list.filter(
+      (b) => b.status?.toLowerCase().trim() === 'inactive'
+    );
+  }
 
     if (this.searchTerm?.trim()) {
       const term = this.searchTerm.toLowerCase();
@@ -254,5 +260,9 @@ export class ViewBusinessTypeComponent implements OnInit {
 
   showInactive() {
     this.filterMode = 'inactive';
+  }
+ 
+  showall() {
+    this.filterMode = 'all';
   }
 }

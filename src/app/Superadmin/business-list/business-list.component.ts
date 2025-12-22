@@ -50,6 +50,7 @@ export class BusinessListComponent implements OnInit {
     { name: 'state', label: 'State' },
     { name: 'pincode', label: 'Pincode' },
   ];
+  filterMode: 'active' | 'inactive' | 'all'= 'all';
 
   constructor(
     private fb: FormBuilder,
@@ -200,7 +201,7 @@ export class BusinessListComponent implements OnInit {
     );
     modal.show();
   }
-  filterMode: 'active' | 'inactive' = 'active';
+ 
 
   showActive() {
     this.filterMode = 'active';
@@ -208,6 +209,9 @@ export class BusinessListComponent implements OnInit {
 
   showInactive() {
     this.filterMode = 'inactive';
+  }
+   showall() {
+    this.filterMode = 'all';
   }
 
   // filteredBusiness() {
@@ -220,14 +224,18 @@ export class BusinessListComponent implements OnInit {
   //   });
   // }
   filteredBusiness() {
-    let list = [...this.business];
+    let list = this.business;
 
-    list = list.filter((b) => {
-      const status = b.status?.toLowerCase().trim();
-      return this.filterMode === 'active'
-        ? status === 'active'
-        : status === 'inactive';
-    });
+if (this.filterMode === 'active') {
+    list = list.filter(
+      (b) => b.status?.toLowerCase().trim() === 'active'
+    );
+  } 
+  else if (this.filterMode === 'inactive') {
+    list = list.filter(
+      (b) => b.status?.toLowerCase().trim() === 'inactive'
+    );
+  }
 
     if (this.searchTerm?.trim()) {
       const term = this.searchTerm.toLowerCase();

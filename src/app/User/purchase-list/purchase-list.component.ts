@@ -170,8 +170,7 @@ export class PurchaseListComponent implements OnInit {
     });
   }
 
-  updatePurchase() {
-    if (this.editForm.invalid) return;
+  
 
 
  updatePurchase() {
