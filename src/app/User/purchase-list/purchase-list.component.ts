@@ -72,18 +72,18 @@ export class PurchaseListComponent implements OnInit {
       // Item details
       brand_name: ['', [Validators.required, Validators.minLength(3)]],
       item_name: ['', [Validators.required, Validators.minLength(3)]],
-      unit_id: ['', [Validators.required]],
+      unit_id: [''],
       selling_price: ['', [Validators.required]],
       tax_rate: ['', [Validators.required]],
       stock_quantity: ['', [Validators.required]],
       description: ['', [Validators.required]],
       discount: ['', [Validators.required]],
-      status: ['', Validators.required],
+      status: [''],
       item_code: ['', Validators.required],
       purchase_price: ['', Validators.required],
-      category_id: ['', Validators.required],
-      sub_category_id: ['', Validators.required],
-      min_stock_alert: ['', Validators.required],
+      category_id: [''],
+      sub_category_id: [''],
+      min_stock_alert: [''],
       image: [''],
     });
   }
@@ -173,32 +173,39 @@ export class PurchaseListComponent implements OnInit {
   updatePurchase() {
     if (this.editForm.invalid) return;
 
-    const raw = this.editForm.getRawValue();
-    const formData = new FormData();
 
-    Object.entries(raw).forEach(([key, value]) => {
-      if (value !== null && value !== undefined && key !== 'image') {
-        formData.append(key, String(value)); // ✅ FIX
-      }
-    });
+ updatePurchase() {
+  if (this.editForm.invalid) return;
+  
 
-    if (this.selectedFiles?.['image'] instanceof File) {
-      formData.append('image', this.selectedFiles['image']); // ✅ File only
+  const formData = new FormData();
+
+  Object.keys(this.editForm.value).forEach(key => {
+    if (this.editForm.value[key] !== null) {
+      formData.append(key, this.editForm.value[key]);
     }
+  });
 
-    const purchaseId = raw.purchase_id;
+  if (this.selectedFiles['image']) {
+    formData.append('image', this.selectedFiles['image']);
+  }
 
-    this.service.updatePurchase(purchaseId, formData).subscribe({
+  const purchaseId = this.editForm.value.purchase_id;
+
+  this.service.updatePurchase(purchaseId, formData)
+    .subscribe({
       next: () => {
         this.toastr.success('Purchase updated successfully');
-        this.loadPurchases();
+        this.loadPurchases(); 
+        console.log(" UPDATE PURCHASE API HIT ");
       },
-      error: (err) => {
+      error: err => {
         console.error(err);
         this.toastr.error('Update failed');
-      },
+      }
     });
-  }
+}
+
 
   isCreatingInvoice(): boolean {
     return this.router.url.includes('/itemlist/items');

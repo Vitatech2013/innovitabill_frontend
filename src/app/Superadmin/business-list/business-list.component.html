@@ -1,13 +1,32 @@
 <div class="container-fluid scrollable-card">
   <div class="dashboard">
-    <div class="position-fixed top-0 end-0 p-4" style="z-index: 1080">
-      <div *ngIf="toastMessage" class="custom-toast" [ngClass]="toastType">
-        <div class="d-flex justify-content-between align-items-center">
-          <span>{{ toastMessage }}</span>
-          <button class="btn-close ms-3" (click)="toastMessage = null"></button>
+    <div class="position-fixed top-1 end-0 p-1" style="z-index: 1080">
+      <div  class="custom-toast"
+        *ngIf="toastMessage"
+        class="toast align-items-center text-light border-0 fade show shadow-lg"
+        [ngClass]="{
+          'bg-success': toastType === 'success',
+          'bg-danger': toastType === 'error',
+          'bg-warning text-dark': toastType === 'warning'
+        }"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <div class="d-flex">
+          <div class="toast-body fw-semibold">
+            {{ toastMessage }}
+          </div>
+          <button
+            type="button"
+            class="btn-close btn-close-white me-2 m-auto"
+            (click)="toastMessage = null"
+            aria-label="Close"
+          ></button>
         </div>
       </div>
     </div>
+
     <div class="row mb-3">
       <div
         class="col-12 d-flex flex-column flex-md-row align-items-md-center justify-content-between"

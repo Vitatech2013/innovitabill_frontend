@@ -186,7 +186,7 @@
           </div>
 
           <div class="modal-body">
-            <form [formGroup]="editForm" enctype="multipart/form-data">
+            <form [formGroup]="editForm" (ngSubmit)="updatePurchase()" enctype="multipart/form-data">
               <div class="row g-3">
                 <h3 class="fw-bold mt-3">Vendor Details</h3>
                 <div class="col-md-4">
