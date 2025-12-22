@@ -37,7 +37,7 @@ export class ViewBusinessTypeComponent implements OnInit {
   selectedB_type: any;
   searchTerm: string = '';
   inactiveCount: number = 0;
-
+selectedFilter: string = 'All';
   filterMode: 'active' | 'inactive' | 'all'= 'all';
 
   constructor(private fb: FormBuilder, private api: BillingService) {}
@@ -66,7 +66,21 @@ export class ViewBusinessTypeComponent implements OnInit {
       error: (err) => console.error('Fetch error', err),
     });
   }
+changeFilter(value: string) {
+  this.selectedFilter = value;
 
+  switch (value) {
+    case 'All':
+      this.showall();
+      break;
+    case 'Active':
+      this.showActive();
+      break;
+    case 'Inactive':
+      this.showInactive();
+      break;
+  }
+}
   removeLongSpaces(event: any, controlName: string) {
     let value = event.target.value;
 

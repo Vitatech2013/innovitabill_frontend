@@ -50,6 +50,7 @@ export class BusinessListComponent implements OnInit {
     { name: 'state', label: 'State' },
     { name: 'pincode', label: 'Pincode' },
   ];
+  selectedFilter: string = 'All';
   filterMode: 'active' | 'inactive' | 'all'= 'all';
 
   constructor(
@@ -202,7 +203,21 @@ export class BusinessListComponent implements OnInit {
     modal.show();
   }
  
+changeFilter(value: string) {
+  this.selectedFilter = value;
 
+  switch (value) {
+    case 'All':
+      this.showall();
+      break;
+    case 'Active':
+      this.showActive();
+      break;
+    case 'Inactive':
+      this.showInactive();
+      break;
+  }
+}
   showActive() {
     this.filterMode = 'active';
   }
