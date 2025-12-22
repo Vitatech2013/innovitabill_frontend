@@ -37,9 +37,8 @@ export class UsersComponent implements OnInit {
   imageFile: File | null = null;
   idProofFile: File | null = null;
   imageBaseUrl = 'http://localhost:3009/business_images/';
-  imageFileName: string = '';
-idProofFileName: string = '';
-
+existingImageUrl: string | null = null;
+existingIdProofUrl: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -81,7 +80,7 @@ idProofFileName: string = '';
           Validators.required,
           Validators.pattern(
             /^(?!\s)(?!.*\(\s)(?!.*\s\))[a-zA-Z0-9!@#$%^&*(),.?":{}|<>_\-\/\\ ]+$/
-          ),   Validators.pattern(/^(?!\s)(?!.*\s{2,}).+$/),
+          ),
         ],
       ],
       town_Name: ['', Validators.required],
@@ -148,26 +147,64 @@ idProofFileName: string = '';
     );
   }
 
+  // editUser(u: any) {
+  //   this.selectedUserId = u._id; // ✅ USER ID
+
+  //   this.userForm.patchValue({
+  //     user_name: u.user_name,
+  //     user_email: u.user_email,
+  //     phone_number: u.phone_number,
+  //     role_id: u.role_id?._id || '',
+  //     status: u.status,
+  //     house_No: u.address?.house_No,
+  //     town_Name: u.address?.town_Name,
+  //     mandal_Name: u.address?.mandal_Name,
+  //     district_Name: u.address?.district_Name,
+  //     state: u.address?.state,
+  //     pincode: u.address?.pincode,
+  //   });
+
+  //   const modal = new bootstrap.Modal(document.getElementById('editModal'));
+  //   modal.show();
+  // }
   editUser(u: any) {
-    this.selectedUserId = u._id; // ✅ USER ID
+  this.selectedUserId = u._id;
 
-    this.userForm.patchValue({
-      user_name: u.user_name,
-      user_email: u.user_email,
-      phone_number: u.phone_number,
-      role_id: u.role_id?._id || '',
-      status: u.status,
-      house_No: u.address?.house_No,
-      town_Name: u.address?.town_Name,
-      mandal_Name: u.address?.mandal_Name,
-      district_Name: u.address?.district_Name,
-      state: u.address?.state,
-      pincode: u.address?.pincode,
-    });
+  this.userForm.patchValue({
+    user_name: u.user_name,
+    user_email: u.user_email,
+    phone_number: u.phone_number,
+    role_id: u.role_id?._id || '',
+    status: u.status,
+    house_No: u.address?.house_No,
+    town_Name: u.address?.town_Name,
+    mandal_Name: u.address?.mandal_Name,
+    district_Name: u.address?.district_Name,
+    state: u.address?.state,
+    pincode: u.address?.pincode,
+  });
 
-    const modal = new bootstrap.Modal(document.getElementById('editModal'));
-    modal.show();
-  }
+  // ✅ remove password validation in edit
+  this.userForm.get('password')?.clearValidators();
+  this.userForm.get('password')?.updateValueAndValidity();
+
+  // ✅ set existing images
+  this.existingImageUrl = u.image
+    ? this.imageBaseUrl + u.image
+    : null;
+
+  this.existingIdProofUrl = u.id_proof
+    ? this.imageBaseUrl + u.id_proof
+    : null;
+
+  // reset files
+  this.imageFile = null;
+  this.idProofFile = null;
+
+  const modal = new bootstrap.Modal(document.getElementById('editModal'));
+  modal.show();
+}
+
 
   createUser(): void {
     if (this.userForm.invalid) {
@@ -311,6 +348,7 @@ idProofFileName: string = '';
     this.imageFile = event.target.files[0];
     console.log('Selected file:', this.imageFile);
   }
+  
 
   openViewModal(u: any) {
     console.log('VIEW USER DATA', u);
@@ -329,25 +367,6 @@ idProofFileName: string = '';
       modal.show();
     }
   }
-// getUsers() {
-//   this.service.getUser().subscribe((res: any) => {
-//     this.users = (res.data || [])
-//       .map((u: any) => ({
-//         ...u,
-//         imageUrl: this.getImageUrl(u.image),
-//         id_proofUrl: this.getImageUrl(u.id_proof),
-//       }))
-//       .sort(
-//         (a: any, b: any) =>
-//           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-//       );
-
-//     // optional: auto-select latest user
-//     this.selectedUser = this.users.length ? this.users[0] : null;
-//   });
-// }
-
-
 
   confirmDelete() {
     if (!this.selectedUserData?._id) return;
@@ -387,9 +406,11 @@ idProofFileName: string = '';
     if (event.code === 'Space') event.preventDefault();
   }
 
-  showToast(message: string, type: 'success' | 'error' | 'warning') {
-    this.toastMessage = message;
-    this.toastType = type;
-    setTimeout(() => (this.toastMessage = null), 3000);
-  }
+ showToast(message: string, type: 'success' | 'error' | 'warning') {
+  if (this.toastMessage) return; // 🔒 prevents duplicate
+  this.toastMessage = message;
+  this.toastType = type;
+  setTimeout(() => (this.toastMessage = null), 3000);
+}
+
 }
