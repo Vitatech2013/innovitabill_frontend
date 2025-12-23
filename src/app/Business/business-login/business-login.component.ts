@@ -22,6 +22,7 @@ export class BusinessLoginComponent implements OnInit {
   businessForm!: FormGroup;
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
+  showPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -133,6 +134,9 @@ login() {
       }
     },
   });
+}
+  togglePassword() {
+  this.showPassword = !this.showPassword;
 }
 
 

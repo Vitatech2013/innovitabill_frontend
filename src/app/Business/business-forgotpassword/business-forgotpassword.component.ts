@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { BusinessService } from '../../Services/business.service';
 
 
 @Component({
   selector: 'app-business-forgotpassword',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule,RouterLink],
   templateUrl: './business-forgotpassword.component.html',
   styleUrls: ['./business-forgotpassword.component.css']   // ✔ Corrected (styleUrls)
 })

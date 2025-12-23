@@ -26,7 +26,7 @@ export class UsersComponent implements OnInit {
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
   searchTerm: string = '';
-  statusFilter: 'active' | 'inactive'|'all' = 'all';
+  statusFilter: 'active' | 'inactive' | 'all' = 'all';
   users: any[] = [];
   u: any;
   deleteId: string | null = null;
@@ -36,9 +36,8 @@ export class UsersComponent implements OnInit {
   title = 'Add User';
   imageFile: File | null = null;
   idProofFile: File | null = null;
+  selectedUser: any = null;
   imageBaseUrl = 'http://localhost:3009/business_images/';
-existingImageUrl: string | null = null;
-existingIdProofUrl: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -69,7 +68,12 @@ existingIdProofUrl: string | null = null;
       ],
       password: [
         '',
-        [Validators.required, Validators.minLength(4), Validators.maxLength(8),Validators.pattern(/^[A-Za-z0-9]{4,8}$/)],
+        [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(8),
+          Validators.pattern(/^[A-Za-z0-9]{4,8}$/),
+        ],
       ],
       role_id: ['', Validators.required],
       status: ['active'],
@@ -88,6 +92,8 @@ existingIdProofUrl: string | null = null;
       district_Name: ['', Validators.required],
       state: ['', Validators.required],
       pincode: ['', [Validators.required, Validators.pattern(/^[0-9]{6}$/)]],
+      image: [null, Validators.required],
+      id_proof: [null, Validators.required],
     });
 
     this.loadUsers();
@@ -108,10 +114,10 @@ existingIdProofUrl: string | null = null;
       error: (err) => console.error('Error loading users:', err),
     });
   }
-  
 
   openAddModal() {
     this.title = 'Add User';
+    this.selectedUser = null;
     this.selectedUserId = null;
     this.userForm.reset();
     this.imageFile = null;
@@ -143,79 +149,60 @@ existingIdProofUrl: string | null = null;
     );
   }
   filteredByStatus(): any[] {
-     if (this.statusFilter === 'all') {
-    return this.filteredUser();
-  }
+    if (this.statusFilter === 'all') {
+      return this.filteredUser();
+    }
     return this.filteredUser().filter(
       (u: any) => u?.status === this.statusFilter
     );
   }
 
-  // editUser(u: any) {
-  //   this.selectedUserId = u._id; // ✅ USER ID
-
-  //   this.userForm.patchValue({
-  //     user_name: u.user_name,
-  //     user_email: u.user_email,
-  //     phone_number: u.phone_number,
-  //     role_id: u.role_id?._id || '',
-  //     status: u.status,
-  //     house_No: u.address?.house_No,
-  //     town_Name: u.address?.town_Name,
-  //     mandal_Name: u.address?.mandal_Name,
-  //     district_Name: u.address?.district_Name,
-  //     state: u.address?.state,
-  //     pincode: u.address?.pincode,
-  //   });
-
-  //   const modal = new bootstrap.Modal(document.getElementById('editModal'));
-  //   modal.show();
-  // }
   editUser(u: any) {
-  this.selectedUserId = u._id;
+    this.selectedUserId = u._id;
+    this.selectedUser = u;
 
-  this.userForm.patchValue({
-    user_name: u.user_name,
-    user_email: u.user_email,
-    phone_number: u.phone_number,
-    role_id: u.role_id?._id || '',
-    status: u.status,
-    house_No: u.address?.house_No,
-    town_Name: u.address?.town_Name,
-    mandal_Name: u.address?.mandal_Name,
-    district_Name: u.address?.district_Name,
-    state: u.address?.state,
-    pincode: u.address?.pincode,
-  });
+    this.userForm.patchValue({
+      user_name: u.user_name,
+      user_email: u.user_email,
+      phone_number: u.phone_number,
+      role_id: u.role_id?._id || '',
+      status: u.status,
+      house_No: u.address?.house_No,
+      town_Name: u.address?.town_Name,
+      mandal_Name: u.address?.mandal_Name,
+      district_Name: u.address?.district_Name,
+      state: u.address?.state,
+      pincode: u.address?.pincode,
+    });
 
-  // ✅ remove password validation in edit
-  this.userForm.get('password')?.clearValidators();
-  this.userForm.get('password')?.updateValueAndValidity();
+    // ✅ remove password validation in edit
+    this.userForm.get('password')?.clearValidators();
+    this.userForm.get('password')?.updateValueAndValidity();
+    this.userForm.get('image')?.clearValidators();
+    this.userForm.get('image')?.updateValueAndValidity();
 
-  // ✅ set existing images
-  this.existingImageUrl = u.image
-    ? this.imageBaseUrl + u.image
-    : null;
+    this.userForm.get('id_proof')?.clearValidators();
+    this.userForm.get('id_proof')?.updateValueAndValidity();
 
-  this.existingIdProofUrl = u.id_proof
-    ? this.imageBaseUrl + u.id_proof
-    : null;
+    // ✅ set existing images
 
-  // reset files
-  this.imageFile = null;
-  this.idProofFile = null;
+    // reset files
+    this.imageFile = null;
+    this.idProofFile = null;
 
-  const modal = new bootstrap.Modal(document.getElementById('editModal'));
-  modal.show();
-}
-
+    const modal = new bootstrap.Modal(document.getElementById('editModal'));
+    modal.show();
+  }
 
   createUser(): void {
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
-      this.showToast('Please fill all required fields correctly', 'warning');
-      console.log('✅ createUser() fired');
+      this.showToast('Please fill form fields correctly', 'warning');
+      return;
+    }
 
+    if (!this.imageFile || !this.idProofFile) {
+      this.showToast('Image and ID Proof are required', 'warning');
       return;
     }
     if (!this.imageFile || !this.idProofFile) {
@@ -261,6 +248,13 @@ existingIdProofUrl: string | null = null;
         this.idProofFile = null;
 
         this.loadUsers();
+        const modalEl = document.getElementById('AddModal');
+        if (modalEl) {
+          const modalInstance =
+            bootstrap.Modal.getInstance(modalEl) ||
+            new bootstrap.Modal(modalEl);
+          modalInstance.hide();
+        }
       },
       error: (err) => {
         console.error('Create User Error:', err);
@@ -270,24 +264,14 @@ existingIdProofUrl: string | null = null;
     });
   }
 
-  // onImageSelect(event: Event) {
-  //   const input = event.target as HTMLInputElement;
-  //   if (input.files && input.files.length > 0) {
-  //     this.imageFile = input.files[0];
-  //   }
-  // }
-  selectedImageFile: File | null = null;
+  onImageSelect(event: any) {
+    this.imageFile = event.target.files[0];
+    this.userForm.patchValue({ image: this.imageFile });
+  }
 
-onImageSelect(event: any) {
-  this.selectedImageFile = event.target.files[0] || null;
-}
-
-
-  onIdProofSelect(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.idProofFile = input.files[0];
-    }
+  onIdProofSelect(event: any) {
+    this.idProofFile = event.target.files[0];
+    this.userForm.patchValue({ id_proof: this.idProofFile });
   }
 
   saveUser(): void {
@@ -298,14 +282,11 @@ onImageSelect(event: any) {
 
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
-      this.showToast(
-        'Please fill all the required fields correctly',
-        'warning'
-      );
-      console.log('SAVE CLICKED');
+      this.showToast('Please fill form fields correctly', 'warning');
       return;
     }
 
+    
     const formData = new FormData();
 
     formData.append('user_name', this.userForm.value.user_name);
@@ -358,7 +339,6 @@ onImageSelect(event: any) {
     this.imageFile = event.target.files[0];
     console.log('Selected file:', this.imageFile);
   }
-  
 
   openViewModal(u: any) {
     console.log('VIEW USER DATA', u);
@@ -416,11 +396,10 @@ onImageSelect(event: any) {
     if (event.code === 'Space') event.preventDefault();
   }
 
- showToast(message: string, type: 'success' | 'error' | 'warning') {
-  if (this.toastMessage) return; // 🔒 prevents duplicate
-  this.toastMessage = message;
-  this.toastType = type;
-  setTimeout(() => (this.toastMessage = null), 3000);
-}
-
+  showToast(message: string, type: 'success' | 'error' | 'warning') {
+    if (this.toastMessage) return; // 🔒 prevents duplicate
+    this.toastMessage = message;
+    this.toastType = type;
+    setTimeout(() => (this.toastMessage = null), 3000);
+  }
 }
