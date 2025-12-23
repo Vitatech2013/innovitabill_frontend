@@ -6,7 +6,8 @@
   </div>
   <div class="col-sm-9">
     <div class="position-fixed top-1 end-0 p-1" style="z-index: 1080">
-      <div  class="custom-toast"
+      <div
+        class="custom-toast"
         *ngIf="toastMessage"
         class="toast align-items-center text-light border-0 fade show shadow-lg"
         [ngClass]="{
@@ -47,24 +48,35 @@
           [(ngModel)]="searchTerm"
           style="max-width: 250px"
         />
+        <div class="dropdown">
+          <button
+            class="btn side-btn text-dark fw-semibold dropdown-toggle"
+            style="background-color: #f3f4f6"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {{ selectedFilter }}
+          </button>
 
-        <button
-          class="btn side-btn text-dark fw-semibold border-1 me-2"
-          style="background-color: #f3f4f6"
-          (click)="showActive()"
-        >
-          <b><i class="bi bi-check-circle me-1"></i></b>
-          Active
-        </button>
-
-        <button
-          class="btn side-btn text-dark fw-semibold border-1"
-          style="background-color: #f3f4f6"
-          (click)="showInactive()"
-        >
-          <b><i class="bi bi-x-circle me-1"></i></b>
-          Inactive
-        </button>
+          <ul class="dropdown-menu">
+            <li>
+              <button class="dropdown-item" (click)="changeFilter('All')">
+                All
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item" (click)="changeFilter('Active')">
+                Active
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item" (click)="changeFilter('Inactive')">
+                Inactive
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <div class="row table-responsive table-scroll-container">

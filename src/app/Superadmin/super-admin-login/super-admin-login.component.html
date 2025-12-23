@@ -1,44 +1,44 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-success px-3">
-  <nav class="navbar-brand fw-bold" style="cursor: pointer;" routerLink="/home">InnoVita Bill </nav>
-  
+  <span class="navbar-brand fw-bold" style="cursor: pointer" routerLink="/home"
+    >InnoVita Bill
+  </span>
 </nav>
 
 <div class="d-flex justify-content-center align-items-center vh-100">
   <div
-    class="card p-8 "
+    class="card p-8"
     style="
       width: 30rem;
-     
+
       border-radius: 15px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     "
   >
     <div class="container p-3">
       <div class="position-fixed top-0 end-0 p-3" style="z-index: 1080">
-      <div
-  *ngIf="toastMessage"
-  class="toast align-items-center text-white show"
-  [ngClass]="{
-    'bg-success': toastType === 'success',
-    'bg-warning': toastType === 'warning',
-    'bg-danger': toastType === 'error'
-  }"
-  role="alert"
->
-  <div class="d-flex">
-    <div class="toast-body">
-      {{ toastMessage }}
-    </div>
-    <button
-      type="button"
-      class="btn-close btn-close-white me-2 m-auto"
-      (click)="toastMessage = null"
-    ></button>
-  </div>
-</div>
-
+        <div
+          *ngIf="toastMessage"
+          class="toast align-items-center text-white show"
+          [ngClass]="{
+            'bg-success': toastType === 'success',
+            'bg-warning': toastType === 'warning',
+            'bg-danger': toastType === 'error'
+          }"
+          role="alert"
+        >
+          <div class="d-flex">
+            <div class="toast-body">
+              {{ toastMessage }}
+            </div>
+            <button
+              type="button"
+              class="btn-close btn-close-white me-2 m-auto"
+              (click)="toastMessage = null"
+            ></button>
+          </div>
+        </div>
       </div>
-      
+
       <h2 class="title mb-3 p-2 text-center fw-bold text-success">
         Super Admin Login
       </h2>
@@ -101,7 +101,7 @@
             </div>
           </div>
         </div>
-        <a routerLink="/forgot-password" >forgot password?</a>
+        <a routerLink="/forgot-password">forgot password?</a>
 
         <!-- <div class="text-center mt-4 d-flex gap-3">
           <button
@@ -115,22 +115,26 @@
               <i class="bi bi-box-arrow-in-left"></i>
             </button>
         </div> -->
-         <div class="text-center mt-4 d-flex gap-3">
-            <button
-              type="button"
-              class="btn btn-success w-75 g-2"
-              (click)="SuperAdminLogin()"
-            >
-              Login
-            </button>
+        <div class="text-center mt-4 d-flex gap-3">
+          <button
+            type="button"
+            class="btn btn-success w-75 g-2"
+            (click)="SuperAdminLogin()"
+          >
+            Login
+          </button>
 
-            <button type="button" class="btn btn-success " style="width: 60px;" routerLink="/">
-              <i class="bi bi-box-arrow-in-left"></i>
-            </button>
-          </div>
+          <button
+            type="button"
+            class="btn btn-success"
+            style="width: 60px"
+            routerLink="/"
+          >
+            <i class="bi bi-box-arrow-in-left"></i>
+          </button>
+        </div>
       </form>
     </div>
   </div>
 </div>
 <router-outlet></router-outlet>
-

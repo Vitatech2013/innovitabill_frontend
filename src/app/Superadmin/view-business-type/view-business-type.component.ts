@@ -37,8 +37,8 @@ export class ViewBusinessTypeComponent implements OnInit {
   selectedB_type: any;
   searchTerm: string = '';
   inactiveCount: number = 0;
-
-  filterMode: 'active' | 'inactive' = 'active';
+selectedFilter: string = 'All';
+  filterMode: 'active' | 'inactive' | 'all'= 'all';
 
   constructor(private fb: FormBuilder, private api: BillingService) {}
 
@@ -66,7 +66,21 @@ export class ViewBusinessTypeComponent implements OnInit {
       error: (err) => console.error('Fetch error', err),
     });
   }
+changeFilter(value: string) {
+  this.selectedFilter = value;
 
+  switch (value) {
+    case 'All':
+      this.showall();
+      break;
+    case 'Active':
+      this.showActive();
+      break;
+    case 'Inactive':
+      this.showInactive();
+      break;
+  }
+}
   removeLongSpaces(event: any, controlName: string) {
     let value = event.target.value;
 
@@ -229,12 +243,18 @@ export class ViewBusinessTypeComponent implements OnInit {
   }
 
   filteredBusiness() {
-    let list = this.b_types.filter((b) => {
-      const status = b.status?.toLowerCase().trim();
-      return this.filterMode === 'active'
-        ? status === 'active'
-        : status === 'inactive';
-    });
+     let list = this.b_types;
+
+  if (this.filterMode === 'active') {
+    list = list.filter(
+      (b) => b.status?.toLowerCase().trim() === 'active'
+    );
+  } 
+  else if (this.filterMode === 'inactive') {
+    list = list.filter(
+      (b) => b.status?.toLowerCase().trim() === 'inactive'
+    );
+  }
 
     if (this.searchTerm?.trim()) {
       const term = this.searchTerm.toLowerCase();
@@ -254,5 +274,9 @@ export class ViewBusinessTypeComponent implements OnInit {
 
   showInactive() {
     this.filterMode = 'inactive';
+  }
+ 
+  showall() {
+    this.filterMode = 'all';
   }
 }
