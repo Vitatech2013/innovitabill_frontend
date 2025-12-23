@@ -7,12 +7,12 @@
         type="text"
         class="form-control"
         placeholder="Search"
+        onchange="filteredItems()"
         [(ngModel)]="searchTerm"
       />
       <i class="bi bi-search search-icon"></i>
     </div>
 
-    <!-- ITEMS TABLE -->
     <div class="table-responsive mt-2">
       <table class="table table-hover align-middle item-table">
         <thead class="table-light">
@@ -30,12 +30,14 @@
 
         <tbody>
           <tr
-            *ngFor="let it of filteredItems()"
+            *ngFor="let it of items"
             [ngClass]="{
               'stock-low': it.stock_quantity <= 10,
               'stock-medium': it.stock_quantity > 10 && it.stock_quantity <= 15,
               'stock-high': it.stock_quantity > 15
             }"
+            [class.disabled]="it.stock_quantity === 0"
+            class="item-row"
           >
             <td class="image-cell">
               <div class="image-wrapper">
@@ -44,20 +46,6 @@
                   [src]="getImageUrl(it.image)"
                   class="item-img-table"
                 />
-
-                
-                <span
-                  *ngIf="it.stock_quantity < 10"
-                  class="stock-dot red"
-                  title="Critical stock"
-                ></span>
-
-                
-                <span
-                  *ngIf="it.stock_quantity >= 10 && it.stock_quantity < 20"
-                  class="stock-dot orange"
-                  title="Low stock"
-                ></span>
               </div>
             </td>
 
@@ -68,18 +56,7 @@
             <td>{{ it.tax_rate }}%</td>
             <td>
               {{ it.stock_quantity }} {{ it.unit }}
-              <span
-                *ngIf="it.stock_quantity < 10"
-                class="stock-dot red"
-                title="Critical stock"
-              ></span>
-
-              <!-- 🟠 Low stock -->
-              <span
-                *ngIf="it.stock_quantity >= 10 && it.stock_quantity < 20"
-                class="stock-dot orange"
-                title="Low stock"
-              ></span>
+              <span *ngIf="it.stock_quantity === 0" class="disabled"></span>
             </td>
 
             <td>

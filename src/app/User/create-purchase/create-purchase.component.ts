@@ -16,11 +16,11 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './create-purchase.component.html',
-  styleUrls: ['./create-purchase.component.css'], // fixed typo styleUrl -> styleUrls
+  styleUrls: ['./create-purchase.component.css'], 
 })
 export class CreatePurchaseComponent implements OnInit {
   addPurchaseForm!: FormGroup;
-  selectedImage: File | null = null; // use only this variable for selected image
+  selectedImage: File | null = null; 
   business_id = '';
   user_id = '';
   categories: any[] = [];
@@ -78,7 +78,7 @@ export class CreatePurchaseComponent implements OnInit {
       discount: [''],
       min_stock_alert: [''],
       description: [''],
-      // Removed image: [''] from form controls — file input handled separately
+     
     });
 
     this.categoriesGet();
@@ -88,7 +88,6 @@ export class CreatePurchaseComponent implements OnInit {
 
   savePurchase() {
     if (this.addPurchaseForm.invalid) {
-      this.addPurchaseForm.markAllAsTouched();
       return;
     }
 
@@ -131,7 +130,7 @@ export class CreatePurchaseComponent implements OnInit {
     this.selectedImage = null;
   }
 
-  // Updated onFileSelect to set selectedImage
+ 
   onFileSelect(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {

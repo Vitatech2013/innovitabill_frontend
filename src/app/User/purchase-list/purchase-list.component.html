@@ -11,14 +11,14 @@
             type="text"
             class="form-control"
             placeholder="Search"
+            onchange="filteredPurchase()"
             [(ngModel)]="searchTerm"
           />
           <i class="bi bi-search search-icon"></i>
         </div>
       </div>
-
-      <div class="table-wrapper">
-        <div class="table-responsive">
+      <div class="table-responsive">
+        <div class="table-wrapper">
           <table
             class="table table-bordered table-hover align-middle text-center"
           >
@@ -34,7 +34,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let purchase of filteredPurchase()">
+              <tr *ngFor="let purchase of purchases">
                 <td>{{ purchase.vendor_id?.vendor_name }}</td>
                 <td>{{ purchase.vendor_id?.vendor_type }}</td>
                 <td>{{ purchase.item_id?.item_name }}</td>
@@ -55,7 +55,6 @@
                     >
                       <i class="bi bi-pencil"></i>
                     </button>
-                    
                   </div>
                 </td>
               </tr>
@@ -186,7 +185,11 @@
           </div>
 
           <div class="modal-body">
-            <form [formGroup]="editForm" (ngSubmit)="updatePurchase()" enctype="multipart/form-data">
+            <form
+              [formGroup]="editForm"
+              (ngSubmit)="updatePurchase()"
+              enctype="multipart/form-data"
+            >
               <div class="row g-3">
                 <h3 class="fw-bold mt-3">Vendor Details</h3>
                 <div class="col-md-4">

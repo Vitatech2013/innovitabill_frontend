@@ -268,26 +268,7 @@
   border-radius: 6px;
 }
 
-.stock-dot {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  animation: blink 1s infinite;
-  z-index: 10;
-}
 
-.stock-dot.red {
-  background-color: #dc3545;
-  box-shadow: 0 0 6px #dc3545;
-}
-
-.stock-dot.orange {
-  background-color: #ffc107;
-  box-shadow: 0 0 6px #ffc107;
-}
 
 @keyframes blink {
   0% {
@@ -299,4 +280,9 @@
   100% {
     opacity: 1;
   }
+}
+.item-row.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
 }

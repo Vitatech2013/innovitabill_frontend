@@ -30,7 +30,6 @@ export class SaleComponent implements OnInit {
   invoice_number!: string;
   business_id: string = '';
   user_id: string = '';
-
   currentDate = new Date().toLocaleString();
   baseUrl = constants.baseUrl;
 
@@ -150,7 +149,6 @@ export class SaleComponent implements OnInit {
     const customer = this.customerForm.value;
     const invoices: Promise<any>[] = [];
 
-    // Create one invoice per item
     this.cartItems.forEach((item) => {
       const payload = {
         invoice_number: this.generateInvoiceNumber(),
@@ -175,7 +173,6 @@ export class SaleComponent implements OnInit {
       invoices.push(this.service.savesale(payload).toPromise());
     });
 
-    // After saving all invoices → print only ONE bill
     Promise.all(invoices)
       .then(() => {
         this.printBill();

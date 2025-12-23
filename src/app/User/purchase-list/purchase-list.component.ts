@@ -21,7 +21,7 @@ import { Router, RouterOutlet } from '@angular/router';
   styleUrls: ['./purchase-list.component.css'],
 })
 export class PurchaseListComponent implements OnInit {
-  items: any[] = [];
+  purchases: any[] = [];
   editForm!: FormGroup;
   searchTerm: string = '';
   eid: any;
@@ -63,13 +63,13 @@ export class PurchaseListComponent implements OnInit {
       purchase_id: [''],
       vendor_id: [''],
       item_id: [''],
-      // Vendor details
+     
       vendor_name: ['', [Validators.required, Validators.minLength(3)]],
       vendor_type: ['', Validators.required],
       business_category: ['', Validators.required],
       company_registration_number: [''],
 
-      // Item details
+      
       brand_name: ['', [Validators.required, Validators.minLength(3)]],
       item_name: ['', [Validators.required, Validators.minLength(3)]],
       unit_id: [''],
@@ -97,8 +97,8 @@ export class PurchaseListComponent implements OnInit {
     this.service.getPurchases(this.business_id).subscribe({
       next: (res: any) => {
         console.log('Purchases fetched:', res);
-        // Use populated purchases from backend
-        this.items = res?.purchases || [];
+       
+        this.purchases = res?.purchases || [];
       },
       error: (err) => console.error('Error loading Purchases:', err),
     });
@@ -107,7 +107,7 @@ export class PurchaseListComponent implements OnInit {
   editItem(purchase: any) {
     this.eid = purchase._id;
 
-    // Patch vendor details
+   
     this.editForm.patchValue({
       purchase_id: purchase._id,
       vendor_id: purchase.vendor_id?._id,
@@ -118,7 +118,7 @@ export class PurchaseListComponent implements OnInit {
       company_registration_number:
         purchase.vendor_id?.company_registration_number || '',
 
-      // Patch item details
+      
       item_name: purchase.item_id?.item_name || '',
       brand_name: purchase.item_id?.brand_name || '',
       stock_quantity: purchase.item_id?.stock_quantity || '',
@@ -211,7 +211,7 @@ export class PurchaseListComponent implements OnInit {
   }
 
   filteredPurchase() {
-    let data = [...this.items];
+    let data = [...this.purchases];
     data.sort(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()

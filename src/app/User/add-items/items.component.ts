@@ -124,7 +124,6 @@ export class ItemsComponent implements OnInit {
 
     this.categoriesGet();
     this.subCategoriesGet();
-
     this.unitsGet();
   }
 
@@ -173,7 +172,7 @@ export class ItemsComponent implements OnInit {
 
   saveItems() {
     if (this.addItemsForm.invalid) {
-      this.addItemsForm.markAllAsTouched();
+      this.toastr.warning('Please fill all required fields correctly.', 'Warning');
       return;
     }
 
