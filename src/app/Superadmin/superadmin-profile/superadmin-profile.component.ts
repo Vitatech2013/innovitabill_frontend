@@ -27,7 +27,7 @@ export class SuperadminProfileComponent implements OnInit {
   previewUrl: string | ArrayBuffer | null = null;
   private baseUrl = constants.baseUrl;
   addressFields = [
-   { name: 'house_No', label: 'House No' },
+    { name: 'house_No', label: 'House No' },
     { name: 'town_Name', label: 'Town Name' },
     { name: 'mandal_Name', label: 'Mandal' },
     { name: 'district_Name', label: 'District' },
@@ -64,30 +64,8 @@ export class SuperadminProfileComponent implements OnInit {
       }),
       image: [''],
     });
-
-    // this.profileForm = this.fb.group({
-    //   superadmin_name: ['', Validators.required],
-    //   superadmin_number: ['', Validators.required],
-    //   superadmin_mail: ['', [Validators.required, Validators.email]],
-    //   superadmin_password: ['', Validators.required],
-    //   address: this.fb.group({
-    //     house_No: [''],
-    //     town_Name: [''],
-    //     mandal_Name: [''],
-    //     district_Name: [''],
-    //     state: [''],
-    //     pincode: [''],
-    //   }),
-    //   image: [''],
-    // });
-
     this.fetchAdminData();
   }
-
-  // profileedit() {
-  //   if (this.superadminData) this.profileForm.patchValue(this.superadminData);
-  // }
-
   profileedit() {
     console.log(this.superadminData, 'superadmin data');
 
@@ -96,7 +74,7 @@ export class SuperadminProfileComponent implements OnInit {
       superadmin_name: this.superadminData.superadmin_name,
       superadmin_number: this.superadminData.superadmin_number,
       superadmin_mail: this.superadminData.superadmin_mail,
-      
+
       address: this.superadminData.address,
     });
     const modalEl = document.getElementById('editProfileModal');
@@ -128,20 +106,7 @@ export class SuperadminProfileComponent implements OnInit {
       'superadmin_mail',
       this.profileForm.get('superadmin_mail')?.value
     );
-    // formData.append(
-    //   'superadmin_password',
-    //   this.profileForm.get('superadmin_password')?.value
-    // );
-    // const password = this.profileForm.get('superadmin_password')?.value;
-
-    // if (password && password.trim() !== '') {
-    //   formData.append('superadmin_password', password);
-    // }
-    // formData.append(
-    //   'address',
-    //   JSON.stringify(this.profileForm.get('address')?.value)
-    // );
-formData.append('address', JSON.stringify(this.profileForm.value.address));
+    formData.append('address', JSON.stringify(this.profileForm.value.address));
 
     if (this.selectedImage) {
       formData.append('image', this.selectedImage);
@@ -175,10 +140,6 @@ formData.append('address', JSON.stringify(this.profileForm.value.address));
               container.style.filter = 'none';
           }
         });
-        // setTimeout(() => {
-        //   this.router.navigate(['/SuperAdminView/superadminProfile']);
-        // }, 500);
-
         if (this.selectedImage) {
           const reader = new FileReader();
           reader.onload = () => {
@@ -193,12 +154,9 @@ formData.append('address', JSON.stringify(this.profileForm.value.address));
           document.getElementById('editProfileModal')
         );
         bsmodal.hide();
-
-        // window.location.reload();
       },
       error: (err: any) => {
         console.error('Update failed:', err);
-        // alert('Profile update failed! Please try again.');
         this.showToast('Profile update failed! Please try again.', 'Error');
       },
     });
@@ -209,48 +167,40 @@ formData.append('address', JSON.stringify(this.profileForm.value.address));
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 3000);
   }
-fetchAdminData() {
-  if (!this.superadmin_id) return;
+  fetchAdminData() {
+    if (!this.superadmin_id) return;
 
-  this.profileService.getadminprofile(this.superadmin_id).subscribe({
-    next: (res: any) => {
-      this.superadminData = res?.data || res;
+    this.profileService.getadminprofile(this.superadmin_id).subscribe({
+      next: (res: any) => {
+        this.superadminData = res?.data || res;
+        this.previewUrl =
+          this.getImageUrl(this.superadminData.image) + '?t=' + Date.now();
+        this.profileForm.patchValue({
+          superadmin_name: this.superadminData.superadmin_name,
+          superadmin_number: this.superadminData.superadmin_number,
+          superadmin_mail: this.superadminData.superadmin_mail,
+        });
 
-      // Convert image
-      this.previewUrl = this.getImageUrl(this.superadminData.image) + '?t=' + Date.now();
+        let parsedAddress: any = {};
 
-      // Patch simple fields
-      this.profileForm.patchValue({
-        superadmin_name: this.superadminData.superadmin_name,
-        superadmin_number: this.superadminData.superadmin_number,
-        superadmin_mail: this.superadminData.superadmin_mail,
-      });
+        try {
+          parsedAddress = JSON.parse(this.superadminData.address);
+        } catch {
+          parsedAddress = this.superadminData.address;
+        }
 
-      // 🟢 FIX ADDRESS PARSING
-      let parsedAddress: any = {};
-
-      try {
-        parsedAddress = JSON.parse(this.superadminData.address);
-      } catch {
-        parsedAddress = this.superadminData.address; // if already object
-      }
-
-      // Now patch address safely
-      this.profileForm.get('address')?.patchValue({
-        house_No: parsedAddress.house_No || "",
-        town_Name: parsedAddress.town_Name || "",
-        mandal_Name: parsedAddress.mandal_Name || "",
-        district_Name: parsedAddress.district_Name || "",
-        state: parsedAddress.state || "",
-        pincode: parsedAddress.pincode || ""
-      });
-
-    },
-    error: (err) => console.error('Error fetching admin profile:', err),
-  });
-}
-
-
+        this.profileForm.get('address')?.patchValue({
+          house_No: parsedAddress.house_No || '',
+          town_Name: parsedAddress.town_Name || '',
+          mandal_Name: parsedAddress.mandal_Name || '',
+          district_Name: parsedAddress.district_Name || '',
+          state: parsedAddress.state || '',
+          pincode: parsedAddress.pincode || '',
+        });
+      },
+      error: (err) => console.error('Error fetching admin profile:', err),
+    });
+  }
 
   onImageSelected(event: any) {
     const file = event.target.files[0];

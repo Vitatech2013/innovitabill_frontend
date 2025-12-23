@@ -64,7 +64,7 @@ export class AddBusinessTypeComponent implements OnInit {
   getBusinessTypes() {
     this.api.getBusinessTypes().subscribe(
       (res: any) => {
-        this.businessTypes = res.data; // update your table directly
+        this.businessTypes = res.data; 
       },
       (err) => console.error(err)
     );

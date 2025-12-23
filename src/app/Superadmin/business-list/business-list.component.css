@@ -1,3 +1,45 @@
+.position-fixed {
+  z-index: 1080;
+}
+.p1 {
+  width: 100%;
+  max-width: 300px;
+}
+.bg {
+  background-color: #f3f4f6;
+}
+.p3 {
+  max-height: 400px;
+  overflow-y: auto;
+}
+.width {
+  width: 70px;
+}
+.widtha1 {
+  width: 140px;
+}
+.bgcolor {
+  background: #d4f8d4;
+  color: #0a5c0a;
+}
+.width {
+  width: auto;
+}
+
+.bgcolor {
+  background: #d4f8d4;
+  color: #0a5c0a;
+}
+
+.light-green {
+  background: #d4f8d4;
+  color: #0a5c0a;
+}
+
+.actions-col {
+  width: 140px;
+}
+
 .business-table-container {
   background-color: #ffffff;
   border-radius: 12px;
@@ -64,23 +106,9 @@
   padding: 6px 10px;
   font-size: 14px;
   border-radius: 8px;
-  font-weight: 500; 
-  color: #333 !important; 
+  font-weight: 500;
+  color: #333 !important;
 }
-
-/* view modal  */
-/* .modal-xl {
-  max-width: 95% !important;  
-} */
-/* 
-.table {
-  width: 100% !important;      
-  table-layout: auto !important;
-}  */
- /* .modal-dialog {
-  max-width: 98% !important;
-  width: 98% !important;
-}  */
 
 .table1 th,
 .table1 td {
@@ -116,13 +144,6 @@
 .table td a {
   font-weight: 500;
 }
-/* .table td, 
-.table th {
-  white-space: normal !important;
-  word-break: break-word !important;
-} */
-
-
 
 /* tabel */
 .modal-content {
@@ -145,17 +166,13 @@ input[type="file"] {
 .modal-footer {
   border-top: none;
 }
-/* table */
-
-
 
 /* edit */
 .choose-btn {
   cursor: pointer;
-  background: whitesmoke;   
+  background: whitesmoke;
   color: #fff;
- border-radius: 12px;
-  
+  border-radius: 12px;
 }
 
 .choose-btn:hover {
@@ -166,68 +183,51 @@ input[type="file"] {
   display: none;
 }
 
-
-
 /* toastr */
 .custom-toast {
+  min-width: 320px;
   padding: 14px 20px;
-  border-radius: 6px;
-  color: white;
-  min-width: 300px;
+  border-radius: 8px;
   font-size: 15px;
   font-weight: 500;
+  color: #fff !important;
   animation: slide-in 0.4s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  background-image: none !important;
 }
 
 .custom-toast.success {
-  background: #28a745;   
+  background-color: #28a745 !important;
 }
 
 .custom-toast.error {
-  background: #dc3545; 
+  background-color: #dc3545 !important;
 }
 
-@keyframes slide-in {
-  from {
-    transform: translateX(150%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+.custom-toast.warning {
+  background-color: #ffc107 !important;
+  color: #212529 !important;
 }
 
+.toast-wrapper {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 9999;
+}
 
 /* view modal */
-.table-success{
+.table-success {
   background-color: #d4f8d4;
 }
 
-
-/* .table-wrapper {
-  max-height: calc(100vh - 220px);
-  overflow-y: auto;
-  padding-right: 5px;
-}
-
-.table-wrapper::-webkit-scrollbar {
-  width: 2  px;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb {
-  background: #bdbdbd;
-  border-radius: 8px;
-} */
- .scrollable-card {
-  max-height: 80vh; 
+.scrollable-card {
+  max-height: 80vh;
   overflow-y: auto;
 }
 .scrollable-card::-webkit-scrollbar {
   width: 6px;
 }
-
 
 .side-btn {
   background-color: #f3f4f6;
@@ -250,11 +250,11 @@ input[type="file"] {
 }
 
 .table-body-scroll {
-  max-height: 350px;     /* adjust height you want */
+  max-height: 350px;
   overflow-y: auto;
 }
 
 .table-body-scroll table th,
 .table-body-scroll table td {
-  white-space: nowrap;  /* keeps columns aligned */
+  white-space: nowrap;
 }

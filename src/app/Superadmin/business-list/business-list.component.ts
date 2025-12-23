@@ -51,7 +51,7 @@ export class BusinessListComponent implements OnInit {
     { name: 'pincode', label: 'Pincode' },
   ];
   selectedFilter: string = 'All';
-  filterMode: 'active' | 'inactive' | 'all'= 'all';
+  filterMode: 'active' | 'inactive' | 'all' = 'all';
 
   constructor(
     private fb: FormBuilder,
@@ -71,7 +71,10 @@ export class BusinessListComponent implements OnInit {
       business_name: ['', [Validators.required, Validators.minLength(3)]],
       owner_name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      phone_number: ['', [Validators.required,Validators.pattern(/^[0-9]{10}$/)]],
+      phone_number: [
+        '',
+        [Validators.required, Validators.pattern(/^[0-9]{10}$/)],
+      ],
 
       registration_number: ['', [Validators.required, Validators.minLength(3)]],
       gst_number: ['', [Validators.required, Validators.minLength(3)]],
@@ -122,36 +125,7 @@ export class BusinessListComponent implements OnInit {
     });
   }
 
-  //   onAddressKeyPress(event: KeyboardEvent, fieldName: string) {
-  //   const key = event.key;
-
-  //    if (fieldName === 'house_No') {
-  //     const regex = /^[a-zA-Z0-9\-\/]$/;
-  //     if (!regex.test(key)) {
-  //       event.preventDefault();
-  //     }
-  //     return;
-  //   }
-
-  //   if (fieldName === 'pincode') {
-  //     const regex = /^[0-9]$/;
-  //     if (!regex.test(key)) {
-  //       event.preventDefault();
-  //     }
-  //     return;
-  //   }
-
-  //   const regex = /^[a-zA-Z ]$/;
-  //   if (!regex.test(key)) {
-  //     event.preventDefault();
-  //   }
-  // }
-
-  //   getBusinessTypeName(id: string) {
-  //   const type = this.businessTypes.find(t => t._id === id);
-  //   return type ? type.business_type : '';
-  // }
-  sanitizeAddressInput(event: any, fieldName: string) {
+  AddressInput(event: any, fieldName: string) {
     let value = event.target.value;
     if (fieldName === 'pincode') {
       value = value.replace(/[^0-9]/g, '');
@@ -202,22 +176,22 @@ export class BusinessListComponent implements OnInit {
     );
     modal.show();
   }
- 
-changeFilter(value: string) {
-  this.selectedFilter = value;
 
-  switch (value) {
-    case 'All':
-      this.showall();
-      break;
-    case 'Active':
-      this.showActive();
-      break;
-    case 'Inactive':
-      this.showInactive();
-      break;
+  changeFilter(value: string) {
+    this.selectedFilter = value;
+
+    switch (value) {
+      case 'All':
+        this.showall();
+        break;
+      case 'Active':
+        this.showActive();
+        break;
+      case 'Inactive':
+        this.showInactive();
+        break;
+    }
   }
-}
   showActive() {
     this.filterMode = 'active';
   }
@@ -225,32 +199,18 @@ changeFilter(value: string) {
   showInactive() {
     this.filterMode = 'inactive';
   }
-   showall() {
+  showall() {
     this.filterMode = 'all';
   }
 
-  // filteredBusiness() {
-  //   return this.business.filter(b => {
-  //     if (this.filterMode === 'active') {
-  //       return b.status === 'Active';
-  //     } else {
-  //       return b.status === 'Inactive';
-  //     }
-  //   });
-  // }
   filteredBusiness() {
     let list = this.business;
 
-if (this.filterMode === 'active') {
-    list = list.filter(
-      (b) => b.status?.toLowerCase().trim() === 'active'
-    );
-  } 
-  else if (this.filterMode === 'inactive') {
-    list = list.filter(
-      (b) => b.status?.toLowerCase().trim() === 'inactive'
-    );
-  }
+    if (this.filterMode === 'active') {
+      list = list.filter((b) => b.status?.toLowerCase().trim() === 'active');
+    } else if (this.filterMode === 'inactive') {
+      list = list.filter((b) => b.status?.toLowerCase().trim() === 'inactive');
+    }
 
     if (this.searchTerm?.trim()) {
       const term = this.searchTerm.toLowerCase();
@@ -268,12 +228,6 @@ if (this.filterMode === 'active') {
 
     return list;
   }
-
-  // openViewModal(b: any) {
-  //   this.selectedBusiness = b;
-  //   const modal = new bootstrap.Modal(document.getElementById('viewModal'));
-  //   modal.show();
-  // }
   openViewModal(b: any) {
     this.selectedBusiness = { ...b };
 
@@ -384,17 +338,6 @@ if (this.filterMode === 'active') {
     const addr = businessForm.address;
     let parsedAddress: any = {};
 
-    // if (typeof addr === "string") {
-    //   const parts = addr.split(",");
-    //   parsedAddress = {
-    //     house_No: parts[0]?.trim() || "",
-    //     town_Name: parts[1]?.trim() || "",
-    //     mandal_Name: parts[2]?.trim() || "",
-    //     district_Name: parts[3]?.trim() || "",
-    //     state: parts[4]?.trim() || "",
-    //     pincode: parts[5]?.trim() || ""
-    //   };
-    // }
     for (const key in businessForm.address) {
       formData.append(`address[${key}]`, businessForm.address[key]);
     }

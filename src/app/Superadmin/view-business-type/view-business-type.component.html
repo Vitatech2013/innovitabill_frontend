@@ -5,7 +5,7 @@
     </div>
   </div>
   <div class="col-sm-9">
-    <div class="position-fixed top-1 end-0 p-1" style="z-index: 1080">
+    <div class="position-fixed top-1 end-0 p-1">
       <div
         class="custom-toast"
         *ngIf="toastMessage"
@@ -43,15 +43,13 @@
 
         <input
           type="text"
-          class="form-control shadow-sm"
+          class="form-control shadow-sm width"
           placeholder="Search..."
           [(ngModel)]="searchTerm"
-          style="max-width: 250px"
         />
         <div class="dropdown">
           <button
-            class="btn side-btn text-dark fw-semibold dropdown-toggle"
-            style="background-color: #f3f4f6"
+            class="btn side-btn text-dark fw-semibold dropdown-toggle bg"
             type="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
@@ -83,11 +81,11 @@
         <table class="table table-bordered table-hover shadow-sm">
           <thead class="table-success text-center">
             <tr>
-              <th style="background: #d4f8d4; color: #0a5c0a">S.no</th>
-              <th style="background: #d4f8d4; color: #0a5c0a">Business Type</th>
-              <th style="background: #d4f8d4; color: #0a5c0a">Business Code</th>
-              <th style="background: #d4f8d4; color: #0a5c0a">Status</th>
-              <th style="background: #d4f8d4; color: #0a5c0a">Actions</th>
+              <th class="color">S.no</th>
+              <th class="color">Business Type</th>
+              <th class="color">Business Code</th>
+              <th class="color">Status</th>
+              <th class="color">Actions</th>
             </tr>
           </thead>
           <tbody class="text-center">
@@ -117,7 +115,7 @@
         </table>
       </div>
     </div>
-
+    <!-- Edit -->
     <div
       class="modal fade"
       #roleModal
@@ -139,7 +137,7 @@
                 (click)="closeModal()"
               ></button>
             </div>
-
+            <!-- Name -->
             <div class="modal-body">
               <div class="mb-3">
                 <label class="form-label">Business Type</label>
@@ -165,7 +163,7 @@
                   >
                 </div>
               </div>
-
+              <!-- Business code -->
               <div class="mb-3">
                 <label class="form-label">business_code</label>
                 <input
@@ -184,7 +182,7 @@
                   <small
                     *ngIf="b_typeForm.controls['business_code']?.errors?.['required']"
                     class="text-danger"
-                    >Role Number is required</small
+                    >Code Number is required</small
                   >
                 </div>
               </div>

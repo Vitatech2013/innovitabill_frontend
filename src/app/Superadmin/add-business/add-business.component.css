@@ -1,3 +1,6 @@
+.position-fixed {
+  z-index: 1080;
+}
 .small-card {
   max-width: 1300px;
   margin: auto;
@@ -11,15 +14,15 @@
   font-size: 15px;
   font-weight: 500;
   animation: slide-in 0.4s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 .custom-toast.success {
-  background: #28a745; 
+  background: #28a745;
 }
 
 .custom-toast.error {
-  background: #dc3545; 
+  background: #dc3545;
 }
 
 @keyframes slide-in {
@@ -32,34 +35,36 @@
     opacity: 1;
   }
 }
- .scrollable-card {
-  max-height: 80vh; 
+.scrollable-card {
+  max-height: 80vh;
   overflow-y: auto;
 }
 .scrollable-card::-webkit-scrollbar {
   width: 6px;
 }
 
-
-
 /* Prevent page scrolling */
 body {
   overflow: hidden;
 }
 
-/* Card scroll only */
 .business-card {
-  height: calc(100vh - 180px); /* adjust based on header */
+  height: calc(100vh - 180px);
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-/* Smooth scrolling */
 .business-card::-webkit-scrollbar {
   width: 6px;
 }
 
 .business-card::-webkit-scrollbar-thumb {
-  
   border-radius: 10px;
+}
+
+.p1 {
+  font-size: medium;
+}
+.p2 {
+  height: 45px;
 }

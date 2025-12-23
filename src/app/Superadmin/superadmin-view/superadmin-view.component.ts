@@ -36,27 +36,20 @@ export class SuperadminViewComponent implements OnInit {
 
     this.superadminName = parsed.superadmin_name;
 
-     const message = sessionStorage.getItem('toastMessage');
-  const type = sessionStorage.getItem('toastType') as
-    | 'success'
-    | 'warning'
-    | 'error';
+    const message = sessionStorage.getItem('toastMessage');
+    const type = sessionStorage.getItem('toastType') as
+      | 'success'
+      | 'warning'
+      | 'error';
 
-  if (message) {
-    this.showToast(message, type || 'success');
+    if (message) {
+      this.showToast(message, type || 'success');
 
-  
-    sessionStorage.removeItem('toastMessage');
-    sessionStorage.removeItem('toastType');
+      sessionStorage.removeItem('toastMessage');
+      sessionStorage.removeItem('toastType');
+    }
   }
-    // const nav = this.router.getCurrentNavigation();
-    // const state = nav?.extras?.state as { toast?: string };
-
-    // if (state?.toast) {
-    //   this.showToast(state.toast, 'success');
-    // }
-  }
-    showToast(message: string, type: 'success' | 'error' | 'warning') {
+  showToast(message: string, type: 'success' | 'error' | 'warning') {
     this.toastMessage = message;
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 2000);

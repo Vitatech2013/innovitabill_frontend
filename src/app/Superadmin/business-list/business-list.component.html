@@ -1,29 +1,26 @@
 <div class="container-fluid scrollable-card">
   <div class="dashboard">
-    <div class="position-fixed top-1 end-0 p-1" style="z-index: 1080">
-      <div
-        class="custom-toast"
-        *ngIf="toastMessage"
-        class="toast align-items-center text-light border-0 fade show shadow-lg"
-        [ngClass]="{
-          'bg-success': toastType === 'success',
-          'bg-danger': toastType === 'error',
-          'bg-warning text-dark': toastType === 'warning'
-        }"
-        role="alert"
-        aria-live="assertive"
-        aria-atomic="true"
-      >
-        <div class="d-flex">
-          <div class="toast-body fw-semibold">
-            {{ toastMessage }}
+    <div class="position-fixed top-0 end-0 p-3">
+      <div class="toast-wrapper">
+        <div
+          *ngIf="toastMessage"
+          class="custom-toast toast shadow-lg"
+          [ngClass]="{
+            success: toastType === 'success',
+            error: toastType === 'error',
+            warning: toastType === 'warning'
+          }"
+        >
+          <div class="d-flex align-items-center">
+            <div class="toast-body fw-semibold">
+              {{ toastMessage }}
+            </div>
+            <button
+              type="button"
+              class="btn-close btn-close-white ms-2"
+              (click)="toastMessage = null"
+            ></button>
           </div>
-          <button
-            type="button"
-            class="btn-close btn-close-white me-2 m-auto"
-            (click)="toastMessage = null"
-            aria-label="Close"
-          ></button>
         </div>
       </div>
     </div>
@@ -38,15 +35,13 @@
 
         <input
           type="text"
-          class="form-control shadow-sm mb-2 mb-md-0 mx-md-3"
+          class="form-control shadow-sm mb-2 mb-md-0 mx-md-3 p1"
           placeholder="Search.."
           [(ngModel)]="searchTerm"
-          style="width: 100%; max-width: 300px"
         />
         <div class="dropdown">
           <button
-            class="btn side-btn text-dark fw-semibold dropdown-toggle"
-            style="background-color: #f3f4f6"
+            class="btn side-btn text-dark fw-semibold dropdown-toggle bg"
             type="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
@@ -72,36 +67,10 @@
             </li>
           </ul>
         </div>
-        <!-- <button
-          class="btn side-btn text-dark fw-semibold border-1 me-2"
-          style="background-color: #f3f4f6"
-          (click)="showall()"
-        >
-          <b><i class="bi bi-check-circle me-1"></i></b>
-         all
-        </button>
-        <button
-          class="btn side-btn text-dark fw-semibold border-1 me-2"
-          style="background-color: #f3f4f6"
-          (click)="showActive()"
-        >
-          <b><i class="bi bi-check-circle me-1"></i></b>
-          Active
-        </button>
-
-        <button
-          class="btn side-btn text-dark fw-semibold border-1"
-          style="background-color: #f3f4f6"
-          (click)="showInactive()"
-        >
-          <b><i class="bi bi-x-circle me-1"></i></b>
-          Inactive
-        </button> -->
         <a
-          class="btn side-btn text-dark fw-semibold border-1"
+          class="btn side-btn text-dark fw-semibold border-1 bg"
           routerLink="/SuperAdminView/add-business"
           routerLinkActive="active-btn"
-          style="background-color: #f3f4f6"
         >
           <b><i class="bi bi-plus-circle me-1"></i></b> Add Business
         </a>
@@ -117,35 +86,18 @@
 
       <div class="col-12" *ngIf="business.length > 0">
         <div class="table-wrapper">
-          <div
-            class="table-responsive bg-white p-3 rounded-4"
-            style="max-height: 400px; overflow-y: auto"
-          >
+          <div class="table-responsive bg-white p-3 rounded-4 p3">
             <table class="table table-hover table-bordered align-middle">
-              <thead class="table-success text-center">
+              <thead class="table-success text-center custom-thead">
                 <tr>
-                  <th
-                    style="width: 70px"
-                    style="background: #d4f8d4; color: #0a5c0a"
-                  >
-                    S. No
-                  </th>
-                  <th style="background: #d4f8d4; color: #0a5c0a">
-                    Business Name
-                  </th>
-                  <th style="background: #d4f8d4; color: #0a5c0a">Owner</th>
-                  <th style="background: #d4f8d4; color: #0a5c0a">Email</th>
-                  <th style="background: #d4f8d4; color: #0a5c0a">Phone</th>
-                  <th style="background: #d4f8d4; color: #0a5c0a">
-                    Business Type
-                  </th>
-                  <th style="background: #d4f8d4; color: #0a5c0a">Status</th>
-                  <th
-                    style="width: 140px"
-                    style="background: #d4f8d4; color: #0a5c0a"
-                  >
-                    Actions
-                  </th>
+                  <th class="width light-green">S. No</th>
+                  <th class="width light-green">Business Name</th>
+                  <th class="width light-green">Owner</th>
+                  <th class="light-green">Email</th>
+                  <th class="light-green">Phone</th>
+                  <th class="light-green">Business Type</th>
+                  <th class="light-green">Status</th>
+                  <th class="actions-col light-green">Actions</th>
                 </tr>
               </thead>
 
@@ -352,6 +304,7 @@
             <form [formGroup]="BusinessForm" enctype="multipart/form-data">
               <h6 class="fw-bold text-success mb-3">Business Details</h6>
               <div class="row g-3 mb-3">
+                <!--  Name -->
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">Business Name</label>
                   <input
@@ -362,7 +315,7 @@
                     (input)="sanitizeNameInput($event, 'business_name')"
                   />
                 </div>
-
+                <!-- Business Types -->
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">Business Type</label>
                   <select class="form-select" formControlName="bt_id">
@@ -389,7 +342,7 @@
                     >
                   </div>
                 </div>
-
+                <!--  Owner Nmae -->
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">Owner Name</label>
                   <input
@@ -399,7 +352,7 @@
                     (input)="sanitizeNameInput($event, 'owner_name')"
                   />
                 </div>
-
+                <!--  Email -->
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">Email</label>
                   <input
@@ -408,7 +361,7 @@
                     formControlName="email"
                   />
                 </div>
-
+                <!-- Phone number -->
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">Phone Number</label>
                   <input
@@ -422,20 +375,7 @@
                   />
                 </div>
 
-                <!-- </div> -->
-
-                <!-- <h6 class="fw-bold text-success mb-3 mt-4">Business Details</h6>
-              <div class="row g-3 mb-3"> -->
-
-                <!-- <div class="col-md-4">
-                  <label class="form-label fw-semibold">Business Address</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="address"
-                  />
-                </div> -->
-
+                <!-- Register Number -->
                 <div class="col-md-4">
                   <label class="form-label fw-semibold"
                     >Registration Number</label
@@ -448,7 +388,7 @@
                     (input)="removeLongSpaces($event, 'registration_number')"
                   />
                 </div>
-
+                <!--  Gst Number -->
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">GST Number</label>
                   <input
@@ -462,6 +402,7 @@
                     GST Number is required
                   </small>
                 </div>
+                <!-- Status -->
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">Status</label>
                   <select class="form-select" formControlName="status">
@@ -472,7 +413,7 @@
                   </select>
                 </div>
               </div>
-
+              <!--  Address -->
               <h6 class="fw-bold mt-3">Address</h6>
 
               <div formGroupName="address" class="row">
@@ -485,38 +426,14 @@
                     type="text"
                     class="form-control"
                     [formControlName]="field.name"
-                    (input)="sanitizeAddressInput($event, field.name)"
+                    (input)="AddressInput($event, field.name)"
                   />
                 </div>
               </div>
-
-              <!-- <div formGroupName="address" class="row">
-        <div class="col-md-3 mb-4" *ngFor="let field of addressFields">
-          <label class="form-label fw-semibold" style="font-size: medium;">
-            {{ field.label }}<span class="text-danger">*</span></label
-          >
-          <input
-            type="text"
-            class="form-control"
-            [formControlName]="field.name"
-            placeholder="Enter {{ field.label }}"
-            (keydown)="preventSpace($event)"
-             style="height: 45px;"
-          />
-          <div
-            class="text-danger small mt-1"
-            *ngIf="
-              addBusinessForm.get('address.' + field.name)?.invalid &&
-              addBusinessForm.get('address.' + field.name)?.touched
-            "
-          >
-            {{ field.label }} is required.
-          </div>
-        </div>
-      </div> -->
-
+              <!-- Docments -->
               <h6 class="fw-bold text-success mb-3 mt-4">Documents</h6>
               <div class="row g-3">
+                <!-- Logo -->
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">LOGO</label>
 
@@ -537,7 +454,7 @@
                     />
                   </div>
                 </div>
-
+                <!--  Pan Pdf -->
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">PAN</label>
                   <div class="input-group">
@@ -557,7 +474,7 @@
                     />
                   </div>
                 </div>
-
+                <!-- Aadhar pdf -->
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">Aadhar</label>
                   <div class="input-group">
@@ -577,7 +494,7 @@
                     />
                   </div>
                 </div>
-
+                <!--  Certificate Pdf -->
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">Certificate</label>
 
@@ -624,7 +541,7 @@
         </div>
       </div>
     </div>
-
+    <!-- Confirm Delete -->
     <div
       class="modal fade"
       id="deleteBusinessModal"

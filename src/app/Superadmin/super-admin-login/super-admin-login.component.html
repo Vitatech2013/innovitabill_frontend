@@ -1,21 +1,13 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-success px-3">
-  <span class="navbar-brand fw-bold" style="cursor: pointer" routerLink="/home"
+  <span class="navbar-brand fw-bold body" routerLink="/home"
     >InnoVita Bill
   </span>
 </nav>
 
 <div class="d-flex justify-content-center align-items-center vh-100">
-  <div
-    class="card p-8"
-    style="
-      width: 30rem;
-
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    "
-  >
+  <div class="card p-8">
     <div class="container p-3">
-      <div class="position-fixed top-0 end-0 p-3" style="z-index: 1080">
+      <div class="position-fixed top-0 end-0 p-3">
         <div
           *ngIf="toastMessage"
           class="toast align-items-center text-white show"
@@ -44,6 +36,7 @@
       </h2>
 
       <form [formGroup]="superAdminForm" class="mb-3">
+        <!-- Email -->
         <div class="row mb-3 align-items-center">
           <label for="email" class="col-sm-3 col-form-label">Email</label>
           <div class="col-sm-11">
@@ -72,7 +65,7 @@
             </div>
           </div>
         </div>
-
+        <!-- password -->
         <div class="row mb-3 align-items-center">
           <label for="password" class="col-sm-3 col-form-label">Password</label>
           <div class="col-sm-11">
@@ -103,18 +96,6 @@
         </div>
         <a routerLink="/forgot-password">forgot password?</a>
 
-        <!-- <div class="text-center mt-4 d-flex gap-3">
-          <button
-            type="button"
-            class="btn btn-success mt-5 w-75 g-2"
-            (click)="SuperAdminLogin()"
-          >
-            Login
-          </button>
-        <button type="button" class="btn btn-success " routerLink="/">
-              <i class="bi bi-box-arrow-in-left"></i>
-            </button>
-        </div> -->
         <div class="text-center mt-4 d-flex gap-3">
           <button
             type="button"
@@ -127,7 +108,6 @@
           <button
             type="button"
             class="btn btn-success"
-            style="width: 60px"
             routerLink="/"
           >
             <i class="bi bi-box-arrow-in-left"></i>
