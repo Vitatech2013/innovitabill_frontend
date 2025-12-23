@@ -41,6 +41,16 @@
     />
 
     <!-- Add Button -->
+     <button
+          class="btn"
+          [ngClass]="
+            statusFilter === 'all' ? 'btn-light' : 'btn btn-light'
+          "
+          (click)="statusFilter = 'all'"
+        >
+          <i class="bi bi-check-circle"></i>
+          All
+        </button>
     <button
       class="btn"
       [ngClass]="statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'"
