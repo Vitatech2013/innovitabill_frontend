@@ -7,23 +7,24 @@
 }
 @media (max-width: 576px) {
   .item-button button {
-    margin-bottom: 10px; 
-    width: 100%;        
+    margin-bottom: 10px;
+    width: 100%;
   }
-  
+
   .item-button button.me-2 {
-    margin-right: 0;    
+    margin-right: 0;
   }
-  
+
   .item-button {
     display: flex;
-    flex-direction: column; 
-    align-items: stretch;   
+    flex-direction: column;
+    align-items: stretch;
   }
 }
-.ietm-form{
+.ietm-form {
   border: 2px black solid;
 }
-.form-control, .form-select{
+.form-control,
+.form-select {
   border: 1px black solid;
 }

@@ -36,10 +36,9 @@ import { UserDashboardComponent } from './User/user-dashboard/user-dashboard.com
 import { CreatePurchaseComponent } from './User/create-purchase/create-purchase.component';
 import { PurchaseListComponent } from './User/purchase-list/purchase-list.component';
 
-
-
 export const routes: Routes = [
-   { path: '', redirectTo: 'SuperAdminLogin', pathMatch: 'full' },
+  { path: '', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
@@ -64,8 +63,8 @@ export const routes: Routes = [
     path: 'userview',
     component: UserViewComponent,
     children: [
-      {path:'', component:UserDashboardComponent},
-      {path:'userdashboard',component:UserDashboardComponent},
+      { path: '', component: UserDashboardComponent },
+      { path: 'userdashboard', component: UserDashboardComponent },
       { path: 'createsale', component: SaleComponent },
       { path: 'userprofile', component: UserProfileComponent },
       {
@@ -78,14 +77,14 @@ export const routes: Routes = [
         path: 'saleslist',
         component: SalesComponent,
       },
-      {path:'purchaselist',component:PurchaseListComponent},
+      { path: 'purchaselist', component: PurchaseListComponent },
       { path: 'salereports', component: SaleReportsComponent },
       {
         path: 'sale',
         component: SaleComponent,
       },
       { path: 'quotation', component: QuotationComponent },
-      {path:'purchase',component:CreatePurchaseComponent}
+      { path: 'purchase', component: CreatePurchaseComponent },
     ],
   },
 
@@ -109,8 +108,4 @@ export const routes: Routes = [
       { path: 'sub-categories', component: SubCategoriesComponent },
     ],
   },
-
-  { path: '', component: HomeComponent },
-  { path: 'home', component: HomeComponent },
 ];
-

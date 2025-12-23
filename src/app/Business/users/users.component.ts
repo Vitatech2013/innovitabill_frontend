@@ -26,7 +26,7 @@ export class UsersComponent implements OnInit {
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
   searchTerm: string = '';
-  statusFilter: 'active' | 'inactive' = 'active';
+  statusFilter: 'active' | 'inactive'|'all' = 'all';
   users: any[] = [];
   u: any;
   deleteId: string | null = null;
@@ -108,6 +108,7 @@ existingIdProofUrl: string | null = null;
       error: (err) => console.error('Error loading users:', err),
     });
   }
+  
 
   openAddModal() {
     this.title = 'Add User';
@@ -142,6 +143,9 @@ existingIdProofUrl: string | null = null;
     );
   }
   filteredByStatus(): any[] {
+     if (this.statusFilter === 'all') {
+    return this.filteredUser();
+  }
     return this.filteredUser().filter(
       (u: any) => u?.status === this.statusFilter
     );
@@ -266,12 +270,18 @@ existingIdProofUrl: string | null = null;
     });
   }
 
-  onImageSelect(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.imageFile = input.files[0];
-    }
-  }
+  // onImageSelect(event: Event) {
+  //   const input = event.target as HTMLInputElement;
+  //   if (input.files && input.files.length > 0) {
+  //     this.imageFile = input.files[0];
+  //   }
+  // }
+  selectedImageFile: File | null = null;
+
+onImageSelect(event: any) {
+  this.selectedImageFile = event.target.files[0] || null;
+}
+
 
   onIdProofSelect(event: Event) {
     const input = event.target as HTMLInputElement;

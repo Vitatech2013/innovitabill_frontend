@@ -29,7 +29,7 @@ toastMessage: any;
 toastType: any;
   selectedId: any;
   searchTerm: string = '';
-  statusFilter: 'active' | 'inactive' = 'active';
+  statusFilter: 'active' | 'inactive'|'all' = 'all';
 
   constructor(private api: BillingService, private fb: FormBuilder) {}
 
@@ -71,7 +71,6 @@ toastType: any;
           (a: any, b: any) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
-
       console.log('Categories Loaded (Latest First):', this.categories);
     },
     error: (err) => console.error('Error Loading:', err),
@@ -194,6 +193,9 @@ onNameInput(event: any, controlName: string) {
     );
   }
   filteredByStatus(): any[] {
+    if (this.statusFilter === 'all') {
+    return this.filteredUser();
+  }
   return this.filteredUser().filter(
     (u: any) => u?.status === this.statusFilter
   );
