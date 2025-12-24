@@ -202,7 +202,9 @@ input[type="file"] {
 
 .custom-toast.error {
   background-color: #dc3545 !important;
+  color: white !important;
 }
+
 
 .custom-toast.warning {
   background-color: #ffc107 !important;
@@ -258,3 +260,11 @@ input[type="file"] {
 .table-body-scroll table td {
   white-space: nowrap;
 }
+
+
+
+
+
+
+
+
