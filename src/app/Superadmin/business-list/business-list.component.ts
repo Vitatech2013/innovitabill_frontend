@@ -53,6 +53,8 @@ export class BusinessListComponent implements OnInit {
   selectedFilter: string = 'All';
   filterMode: 'active' | 'inactive' | 'all' = 'all';
 
+
+
   constructor(
     private fb: FormBuilder,
     private api: BillingService,
@@ -151,23 +153,47 @@ export class BusinessListComponent implements OnInit {
     return control ? control.touched && control.invalid : false;
   }
 
+  // loadBusiness() {
+  //   this.api.getBusiness(this.businessID).subscribe({
+  //     next: (res: any) => {
+  //       this.business = res.data || [];
+
+  //       this.business.sort(
+  //         (a: any, b: any) =>
+  //           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  //       );
+
+  //       console.log('Sorted business list:', this.business);
+  //     },
+  //     error: (err) => {
+  //       console.error('Error loading business:', err);
+  //     },
+  //   });
+  // }
   loadBusiness() {
-    this.api.getBusiness(this.businessID).subscribe({
-      next: (res: any) => {
-        this.business = res.data || [];
+  this.api.getBusiness(this.businessID).subscribe({
+    next: (res: any) => {
+      this.business = (res.data || []).map((b: any) => {
+        const status = b.status?.toLowerCase();
 
-        this.business.sort(
-          (a: any, b: any) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
+        return {
+          ...b,
+          enable: status !== 'active',
+          disable: status === 'active'
+        };
+      });
 
-        console.log('Sorted business list:', this.business);
-      },
-      error: (err) => {
-        console.error('Error loading business:', err);
-      },
-    });
-  }
+      this.business.sort(
+        (a: any, b: any) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+    },
+    error: (err) => {
+      console.error('Error loading business:', err);
+    },
+  });
+}
+
 
   openImageModal(imageUrl: string) {
     this.selectedImage = imageUrl || 'assets/default-business.jpg';
@@ -491,6 +517,24 @@ export class BusinessListComponent implements OnInit {
       modal.show();
     }
   }
+changeStatus(id: string, status: string) {
+  this.api.updateBusiness(id, { status }).subscribe({
+    next: () => {
+      this.showToast(
+        status === 'active'
+          ? 'Business enabled successfully'
+          : 'Business disabled successfully',
+        'success'
+      );
+      this.loadBusiness(); // refresh list
+    },
+    error: (err) => {
+      console.error(err);
+      this.showToast('Status update failed', 'error');
+    }
+  });
+}
+
 
   deleteBusiness(id?: string | null) {
     if (!id) return;

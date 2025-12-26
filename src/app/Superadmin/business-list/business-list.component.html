@@ -96,6 +96,7 @@
                   <th class="light-green">Email</th>
                   <th class="light-green">Phone</th>
                   <th class="light-green">Business Type</th>
+                  <th class="light-green">Enable</th>
                   <th class="light-green">Status</th>
                   <th class="actions-col light-green">Actions</th>
                 </tr>
@@ -109,6 +110,28 @@
                   <td>{{ b.email }}</td>
                   <td>{{ b.phone_number }}</td>
                   <td>{{ getBusinessTypeName(b.bt_id) }}</td>
+                  
+                  
+<td>
+  <!-- ENABLE -->
+  <button
+    *ngIf="b.enable"
+    class="btn btn-success btn-sm me-2"
+    (click)="changeStatus(b._id, 'active')"
+  >
+    Enable
+  </button>
+
+  <!-- DISABLE -->
+  <button
+    *ngIf="b.disable"
+    class="btn btn-danger btn-sm"
+    (click)="changeStatus(b._id, 'inactive')"
+  >
+    Disable
+  </button>
+</td>
+
                   <td>
                     <span
                       class="badge px-3 py-2"
