@@ -41,6 +41,8 @@ export class ItemListComponent implements OnInit {
   users: any;
   categories: any[] = [];
   units: any;
+  selectedFilter: string = 'All';
+  filterMode: 'active' | 'inactive' | 'all' = 'all';
 
   imagefile: any;
   imagePreviewUrl: string = '';
@@ -173,6 +175,32 @@ export class ItemListComponent implements OnInit {
       error: (err: any) => console.error('Error loading users:', err),
     });
   }
+    changeFilter(value: string) {
+    this.selectedFilter = value;
+
+    switch (value) {
+      case 'All':
+        this.showall();
+        break;
+      case 'Active':
+        this.showActive();
+        break;
+      case 'Inactive':
+        this.showInactive();
+        break;
+    }
+  }
+    showActive() {
+    this.filterMode = 'active';
+  }
+
+  showInactive() {
+    this.filterMode = 'inactive';
+  }
+
+  showall() {
+    this.filterMode = 'all';
+  }
 
  updateItems() {
   const formData = new FormData();
@@ -230,22 +258,34 @@ export class ItemListComponent implements OnInit {
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
+     if (this.filterMode === 'active') {
+    data = data.filter(it => it.status?.toLowerCase() === 'active');
+  }
+
+  if (this.filterMode === 'inactive') {
+    data = data.filter(it => it.status?.toLowerCase() === 'inactive');
+  }
     if (!this.searchTerm) {
       return data;
     }
     const term = this.searchTerm.toLowerCase().trim();
-    const statuses = ['active', 'inactive', 'pending'];
-    if (statuses.includes(term)) {
-      return data.filter((it) => it.status?.toLowerCase() === term);
-    }
+    // const statuses = ['active', 'inactive', 'pending'];
+    // if (statuses.includes(term)) {
+    //   return data.filter((it) => it.status?.toLowerCase() === term);
+    // }
     return data.filter(
       (it) =>
         it.item_name?.toLowerCase().includes(term) ||
         it.item_code?.toLowerCase().includes(term) ||
         it.brand_name?.toLowerCase().includes(term) ||
-        it.status?.toLowerCase().includes(term)
+        it.status?.toLowerCase().includes(term) ||-it.selling_price?.toString().includes(term) ||
+    it.purchase_price?.toString().includes(term) ||
+    it.stock_quantity?.toString().includes(term)
     );
   }
+
+
+  
   onCustomFileSelect(event: any, key: string) {
     const file = event.target.files[0];
     if (file) {
