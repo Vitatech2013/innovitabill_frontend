@@ -175,7 +175,6 @@ export class UsersComponent implements OnInit {
       pincode: u.address?.pincode,
     });
 
-    // ✅ remove password validation in edit
     this.userForm.get('password')?.clearValidators();
     this.userForm.get('password')?.updateValueAndValidity();
     this.userForm.get('image')?.clearValidators();
@@ -184,9 +183,6 @@ export class UsersComponent implements OnInit {
     this.userForm.get('id_proof')?.clearValidators();
     this.userForm.get('id_proof')?.updateValueAndValidity();
 
-    // ✅ set existing images
-
-    // reset files
     this.imageFile = null;
     this.idProofFile = null;
 
@@ -240,7 +236,6 @@ export class UsersComponent implements OnInit {
     this.service.addUser(formData).subscribe({
       next: (res: any) => {
         console.log('User created successfully', res);
-        // alert('User created successfully');
         this.showToast('User created successfully', 'success');
 
         this.userForm.reset();
@@ -258,7 +253,6 @@ export class UsersComponent implements OnInit {
       },
       error: (err) => {
         console.error('Create User Error:', err);
-        // alert(err.error?.message || 'Failed to create user');
         this.showToast('failed to create', 'error');
       },
     });
@@ -286,7 +280,6 @@ export class UsersComponent implements OnInit {
       return;
     }
 
-    
     const formData = new FormData();
 
     formData.append('user_name', this.userForm.value.user_name);
@@ -317,7 +310,7 @@ export class UsersComponent implements OnInit {
     this.service.updateUser(this.selectedUserId, formData).subscribe({
       next: (res) => {
         console.log('User updated successfully', res);
-        // alert('User updated successfully');
+
         this.showToast('User updated successfully', 'success');
 
         this.userForm.reset();
@@ -365,7 +358,7 @@ export class UsersComponent implements OnInit {
       next: () => {
         this.loadUsers();
         console.log('User deleted successfully');
-        // alert('User updated successfully');
+
         this.showToast('User deleted successfully', 'success');
 
         const modalEl = document.getElementById('deleteModal');
@@ -388,7 +381,7 @@ export class UsersComponent implements OnInit {
   }
   onlyDigits(event: KeyboardEvent, max: number) {
     const el = event.target as HTMLInputElement;
-    if (event.key.length > 1) return; // backspace, arrows
+    if (event.key.length > 1) return;
     if (!/\d/.test(event.key) || el.value.length >= max) event.preventDefault();
   }
 
@@ -397,7 +390,7 @@ export class UsersComponent implements OnInit {
   }
 
   showToast(message: string, type: 'success' | 'error' | 'warning') {
-    if (this.toastMessage) return; // 🔒 prevents duplicate
+    if (this.toastMessage) return;
     this.toastMessage = message;
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 3000);

@@ -29,7 +29,6 @@
   <div
     class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3"
   >
-    <!-- Heading -->
     <h4 class="fw-bold text-success mb-0">Available Units List</h4>
 
     <!-- Search Bar -->
@@ -40,45 +39,34 @@
       [(ngModel)]="searchTerm"
       style="max-width: 300px"
     />
-  <button
-          class="btn"
-          [ngClass]="
-            statusFilter === 'all' ? 'btn-light' : 'btn btn-light'
-          "
-          (click)="statusFilter = 'all'"
-        >
-          <i class="bi bi-check-circle"></i>
-          All
-        </button>
+    <button
+      class="btn"
+      [ngClass]="statusFilter === 'all' ? 'btn-light' : 'btn btn-light'"
+      (click)="statusFilter = 'all'"
+    >
+      <i class="bi bi-check-circle"></i>
+      All
+    </button>
     <!-- Button -->
     <button
       class="btn"
-      [ngClass]="
-        statusFilter === 'active' ? 'btn-light' : 'btn btn-light'
-      "
+      [ngClass]="statusFilter === 'active' ? 'btn-light' : 'btn btn-light'"
       (click)="statusFilter = 'active'"
     >
-    <i class="bi bi-check-circle"></i>
+      <i class="bi bi-check-circle"></i>
       Active
     </button>
 
     <button
       class="btn"
-      [ngClass]="
-        statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'
-      "
+      [ngClass]="statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'"
       (click)="statusFilter = 'inactive'"
     >
-    <i class="bi bi-x-circle"></i>
+      <i class="bi bi-x-circle"></i>
       Inactive
     </button>
 
-    <button
-      class="btn btn-light"
-      data-bs-toggle="modal"
-      data-bs-target="#AddModal"
-      (click)="openAddModal()"
-    >
+    <button class="btn btn-light" (click)="openAddModal()">
       <i class="bi bi-plus-circle"></i>
       Add New
     </button>
@@ -109,7 +97,7 @@
           </thead>
           <tbody>
             <tr
-               *ngFor="let u of filteredByStatus(); let i = index"
+              *ngFor="let u of filteredByStatus(); let i = index"
               class="align-middle text-center"
             >
               <td>{{ i + 1 }}</td>
@@ -120,8 +108,6 @@
                 <button
                   class="btn btn-sm btn-outline-primary me-2"
                   (click)="edit(u)"
-                  data-bs-toggle="modal"
-                  data-bs-target="#unitModel"
                 >
                   <i class="bi bi-pencil-square"></i>
                 </button>
@@ -235,7 +221,7 @@
   </div>
 </div>
 
-<!-- 🗑️ Delete Confirmation Modal -->
+<!--  Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">

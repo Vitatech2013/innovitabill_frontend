@@ -1,16 +1,10 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-success px-3">
-    <nav class="navbar-brand"  routerLink="/home">InnoVita Bill</nav>
-     <!-- <div class="dropdown ms-auto ">
-    <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"
- ><i class="bi bi-person"></i>
-</button>
-<ul class="dropdown-menu dropdown-menu-end">
-  <li><a class="dropdown-item" routerLink="">profile</a></li>
-  <li><a class="dropdown-item" (click)="logout()">logout</a></li>
-</ul>
-  </div> -->
+  <nav class="navbar-brand" routerLink="/home">InnoVita Bill</nav>
 </nav>
-<div class="position-fixed top-0 end-0 p-3 d-flex justify-content-center" style="z-index: 1080;">
+<div
+  class="position-fixed top-0 end-0 p-3 d-flex justify-content-center"
+  style="z-index: 1080"
+>
   <div
     *ngIf="toastMessage"
     class="toast align-items-center text-white border-0 fade show shadow-lg"
@@ -37,83 +31,101 @@
   </div>
 </div>
 
-
-<div class="d-flex justify-content-center align-items-center vh-100 bg-light px-3">
+<div
+  class="d-flex justify-content-center align-items-center vh-100 bg-light px-3"
+>
   <div
     class="card p-4 p-md-5"
-    style="max-width: 400px; width: 100%; border-radius: 15px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);"
+    style="
+      max-width: 400px;
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    "
   >
     <div class="container p-2">
-      <h2 class="title mb-4 text-center fw-bold text-success">Business Login</h2>
+      <h2 class="title mb-4 text-center fw-bold text-success">
+        Business Login
+      </h2>
 
       <form [formGroup]="businessForm" (ngSubmit)="login()">
-
         <div class="mb-3">
           <label for="email" class="form-label fw-semibold">Email</label>
           <div class="col-sm-11">
-          <input
-            type="email"
-            id="email"
-            formControlName="email"
-            class="form-control"
-            placeholder="Enter your email"
-            (keypress)="blockSpaces($event)"
-          />
-          <div
-            *ngIf="businessForm.controls['email']?.touched && businessForm.controls['email']?.invalid"
-          >
-            <small
-              *ngIf="businessForm.controls['email']?.errors?.['required']"
-              class="text-danger"
-              >Email is required</small
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              class="form-control"
+              placeholder="Enter your email"
+              (keypress)="blockSpaces($event)"
+            />
+            <div
+              *ngIf="
+                businessForm.controls['email']?.touched &&
+                businessForm.controls['email']?.invalid
+              "
             >
-            <small
-              *ngIf="businessForm.controls['email']?.errors?.['email']"
-              class="text-danger"
-              >Invalid email format</small
-            >
-          </div>
+              <small
+                *ngIf="businessForm.controls['email']?.errors?.['required']"
+                class="text-danger"
+                >Email is required</small
+              >
+              <small
+                *ngIf="businessForm.controls['email']?.errors?.['email']"
+                class="text-danger"
+                >Invalid email format</small
+              >
+            </div>
           </div>
         </div>
 
- 
         <div class="row mb-3 align-items-center">
-  <label for="password" class="form-label fw-semibold">Password</label>
+          <label for="password" class="form-label fw-semibold">Password</label>
 
-  <div class="col-sm-11">
-    <div class="input-group">
-      <input
-        [type]="showPassword ? 'text' : 'password'"
-        id="password"
-        formControlName="password"
-        class="form-control"
-        placeholder="Enter your password"
-        (keypress)="blockSpaces($event)"
-      />
+          <div class="col-sm-11">
+            <div class="input-group">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                id="password"
+                formControlName="password"
+                class="form-control"
+                placeholder="Enter your password"
+                (keypress)="blockSpaces($event)"
+              />
 
-      <button
-        type="button"
-        class="btn btn-outline-secondary"
-        (click)="togglePassword()"
-      >
-        <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
-      </button>
-    </div>
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                (click)="togglePassword()"
+              >
+                <i
+                  class="bi"
+                  [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"
+                ></i>
+              </button>
+            </div>
 
-    <div *ngIf="businessForm.controls['password']?.touched && businessForm.controls['password']?.invalid">
-      <small
-        *ngIf="businessForm.controls['password']?.errors?.['required']"
-        class="text-danger"
-      >
-        Password is required
-      </small>
-    </div>
-  </div>
-</div>
-
+            <div
+              *ngIf="
+                businessForm.controls['password']?.touched &&
+                businessForm.controls['password']?.invalid
+              "
+            >
+              <small
+                *ngIf="businessForm.controls['password']?.errors?.['required']"
+                class="text-danger"
+              >
+                Password is required
+              </small>
+            </div>
+          </div>
+        </div>
 
         <div class="text-start mb-4">
-          <a routerLink="/business-Forgotpassword" class="text-success text-decoration-none small"
+          <a
+            routerLink="/business-Forgotpassword"
+            class="text-success text-decoration-none small"
             >Forgot password?</a
           >
         </div>
@@ -127,15 +139,6 @@
             Login
           </button>
         </div>
-
-        <!-- <p class="text-center mt-3 small">
-          Not registered yet?
-          <a
-            routerLink="/businessRegister"
-            class="text-decoration-none fw-semibold text-success"
-            >Register here</a
-          >
-        </p> -->
       </form>
     </div>
   </div>

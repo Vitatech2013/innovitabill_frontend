@@ -1,23 +1,27 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { BusinessService } from '../../Services/business.service';
-
 
 @Component({
   selector: 'app-business-forgotpassword',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule,RouterLink],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
   templateUrl: './business-forgotpassword.component.html',
-  styleUrls: ['./business-forgotpassword.component.css']   // ✔ Corrected (styleUrls)
+  styleUrls: ['./business-forgotpassword.component.css'], // ✔ Corrected (styleUrls)
 })
 export class BusinessForgotpasswordComponent implements OnInit {
-loading: any;
-message: any;
+  loading: any;
+  message: any;
 
-  
-forgotForm!: FormGroup;
+  forgotForm!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -27,7 +31,7 @@ forgotForm!: FormGroup;
 
   ngOnInit(): void {
     this.forgotForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
     });
   }
   forgot() {
@@ -37,24 +41,17 @@ forgotForm!: FormGroup;
 
     this.loading = true;
 
-   
     const email = this.forgotForm.value.email;
 
-
-    this.service.businessForgotpassword({ email: email })
-      .subscribe({
-        next: (res: any) => {
-          this.message = res.message || 'Password reset link sent to your email';
-          this.loading = false;
-        },
-        error: (err) => {
-          this.message = err.error?.message || 'Something went wrong';
-          this.loading = false;
-        }
-      });
+    this.service.businessForgotpassword({ email: email }).subscribe({
+      next: (res: any) => {
+        this.message = res.message || 'Password reset link sent to your email';
+        this.loading = false;
+      },
+      error: (err) => {
+        this.message = err.error?.message || 'Something went wrong';
+        this.loading = false;
+      },
+    });
   }
-
-
-  
-
 }

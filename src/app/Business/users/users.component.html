@@ -40,31 +40,32 @@
           style="width: 100%; max-width: 300px"
         />
 
-        <button
-          class="btn"
-          [ngClass]="statusFilter === 'all' ? 'btn-success' : 'btn-light'"
-          (click)="statusFilter = 'all'"
-        >
-          <i class="bi bi-check-circle"></i>
-          All
-        </button>
-        <button
-          class="btn"
-          [ngClass]="statusFilter === 'active' ? 'btn-success' : 'btn-light'"
-          (click)="statusFilter = 'active'"
-        >
-          <i class="bi bi-check-circle"></i>
-          Active
-        </button>
+      <button
+      class="btn"
+      [ngClass]="statusFilter === 'all' ? 'btn-light' : 'btn btn-light'"
+      (click)="statusFilter = 'all'"
+    >
+      <i class="bi bi-check-circle"></i>
+      All
+    </button>
+    <!-- Button -->
+    <button
+      class="btn"
+      [ngClass]="statusFilter === 'active' ? 'btn-light' : 'btn btn-light'"
+      (click)="statusFilter = 'active'"
+    >
+      <i class="bi bi-check-circle"></i>
+      Active
+    </button>
 
-        <button
-          class="btn"
-          [ngClass]="statusFilter === 'inactive' ? 'btn-success' : 'btn-light'"
-          (click)="statusFilter = 'inactive'"
-        >
-          <i class="bi bi-x-circle"></i>
-          Inactive
-        </button>
+    <button
+      class="btn"
+      [ngClass]="statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'"
+      (click)="statusFilter = 'inactive'"
+    >
+      <i class="bi bi-x-circle"></i>
+      Inactive
+    </button>
 
         <button
           class="btn btn-light"
@@ -446,6 +447,7 @@
                       class="form-control"
                       formControlName="house_No"
                       placeholder="House No"
+                      (keypress)="blockSpaces($event)"
                     />
                     <small
                       class="text-danger"
@@ -467,6 +469,8 @@
                       class="form-control"
                       formControlName="town_Name"
                       placeholder="Town Name"
+                      (keypress)="blockSpaces($event)"
+                      (keypress)="allowOnlyLetters($event)"
                     />
                     <small
                       class="text-danger"
@@ -488,6 +492,8 @@
                       class="form-control"
                       formControlName="mandal_Name"
                       placeholder="Mandal Name"
+                      (keypress)="blockSpaces($event)"
+                      (keypress)="allowOnlyLetters($event)"
                     />
                     <small
                       class="text-danger"
@@ -509,6 +515,8 @@
                       class="form-control"
                       formControlName="district_Name"
                       placeholder="District Name"
+                      (keypress)="blockSpaces($event)"
+                      (keypress)="allowOnlyLetters($event)"
                     />
                     <small
                       class="text-danger"
@@ -530,6 +538,8 @@
                       class="form-control"
                       formControlName="state"
                       placeholder="State"
+                      (keypress)="blockSpaces($event)"
+                      (keypress)="allowOnlyLetters($event)"
                     />
                     <small
                       class="text-danger"
@@ -737,43 +747,7 @@
                       </small>
                     </div>
                   </div>
-                  <!-- <div class="col-md-4">
-                  <label class="form-label">Password</label>
-                  <input
-                    type="password"
-                    formControlName="password"
-                    placeholder="Enter password"
-                    (keypress)="blockSpaces($event)"
-                    class="form-control"
-                    autocomplete="current-password"
-                  />
-                  <div
-                    *ngIf="
-                      userForm.controls['password']?.touched &&
-                      userForm.controls['password']?.invalid
-                    "
-                  >
-                    <small
-                      *ngIf="userForm.controls['password']?.errors?.['required']"
-                      class="text-danger"
-                      >Password is required</small
-                    >
 
-                    <small
-                      *ngIf="userForm.controls['password']?.errors?.['minlength']"
-                      class="text-danger"
-                      >Minimum 8 characters required</small
-                    >
-
-                    <small
-                      *ngIf="userForm.controls['password']?.errors?.['pattern']"
-                      class="text-danger"
-                    >
-                      Must contain uppercase, lowercase, number & special
-                      character
-                    </small>
-                  </div>
-                </div> -->
                   <div class="col-md-4">
                     <label class="form-label"
                       >Role<span class="text-danger">*</span></label
@@ -822,6 +796,7 @@
                       class="form-control"
                       formControlName="house_No"
                       placeholder="House No"
+                      (keypress)="blockSpaces($event)"
                     />
                     <small
                       class="text-danger"
@@ -843,6 +818,8 @@
                       class="form-control"
                       formControlName="town_Name"
                       placeholder="Town Name"
+                      (keypress)="blockSpaces($event)"
+                      (keypress)="allowOnlyLetters($event)"
                     />
                     <small
                       class="text-danger"
@@ -864,6 +841,8 @@
                       class="form-control"
                       formControlName="mandal_Name"
                       placeholder="Mandal Name"
+                      (keypress)="blockSpaces($event)"
+                      (keypress)="allowOnlyLetters($event)"
                     />
                     <small
                       class="text-danger"
@@ -885,6 +864,8 @@
                       class="form-control"
                       formControlName="district_Name"
                       placeholder="District Name"
+                      (keypress)="blockSpaces($event)"
+                      (keypress)="allowOnlyLetters($event)"
                     />
                     <small
                       class="text-danger"
@@ -906,6 +887,8 @@
                       class="form-control"
                       formControlName="state"
                       placeholder="State"
+                      (keypress)="blockSpaces($event)"
+                      (keypress)="allowOnlyLetters($event)"
                     />
                     <small
                       class="text-danger"
@@ -950,25 +933,6 @@
                   <div class="col-12">
                     <h6 class="fw-bold mt-3">Documents</h6>
                   </div>
-
-                  <!-- <div class="col-md-4">
-                    <label class="form-label">Image<span class="text-danger">*</span></label>
-                    <input
-                      type="file"
-                      class="form-control"
-                      (change)="onImageSelect($event)"
-                    />
-                    
-                  </div>
-
-                  <div class="col-md-4">
-                    <label class="form-label">ID Proof<span class="text-danger">*</span></label>
-                    <input
-                      type="file"
-                      class="form-control"
-                      (change)="onIdProofSelect($event)"
-                    />
-                  </div> -->
 
                   <div class="col-md-4">
                     <label class="form-label">

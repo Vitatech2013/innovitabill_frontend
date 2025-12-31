@@ -29,7 +29,6 @@
   <div
     class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3"
   >
-    <!-- Heading -->
     <h4 class="fw-bold text-success mb-0">Available Sub Categories List</h4>
 
     <!-- Search Bar -->
@@ -42,24 +41,20 @@
     />
 
     <!-- Add Button -->
-     <button
-          class="btn"
-          [ngClass]="
-            statusFilter === 'all' ? 'btn-light' : 'btn btn-light'
-          "
-          (click)="statusFilter = 'all'"
-        >
-          <i class="bi bi-check-circle"></i>
-          All
-        </button>
+    <button
+      class="btn"
+      [ngClass]="statusFilter === 'all' ? 'btn-light' : 'btn btn-light'"
+      (click)="statusFilter = 'all'"
+    >
+      <i class="bi bi-check-circle"></i>
+      All
+    </button>
     <button
       class="btn"
       [ngClass]="statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'"
       (click)="statusFilter = 'active'"
     >
-    <i class="bi bi-check-circle"></i>
-
-
+      <i class="bi bi-check-circle"></i>
       Active
     </button>
 
@@ -68,8 +63,7 @@
       [ngClass]="statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'"
       (click)="statusFilter = 'inactive'"
     >
-    <i class="bi bi-x-circle"></i>
-
+      <i class="bi bi-x-circle"></i>
       Inactive
     </button>
 
@@ -113,7 +107,7 @@
             </thead>
             <tbody>
               <tr
-                *ngFor="let c of filteredUser(); let i = index"
+                *ngFor="let c of filteredByStatus(); let i = index"
                 class="align-middle text-center"
               >
                 <td>{{ i + 1 }}</td>
@@ -170,14 +164,14 @@
           <div class="row g-3">
             <div class="col-md-6 mb-2">
               <label class="form-label">Sub Category Name</label>
-           <input
-  type="text"
-  formControlName="sub_category_name"
-  class="form-control"
-  placeholder="Enter name"
-  (keydown)="allowLettersAndSpace($event)"
-  (input)="onNameInput($event, 'sub_category_name')"
-/>
+              <input
+                type="text"
+                formControlName="sub_category_name"
+                class="form-control"
+                placeholder="Enter name"
+                (keydown)="allowLettersAndSpace($event)"
+                (input)="onNameInput($event, 'sub_category_name')"
+              />
 
               <div
                 *ngIf="
@@ -244,7 +238,7 @@
   </div>
 </div>
 
-<!-- 🗑️ Delete Confirmation Modal -->
+<!--  Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
