@@ -196,3 +196,22 @@
 .demo-btn:hover{
    background-color: #268429;
 }
+
+.qty-group {
+  max-width: 120px;
+}
+
+.qty-input {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Hide default number arrows (optional) */
+.qty-input::-webkit-inner-spin-button,
+.qty-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.qty-input {
+  -moz-appearance: textfield;
+}

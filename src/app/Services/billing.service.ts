@@ -294,4 +294,10 @@ export class BillingService {
 updatePurchase(id: string, data: FormData) {
   return this.http.put(`${this.baseUrl}/vendor/update/${id}`, data);
 }
+// updatePurchase(id: string, data: FormData) {
+//   return this.http.put(`${this.baseUrl}/update/${id}`, data);
+// }
+
+
+
 }

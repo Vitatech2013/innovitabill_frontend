@@ -165,49 +165,76 @@
           </div>
 
           <h6 class="mt-5 fw-bold">Selected Items</h6>
-          <div class="table-responsive selected-items-responsive">
-            <table class="table table-striped table-hover">
-              <thead class="table-light">
-                <tr>
-                  <th>Item</th>
-                  <th>Qty</th>
-                  <th>Price</th>
-                  <th>Tax%</th>
-                  <th>Total</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody formArrayName="items">
-                <tr
-                  *ngFor="let item of items.controls; let i = index"
-                  [formGroupName]="i"
-                >
-                  <td>{{ item.value.item_name }}</td>
-                  <td>
-                    <input
-                      type="number"
-                      min="1"
-                      class="form-control form-control-sm"
-                      formControlName="quantity"
-                      (input)="calculateGrandTotal()"
-                    />
-                  </td>
-                  <td>{{ item.value.selling_price }}</td>
-                  <td>{{ item.value.tax_rate }}</td>
-                  <td>{{ item.value.total | number : "1.2-2" }}</td>
-                  <td>
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-danger"
-                      (click)="removeItem(i)"
-                    >
-                      Remove
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+<div class="table-responsive selected-items-responsive">
+  <table class="table table-striped table-hover align-middle">
+    <thead class="table-light">
+      <tr>
+        <th>Item</th>
+        <th style="width:140px;">Qty</th>
+        <th>Price</th>
+        <th>Tax%</th>
+        <th>Total</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody formArrayName="items">
+      <tr
+        *ngFor="let item of items.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <td>{{ item.value.item_name }}</td>
+
+        <!-- Qty -->
+        <td>
+          <div class="input-group input-group-sm qty-group">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="decreaseQty(i)"
+            >
+              −
+            </button>
+
+            <input
+              type="number"
+              min="1"
+              class="form-control text-center qty-input"
+              formControlName="quantity"
+              (input)="calculateGrandTotal()"
+            />
+
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="increaseQty(i)"
+            >
+              +
+            </button>
           </div>
+        </td>
+
+        <td>{{ item.value.selling_price }}</td>
+        <td>{{ item.value.tax_rate }}</td>
+
+        <td>
+          {{ item.value.total | number : "1.2-2" }}
+        </td>
+
+        <td>
+          <button
+            type="button"
+            class="btn btn-sm btn-danger"
+            (click)="removeItem(i)"
+          >
+            Remove
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
         </form>
 
         <div class="text-end mt-3">
