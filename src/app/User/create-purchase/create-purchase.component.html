@@ -422,11 +422,10 @@
         <input
           type="file"
           class="form-control"
+           accept="image/*"
           (change)="onFileSelect($event)"
         />
-        <small *ngIf="isInvalid('image')" class="text-danger">
-          Image is required
-        </small>
+        
       </div>
       <div class="col-md-3">
         <label class="form-label fw-bold"

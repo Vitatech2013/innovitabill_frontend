@@ -285,13 +285,13 @@ export class BillingService {
     );
   }
   addPurchase(data: any) {
-    return this.http.post(`${this.baseUrl}/vendor/add`, data);
+    return this.http.post(`${this.baseUrl}/purchase/add`, data);
   }
  
  getPurchases(business_id: any): Observable<any> {
-  return this.http.get(`${this.baseUrl}/vendor/getPurchasesByBusinessid/${business_id}`);
+  return this.http.get(`${this.baseUrl}/purchase/getPurchasesByBusinessid/${business_id}`);
 }
 updatePurchase(id: string, data: FormData) {
-  return this.http.put(`${this.baseUrl}/vendor/update/${id}`, data);
+  return this.http.put(`${this.baseUrl}/purchase/update/${id}`, data);
 }
 }
