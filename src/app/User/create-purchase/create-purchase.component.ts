@@ -134,8 +134,8 @@ singleSpace(event: Event) {
   const controlName = input.getAttribute('formControlName');
 
   let value = input.value
-    .replace(/\s+/g, ' ')   // multiple → single space
-    .replace(/^\s/, '');   // no starting space
+    .replace(/\s+/g, ' ')   
+    .replace(/^\s/, '');   
 
   input.value = value;
 
@@ -149,7 +149,7 @@ alphaNumericSingleSpace(event: Event) {
   const controlName = input.getAttribute('formControlName');
 
   let value = input.value
-    .replace(/[^a-zA-Z0-9\s]/g, '') // remove special chars
+    .replace(/[^a-zA-Z0-9\s]/g, '') 
     .replace(/\s+/g, ' ')
     .replace(/^\s/, '');
 
