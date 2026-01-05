@@ -1,17 +1,13 @@
 <div class="container mt-4">
-  <h5 class="text-center text-success mb-3 fw-bold" >Superadmin Profile</h5>
-    <div class="position-fixed top-0 end-0 p-4" style="z-index: 1080;">
-  <div
-    *ngIf="toastMessage"
-    class="custom-toast"
-    [ngClass]="toastType"
-  >
-    <div class="d-flex justify-content-between align-items-center">
-      <span>{{ toastMessage }}</span>
-      <button class="btn-close ms-3" (click)="toastMessage = null"></button>
+  <h5 class="text-center text-success mb-3 fw-bold">Superadmin Profile</h5>
+  <div class="position-fixed top-0 end-0 p-4 body">
+    <div *ngIf="toastMessage" class="custom-toast" [ngClass]="toastType">
+      <div class="d-flex justify-content-between align-items-center">
+        <span>{{ toastMessage }}</span>
+        <button class="btn-close ms-3" (click)="toastMessage = null"></button>
+      </div>
     </div>
   </div>
-</div>
   <div class="card shadow-lg border-0 p-4">
     <div class="row align-items-center">
       <div class="col-md-4 text-center mb-3 mb-md-0">
@@ -27,11 +23,7 @@
           {{ profileForm.get("superadmin_name")?.value || "Superadmin" }}
         </h5>
 
-        <button
-          class="btn btn-sm btn-success mt-2"
-         
-          (click)="profileedit()"
-        >
+        <button class="btn btn-sm btn-success mt-2" (click)="profileedit()">
           <i class="bi bi-pencil"></i> Edit Profile
         </button>
       </div>
@@ -41,7 +33,7 @@
           <div class="row">
             <div class="col-md-6 border-end">
               <h6 class="fw-bold text-success mb-3">Profile Information</h6>
-
+              <!-- Name -->
               <div class="mb-3">
                 <label class="form-label fw-semibold">Name</label>
                 <input
@@ -51,7 +43,7 @@
                   readonly
                 />
               </div>
-
+              <!-- Phone number -->
               <div class="mb-3">
                 <label class="form-label fw-semibold">Phone Number</label>
                 <input
@@ -61,7 +53,7 @@
                   readonly
                 />
               </div>
-
+              <!-- Email -->
               <div class="mb-3">
                 <label class="form-label fw-semibold">Email</label>
                 <input
@@ -71,18 +63,8 @@
                   readonly
                 />
               </div>
-
-              <!-- <div class="mb-3">
-                <label class="form-label fw-semibold">Password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  formControlName="superadmin_password"
-                  readonly
-                />
-              </div> -->
             </div>
-
+            <!-- Address -->
             <div class="col-md-6 ps-md-4">
               <h6 class="fw-bold text-success mb-3">Address Details</h6>
               <div formGroupName="address" class="row">
@@ -105,11 +87,10 @@
     </div>
   </div>
 </div>
-
+<!-- Edit -->
 <div
   class="modal fade"
   id="editProfileModal"
- 
   #editProfileModal
   tabindex="-1"
   aria-labelledby="editProfileModalLabel"
@@ -117,7 +98,7 @@
 >
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content shadow-lg">
-      <div class="modal-header bg-primary text-white">
+      <div class="modal-header bg-success text-white">
         <h5 class="modal-title" id="editProfileModalLabel">
           Edit Superadmin Profile
         </h5>
@@ -138,7 +119,7 @@
             <div
               class="col-md-5 text-center d-flex flex-column align-items-center justify-content-center"
             >
-              <label for="fileInput" style="cursor: pointer">
+              <label for="fileInput" class="cursor">
                 <img
                   [src]="getImageUrl(superadminData?.image || previewUrl)"
                   alt="Profile Image"
@@ -156,7 +137,7 @@
               />
               <small class="text-muted">Click image to change</small>
             </div>
-
+            <!-- Name -->
             <div class="col-md-7">
               <div class="mb-3">
                 <label class="form-label">Name</label>
@@ -166,6 +147,7 @@
                   formControlName="superadmin_name"
                 />
               </div>
+              <!-- Phone number -->
               <div class="mb-3">
                 <label class="form-label">Phone Number</label>
                 <input
@@ -174,6 +156,7 @@
                   formControlName="superadmin_number"
                 />
               </div>
+              <!-- Email -->
               <div class="mb-3">
                 <label class="form-label">Email</label>
                 <input
@@ -182,15 +165,7 @@
                   formControlName="superadmin_mail"
                 />
               </div>
-              <!-- <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  formControlName="superadmin_password"
-                />
-              </div> -->
-
+              <!-- Address -->
               <h6 class="fw-bold mt-3">Address</h6>
               <div formGroupName="address" class="row">
                 <div class="col-md-6 mb-2" *ngFor="let field of addressFields">

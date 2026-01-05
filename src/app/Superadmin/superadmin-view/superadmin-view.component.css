@@ -1,16 +1,9 @@
-/* .menu-btn {
-  
- 
-  
-  transition: 0.3s;
-  font-weight: 500;
+.bdy {
+  cursor: pointer;
 }
-
-.menu-btn:hover {
-  background-color:#d4f8d4!important;
-
-
-} */
+.nav {
+  cursor: pointer;
+}
 .side-btn {
   background-color: #f3f4f6;
   border-radius: 8px;
@@ -32,33 +25,38 @@
 }
 
 body {
-  padding-top: 70px; 
+  padding-top: 70px;
 }
 .dropdown-toggle::after {
   display: none !important;
 }
 
-/* 🔥 Reduce toast width */
 .compact-toast {
   min-width: auto !important;
   width: auto !important;
-  max-width: 260px;   /* 👈 controls width */
+  max-width: 260px; 
   border-radius: 6px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-/* 🔥 Reduce height */
 .compact-body {
-  padding: 6px 10px !important; /* 👈 height control */
+  padding: 6px 10px !important; 
   font-size: 13px;
   line-height: 1.2;
-  white-space: nowrap; /* text single line */
+  white-space: nowrap; 
 }
 
-/* 🔥 Smaller close button */
 .compact-close {
   padding: 0.25rem;
   margin-right: 6px;
   opacity: 0.9;
 }
 
+
+.p1 {
+  font-size: 28px;
+}
+.p2 {
+  top: 60px;
+  z-index: 1200;
+}

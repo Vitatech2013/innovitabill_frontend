@@ -200,19 +200,6 @@ export class AddBusinessComponent implements OnInit {
   }
 }
 
-  // checkEmailExists(): AsyncValidatorFn {
-  //   return (control: AbstractControl) => {
-  //     const email = control.value;
-  //     if (!email) return of(null); // skip if empty
-
-  //     return this.api.checkEmail(email).pipe(
-  //       map((res: any) => {
-  //         // res.exists = true if email exists in backend
-  //         return res.exists ? { emailExists: true } : null;
-  //       })
-  //     );
-  //   };
-  // }
 
   loadBusinessTypes() {
     this.api.getBusinessTypes().subscribe({
@@ -324,10 +311,6 @@ export class AddBusinessComponent implements OnInit {
     this.api.addBusiness(formData).subscribe({
       next: (res) => {
         this.showToast('Business registered successfully!', 'success');
-
-        // setTimeout(() => {
-        //     this.showToast('Business registered successfully!', 'success');
-        //   }, 1000);
 
         setTimeout(() => {
           this.router.navigate(['SuperAdminView']);

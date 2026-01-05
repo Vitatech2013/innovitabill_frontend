@@ -1,20 +1,18 @@
-
 .scrollable-card {
-  max-height: 80vh; 
+  max-height: 80vh;
   overflow-y: auto;
 }
 .scrollable-card::-webkit-scrollbar {
   width: 6px;
 }
 
-
 .table-scroll-container {
-  max-height: 400px;     /* adjust height as needed */
+  max-height: 400px; 
   overflow-y: auto;
   border-radius: 8px;
 }
 
-/* Sticky table header */
+
 .table-scroll-container thead th {
   position: sticky;
   top: 0;
@@ -22,7 +20,6 @@
   background: #d4f8d4;
   color: #0a5c0a;
 }
-
 
 /* toastr */
 .custom-toast {
@@ -33,15 +30,15 @@
   font-size: 15px;
   font-weight: 500;
   animation: slide-in 0.4s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 .custom-toast.success {
-  background: #28a745; 
+  background: #28a745;
 }
 
 .custom-toast.error {
-  background: #dc3545; 
+  background: #dc3545;
 }
 
 @keyframes slide-in {
@@ -53,4 +50,17 @@
     transform: translateX(0);
     opacity: 1;
   }
+}
+.position-fixed {
+  z-index: 1080;
+}
+.width {
+  max-width: 250px;
+}
+.bg {
+  background-color: #f3f4f6;
+}
+.color {
+  background: #d4f8d4;
+  color: #0a5c0a;
 }

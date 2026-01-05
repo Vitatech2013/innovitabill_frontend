@@ -1,3 +1,6 @@
+.body{
+  z-index: 1080;
+}
 .custom-toast {
   padding: 14px 20px;
   border-radius: 6px;
@@ -47,4 +50,7 @@ body.modal-open {
 
 .container, .card {
   filter: none;
+}
+.cursor{
+  cursor: pointer
 }

@@ -1,0 +1,15 @@
+.body {
+  cursor: pointer;
+}
+.card {
+  width: 30rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+.position-fixed {
+  z-index: 1080;
+}
+
+.btn {
+  width: 60px;
+}

@@ -7,9 +7,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, RouterLink, RouterOutlet} from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { BillingService } from '../../Services/billing.service';
-
 
 @Component({
   selector: 'app-super-admin-login',
@@ -19,8 +18,8 @@ import { BillingService } from '../../Services/billing.service';
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
-   RouterOutlet
-],
+    RouterOutlet,
+  ],
   templateUrl: './super-admin-login.component.html',
   styleUrl: './super-admin-login.component.css',
 })
@@ -52,28 +51,15 @@ export class SuperAdminLoginComponent implements OnInit {
     this.api.SuperAdminLogin(this.superAdminForm.value).subscribe({
       next: (res: any) => {
         console.log(res, 'Super Admin Login Success');
-if(res){
-        
-        localStorage.setItem('sa', JSON.stringify(res.data));
-        localStorage.setItem('sa_token', res.token);
-}
-       
+        if (res) {
+          localStorage.setItem('sa', JSON.stringify(res.data));
+          localStorage.setItem('sa_token', res.token);
+        }
 
-  sessionStorage.setItem('toastMessage', 'Super Admin Login Success');
-  sessionStorage.setItem('toastType', 'success');
+        sessionStorage.setItem('toastMessage', 'Super Admin Login Success');
+        sessionStorage.setItem('toastType', 'success');
 
-  
-  this.router.navigate(['/SuperAdminView']);
-      // this.router.navigate(['/SuperAdminView'], {
-      //   state: { toast: 'Super Admin Login Success' },
-      // });
-     
-
-// setTimeout(() => {
-//   this.router.navigate(['/SuperAdminView']);
-// }, 1500);
-
-        
+        this.router.navigate(['/SuperAdminView']);
       },
 
       error: (err: any) => {
@@ -95,7 +81,10 @@ if(res){
     });
   }
 
-  showToast(message: string, type: 'success' | 'error' | 'warning' = 'success') {
+  showToast(
+    message: string,
+    type: 'success' | 'error' | 'warning' = 'success'
+  ) {
     this.toastMessage = message;
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 1500);

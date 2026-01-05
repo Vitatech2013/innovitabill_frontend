@@ -37,8 +37,8 @@ export class ViewBusinessTypeComponent implements OnInit {
   selectedB_type: any;
   searchTerm: string = '';
   inactiveCount: number = 0;
-selectedFilter: string = 'All';
-  filterMode: 'active' | 'inactive' | 'all'= 'all';
+  selectedFilter: string = 'All';
+  filterMode: 'active' | 'inactive' | 'all' = 'all';
 
   constructor(private fb: FormBuilder, private api: BillingService) {}
 
@@ -66,21 +66,21 @@ selectedFilter: string = 'All';
       error: (err) => console.error('Fetch error', err),
     });
   }
-changeFilter(value: string) {
-  this.selectedFilter = value;
+  changeFilter(value: string) {
+    this.selectedFilter = value;
 
-  switch (value) {
-    case 'All':
-      this.showall();
-      break;
-    case 'Active':
-      this.showActive();
-      break;
-    case 'Inactive':
-      this.showInactive();
-      break;
+    switch (value) {
+      case 'All':
+        this.showall();
+        break;
+      case 'Active':
+        this.showActive();
+        break;
+      case 'Inactive':
+        this.showInactive();
+        break;
+    }
   }
-}
   removeLongSpaces(event: any, controlName: string) {
     let value = event.target.value;
 
@@ -99,16 +99,6 @@ changeFilter(value: string) {
     this.resetForm();
     this.openModal = true;
   }
-
-  // filteredBusiness() {
-  //     if (!this.searchTerm) return this.b_types;
-  //     const term = this.searchTerm.toLowerCase();
-  //     return this.b_types.filter((b) =>
-  //       Object.values(b).some((val) =>
-  //         val?.toString().toLowerCase().includes(term)
-  //       )
-  //     );
-  //   }
 
   edit(b_type: any) {
     this.title = 'Edit Business Type';
@@ -217,7 +207,6 @@ changeFilter(value: string) {
           document.getElementById('deleteModal')
         );
         modal?.hide();
-        
       },
       error: (err) => {
         console.error('Delete error', err);
@@ -243,18 +232,13 @@ changeFilter(value: string) {
   }
 
   filteredBusiness() {
-     let list = this.b_types;
+    let list = this.b_types;
 
-  if (this.filterMode === 'active') {
-    list = list.filter(
-      (b) => b.status?.toLowerCase().trim() === 'active'
-    );
-  } 
-  else if (this.filterMode === 'inactive') {
-    list = list.filter(
-      (b) => b.status?.toLowerCase().trim() === 'inactive'
-    );
-  }
+    if (this.filterMode === 'active') {
+      list = list.filter((b) => b.status?.toLowerCase().trim() === 'active');
+    } else if (this.filterMode === 'inactive') {
+      list = list.filter((b) => b.status?.toLowerCase().trim() === 'inactive');
+    }
 
     if (this.searchTerm?.trim()) {
       const term = this.searchTerm.toLowerCase();
@@ -275,7 +259,7 @@ changeFilter(value: string) {
   showInactive() {
     this.filterMode = 'inactive';
   }
- 
+
   showall() {
     this.filterMode = 'all';
   }
