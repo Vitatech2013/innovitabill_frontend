@@ -195,7 +195,6 @@ export class BusinessprofileComponent implements OnInit {
     setTimeout(() => (this.toastMessage = null), 3000);
   }
 
-  // Image/file handlers
   onImageSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
@@ -205,12 +204,6 @@ export class BusinessprofileComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
-
-  // getImageUrl(image: string | null): string {
-  //   if (!image) return '';
-  //   // return `http://78.142.47.247:3009/business_images/${image}`;
-  //   return `${this.baseUrl}/business_images/${image}`;
-  // }
 
   onPanSelected(event: any) {
     const file = event.target.files[0];
