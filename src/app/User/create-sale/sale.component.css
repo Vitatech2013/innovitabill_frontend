@@ -1,6 +1,8 @@
-.search-box {
-  position: relative;
-  max-width: 300px;
+@media (max-width: 576px) {
+  .search-box {
+    max-width: 100%;
+    position: relative;
+  }
 }
 .search-box input {
   padding-left: 35px;
@@ -16,7 +18,9 @@
 
 .table-responsive {
   max-height: calc(100vh - 160px);
+  overflow-x: auto;         
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table-responsive::-webkit-scrollbar {
@@ -56,9 +60,12 @@
   text-align: center;
 }
 
-.scrollable-cart {
-  max-height: 80vh;
-  overflow-y: auto;
+
+@media (max-width: 768px) {
+  .scrollable-cart {
+    max-height: none;
+    overflow-y: auto;
+  }
 }
 
 .scrollable-cart::-webkit-scrollbar {
@@ -182,12 +189,25 @@
 }
 
 .modal-content {
-  width: 75%;
+ 
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.3s ease;
 }
+@media (max-width: 576px) {
+  .modal-content {
+    width: 95%;
+  }
+}
+@media (max-width: 576px) {
+  .col-brand,
+  .col-discount,
+  .col-tax {
+    display: none;
+  }
+}
+
 
 .modal-header-custom {
   background: #28a745;
@@ -268,27 +288,6 @@
   border-radius: 6px;
 }
 
-.stock-dot {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  animation: blink 1s infinite;
-  z-index: 10;
-}
-
-.stock-dot.red {
-  background-color: #dc3545;
-  box-shadow: 0 0 6px #dc3545;
-}
-
-.stock-dot.orange {
-  background-color: #ffc107;
-  box-shadow: 0 0 6px #ffc107;
-}
-
 @keyframes blink {
   0% {
     opacity: 1;
@@ -299,4 +298,17 @@
   100% {
     opacity: 1;
   }
+}
+.item-row.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+.item-table {
+  min-width: 900px;
+}
+
+.item-table th,
+.item-table td {
+  white-space: nowrap;
 }

@@ -16,11 +16,11 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './create-purchase.component.html',
-  styleUrls: ['./create-purchase.component.css'], // fixed typo styleUrl -> styleUrls
+  styleUrls: ['./create-purchase.component.css'],
 })
 export class CreatePurchaseComponent implements OnInit {
   addPurchaseForm!: FormGroup;
-  selectedImage: File | null = null; // use only this variable for selected image
+  selectedImage: File | null = null;
   business_id = '';
   user_id = '';
   categories: any[] = [];
@@ -51,7 +51,7 @@ export class CreatePurchaseComponent implements OnInit {
 
       address: this.fb.group({
         address_line_1: ['', Validators.required],
-        address_line_2: [''],
+        address_line_2: ['', Validators.required],
         city: ['', Validators.required],
         state: ['', Validators.required],
         country: ['', Validators.required],
@@ -60,9 +60,9 @@ export class CreatePurchaseComponent implements OnInit {
 
       contact: this.fb.group({
         contact_person_name: ['', Validators.required],
-        email: ['', Validators.email],
+        email: ['', [Validators.required, Validators.email]],
         mobile_number: ['', Validators.required],
-        alternate_mobile_number: [''],
+        alternate_mobile_number: ['', Validators.required],
       }),
 
       item_name: ['', Validators.required],
@@ -78,7 +78,6 @@ export class CreatePurchaseComponent implements OnInit {
       discount: [''],
       min_stock_alert: [''],
       description: [''],
-      // Removed image: [''] from form controls — file input handled separately
     });
 
     this.categoriesGet();
@@ -88,7 +87,6 @@ export class CreatePurchaseComponent implements OnInit {
 
   savePurchase() {
     if (this.addPurchaseForm.invalid) {
-      this.addPurchaseForm.markAllAsTouched();
       return;
     }
 
@@ -108,13 +106,15 @@ export class CreatePurchaseComponent implements OnInit {
 
     if (this.selectedImage) {
       formData.append('image', this.selectedImage);
+      console.log(this.selectedImage);
     }
 
     this.service.addPurchase(formData).subscribe({
       next: () => {
         this.toastr.success('Purchase added successfully');
+        window.location.reload()
         this.router.navigate(['/userdashboard']);
-      },
+      },  
       error: (err) => {
         this.toastr.error('Error creating purchase', 'Error');
       },
@@ -131,7 +131,6 @@ export class CreatePurchaseComponent implements OnInit {
     this.selectedImage = null;
   }
 
-  // Updated onFileSelect to set selectedImage
   onFileSelect(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -170,7 +169,7 @@ export class CreatePurchaseComponent implements OnInit {
       error: (err: any) => console.error('Error loading subcategories:', err),
     });
   }
-    onInputAlphabetsOnly(event: Event) {
+  onInputAlphabetsOnly(event: Event) {
     const input = event.target as HTMLInputElement;
     let value = input.value;
 
@@ -240,6 +239,4 @@ export class CreatePurchaseComponent implements OnInit {
       .get(input.getAttribute('formControlName')!)
       ?.setValue(value, { emitEvent: false });
   }
-
- 
 }

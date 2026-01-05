@@ -28,6 +28,7 @@ export class UserViewComponent implements OnInit {
   isCollapsed = false;
   isMobileMenu = false;
   darkMode = false;
+sidebarOpen: any;
   constructor(private router: Router) {}
   ngOnInit(): void {
     const stored = localStorage.getItem('users');
@@ -74,22 +75,15 @@ export class UserViewComponent implements OnInit {
     localStorage.removeItem('us_token');
     this.router.navigateByUrl('userlogin');
   }
-  toggleSidebar() {
-    // Mobile → open/close sidebar sliding menu
-    if (window.innerWidth < 768) {
-      this.isMobileMenu = !this.isMobileMenu;
-      return;
+ toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+  closeSidebarOnMobile() {
+    if (window.innerWidth <= 768) {
+      this.sidebarOpen = false;
     }
-
-    this.isCollapsed = !this.isCollapsed;
-    localStorage.setItem('sidebarCollapsed', this.isCollapsed.toString());
   }
 
-  toggleDarkMode() {
-    this.darkMode = !this.darkMode;
-    localStorage.setItem('darkMode', this.darkMode.toString());
-
-    if (this.darkMode) document.body.classList.add('dark');
-    else document.body.classList.remove('dark');
-  }
+  
+  
 }

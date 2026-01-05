@@ -142,11 +142,7 @@ export class SalesComponent implements OnInit {
       },
     });
   }
-  showToast(message: string, type: string) {
-    this.toastMessage = message;
-    this.toastType = type;
-    setTimeout(() => (this.toastMessage = null), 3000);
-  }
+ 
   calculateGrandTotal(sale: any): number {
     if (!sale.product_ids) return 0;
 

@@ -21,7 +21,7 @@ import { Router, RouterOutlet } from '@angular/router';
   styleUrls: ['./purchase-list.component.css'],
 })
 export class PurchaseListComponent implements OnInit {
-  items: any[] = [];
+  purchases: any[] = [];
   editForm!: FormGroup;
   searchTerm: string = '';
   eid: any;
@@ -36,6 +36,7 @@ export class PurchaseListComponent implements OnInit {
 
   imagePreviewUrl: string = '';
   private baseUrl = constants.baseUrl;
+  filteredPurchases: any;
 
   constructor(
     private service: BillingService,
@@ -60,16 +61,16 @@ export class PurchaseListComponent implements OnInit {
 
   private initForm() {
     this.editForm = this.fb.group({
+      _id: [''],
       purchase_id: [''],
       vendor_id: [''],
       item_id: [''],
-      // Vendor details
+
       vendor_name: ['', [Validators.required, Validators.minLength(3)]],
       vendor_type: ['', Validators.required],
       business_category: ['', Validators.required],
       company_registration_number: [''],
 
-      // Item details
       brand_name: ['', [Validators.required, Validators.minLength(3)]],
       item_name: ['', [Validators.required, Validators.minLength(3)]],
       unit_id: [''],
@@ -86,19 +87,24 @@ export class PurchaseListComponent implements OnInit {
       min_stock_alert: [''],
       image: [''],
     });
+    
+     this.filteredPurchases = [...this.purchases].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
   }
 
   isInvalid(controlName: string): boolean {
     const control = this.editForm.get(controlName);
     return control ? control.touched && control.invalid : false;
   }
+  
 
   private loadPurchases() {
     this.service.getPurchases(this.business_id).subscribe({
       next: (res: any) => {
         console.log('Purchases fetched:', res);
-        // Use populated purchases from backend
-        this.items = res?.purchases || [];
+
+        this.purchases = res?.purchases || [];
       },
       error: (err) => console.error('Error loading Purchases:', err),
     });
@@ -107,8 +113,8 @@ export class PurchaseListComponent implements OnInit {
   editItem(purchase: any) {
     this.eid = purchase._id;
 
-    // Patch vendor details
     this.editForm.patchValue({
+      _id: purchase._id,
       purchase_id: purchase._id,
       vendor_id: purchase.vendor_id?._id,
       item_id: purchase.item_id?._id,
@@ -118,7 +124,6 @@ export class PurchaseListComponent implements OnInit {
       company_registration_number:
         purchase.vendor_id?.company_registration_number || '',
 
-      // Patch item details
       item_name: purchase.item_id?.item_name || '',
       brand_name: purchase.item_id?.brand_name || '',
       stock_quantity: purchase.item_id?.stock_quantity || '',
@@ -170,48 +175,49 @@ export class PurchaseListComponent implements OnInit {
     });
   }
 
-  
-
-
- updatePurchase() {
-  if (this.editForm.invalid) return;
-  
-
-  const formData = new FormData();
-
-  Object.keys(this.editForm.value).forEach(key => {
-    if (this.editForm.value[key] !== null) {
-      formData.append(key, this.editForm.value[key]);
+  updatePurchase() {
+    if (this.editForm.invalid) {
+      this.toastr.warning('Fill all required fields');
+      return;
     }
-  });
 
-  if (this.selectedFiles['image']) {
-    formData.append('image', this.selectedFiles['image']);
-  }
+    const formData = new FormData();
 
-  const purchaseId = this.editForm.value.purchase_id;
-
-  this.service.updatePurchase(purchaseId, formData)
-    .subscribe({
-      next: () => {
-        this.toastr.success('Purchase updated successfully');
-        this.loadPurchases(); 
-        console.log(" UPDATE PURCHASE API HIT ");
-      },
-      error: err => {
-        console.error(err);
-        this.toastr.error('Update failed');
+    Object.keys(this.editForm.value).forEach((key) => {
+      if (this.editForm.value[key] !== null) {
+        formData.append(key, this.editForm.value[key]);
       }
     });
-}
 
+    if (this.selectedFiles['image']) {
+      formData.append('image', this.selectedFiles['image']);
+    }
+
+    console.log('Purchase ID:', this.eid);
+
+    if (!this.eid) {
+      this.toastr.error('Purchase ID missing');
+      return;
+    }
+
+    this.service.updatePurchase(this.eid, formData).subscribe({
+      next: () => {
+        this.toastr.success('Purchase updated successfully');
+        this.loadPurchases();
+      },
+      error: (err) => {
+        console.error(err);
+        this.toastr.error('Update failed');
+      },
+    });
+  }
 
   isCreatingInvoice(): boolean {
     return this.router.url.includes('/itemlist/items');
   }
 
   filteredPurchase() {
-    let data = [...this.items];
+    let data = [...this.purchases];
     data.sort(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()

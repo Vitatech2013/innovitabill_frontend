@@ -6,11 +6,23 @@
   background: white;
   font-family: Arial, sans-serif;
 }
+.selected-items-responsive {
+  overflow-x: auto;
+}
+
+.selected-items-responsive table {
+  min-width: 800px;
+}
 
 .scroll-card-area {
-  max-height: calc(100vh - 380px);
+  max-height: 250px;
   overflow-y: auto;
   padding-right: 8px;
+}
+@media (max-width: 768px) {
+  .scroll-card-area {
+    max-height: 260px;
+  }
 }
 
 .scroll-card-area::-webkit-scrollbar {
@@ -26,31 +38,14 @@
   overflow-x: auto !important;
   -webkit-overflow-scrolling: touch;
 }
-
-.scroll-card-area table {
-  min-width: 450px;
+.search-input {
+  max-width: 300px;
 }
-
-.customer-display {
-  margin-top: 15px;
-  font-size: 15px;
-  font-weight: 500;
-  width: 100%;
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
+@media (max-width: 768px) {
+  .search-input {
+    max-width: 100%;
+  }
 }
-
-.cust-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 6px 0;
-}
-
-.cust-row label {
-  font-weight: bold;
-}
-
 .cust-row .value {
   font-style: italic;
   color: #444;
@@ -61,13 +56,9 @@
     padding: 10px;
   }
 
-  .row {
-    flex-direction: column;
-  }
-
   .col-md-7,
   .col-md-5 {
-    width: 100%;
+    flex: 0 0 100%;
     max-width: 100%;
   }
 
@@ -82,10 +73,6 @@
   .table-responsive {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-  }
-
-  table {
-    min-width: 550px;
   }
 
   #quotation-content img {
@@ -103,7 +90,6 @@
   }
 
   #quotation-content table {
-    min-width: 650px;
     font-size: 12px;
   }
 
@@ -125,16 +111,21 @@
     max-height: 60vh !important;
   }
 }
+.modal-dialog {
+  max-width: 95%;
+  margin: 1rem auto;
+}
+
+.modal-body img {
+  max-height: 65vh;
+  width: 100%;
+  object-fit: contain;
+}
 
 @media (max-width: 480px) {
-  table {
-    min-width: 620px;
-  }
-
   #quotation-content img {
     height: 50px !important;
   }
-
   #quotation-content table input {
     width: 45px !important;
   }
@@ -145,7 +136,6 @@
     width: 100%;
     margin-bottom: 10px;
   }
-
   .no-pdf button:last-child {
     margin-bottom: 0;
   }
@@ -155,7 +145,6 @@
   color: #333;
   margin-bottom: 15px;
 }
-
 .styled-customer {
   display: flex;
   flex-direction: column;
@@ -165,26 +154,31 @@
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+.customer-display {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
 
 .cust-row {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
 }
 
 .cust-row label {
-  flex: 0 0 120px;
   font-weight: 600;
-  color: #555;
+  font-size: 14px;
+  color: #333;
 }
 
 .cust-row input {
-  flex: 1;
-  padding: 8px 12px;
-  border: 1.5px solid #ddd;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
 }
 
 .cust-row input:focus {
@@ -193,6 +187,26 @@
   outline: none;
   background-color: #fff;
 }
-.demo-btn:hover{
-   background-color: #268429;
+@media (min-width: 768px) {
+  .cust-row {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .cust-row label {
+    width: 140px;
+  }
+}
+
+.demo-btn:hover {
+  background-color: #268429;
+}
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table {
+  min-width: 700px;
 }
