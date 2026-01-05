@@ -18,18 +18,17 @@ declare var bootstrap: any;
   styleUrls: ['./roles.component.css'],
 })
 export class RolesComponent implements OnInit {
-
   selectedUserId: string | null = null;
   openModel = false;
   roleForm!: FormGroup;
   title = 'Add Role';
   business_id: any;
   roles: any[] = [];
-toastMessage: any;
-toastType: any;
+  toastMessage: any;
+  toastType: any;
   selectedRole: any;
   searchTerm: string = '';
-  statusFilter: 'active' | 'inactive'|'all' = 'all';
+  statusFilter: 'active' | 'inactive' | 'all' = 'all';
 
   constructor(private api: BusinessService, private fb: FormBuilder) {}
 
@@ -37,40 +36,33 @@ toastType: any;
     const b = JSON.parse(localStorage.getItem('user') || '{}');
     console.log('Stored Business:', b);
     this.business_id = b._id;
-    console.log('business_id:',this.business_id );
+    console.log('business_id:', this.business_id);
 
     this.roleForm = this.fb.group({
-      role_name: ['', [Validators.required, Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/)]],
+      role_name: [
+        '',
+        [Validators.required, Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/)],
+      ],
       role_number: ['', Validators.required],
-      status:['',Validators.required],
+      status: ['', Validators.required],
     });
 
     this.getAllRoles();
   }
 
-  // getAllRoles(): void {
-  //   this.api.getRoles().subscribe({
-  //     next: (res: any) => {
-  //       this.roles = res.data;
-  //       console.log('Roles loaded:', res.data);
-  //     },
-  //     error: (err) => console.error('Error loading roles:', err),
-  //   });
-  // }
   getAllRoles(): void {
-  this.api.getRoles().subscribe({
-    next: (res: any) => {
-      this.roles = (res.data || []).sort(
-        (a: any, b: any) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
+    this.api.getRoles().subscribe({
+      next: (res: any) => {
+        this.roles = (res.data || []).sort(
+          (a: any, b: any) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
 
-      console.log('Roles loaded (Latest First):', this.roles);
-    },
-    error: (err) => console.error('Error loading roles:', err),
-  });
-}
-
+        console.log('Roles loaded (Latest First):', this.roles);
+      },
+      error: (err) => console.error('Error loading roles:', err),
+    });
+  }
 
   openAddModal(): void {
     this.title = 'Add Role';
@@ -78,61 +70,57 @@ toastType: any;
     this.openModel = true;
   }
 
-createOrUpdateRole(): void {
-  if (this.roleForm.invalid) {
-    this.roleForm.markAllAsTouched();
-    this.showToast('Please fill all required fields!', 'warning');
-    return;
+  createOrUpdateRole(): void {
+    if (this.roleForm.invalid) {
+      this.roleForm.markAllAsTouched();
+      this.showToast('Please fill all required fields!', 'warning');
+      return;
+    }
+
+    const payload = {
+      ...this.roleForm.value,
+      business_id: this.business_id,
+    };
+
+    if (this.selectedUserId) {
+      this.api.updateRole(this.selectedUserId, payload).subscribe({
+        next: (res) => {
+          this.showToast('Role updated successfully!', 'success');
+          this.roleForm.reset();
+          this.selectedUserId = null;
+
+          this.getAllRoles();
+
+          const modal = bootstrap.Modal.getInstance(
+            document.getElementById('roleModal')
+          );
+          modal.hide();
+        },
+        error: (err) => {
+          console.error(err);
+          this.showToast('Failed to update role!', 'error');
+        },
+      });
+    } else {
+      this.api.addRole(payload).subscribe({
+        next: (res) => {
+          this.showToast('Role added successfully!', 'success');
+          this.roleForm.reset();
+
+          this.getAllRoles();
+
+          const modal = bootstrap.Modal.getInstance(
+            document.getElementById('roleModal')
+          );
+          modal.hide();
+        },
+        error: (err) => {
+          console.error(err);
+          this.showToast('Failed to add role!', 'error');
+        },
+      });
+    }
   }
-
-  const payload = {
-    ...this.roleForm.value,
-    business_id: this.business_id,
-  };
-
-  // **IF editing → call UPDATE API**
-  if (this.selectedUserId) {
-    this.api.updateRole(this.selectedUserId, payload).subscribe({
-      next: (res) => {
-        this.showToast('Role updated successfully!', 'success');
-        this.roleForm.reset();
-        this.selectedUserId = null;
-
-        this.getAllRoles();
-
-        const modal = bootstrap.Modal.getInstance(
-          document.getElementById('roleModal')
-        );
-        modal.hide();
-      },
-      error: (err) => {
-        console.error(err);
-        this.showToast('Failed to update role!', 'error');
-      },
-    });
-  } 
-  else {
-    // **IF adding → call ADD API**
-    this.api.addRole(payload).subscribe({
-      next: (res) => {
-        this.showToast('Role added successfully!', 'success');
-        this.roleForm.reset();
-
-        this.getAllRoles();
-
-        const modal = bootstrap.Modal.getInstance(
-          document.getElementById('roleModal')
-        );
-        modal.hide();
-      },
-      error: (err) => {
-        console.error(err);
-        this.showToast('Failed to add role!', 'error');
-      },
-    });
-  }
-}
-
 
   edit(role: any): void {
     this.selectedUserId = role._id;
@@ -140,12 +128,11 @@ createOrUpdateRole(): void {
     this.roleForm.patchValue({
       role_name: role.role_name,
       role_number: role.role_number,
-      status: role.status || role.status || role.status?.status || "",
-
+      status: role.status || role.status || role.status?.status || '',
     });
     this.openModel = true;
   }
-    filteredUser() {
+  filteredUser() {
     if (!this.searchTerm) return this.roles;
     const term = this.searchTerm.toLowerCase();
     return this.roles.filter((u: any) =>
@@ -155,21 +142,20 @@ createOrUpdateRole(): void {
     );
   }
   filteredByStatus(): any[] {
-     if (this.statusFilter === 'all') {
-    return this.filteredUser();
+    if (this.statusFilter === 'all') {
+      return this.filteredUser();
+    }
+    return this.filteredUser().filter(
+      (u: any) => u?.status === this.statusFilter
+    );
   }
-  return this.filteredUser().filter(
-    (u: any) => u?.status === this.statusFilter
-  );
-}
 
   resetForm(): void {
     this.roleForm.reset();
     this.selectedUserId = null;
-    
   }
   openDeleteModal(roles: any) {
-this.selectedRole = roles;
+    this.selectedRole = roles;
     const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
     modal.show();
   }
@@ -177,44 +163,43 @@ this.selectedRole = roles;
     if (!this.selectedRole) return;
     this.api.deleteRole(this.selectedRole._id).subscribe({
       next: () => {
-                this.showToast('Role soft deleted successfully', 'success');
+        this.showToast('Role soft deleted successfully', 'success');
 
         this.getAllRoles();
-        
+
         const modal = bootstrap.Modal.getInstance(
-            document.getElementById('deleteModal')
-          );
-          modal.hide();
+          document.getElementById('deleteModal')
+        );
+        modal.hide();
       },
-      error: (err) =>{ 
+      error: (err) => {
         console.error('Delete error', err);
-         this.showToast('Failed to delete unit', 'error');
+        this.showToast('Failed to delete unit', 'error');
       },
     });
   }
- showToast(message: string, type: 'success' | 'error' | 'warning') {
+  showToast(message: string, type: 'success' | 'error' | 'warning') {
     this.toastMessage = message;
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 3000);
   }
-allowOnlyLetters(event: KeyboardEvent) {
-  const charCode = event.which || event.keyCode;
-  const char = String.fromCharCode(charCode);
+  allowOnlyLetters(event: KeyboardEvent) {
+    const charCode = event.which || event.keyCode;
+    const char = String.fromCharCode(charCode);
 
-  // Allow letters and space
-  if (!/^[a-zA-Z ]$/.test(char)) {
-    event.preventDefault();
+    // Allow letters and space
+    if (!/^[a-zA-Z ]$/.test(char)) {
+      event.preventDefault();
+    }
   }
-}
 
-allowOnlyNumbers(event: KeyboardEvent) {
-  const pattern = /^[0-9]$/;
-  if (!pattern.test(event.key)) {
-    event.preventDefault(); // blocks letters and special characters
+  allowOnlyNumbers(event: KeyboardEvent) {
+    const pattern = /^[0-9]$/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
   }
-}
-   blockSpaces(event: KeyboardEvent) {
+  blockSpaces(event: KeyboardEvent) {
     if (event.code === 'Space') event.preventDefault();
   }
-
 }

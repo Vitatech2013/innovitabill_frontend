@@ -18,23 +18,21 @@ declare var bootstrap: any;
   styleUrls: ['./units.component.css'],
 })
 export class UnitsComponent implements OnInit {
-
   UnitForm!: FormGroup;
   units: any[] = [];
   business_id: string = '';
   user_id: string = '';
   selectedId: string | null = null;
   title = 'Add Unit';
-  statusFilter: 'active' | 'inactive'| 'all' = 'all'; 
+  statusFilter: 'active' | 'inactive' | 'all' = 'all';
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
-selectedUnit: any;
-searchTerm: string = '';
+  selectedUnit: any;
+  searchTerm: string = '';
 
   constructor(private api: BillingService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
-   
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       const user = JSON.parse(storedUser);
@@ -44,93 +42,71 @@ searchTerm: string = '';
       console.log('User ID:', this.user_id);
     }
 
-
     this.UnitForm = this.fb.group({
       units_name: [
-    '',
-    [
-      Validators.required,
-      Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/)
-    ]
-  ],
+        '',
+        [Validators.required, Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/)],
+      ],
       unit: ['', Validators.required],
       user_id: [''],
       business_id: [''],
-      status:['']
+      status: [''],
     });
-
 
     this.getAllUnits();
   }
 
- 
-  // getAllUnits() {
-  //   this.api.getUnits(this.business_id).subscribe({
-  //     next: (res: any) => {
-  //       this.units = res.data || res;
-  //       console.log('Units loaded:', this.units);
-  //       // this.showToast('Units loaded successfully', 'success');
-  //     },
-  //     error: (err) => {
-  //       console.error('Error loading units:', err);
-  //       this.showToast('Failed to load units', 'error');
-  //     },
-  //   });
-  // }
   getAllUnits() {
-  this.api.getUnits(this.business_id).subscribe({
-    next: (res: any) => {
-      this.units = (res.data || []).sort(
-        (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-      console.log('Units loaded:', this.units);
-    },
-    error: (err) => {
-      console.error('Error loading units:', err);
-      this.showToast('Failed to load units', 'error');
-    },
-  });
-}
-
-
-allowLettersAndSpace(event: KeyboardEvent) {
-   const allowedKeys = [
-    'Backspace',
-    'Delete',
-    'ArrowLeft',
-    'ArrowRight',
-    'Tab'
-  ];
-
-  if (allowedKeys.includes(event.key)) {
-    return;
+    this.api.getUnits(this.business_id).subscribe({
+      next: (res: any) => {
+        this.units = (res.data || []).sort(
+          (a: any, b: any) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        console.log('Units loaded:', this.units);
+      },
+      error: (err) => {
+        console.error('Error loading units:', err);
+        this.showToast('Failed to load units', 'error');
+      },
+    });
   }
 
-  if (!/^[a-zA-Z ]$/.test(event.key)) {
-    event.preventDefault();
+  allowLettersAndSpace(event: KeyboardEvent) {
+    const allowedKeys = [
+      'Backspace',
+      'Delete',
+      'ArrowLeft',
+      'ArrowRight',
+      'Tab',
+    ];
+
+    if (allowedKeys.includes(event.key)) {
+      return;
+    }
+
+    if (!/^[a-zA-Z ]$/.test(event.key)) {
+      event.preventDefault();
+    }
   }
-}
-onNameInput(event: any, controlName: string) {
-  let value = event.target.value;
+  onNameInput(event: any, controlName: string) {
+    let value = event.target.value;
 
-  // Remove leading spaces
-  value = value.replace(/^\s+/g, '');
+    value = value.replace(/^\s+/g, '');
 
-  // Replace multiple spaces with single space
-  value = value.replace(/\s{2,}/g, ' ');
+    value = value.replace(/\s{2,}/g, ' ');
 
-  this.UnitForm.get(controlName)?.setValue(value, { emitEvent: false });
-}
-
-
+    this.UnitForm.get(controlName)?.setValue(value, { emitEvent: false });
+  }
 
   openAddModal() {
     this.title = 'Add Unit';
     this.selectedId = null;
     this.UnitForm.reset();
-    (document.getElementById('UnitModal') as any)?.classList.add('show');
+    const modalEl = document.getElementById('unitModel');
+    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+    modal.show();
   }
-
 
   edit(unit: any) {
     this.selectedId = unit._id;
@@ -138,13 +114,13 @@ onNameInput(event: any, controlName: string) {
     this.UnitForm.patchValue({
       units_name: unit.units_name,
       unit: unit.unit,
-      status: unit.status || unit.business_status || unit.status?.status || "",
-
+      status: unit.status || unit.business_status || unit.status?.status || '',
     });
-    (document.getElementById('UnitModal') as any)?.classList.add('show');
+    const modalEl = document.getElementById('unitModel');
+    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+    modal.show();
   }
 
- 
   createOrUpdateUnit() {
     if (this.UnitForm.invalid) {
       this.UnitForm.markAllAsTouched();
@@ -158,13 +134,14 @@ onNameInput(event: any, controlName: string) {
     });
 
     if (this.selectedId) {
-    
       this.api.updateUnit(this.selectedId, this.UnitForm.value).subscribe({
         next: () => {
           this.showToast('Unit updated successfully', 'success');
           this.getAllUnits();
-         const modal = bootstrap.Modal.getInstance(document.getElementById('unitModel'));
-        modal.hide();
+          const modal = bootstrap.Modal.getInstance(
+            document.getElementById('unitModel')
+          );
+          modal.hide();
         },
         error: (err) => {
           console.error('Update error', err);
@@ -172,13 +149,13 @@ onNameInput(event: any, controlName: string) {
         },
       });
     } else {
-      
       this.api.addUnit(this.UnitForm.value).subscribe({
         next: () => {
           this.showToast('Unit added successfully', 'success');
           this.getAllUnits();
-          const modal = bootstrap.Modal.getInstance(document.getElementById('unitModel'));
-        modal.hide();
+          const modalEl = document.getElementById('unitModel');
+          const modal = bootstrap.Modal.getInstance(modalEl);
+          modal?.hide();
         },
         error: (err) => {
           console.error('Create error', err);
@@ -197,67 +174,48 @@ onNameInput(event: any, controlName: string) {
     );
   }
 
- filteredByStatus() {
-   if (this.statusFilter === 'all') {
-    return this.filteredUser();
+  filteredByStatus() {
+    if (this.statusFilter === 'all') {
+      return this.filteredUser();
+    }
+    if (!this.units) return [];
+    return this.units.filter((u) =>
+      this.statusFilter ? u.status === this.statusFilter : true
+    );
   }
-  if (!this.units) return [];
-  return this.units.filter(u =>
-    this.statusFilter ? u.status === this.statusFilter : true
-  );
-}
 
-
-
-  // delete(id: string) {
-  //   if (!confirm('Are you sure you want to delete this unit?')) {
-  //     this.showToast('Delete action cancelled', 'warning');
-  //     return;
-  //   }
-
-  //   this.api.deleteUnit(id).subscribe({
-  //     next: () => {
-  //       this.UnitForm.markAllAsTouched()
-  //       this.showToast('Unit deleted successfully', 'success');
-  //       this.getAllUnits();
-  //     },
-  //     error: (err) => {
-  //       console.error('Delete error', err);
-  //       this.showToast('Failed to delete unit', 'error');
-  //     },
-  //   });
-  // }
   openDeleteModal(unit: any) {
-this.selectedUnit = unit;
+    this.selectedUnit = unit;
     const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
-    modal.show();;
-}
-confirmDelete() {
-if (!this.selectedUnit) return;
+    modal.show();
+  }
+  confirmDelete() {
+    if (!this.selectedUnit) return;
     this.api.deleteUnit(this.selectedUnit._id).subscribe({
       next: () => {
         this.showToast('Unit soft deleted successfully', 'success');
-        // this.UnitForm.markAllAsTouched()
-        
+
         this.getAllUnits();
-         
+
         const modalEl = document.getElementById('deleteModal');
         if (modalEl) {
           const modal = bootstrap.Modal.getInstance(modalEl);
           modal?.hide();
         }
-          this.selectedUnit = null;
-      }, 
-      
+        this.selectedUnit = null;
+      },
+
       error: (err) => {
         console.error('Delete error', err);
-         this.showToast('Failed to delete unit', 'error');
+        this.showToast('Failed to delete unit', 'error');
       },
     });
   }
- 
+
   closeModal() {
-    (document.getElementById('UnitModal') as any)?.classList.remove('show');
+    const modalEl = document.getElementById('unitModel');
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    modal?.hide();
     this.UnitForm.reset();
     this.selectedId = null;
   }
@@ -268,23 +226,22 @@ if (!this.selectedUnit) return;
     setTimeout(() => (this.toastMessage = null), 3000);
   }
   removeFirstSpace() {
-  const c = this.UnitForm.get('units_name');
-  if (c?.value?.startsWith(' ')) {
-    c.setValue(c.value.trimStart(), { emitEvent: false });
+    const c = this.UnitForm.get('units_name');
+    if (c?.value?.startsWith(' ')) {
+      c.setValue(c.value.trimStart(), { emitEvent: false });
+    }
   }
-}
 
   allowOnlyLetters(event: KeyboardEvent) {
-  const pattern = /^[A-Za-z]$/;
-  if (!pattern.test(event.key)) {
-    event.preventDefault(); // blocks numbers, spaces, special characters
+    const pattern = /^[A-Za-z]$/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+  allowOnlyNumbers(event: KeyboardEvent) {
+    const pattern = /^[0-9]$/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
   }
 }
-allowOnlyNumbers(event: KeyboardEvent) {
-  const pattern = /^[0-9]$/;
-  if (!pattern.test(event.key)) {
-    event.preventDefault(); // blocks letters and special characters
-  }
-}
-}
-

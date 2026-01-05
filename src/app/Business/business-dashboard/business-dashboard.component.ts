@@ -41,37 +41,21 @@ export class BusinessDashboardComponent implements OnInit {
       name: businessName,
       loginTime: new Date().toLocaleString(),
     };
-     const message = sessionStorage.getItem('toastMessage');
-  const type = sessionStorage.getItem('toastType') as
-    | 'success'
-    | 'warning'
-    | 'error';
+    const message = sessionStorage.getItem('toastMessage');
+    const type = sessionStorage.getItem('toastType') as
+      | 'success'
+      | 'warning'
+      | 'error';
 
-  if (message) {
-    this.showToast(message, type || 'success');
+    if (message) {
+      this.showToast(message, type || 'success');
 
-  
-    sessionStorage.removeItem('toastMessage');
-    sessionStorage.removeItem('toastType');
+      sessionStorage.removeItem('toastMessage');
+      sessionStorage.removeItem('toastType');
+    }
   }
 
-    // this.timer = setInterval(() => {
-    //   const now = new Date();
-    //   this.loggedInBusiness!.loginTime = now.toLocaleString('en-US', {
-    //     year: 'numeric',
-    //     month: 'numeric',
-    //     day: 'numeric',
-    //     hour: 'numeric',
-    //     minute: 'numeric',
-    //     second: 'numeric',
-    //     hour12: true,
-    //   });
-    // }, 1000);
-
-    // console.log('Parsed Business:', parsed);
-  }
-
-     showToast(message: string, type: 'success' | 'error' | 'warning') {
+  showToast(message: string, type: 'success' | 'error' | 'warning') {
     this.toastMessage = message;
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 2000);

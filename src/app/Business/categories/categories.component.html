@@ -41,12 +41,12 @@
     />
 
     <!-- Add Button -->
-     <button
+    <button
       class="btn"
       [ngClass]="statusFilter === 'all' ? 'btn-light' : 'btn btn-light'"
       (click)="statusFilter = 'all'"
     >
-    <i class="bi bi-check-circle"></i>
+      <i class="bi bi-check-circle"></i>
       All
     </button>
     <button
@@ -54,7 +54,7 @@
       [ngClass]="statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'"
       (click)="statusFilter = 'active'"
     >
-    <i class="bi bi-check-circle"></i>
+      <i class="bi bi-check-circle"></i>
       Active
     </button>
 
@@ -63,7 +63,7 @@
       [ngClass]="statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'"
       (click)="statusFilter = 'inactive'"
     >
-    <i class="bi bi-x-circle"></i>
+      <i class="bi bi-x-circle"></i>
       Inactive
     </button>
     <button
@@ -228,7 +228,7 @@
     </div>
   </div>
 
-  <!-- 🗑️ Delete Confirmation Modal -->
+  <!--  Delete Confirmation Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">

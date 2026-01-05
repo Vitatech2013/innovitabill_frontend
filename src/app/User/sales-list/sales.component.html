@@ -1,7 +1,7 @@
 <div class="contanier-fluid">
   <div *ngIf="!isCreatingInvoice()">
     <div
-      class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2"
+      class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 mb-3"
     >
       <h4 class="mb-3">Sales</h4>
 
@@ -10,6 +10,7 @@
           type="text"
           class="form-control"
           placeholder="Search"
+          onchange="filteredSales()"
           [(ngModel)]="searchTerm"
         />
         <i class="bi bi-search search-icon"></i>
@@ -23,7 +24,6 @@
         <i class="bi bi-bar-chart me-1"></i> Sale Reports
       </a> -->
     </div>
-
     <div class="table-wrapper">
       <div class="table-responsive">
         <table
@@ -44,7 +44,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let sale of filteredSales(); let i = index">
+            <tr *ngFor="let sale of saledata; let i = index">
               <td>{{ i + 1 }}</td>
               <td>{{ sale.invoice_number }}</td>
 

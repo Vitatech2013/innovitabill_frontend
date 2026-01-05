@@ -25,11 +25,8 @@
   </div>
 </div>
 
-
-
 <div class="container-fluid scrollable-card">
   <div class="dashboard">
-    
     <div class="row mb-3">
       <div
         class="col-12 d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3"
@@ -43,37 +40,32 @@
           style="width: 100%; max-width: 300px"
         />
 
-        <button
-          class="btn"
-          [ngClass]="
-            statusFilter === 'all' ? 'btn-light' : 'btn btn-light'
-          "
-          (click)="statusFilter = 'all'"
-        >
-          <i class="bi bi-check-circle"></i>
-          All
-        </button>
-        <button
-          class="btn"
-          [ngClass]="
-            statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'
-          "
-          (click)="statusFilter = 'active'"
-        >
-          <i class="bi bi-check-circle"></i>
-          Active
-        </button>
+      <button
+      class="btn"
+      [ngClass]="statusFilter === 'all' ? 'btn-light' : 'btn btn-light'"
+      (click)="statusFilter = 'all'"
+    >
+      <i class="bi bi-check-circle"></i>
+      All
+    </button>
+    <!-- Button -->
+    <button
+      class="btn"
+      [ngClass]="statusFilter === 'active' ? 'btn-light' : 'btn btn-light'"
+      (click)="statusFilter = 'active'"
+    >
+      <i class="bi bi-check-circle"></i>
+      Active
+    </button>
 
-        <button
-          class="btn"
-          [ngClass]="
-            statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'
-          "
-          (click)="statusFilter = 'inactive'"
-        >
-          <i class="bi bi-x-circle"></i>
-          Inactive
-        </button>
+    <button
+      class="btn"
+      [ngClass]="statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'"
+      (click)="statusFilter = 'inactive'"
+    >
+      <i class="bi bi-x-circle"></i>
+      Inactive
+    </button>.
 
         <button
           class="btn btn-light"
@@ -260,14 +252,12 @@
               ></button>
             </div>
             <div class="modal-body">
-              <form
-                [formGroup]="userForm"
-                enctype="multipart/form-data"
-                (ngSubmit)="createUser()"
-              >
+              <form [formGroup]="userForm" (ngSubmit)="createUser()">
                 <div class="row g-3 mb-3">
                   <div class="col-md-4">
-                    <label class="form-label">User Name<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >User Name<span class="text-danger">*</span></label
+                    >
                     <input
                       type="text"
                       class="form-control"
@@ -305,7 +295,9 @@
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <label class="form-label">Email<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >Email<span class="text-danger">*</span></label
+                    >
                     <input
                       type="email"
                       formControlName="user_email"
@@ -332,13 +324,15 @@
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <label class="form-label">Phone Number<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >Phone Number<span class="text-danger">*</span></label
+                    >
                     <input
                       type="text"
                       formControlName="phone_number"
                       class="form-control"
                       placeholder="Enter phone number"
-                      autocomplete="phone number"
+                      autocomplete="tel"
                       maxlength="10"
                       (keydown)="onlyDigits($event, 10)"
                     />
@@ -365,7 +359,9 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Password<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >Password<span class="text-danger">*</span></label
+                    >
                     <input
                       type="password"
                       formControlName="password"
@@ -404,7 +400,9 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Role<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >Role<span class="text-danger">*</span></label
+                    >
 
                     <select class="form-select" formControlName="role_id">
                       <option value="">Select Role</option>
@@ -441,12 +439,15 @@
                     <h6 class="fw-bold mt-3">Address</h6>
                   </div>
                   <div class="col-md-4">
-                    <label class="form-label">House No<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >House No<span class="text-danger">*</span></label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       formControlName="house_No"
                       placeholder="House No"
+                      (keypress)="blockSpaces($event)"
                     />
                     <small
                       class="text-danger"
@@ -460,12 +461,16 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Town Name<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >Town Name<span class="text-danger">*</span></label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       formControlName="town_Name"
                       placeholder="Town Name"
+                      (keypress)="blockSpaces($event)"
+                      (keypress)="allowOnlyLetters($event)"
                     />
                     <small
                       class="text-danger"
@@ -479,12 +484,16 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Mandal Name<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >Mandal Name<span class="text-danger">*</span></label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       formControlName="mandal_Name"
                       placeholder="Mandal Name"
+                      (keypress)="blockSpaces($event)"
+                      (keypress)="allowOnlyLetters($event)"
                     />
                     <small
                       class="text-danger"
@@ -498,12 +507,16 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">District Name<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >District Name<span class="text-danger">*</span></label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       formControlName="district_Name"
                       placeholder="District Name"
+                      (keypress)="blockSpaces($event)"
+                      (keypress)="allowOnlyLetters($event)"
                     />
                     <small
                       class="text-danger"
@@ -517,12 +530,16 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">State<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >State<span class="text-danger">*</span></label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       formControlName="state"
                       placeholder="State"
+                      (keypress)="blockSpaces($event)"
+                      (keypress)="allowOnlyLetters($event)"
                     />
                     <small
                       class="text-danger"
@@ -536,7 +553,9 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Pincode<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >Pincode<span class="text-danger">*</span></label
+                    >
                     <input
                       type="text"
                       class="form-control"
@@ -568,17 +587,20 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Image<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >Image<span class="text-danger">*</span></label
+                    >
                     <input
                       type="file"
                       class="form-control"
                       (change)="onImageSelect($event)"
                     />
-                    
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">ID Proof<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >ID Proof<span class="text-danger">*</span></label
+                    >
                     <input
                       type="file"
                       class="form-control"
@@ -627,7 +649,9 @@
                 <h6 class="fw-bold text-dark mb-3">User Details</h6>
                 <div class="row g-3 mb-3">
                   <div class="col-md-4">
-                    <label class="form-label">User Name<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >User Name<span class="text-danger">*</span></label
+                    >
                     <input
                       type="text"
                       class="form-control"
@@ -662,7 +686,9 @@
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <label class="form-label">Email<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >Email<span class="text-danger">*</span></label
+                    >
                     <input
                       type="email"
                       formControlName="user_email"
@@ -688,7 +714,9 @@
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <label class="form-label">Phone Number<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >Phone Number<span class="text-danger">*</span></label
+                    >
                     <input
                       type="text"
                       formControlName="phone_number"
@@ -719,45 +747,11 @@
                       </small>
                     </div>
                   </div>
-                  <!-- <div class="col-md-4">
-                  <label class="form-label">Password</label>
-                  <input
-                    type="password"
-                    formControlName="password"
-                    placeholder="Enter password"
-                    (keypress)="blockSpaces($event)"
-                    class="form-control"
-                    autocomplete="current-password"
-                  />
-                  <div
-                    *ngIf="
-                      userForm.controls['password']?.touched &&
-                      userForm.controls['password']?.invalid
-                    "
-                  >
-                    <small
-                      *ngIf="userForm.controls['password']?.errors?.['required']"
-                      class="text-danger"
-                      >Password is required</small
-                    >
 
-                    <small
-                      *ngIf="userForm.controls['password']?.errors?.['minlength']"
-                      class="text-danger"
-                      >Minimum 8 characters required</small
-                    >
-
-                    <small
-                      *ngIf="userForm.controls['password']?.errors?.['pattern']"
-                      class="text-danger"
-                    >
-                      Must contain uppercase, lowercase, number & special
-                      character
-                    </small>
-                  </div>
-                </div> -->
                   <div class="col-md-4">
-                    <label class="form-label">Role<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >Role<span class="text-danger">*</span></label
+                    >
 
                     <select class="form-select" formControlName="role_id">
                       <option value="">Select Role</option>
@@ -794,12 +788,15 @@
                     <h6 class="fw-bold mt-3">Address</h6>
                   </div>
                   <div class="col-md-4">
-                    <label class="form-label">House No<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >House No<span class="text-danger">*</span></label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       formControlName="house_No"
                       placeholder="House No"
+                      (keypress)="blockSpaces($event)"
                     />
                     <small
                       class="text-danger"
@@ -813,12 +810,16 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Town Name<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >Town Name<span class="text-danger">*</span></label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       formControlName="town_Name"
                       placeholder="Town Name"
+                      (keypress)="blockSpaces($event)"
+                      (keypress)="allowOnlyLetters($event)"
                     />
                     <small
                       class="text-danger"
@@ -832,12 +833,16 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Mandal Name<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >Mandal Name<span class="text-danger">*</span></label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       formControlName="mandal_Name"
                       placeholder="Mandal Name"
+                      (keypress)="blockSpaces($event)"
+                      (keypress)="allowOnlyLetters($event)"
                     />
                     <small
                       class="text-danger"
@@ -851,12 +856,16 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">District Name<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >District Name<span class="text-danger">*</span></label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       formControlName="district_Name"
                       placeholder="District Name"
+                      (keypress)="blockSpaces($event)"
+                      (keypress)="allowOnlyLetters($event)"
                     />
                     <small
                       class="text-danger"
@@ -870,12 +879,16 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">State<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >State<span class="text-danger">*</span></label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       formControlName="state"
                       placeholder="State"
+                      (keypress)="blockSpaces($event)"
+                      (keypress)="allowOnlyLetters($event)"
                     />
                     <small
                       class="text-danger"
@@ -889,7 +902,9 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label class="form-label">Pincode<span class="text-danger">*</span></label>
+                    <label class="form-label"
+                      >Pincode<span class="text-danger">*</span></label
+                    >
                     <input
                       type="text"
                       class="form-control"
@@ -898,7 +913,7 @@
                       maxlength="6"
                       (keydown)="onlyDigits($event, 6)"
                     />
-                     <small
+                    <small
                       class="text-danger"
                       *ngIf="
                         userForm.controls['pincode']?.touched &&
@@ -919,65 +934,53 @@
                     <h6 class="fw-bold mt-3">Documents</h6>
                   </div>
 
-<!-- IMAGE -->
-<div class="col-md-4">
-  <label class="form-label">Image</label>
+                  <div class="col-md-4">
+                    <label class="form-label">
+                      Image <span class="text-danger">*</span>
+                    </label>
 
-  <!-- Existing Image Preview -->
-  <div *ngIf="existingImageUrl" class="mb-2">
-    <img
-      [src]="existingImageUrl"
-      width="80"
-      height="80"
-      class="rounded border"
-    />
-    <div class="text-success small">Current image</div>
-  </div>
+                    <div class="input-group">
+                      <label class="input-group-text">
+                        Choose File
+                        <input
+                          type="file"
+                          class="d-none"
+                          (change)="onImageSelect($event)"
+                        />
+                      </label>
 
-  <!-- File input always empty -->
-  <input
-    type="file"
-    class="form-control"
-    accept="image/*"
-    (change)="onImageSelect($event)"
-    
-  />
+                      <input
+                        type="text"
+                        class="form-control"
+                        [value]="selectedUser?.image || 'No file chosen'"
+                        readonly
+                      />
+                    </div>
+                  </div>
 
-  <small class="text-muted">
-    Select new image only if you want to change
-  </small>
-</div>
+                  <div class="col-md-4">
+                    <label class="form-label">
+                      ID Proof <span class="text-danger">*</span>
+                    </label>
 
+                    <div class="input-group">
+                      <label class="input-group-text">
+                        Choose File
+                        <input
+                          type="file"
+                          class="d-none"
+                          (change)="onIdProofSelect($event)"
+                        />
+                      </label>
 
-
-
-<div class="col-md-4">
-  <label class="form-label">
-    ID Proof <span class="text-danger">*</span>
-  </label>
-
-  <!-- EXISTING ID PROOF PREVIEW -->
-  <div *ngIf="existingIdProofUrl" class="mb-2">
-    <img
-      [src]="existingIdProofUrl"
-      width="80"
-      height="80"
-      class="rounded border"
-    />
-  </div>
-
-  <input
-    type="file"
-    class="form-control"
-    accept="image/*"
-    (change)="onIdProofSelect($event)"
-  />
-  <small class="text-muted">
-    Leave empty to keep existing ID proof
-  </small>
-</div>
-
-
+                      <input
+                        type="text"
+                        class="form-control"
+                        [value]="selectedUser?.id_proof || 'No file chosen'"
+                        readonly
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-success">Save</button>

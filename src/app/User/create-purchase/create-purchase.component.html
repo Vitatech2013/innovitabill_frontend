@@ -5,10 +5,10 @@
     (ngSubmit)="savePurchase()"
     enctype="multipart/form-data"
   >
-    <div class="row g-3">
+    <div class="row g-2">
       <h5 class="fw-bold">Vendor Details</h5>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Vendor Name
           <span class="text-danger">*</span>
@@ -24,7 +24,7 @@
                   </small>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Vendor Type
           <span class="text-danger">*</span>
@@ -40,7 +40,7 @@
                   </small>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Business Category
           <span class="text-danger">*</span>
@@ -56,7 +56,7 @@
                   </small>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >GST Number
           <span class="text-danger">*</span>
@@ -72,7 +72,7 @@
                   </small>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >PAN Number
           <span class="text-danger">*</span>
@@ -89,7 +89,7 @@
                   </small>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Company Reg No
           <span class="text-danger">*</span>
@@ -274,9 +274,9 @@
 </div>
 
 
-    <div class="row g-4 item-form mt-3">
+    <div class="row g-2 item-form mt-3">
       <h5 class="fw-bold">Item Details</h5>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Item Name
           <span class="text-danger">*</span>
@@ -293,7 +293,7 @@
         </small>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Item Code
           <span class="text-danger">*</span>
@@ -310,7 +310,7 @@
         </small>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Units
           <span class="text-danger">*</span>
@@ -323,7 +323,7 @@
         </select>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Price
           <span class="text-danger">*</span>
@@ -340,7 +340,7 @@
         </small>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Purchase price
           <span class="text-danger">*</span>
@@ -357,7 +357,7 @@
         </small>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Tax
           <span class="text-danger">*</span>
@@ -375,7 +375,7 @@
         </small>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Stock
           <span class="text-danger">*</span>
@@ -392,7 +392,7 @@
         </small>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Brand Name
           <span class="text-danger">*</span>
@@ -409,7 +409,7 @@
         </small>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Discount
           <span class="text-danger">*</span>
@@ -426,7 +426,7 @@
         </small>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Stock Alert
           <span class="text-danger">*</span>
@@ -443,7 +443,7 @@
         </small>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Categories
           <span class="text-danger">*</span>
@@ -456,7 +456,7 @@
         </select>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Sub-Categories
           <span class="text-danger">*</span>
@@ -468,7 +468,7 @@
           </option>
         </select>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Image
           <span class="text-danger">*</span>
@@ -476,13 +476,12 @@
         <input
           type="file"
           class="form-control"
+           accept="image/*"
           (change)="onFileSelect($event)"
         />
-        <small *ngIf="isInvalid('image')" class="text-danger">
-          Image is required
-        </small>
+        
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label fw-bold"
           >Description
           <span class="text-danger">*</span>
