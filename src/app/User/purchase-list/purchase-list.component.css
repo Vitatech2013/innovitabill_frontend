@@ -48,10 +48,33 @@
   border-radius: 0.5rem;
   overflow: hidden;
 }
-.modal.show .modal-dialog {
-  display: flex;
-  align-items: center;
-  min-height: 100vh;
+.modal-dialog {
+  max-width: 95%;
+  margin: 1rem auto;
+}
+.modal .table {
+  min-width: 1100px;
+}
+@media (max-width: 768px) {
+  .modal-body .row > div {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  @media (max-width: 576px) {
+  .search-box {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+}
+
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
 }
 .table-row {
   border: 1px solid #d9f2d9;
@@ -113,4 +136,13 @@
   transform: translateY(-50%);
   font-size: 18px;
   color: #6c757d;
+}
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  min-width: 950px;
 }

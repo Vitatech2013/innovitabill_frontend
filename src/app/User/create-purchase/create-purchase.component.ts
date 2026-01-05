@@ -112,8 +112,9 @@ export class CreatePurchaseComponent implements OnInit {
     this.service.addPurchase(formData).subscribe({
       next: () => {
         this.toastr.success('Purchase added successfully');
+        window.location.reload()
         this.router.navigate(['/userdashboard']);
-      },
+      },  
       error: (err) => {
         this.toastr.error('Error creating purchase', 'Error');
       },

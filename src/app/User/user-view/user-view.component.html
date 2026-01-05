@@ -258,10 +258,20 @@
             <span class="link-text"> Purchase List</span>
           </a>
         </li>
+        <li class="nav-item">
+          <a
+            class="nav-link d-flex align-items-center"
+            routerLink="/userview/quotation"
+            routerLinkActive="active"
+          >
+            <i class="bi bi-bag me-2"></i>
+            <span class="link-text"> Quotation</span>
+          </a>
+        </li>
       </ul>
     </nav>
 
-    <div class="col-md" (click)="closeSidebarOnMobile()">
+    <div class="flex-grow-1 w-100 content-area" (click)="closeSidebarOnMobile()">
       <router-outlet></router-outlet>
     </div>
   </div>
