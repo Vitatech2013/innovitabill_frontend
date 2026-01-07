@@ -7,6 +7,7 @@ import { constants } from '../../../constants';
   providedIn: 'root',
 })
 export class BillingService {
+  changeLoginStatus: any;
   triggerBusinessTypeRefresh() {
     throw new Error('Method not implemented.');
   }
@@ -298,6 +299,12 @@ updatePurchase(id: string, data: FormData) {
 //   return this.http.put(`${this.baseUrl}/update/${id}`, data);
 // }
 
+updateLoginStatus(id: string, data: any) {
+  return this.http.patch(`/business/${id}/login-status`, data);
+}
 
+updateAccountStatus(id: string, data: any) {
+  return this.http.patch(`/business/${id}/account-status`, data);
+}
 
 }

@@ -119,9 +119,9 @@
       formControlName="address_line_1"
        (input)="singleSpace($event)"
     />
-    <small *ngIf="isInvalid('address.address_line_1')" class="text-danger">
-      Address line 1 is required
-    </small>
+  <small *ngIf="isInvalid('address.address_line_1')" class="text-danger">
+    Address line 1 is required
+  </small>
   </div>
 
   <div class="col-md-4">
@@ -370,9 +370,9 @@
           (input)="onInputNumbersAndSpecial($event)"
         />
 
-        <small *ngIf="isInvalid('tax_rate')" class="text-danger">
-          Tax rate is required
-        </small>
+      <small *ngIf="isInvalid('tax_rate')" class="text-danger">
+  Tax rate is required
+</small>
       </div>
 
       <div class="col-md-3">

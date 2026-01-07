@@ -113,15 +113,16 @@ export class PurchaseListComponent implements OnInit {
   //     error: (err) => console.error('Error loading Purchases:', err),
   //   });
   // }
-  loadPurchases() {
-  this.service.getPurchases(this.business_id).subscribe({
-    next: (res: any) => {
-      console.log('Purchases fetched:', res);
-      this.items = [...(res.purchases || [])]; // IMPORTANT
-    },
-    error: err => console.error(err),
-  });
-}
+ private loadPurchases() {
+    this.service.getPurchases(this.business_id).subscribe({
+      next: (res: any) => {
+        console.log('Purchases fetched:', res);
+
+        this.purchases = res?.purchases || [];
+      },
+      error: (err) => console.error('Error loading Purchases:', err),
+    });
+  }
 
 
   editItem(purchase: any) {
@@ -189,11 +190,7 @@ export class PurchaseListComponent implements OnInit {
     });
   }
 
-  updatePurchase() {
-    if (this.editForm.invalid) {
-      this.toastr.warning('Fill all required fields');
-      return;
-    }
+
 
 //  updatePurchase() {
 //   if (this.editForm.invalid) return;

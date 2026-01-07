@@ -72,7 +72,7 @@ export class CreatePurchaseComponent implements OnInit {
       unit_id: ['', Validators.required],
       purchase_price: ['', Validators.required],
       selling_price: ['', Validators.required],
-      tax_rate: [''],
+      tax_rate: ['', Validators.required],
       stock_quantity: ['', Validators.required],
       brand_name: ['',  Validators.required],
       discount: ['',  Validators.required],
@@ -85,6 +85,13 @@ export class CreatePurchaseComponent implements OnInit {
     this.subCategoriesGet();
     this.unitsGet();
   }
+
+onSubmit() {
+  if (this.addPurchaseForm.invalid) {
+    this.addPurchaseForm.markAllAsTouched();
+    return;
+  }
+}
 
   savePurchase() {
     if (this.addPurchaseForm.invalid) {
