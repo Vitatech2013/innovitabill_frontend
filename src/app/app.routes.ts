@@ -63,9 +63,9 @@ export const routes: Routes = [
     path: 'userview',
     component: UserViewComponent,
     children: [
-     
+      { path: '', component: UserDashboardComponent },
       { path: 'userdashboard', component: UserDashboardComponent },
-      { path: '', component: SaleComponent },
+      { path: 'createsale', component: SaleComponent },
       { path: 'userprofile', component: UserProfileComponent },
       {
         path: 'itemlist',
@@ -93,7 +93,7 @@ export const routes: Routes = [
     path: 'business-Forgotpassword',
     component: BusinessForgotpasswordComponent,
   },
-  { path: 'business-otp', component: BusinessOtpComponent },
+  { path: 'business-otp/:token', component: BusinessOtpComponent },
 
   {
     path: 'business-Dashboard',

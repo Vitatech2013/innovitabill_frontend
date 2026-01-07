@@ -28,8 +28,8 @@ export class UsersComponent implements OnInit {
   searchTerm: string = '';
   statusFilter: 'active' | 'inactive' | 'all' = 'all';
   users: any[] = [];
-  u: any;
-  deleteId: string | null = null;
+
+  
   business_id: string | null = null;
   userForm!: FormGroup;
   roles: any;
@@ -42,7 +42,7 @@ export class UsersComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private service: BusinessService,
-    private router: Router
+    
   ) {}
   ngOnInit(): void {
     const storedUser = localStorage.getItem('user');
@@ -328,10 +328,7 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  onFileSelect(event: any) {
-    this.imageFile = event.target.files[0];
-    console.log('Selected file:', this.imageFile);
-  }
+
 
   openViewModal(u: any) {
     console.log('VIEW USER DATA', u);
@@ -384,10 +381,49 @@ export class UsersComponent implements OnInit {
     if (event.key.length > 1) return;
     if (!/\d/.test(event.key) || el.value.length >= max) event.preventDefault();
   }
-
-  blockSpaces(event: KeyboardEvent) {
-    if (event.code === 'Space') event.preventDefault();
+   removeFirstSpace() {
+    const c = this.userForm.get('user_name');
+    if (c?.value?.startsWith(' ')) {
+      c.setValue(c.value.trimStart(), { emitEvent: false });
+    }
   }
+  removeExtraSpaces() {
+  const control = this.userForm.get('user_name');
+  if (control) {
+    let value = control.value || '';
+
+    value = value.replace(/^\s+/, '');
+
+    
+    value = value.replace(/\s{2,}/g, ' ');
+
+    control.setValue(value, { emitEvent: false });
+  }
+}
+ allowOnlyLettersAndSingleSpace(event: KeyboardEvent) {
+  const inputChar = event.key;
+  const currentValue = (event.target as HTMLInputElement).value;
+
+  if (/^[a-zA-Z]$/.test(inputChar)) {
+    return;
+  }
+
+  if (
+    inputChar === ' ' &&
+    currentValue.length > 0 &&
+    !currentValue.endsWith(' ')
+  ) {
+    return;
+  }
+
+  event.preventDefault();
+}
+blockSpace(event: KeyboardEvent) {
+  if (event.key === ' ') {
+    event.preventDefault();
+  }
+}
+
 
   showToast(message: string, type: 'success' | 'error' | 'warning') {
     if (this.toastMessage) return;

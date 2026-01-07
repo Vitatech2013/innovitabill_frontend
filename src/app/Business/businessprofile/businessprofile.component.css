@@ -1,0 +1,6 @@
+.profile-scroll-wrapper {
+  height: calc(80vh - 70px); /* navbar height adjust */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 20px;
+}
