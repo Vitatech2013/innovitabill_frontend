@@ -66,41 +66,82 @@ export class SalesComponent implements OnInit {
     });
   }
 
-  filteredSales() {
-    if (!this.searchTerm) return this.saledata;
+  // filteredSales() {
+  //   if (!this.searchTerm) return this.saledata;
 
-    const term = this.searchTerm.toLowerCase().trim();
-    const paymentStatuses = ['paid', 'partial paid', 'unpaid', 'pending'];
+  //   const term = this.searchTerm.toLowerCase().trim();
+  //   const paymentStatuses = ['paid', 'partial paid', 'unpaid', 'pending'];
 
-    if (paymentStatuses.includes(term)) {
-      return this.saledata.filter(
-        (sale) => (sale.payment_status || 'pending').toLowerCase() === term
-      );
-    }
+  //   if (paymentStatuses.includes(term)) {
+  //     return this.saledata.filter(
+  //       (sale) => (sale.payment_status || 'pending').toLowerCase() === term
+  //     );
+  //   }
 
-    return this.saledata.filter((sale) => {
-      return Object.values(sale).some((val) => {
-        if (val === null || val === undefined) return false;
+  //   return this.saledata.filter((sale) => {
+  //     return Object.values(sale).some((val) => {
+  //       if (val === null || val === undefined) return false;
 
-        if (typeof val === 'object') {
-          if (val !== null) {
-            if ('name' in val && typeof (val as any).name === 'string') {
-              return (val as any).name.toLowerCase().includes(term);
-            }
+  //       if (typeof val === 'object') {
+  //         if (val !== null) {
+  //           if ('name' in val && typeof (val as any).name === 'string') {
+  //             return (val as any).name.toLowerCase().includes(term);
+  //           }
+  //            if (sale.invoice_number?.toString().includes(term)) return true;
 
-            if (Array.isArray(val)) {
-              return val.some((p: any) =>
-                (p.item_id?.item_name || '').toLowerCase().includes(term)
-              );
-            }
-          }
-          return false;
-        }
+  //   // 🔹 Customer name
+  //   if (sale.customer_id?.name?.toLowerCase().includes(term)) return true;
 
-        return val.toString().toLowerCase().includes(term);
-      });
-    });
+  //   // 🔹 Payment status
+  //   if ((sale.payment_status || 'pending').toLowerCase().includes(term)) return true;
+
+  //   // 🔹 Grand total (number)
+  //   if (sale.grand_total?.toString().includes(term)) return true;
+
+  //           if (Array.isArray(val)) {
+  //             return val.some((p: any) => {
+  //       return (
+  //         p.item_id?.item_name?.toLowerCase().includes(term) ||
+  //         p.quantity?.toString().includes(term) ||
+  //         p.selling_price?.toString().includes(term) ||
+  //         p.tax_rate?.toString().includes(term) ||
+  //         p.discount?.toString().includes(term)
+  //       );
+  //           });
+  //           }
+  //         }
+  //         return false;
+  //       }
+
+  //       return val.toString().toLowerCase().includes(term);
+  //     });
+  //   });
+  // }
+filteredSales() {
+  if (!this.searchTerm) {
+    return this.saledata;
   }
+
+  const term = this.searchTerm.toString();
+
+  return this.saledata.filter((sale) => {
+    const flatString = JSON.stringify({
+      invoice: sale.invoice_number,
+      customer: sale.customer_id?.name,
+      status: sale.payment_status,
+      total: sale.grand_total,
+      products: sale.product_ids?.map((p: any) => ({
+        name: p.item_id?.item_name,
+        qty: p.quantity,
+        price: p.selling_price,
+        tax: p.tax_rate,
+        discount: p.discount
+      }))
+    }).toLowerCase();
+
+    return flatString.includes(term.toLowerCase());
+  });
+}
 
   view(sale: any) {
     const firstProduct = sale.product_ids?.[0] || {};

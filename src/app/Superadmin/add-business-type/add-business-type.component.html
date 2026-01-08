@@ -73,8 +73,28 @@
               placeholder="Enter business code"
               (keydown)="preventSpace($event)"
             />
-            <small *ngIf="isInvalid('business_code')" class="text-danger">
-              Business code is required and must be at least 3 letters
+            <small
+              *ngIf="addBusinessTypeForm.get('business_code')?.errors?.['required'] && addBusinessTypeForm.get('business_code')?.touched"
+              class="text-danger"
+            >
+              Business code is required
+            </small>
+
+            <small
+              *ngIf="addBusinessTypeForm.get('business_code')?.errors?.['minlength'] && addBusinessTypeForm.get('business_code')?.touched"
+              class="text-danger"
+            >
+              Business code must be at least 3 characters
+            </small>
+
+            <small
+              *ngIf="
+    addBusinessTypeForm.get('business_code')?.errors?.['alreadyExists'] &&
+    addBusinessTypeForm.get('business_code')?.touched
+  "
+              class="text-danger"
+            >
+              Business code already exists
             </small>
           </div>
         </div>

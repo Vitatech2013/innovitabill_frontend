@@ -127,21 +127,44 @@
         </small>
       </div>
        <!--  Email -->
-      <div class="col-md-3 p1">
-        <label class="form-label fw-semibold"
-          >Email<span class="text-danger">*</span></label
-        >
-        <input
-          type="email"
-          class="form-control p2"
-          formControlName="email"
-          placeholder="Enter email"
-          (keydown)="preventSpace($event)"
-        />
-        <small *ngIf="isInvalid('email')" class="text-danger">
-          Enter a valid email
-        </small>
-      </div>
+<div class="col-md-3 p1">
+  <label class="form-label fw-semibold">
+    Email <span class="text-danger">*</span>
+  </label>
+
+  <input
+    type="email"
+    class="form-control p2"
+    formControlName="email"
+    placeholder="Enter email"
+    (keydown)="preventSpace($event)"
+  />
+
+  <!-- Invalid email format -->
+  <small
+    *ngIf="
+      addBusinessForm.get('email')?.hasError('email') &&
+      (addBusinessForm.get('email')?.touched ||
+        addBusinessForm.get('email')?.dirty)
+    "
+    class="text-danger"
+  >
+    Enter a valid email
+  </small>
+
+  <!-- Email already exists -->
+  <small
+    *ngIf="
+      addBusinessForm.get('email')?.hasError('emailExists') &&
+      (addBusinessForm.get('email')?.touched ||
+        addBusinessForm.get('email')?.dirty)
+    "
+    class="text-danger"
+  >
+    Email already exists
+  </small>
+</div>
+
        <!-- Phone number -->
       <div class="col-md-3 p1">
         <label class="form-label fw-semibold"
