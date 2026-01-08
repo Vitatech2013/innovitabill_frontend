@@ -72,32 +72,8 @@ export class UnitsComponent implements OnInit {
     });
   }
 
-  allowLettersAndSpace(event: KeyboardEvent) {
-    const allowedKeys = [
-      'Backspace',
-      'Delete',
-      'ArrowLeft',
-      'ArrowRight',
-      'Tab',
-    ];
 
-    if (allowedKeys.includes(event.key)) {
-      return;
-    }
 
-    if (!/^[a-zA-Z ]$/.test(event.key)) {
-      event.preventDefault();
-    }
-  }
-  onNameInput(event: any, controlName: string) {
-    let value = event.target.value;
-
-    value = value.replace(/^\s+/g, '');
-
-    value = value.replace(/\s{2,}/g, ' ');
-
-    this.UnitForm.get(controlName)?.setValue(value, { emitEvent: false });
-  }
 
   openAddModal() {
     this.title = 'Add Unit';
@@ -164,24 +140,29 @@ export class UnitsComponent implements OnInit {
       });
     }
   }
-  filteredUser() {
-    if (!this.searchTerm) return this.units;
-    const term = this.searchTerm.toLowerCase();
-    return this.units.filter((u: any) =>
-      Object.values(u).some((val) =>
-        val?.toString().toLowerCase().includes(term)
-      )
-    );
-  }
-
+  // filteredUser() {
+  //   if (!this.searchTerm) return this.units;
+  //   const term = this.searchTerm.toLowerCase();
+  //   return this.units.filter((u: any) =>
+  //     Object.values(u).some((val) =>
+  //       val?.toString().toLowerCase().includes(term)
+  //     )
+  //   );
+  // }
   filteredByStatus() {
-    if (this.statusFilter === 'all') {
-      return this.filteredUser();
+    let data = this.units;
+
+    if (this.searchTerm) {
+      const term = this.searchTerm.toLowerCase();
+      data = data.filter((u: any) =>
+        Object.values(u).some((val) =>
+          val?.toString().toLowerCase().includes(term)
+        )
+      );
     }
-    if (!this.units) return [];
-    return this.units.filter((u) =>
-      this.statusFilter ? u.status === this.statusFilter : true
-    );
+
+    if (this.statusFilter === 'all') return data;
+    return data.filter((u) => u.status === this.statusFilter);
   }
 
   openDeleteModal(unit: any) {
@@ -232,12 +213,7 @@ export class UnitsComponent implements OnInit {
     }
   }
 
-  allowOnlyLetters(event: KeyboardEvent) {
-    const pattern = /^[A-Za-z]$/;
-    if (!pattern.test(event.key)) {
-      event.preventDefault();
-    }
-  }
+
   allowOnlyNumbers(event: KeyboardEvent) {
     const pattern = /^[0-9]$/;
     if (!pattern.test(event.key)) {
