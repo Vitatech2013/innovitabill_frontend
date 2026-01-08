@@ -25,13 +25,13 @@
   </div>
 </div>
 
-<div class="container-fluid scrollable-card">
+<div class="container-fluid border rounded-4 p-4 bg-white shadow-sm">
   <div class="dashboard">
     <div class="row mb-3">
       <div
         class="col-12 d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3"
       >
-        <h4 class="fw-bold text-success mb-2 mb-md-0">Available Users List</h4>
+        <h4 class="fw-bold text-success mb-2 mb-md-0">Manage Users</h4>
         <input
           type="text"
           class="form-control shadow-sm mb-2 mb-md-0 mx-md-3"
@@ -40,32 +40,34 @@
           style="width: 100%; max-width: 300px"
         />
 
-      <button
-      class="btn"
-      [ngClass]="statusFilter === 'all' ? 'btn-light' : 'btn btn-light'"
-      (click)="statusFilter = 'all'"
-    >
-      <i class="bi bi-check-circle"></i>
-      All
-    </button>
-    <!-- Button -->
-    <button
-      class="btn"
-      [ngClass]="statusFilter === 'active' ? 'btn-light' : 'btn btn-light'"
-      (click)="statusFilter = 'active'"
-    >
-      <i class="bi bi-check-circle"></i>
-      Active
-    </button>
+        <button
+          class="btn"
+          [ngClass]="statusFilter === 'all' ? 'btn-light' : 'btn btn-light'"
+          (click)="statusFilter = 'all'"
+        >
+          <i class="bi bi-check-circle"></i>
+          All
+        </button>
+        <!-- Button -->
+        <button
+          class="btn"
+          [ngClass]="statusFilter === 'active' ? 'btn-light' : 'btn btn-light'"
+          (click)="statusFilter = 'active'"
+        >
+          <i class="bi bi-check-circle"></i>
+          Active
+        </button>
 
-    <button
-      class="btn"
-      [ngClass]="statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'"
-      (click)="statusFilter = 'inactive'"
-    >
-      <i class="bi bi-x-circle"></i>
-      Inactive
-    </button>.
+        <button
+          class="btn"
+          [ngClass]="
+            statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'
+          "
+          (click)="statusFilter = 'inactive'"
+        >
+          <i class="bi bi-x-circle"></i>
+          Inactive
+        </button>
 
         <button
           class="btn btn-light"
@@ -263,8 +265,8 @@
                       class="form-control"
                       formControlName="user_name"
                       placeholder="Enter User Name"
-                      (keypress)="blockSpaces($event)"
-                      (keypress)="allowOnlyLetters($event)"
+                      (keypress)="allowOnlyLettersAndSingleSpace($event)"
+                      (input)="removeExtraSpaces()"
                     />
                     <div
                       *ngIf="
@@ -303,7 +305,7 @@
                       formControlName="user_email"
                       class="form-control"
                       placeholder="Enter email"
-                      (keypress)="blockSpaces($event)"
+                      (keypress)="blockSpace($event)"
                     />
                     <div
                       *ngIf="
@@ -366,9 +368,9 @@
                       type="password"
                       formControlName="password"
                       placeholder="Enter password"
-                      (keypress)="blockSpaces($event)"
                       class="form-control"
                       autocomplete="current-password"
+                      (keypress)="blockSpace($event)"
                     />
                     <div
                       *ngIf="
@@ -447,7 +449,7 @@
                       class="form-control"
                       formControlName="house_No"
                       placeholder="House No"
-                      (keypress)="blockSpaces($event)"
+                      (keypress)="blockSpace($event)"
                     />
                     <small
                       class="text-danger"
@@ -469,7 +471,6 @@
                       class="form-control"
                       formControlName="town_Name"
                       placeholder="Town Name"
-                      (keypress)="blockSpaces($event)"
                       (keypress)="allowOnlyLetters($event)"
                     />
                     <small
@@ -492,7 +493,6 @@
                       class="form-control"
                       formControlName="mandal_Name"
                       placeholder="Mandal Name"
-                      (keypress)="blockSpaces($event)"
                       (keypress)="allowOnlyLetters($event)"
                     />
                     <small
@@ -515,7 +515,6 @@
                       class="form-control"
                       formControlName="district_Name"
                       placeholder="District Name"
-                      (keypress)="blockSpaces($event)"
                       (keypress)="allowOnlyLetters($event)"
                     />
                     <small
@@ -538,7 +537,6 @@
                       class="form-control"
                       formControlName="state"
                       placeholder="State"
-                      (keypress)="blockSpaces($event)"
                       (keypress)="allowOnlyLetters($event)"
                     />
                     <small
@@ -656,6 +654,8 @@
                       type="text"
                       class="form-control"
                       formControlName="user_name"
+                      (keypress)="allowOnlyLettersAndSingleSpace($event)"
+                      (input)="removeExtraSpaces()"
                     />
                     <div
                       *ngIf="
@@ -694,6 +694,7 @@
                       formControlName="user_email"
                       class="form-control"
                       placeholder="Enter email"
+                      (keypress)="blockSpace($event)"
                     />
                     <div
                       *ngIf="
@@ -796,7 +797,7 @@
                       class="form-control"
                       formControlName="house_No"
                       placeholder="House No"
-                      (keypress)="blockSpaces($event)"
+                      (keypress)="blockSpace($event)"
                     />
                     <small
                       class="text-danger"
@@ -818,7 +819,6 @@
                       class="form-control"
                       formControlName="town_Name"
                       placeholder="Town Name"
-                      (keypress)="blockSpaces($event)"
                       (keypress)="allowOnlyLetters($event)"
                     />
                     <small
@@ -841,7 +841,6 @@
                       class="form-control"
                       formControlName="mandal_Name"
                       placeholder="Mandal Name"
-                      (keypress)="blockSpaces($event)"
                       (keypress)="allowOnlyLetters($event)"
                     />
                     <small
@@ -864,7 +863,6 @@
                       class="form-control"
                       formControlName="district_Name"
                       placeholder="District Name"
-                      (keypress)="blockSpaces($event)"
                       (keypress)="allowOnlyLetters($event)"
                     />
                     <small
@@ -887,7 +885,6 @@
                       class="form-control"
                       formControlName="state"
                       placeholder="State"
-                      (keypress)="blockSpaces($event)"
                       (keypress)="allowOnlyLetters($event)"
                     />
                     <small

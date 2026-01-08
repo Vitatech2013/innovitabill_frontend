@@ -26,14 +26,14 @@ export class BusinessprofileComponent implements OnInit {
   previewUrl: string | ArrayBuffer | null = null;
   business_id: any;
 
-  addressFields = [
-    { name: 'house_No', label: 'House No' },
-    { name: 'town_Name', label: 'Town Name' },
-    { name: 'mandal_Name', label: 'Mandal' },
-    { name: 'district_Name', label: 'District' },
-    { name: 'state', label: 'State' },
-    { name: 'pincode', label: 'Pincode' },
-  ];
+addressFields = [
+  { name: 'house_No', label: 'House No' },
+  { name: 'town_Name', label: 'Town Name' },
+  { name: 'mandal_Name', label: 'Mandal' },
+  { name: 'district_Name', label: 'District' },
+  { name: 'state', label: 'State' },
+  { name: 'pincode', label: 'Pincode' }
+];
 
   businessTypes: any[] = [];
   selectedBusiness: any = {};
@@ -69,12 +69,12 @@ export class BusinessprofileComponent implements OnInit {
       logo_image: [''],
       bt_id: ['', Validators.required],
       address: this.fb.group({
-        house_No: [''],
-        town_Name: [''],
-        mandal_Name: [''],
-        district_Name: [''],
-        state: [''],
-        pincode: [''],
+        house_No: ['', Validators.required],
+        town_Name: ['', Validators.required],
+        mandal_Name: ['', Validators.required],
+        district_Name: ['', Validators.required],
+        state: ['', Validators.required],
+        pincode: ['', Validators.required],
       }),
     });
 
@@ -142,6 +142,7 @@ export class BusinessprofileComponent implements OnInit {
 
   updateadminprofile() {
     if (this.BusinessprofileForm.invalid) {
+      this.BusinessprofileForm.markAllAsTouched();
       this.showToast('Please fill all required fields', 'warning');
       return;
     }
@@ -254,4 +255,80 @@ export class BusinessprofileComponent implements OnInit {
     if (!image) return '';
     return `http://localhost:3009/business_images/${image}`;
   }
+
+  allowOnlyLetters(event: KeyboardEvent) {
+    if (!/^[A-Za-z]$/.test(event.key)) event.preventDefault();
+  }
+  onlyDigits(event: KeyboardEvent, max: number) {
+    const el = event.target as HTMLInputElement;
+    if (event.key.length > 1) return;
+    if (!/\d/.test(event.key) || el.value.length >= max) event.preventDefault();
+  }
+   removeFirstSpace() {
+    const c = this.BusinessprofileForm.get('business_name');
+    if (c?.value?.startsWith(' ')) {
+      c.setValue(c.value.trimStart(), { emitEvent: false });
+    }
+  }
+  removeExtraSpaces() {
+  const control = this.BusinessprofileForm.get('business_name');
+  if (control) {
+    let value = control.value || '';
+
+    value = value.replace(/^\s+/, '');
+
+    
+    value = value.replace(/\s{2,}/g, ' ');
+
+    control.setValue(value, { emitEvent: false });
+  }
+}
+ allowOnlyLettersAndSingleSpace(event: KeyboardEvent) {
+  const inputChar = event.key;
+  const currentValue = (event.target as HTMLInputElement).value;
+
+  if (/^[a-zA-Z]$/.test(inputChar)) {
+    return;
+  }
+
+  if (
+    inputChar === ' ' &&
+    currentValue.length > 0 &&
+    !currentValue.endsWith(' ')
+  ) {
+    return;
+  }
+
+  event.preventDefault();
+}
+blockSpace(event: KeyboardEvent) {
+  if (event.key === ' ') {
+    event.preventDefault();
+  }
+}
+handleAddressKeyPress(event: KeyboardEvent, fieldName: string) {
+  switch (fieldName) {
+    case 'town_Name':
+    case 'mandal_Name':
+    case 'district_Name':
+      this.allowOnlyLettersAndSingleSpace(event);
+      break;
+
+    case 'state':
+      this.allowOnlyLetters(event);
+      break;
+
+    case 'pincode':
+      this.onlyDigits(event, 6);
+      break;
+
+    case 'house_No':
+      // allow letters + numbers, block starting space
+      if (event.key === ' ') {
+        this.blockSpace(event);
+      }
+      break;
+  }
+}
+
 }

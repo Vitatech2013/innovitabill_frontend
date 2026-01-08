@@ -33,13 +33,17 @@ export class BusinessOtpComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
   ngOnInit(): void {
-    this.resetForm = this.fb.group(
-      {
-        newPassword: ['', [Validators.required, Validators.minLength(6)]],
-      },
-      { validators: this.matchPasswordValidator }
-    );
+  this.resetForm = this.fb.group({
+    newPassword: ['', [Validators.required, Validators.minLength(6)]],
+  });
+
+  this.token = this.route.snapshot.paramMap.get('token');
+
+  if (!this.token) {
+    this.showToast('Invalid or expired reset link');
+    this.router.navigate(['/login']);
   }
+}
 
   matchPasswordValidator(formGroup: FormGroup) {
     const newPassword = formGroup.get('newPassword')?.value;
