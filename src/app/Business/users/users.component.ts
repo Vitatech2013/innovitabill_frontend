@@ -28,8 +28,7 @@ export class UsersComponent implements OnInit {
   searchTerm: string = '';
   statusFilter: 'active' | 'inactive' | 'all' = 'all';
   users: any[] = [];
-
-  
+  showPassword = false;
   business_id: string | null = null;
   userForm!: FormGroup;
   roles: any;
@@ -108,7 +107,11 @@ export class UsersComponent implements OnInit {
   loadUsers() {
     this.service.getUser().subscribe({
       next: (res: any) => {
-        console.log('Users data:', res.data);
+        this.users = (res.data || res).sort(
+          (a: any, b: any) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        console.log('Categories Loaded (Latest First):', this.users);
         this.users = res.data || [];
       },
       error: (err) => console.error('Error loading users:', err),
@@ -128,6 +131,9 @@ export class UsersComponent implements OnInit {
 
     const modal = new bootstrap.Modal(modalEl);
     modal.show();
+  }
+    togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 
   closeModal() {

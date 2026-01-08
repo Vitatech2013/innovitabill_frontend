@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { BusinessService } from '../../Services/business.service';
-import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-business-login',
@@ -27,7 +27,7 @@ export class BusinessLoginComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private service: BusinessService,
-    private toastr: ToastrService
+    
   ) {}
 
   ngOnInit(): void {
@@ -90,6 +90,7 @@ export class BusinessLoginComponent implements OnInit {
   }
 
   showToast(message: string, type: 'success' | 'error' | 'warning') {
+    if (this.toastMessage) return;
     this.toastMessage = message;
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 3000);
