@@ -94,7 +94,7 @@ export const routes: Routes = [
     path: 'business-Forgotpassword',
     component: BusinessForgotpasswordComponent,
   },
-  { path: 'business-otp', component: BusinessOtpComponent },
+  { path: 'business-otp/:token', component: BusinessOtpComponent },
 
   {
     path: 'business-Dashboard',

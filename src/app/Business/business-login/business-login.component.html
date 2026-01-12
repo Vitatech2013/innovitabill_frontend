@@ -112,11 +112,21 @@
                 businessForm.controls['password']?.invalid
               "
             >
+              <!-- Required -->
               <small
                 *ngIf="businessForm.controls['password']?.errors?.['required']"
                 class="text-danger"
               >
                 Password is required
+              </small>
+
+              <!-- Pattern -->
+              <small
+                *ngIf="businessForm.controls['password']?.errors?.['pattern']"
+                class="text-danger"
+              >
+                Password must be at least 6 characters and include letters,
+                numbers, and special characters
               </small>
             </div>
           </div>
