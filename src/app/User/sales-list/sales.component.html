@@ -10,7 +10,6 @@
           type="text"
           class="form-control"
           placeholder="Search"
-          onchange="filteredSales()"
           [(ngModel)]="searchTerm"
         />
         <i class="bi bi-search search-icon"></i>
@@ -44,7 +43,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let sale of saledata; let i = index">
+            <tr *ngFor="let sale of filteredSales(); let i = index">
               <td>{{ i + 1 }}</td>
               <td>{{ sale.invoice_number }}</td>
 

@@ -219,33 +219,37 @@ export class SaleComponent implements OnInit {
     this.showCustomerForm = false;
   }
 
+  // filteredItems() {
+  //   let data = [...this.items];
+
+  //   data.sort(
+  //     (a, b) =>
+  //       new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  //   );
+
+  //   if (!this.searchTerm) {
+  //     return data;
+  //   }
+
+  //   const term = this.searchTerm.toLowerCase().trim();
+  //   const statuses = ['active', 'inactive', 'pending'];
+
+  //   if (statuses.includes(term)) {
+  //     return data.filter((it) => it.status?.toLowerCase() === term);
+  //   }
+
+  //   return data.filter(
+  //     (it) =>
+  //       it.item_name?.toLowerCase().includes(term) ||
+  //       it.item_code?.toLowerCase().includes(term) ||
+  //       it.brand_name?.toLowerCase().includes(term) ||
+  //       it.status?.toLowerCase().includes(term)
+  //   );
+  // }
   filteredItems() {
-    let data = [...this.items];
+  return this.items.filter(i => !this.searchTerm || JSON.stringify(i).toLowerCase().includes(this.searchTerm.toLowerCase()));
+}
 
-    data.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
-
-    if (!this.searchTerm) {
-      return data;
-    }
-
-    const term = this.searchTerm.toLowerCase().trim();
-    const statuses = ['active', 'inactive', 'pending'];
-
-    if (statuses.includes(term)) {
-      return data.filter((it) => it.status?.toLowerCase() === term);
-    }
-
-    return data.filter(
-      (it) =>
-        it.item_name?.toLowerCase().includes(term) ||
-        it.item_code?.toLowerCase().includes(term) ||
-        it.brand_name?.toLowerCase().includes(term) ||
-        it.status?.toLowerCase().includes(term)
-    );
-  }
 
   getImageUrl(file: string) {
     return `${this.baseUrl}/business_images/${file}`;
