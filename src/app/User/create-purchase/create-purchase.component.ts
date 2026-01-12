@@ -95,6 +95,7 @@ onSubmit() {
 
   savePurchase() {
     if (this.addPurchaseForm.invalid) {
+      this.addPurchaseForm.markAllAsTouched();
       return;
     }
 

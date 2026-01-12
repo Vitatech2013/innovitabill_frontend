@@ -5,7 +5,6 @@
         type="text"
         class="form-control"
         placeholder="Search"
-        onchange="filteredItems()"
         [(ngModel)]="searchTerm"
       />
       <i class="bi bi-search search-icon"></i>
@@ -28,7 +27,7 @@
 
         <tbody>
           <tr
-            *ngFor="let it of items"
+            *ngFor="let it of filteredItems()"
             [ngClass]="{
               'stock-low': it.stock_quantity <= 10,
               'stock-medium': it.stock_quantity > 10 && it.stock_quantity <= 15,

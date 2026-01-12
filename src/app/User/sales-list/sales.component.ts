@@ -117,31 +117,39 @@ export class SalesComponent implements OnInit {
   //     });
   //   });
   // }
+// filteredSales() {
+//   if (!this.searchTerm) {
+//     return this.saledata;
+//   }
+
+//   const term = this.searchTerm.toString();
+
+//   return this.saledata.filter((sale) => {
+//     const flatString = JSON.stringify({
+//       invoice: sale.invoice_number,
+//       customer: sale.customer_id?.name,
+//       status: sale.payment_status,
+//       total: sale.grand_total,
+//       products: sale.product_ids?.map((p: any) => ({
+//         name: p.item_id?.item_name,
+//         qty: p.quantity,
+//         price: p.selling_price,
+//         tax: p.tax_rate,
+//         discount: p.discount
+//       }))
+//     }).toLowerCase();
+
+//     return flatString.includes(term.toLowerCase());
+//   });
+// }
+
+
 filteredSales() {
-  if (!this.searchTerm) {
-    return this.saledata;
-  }
-
-  const term = this.searchTerm.toString();
-
-  return this.saledata.filter((sale) => {
-    const flatString = JSON.stringify({
-      invoice: sale.invoice_number,
-      customer: sale.customer_id?.name,
-      status: sale.payment_status,
-      total: sale.grand_total,
-      products: sale.product_ids?.map((p: any) => ({
-        name: p.item_id?.item_name,
-        qty: p.quantity,
-        price: p.selling_price,
-        tax: p.tax_rate,
-        discount: p.discount
-      }))
-    }).toLowerCase();
-
-    return flatString.includes(term.toLowerCase());
-  });
+  return this.saledata.filter(s => !this.searchTerm || (JSON.stringify(s) + this.calculateGrandTotal(s)).toLowerCase().includes(this.searchTerm.toLowerCase()));
 }
+
+
+
 
   view(sale: any) {
     const firstProduct = sale.product_ids?.[0] || {};
