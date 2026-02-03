@@ -1,18 +1,21 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {
   BrowserAnimationsModule,
   provideAnimations,
 } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { provideClientHydration } from '@angular/platform-browser';
+import { SpinnerInterceptor } from './spinner.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(),
+     provideHttpClient(
+      withInterceptorsFromDi()
+    ),
     provideAnimations(),
 
     importProvidersFrom(
@@ -27,9 +30,17 @@ export const appConfig: ApplicationConfig = {
        closeButton: true,
         progressBar: true,
         newestOnTop: true,
+        
       })
+      
     ),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SpinnerInterceptor,
+      multi: true
+    }
   ],
+  
 };
 
 
