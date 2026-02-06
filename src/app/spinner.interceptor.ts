@@ -19,13 +19,13 @@ export class SpinnerInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
 
-    console.log('API START'); // 👈 debug
+    // console.log('API START'); // 👈 debug
 
     this.businessService.showSpinner();
 
     return next.handle(req).pipe(
       finalize(() => {
-        console.log('API END'); // 👈 debug
+        // console.log('API END'); // 👈 debug
         this.businessService.hideSpinner();
       })
     );
