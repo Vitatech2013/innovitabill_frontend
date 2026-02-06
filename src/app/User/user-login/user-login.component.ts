@@ -114,9 +114,8 @@ export class UserLoginComponent implements OnInit {
           console.warn(' Warning: business_id not found in login response');
         }
 
-       this.toastr.success('User Login Success','Success',{
-            positionClass: 'toast-top-right',
-          });
+     this.toastr.success('User Login Success');
+
 
         this.router.navigate(['/userview'], {
           state: { toast: 'User login success' },

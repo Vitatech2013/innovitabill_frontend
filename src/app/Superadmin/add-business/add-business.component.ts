@@ -317,9 +317,12 @@ export class AddBusinessComponent implements OnInit {
         }, 500);
       },
       error: (err) => {
+         if (err.error?.message === 'Email already exists') {
+      this.addBusinessForm.get('email')?.setErrors({ emailExists: true });
+    }
         console.error('Add failed:', err);
         if (err?.error?.missing_fields) {
-          alert('Missing fields: ' + err.error.missing_fields.join(', '));
+          this.showToast('Missing fields: ' + err.error.missing_fields.join(', '));
         } else {
           this.showToast('Failed to register business.', 'error');
         }
@@ -331,4 +334,6 @@ export class AddBusinessComponent implements OnInit {
     this.toastType = type;
     setTimeout(() => (this.toastMessage = null), 1000);
   }
-}
+}    
+
+

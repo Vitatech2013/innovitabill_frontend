@@ -93,13 +93,27 @@ export class PurchaseListComponent implements OnInit {
   );
   }
 
+  // isInvalid(controlName: string): boolean {
+  //   const control = this.editForm.get(controlName);
+  //   return control ? control.touched && control.invalid : false;
+  // }
   isInvalid(controlName: string): boolean {
-    const control = this.editForm.get(controlName);
-    return control ? control.touched && control.invalid : false;
-  }
-  
+  const control = this.editForm.get(controlName);
+  return !!(control && control.invalid && (control.dirty || control.touched));
+}
 
-  private loadPurchases() {
+
+  // private loadPurchases() {
+  //   this.service.getPurchases(this.business_id).subscribe({
+  //     next: (res: any) => {
+  //       console.log('Purchases fetched:', res);
+  //       // Use populated purchases from backend
+  //       this.items = res?.purchases || [];
+  //     },
+  //     error: (err) => console.error('Error loading Purchases:', err),
+  //   });
+  // }
+ private loadPurchases() {
     this.service.getPurchases(this.business_id).subscribe({
       next: (res: any) => {
         console.log('Purchases fetched:', res);
@@ -109,6 +123,7 @@ export class PurchaseListComponent implements OnInit {
       error: (err) => console.error('Error loading Purchases:', err),
     });
   }
+
 
   editItem(purchase: any) {
     this.eid = purchase._id;
@@ -175,42 +190,156 @@ export class PurchaseListComponent implements OnInit {
     });
   }
 
-  updatePurchase() {
-    if (this.editForm.invalid) {
-      this.toastr.warning('Fill all required fields');
-      return;
-    }
 
-    const formData = new FormData();
 
-    Object.keys(this.editForm.value).forEach((key) => {
-      if (this.editForm.value[key] !== null) {
-        formData.append(key, this.editForm.value[key]);
-      }
-    });
+//  updatePurchase() {
+//   if (this.editForm.invalid) return;
+  
 
-    if (this.selectedFiles['image']) {
-      formData.append('image', this.selectedFiles['image']);
-    }
+//   const formData = new FormData();
 
-    console.log('Purchase ID:', this.eid);
+//   Object.keys(this.editForm.value).forEach(key => {
+//     if (this.editForm.value[key] !== null) {
+//       formData.append(key, this.editForm.value[key]);
+//     }
+//   });
 
-    if (!this.eid) {
-      this.toastr.error('Purchase ID missing');
-      return;
-    }
+//   if (this.selectedFiles['image']) {
+//     formData.append('image', this.selectedFiles['image']);
+//   }
 
-    this.service.updatePurchase(this.eid, formData).subscribe({
+//   const purchaseId = this.editForm.value.purchase_id;
+
+//   this.service.updatePurchase(purchaseId, formData)
+//     .subscribe({
+//       next: () => {
+//         this.toastr.success('Purchase updated successfully');
+//         this.loadPurchases(); 
+//         console.log(" UPDATE PURCHASE API HIT ");
+//       },
+//       error: err => {
+//         console.error(err);
+//         this.toastr.error('Update failed');
+//       }
+//     });
+// }
+
+//  updatePurchase() {
+//     if (this.editForm.invalid) {
+//       this.toastr.error('Please fill all required fields');
+//       return;
+//     }
+
+//     const formData = new FormData();
+//     const value = this.editForm.value;
+
+//     // IMPORTANT: append only backend-required fields
+//     formData.append('vendor_id', value.vendor_id);
+//     formData.append('item_id', value.item_id);
+
+//     formData.append('vendor_name', value.vendor_name);
+//     formData.append('vendor_type', value.vendor_type);
+//     formData.append('business_category', value.business_category);
+//     formData.append(
+//       'company_registration_number',
+//       value.company_registration_number || ''
+//     );
+
+//     formData.append('item_name', value.item_name);
+//     formData.append('brand_name', value.brand_name);
+//     formData.append('item_code', value.item_code);
+//     formData.append('unit_id', value.unit_id);
+
+//     formData.append('purchase_price', value.purchase_price);
+//     formData.append('selling_price', value.selling_price);
+//     formData.append('tax_rate', value.tax_rate);
+//     formData.append('discount', value.discount || 0);
+//     formData.append('stock_quantity', value.stock_quantity);
+//     formData.append('min_stock_alert', value.min_stock_alert || 0);
+//     formData.append('description', value.description || '');
+//     formData.append('status', value.status);
+
+//     if (this.selectedFiles['image']) {
+//       formData.append('image', this.selectedFiles['image']);
+//     }
+
+//     const purchaseId = value.purchase_id;
+
+//     this.service.updatePurchase(purchaseId, formData).subscribe({
+//       next: () => {
+//         this.toastr.success('Purchase updated successfully');
+//         this.loadPurchases();
+//         bootstrap.Modal.getInstance(
+//           document.getElementById('editItemModal')
+//         )?.hide();
+//       },
+//       error: err => {
+//         console.error(err);
+//         this.toastr.error('Update failed');
+//       },
+//     });
+//   }
+
+updatePurchase() {
+  if (this.editForm.invalid) return;
+
+  const v = this.editForm.value;
+  const formData = new FormData();
+
+  // REQUIRED IDs
+  formData.append('vendor_id', String(v.vendor_id));
+  formData.append('item_id', String(v.item_id));
+
+  // Vendor
+  formData.append('vendor_name', v.vendor_name);
+  formData.append('vendor_type', v.vendor_type);
+  formData.append('business_category', v.business_category);
+  formData.append(
+    'company_registration_number',
+    v.company_registration_number || ''
+  );
+
+  // Item
+  formData.append('item_name', v.item_name);
+  formData.append('brand_name', v.brand_name);
+  formData.append('item_code', v.item_code);
+  formData.append('unit_id', String(v.unit_id));
+  formData.append('category_id', String(v.category_id));
+  formData.append('sub_category_id', String(v.sub_category_id));
+
+  // Numbers (IMPORTANT: convert to string)
+  formData.append('purchase_price', String(v.purchase_price));
+  formData.append('selling_price', String(v.selling_price));
+  formData.append('tax_rate', String(v.tax_rate));
+  formData.append('stock_quantity', String(v.stock_quantity));
+  formData.append('discount', String(v.discount || 0));
+  formData.append('min_stock_alert', String(v.min_stock_alert || 0));
+
+  formData.append('description', v.description || '');
+  formData.append('status', v.status || 'active');
+
+  // Image (optional)
+  if (this.selectedFiles['image']) {
+    formData.append('image', this.selectedFiles['image']);
+  }
+
+  this.service
+    .updatePurchase(v.purchase_id, formData)
+    .subscribe({
       next: () => {
         this.toastr.success('Purchase updated successfully');
         this.loadPurchases();
+        bootstrap.Modal.getInstance(
+          document.getElementById('editItemModal')
+        )?.hide();
       },
-      error: (err) => {
-        console.error(err);
-        this.toastr.error('Update failed');
-      },
+      error: () => this.toastr.error('Update failed'),
     });
   }
+
+
+
+
 
   isCreatingInvoice(): boolean {
     return this.router.url.includes('/itemlist/items');

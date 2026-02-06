@@ -242,6 +242,19 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     });
     this.grandTotal = total;
   }
+increaseQty(index: number) {
+  const control = this.items.at(index).get('quantity');
+  control?.setValue((control.value || 1) + 1);
+  this.calculateGrandTotal();
+}
+
+decreaseQty(index: number) {
+  const control = this.items.at(index).get('quantity');
+  if (control && control.value > 1) {
+    control.setValue(control.value - 1);
+    this.calculateGrandTotal();
+  }
+}
 
   removeItem(index: number) {
     this.items.removeAt(index);

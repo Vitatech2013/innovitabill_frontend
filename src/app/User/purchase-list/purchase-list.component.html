@@ -58,7 +58,7 @@
                   </div>
                 </td>
               </tr>
-              <tr *ngIf="filteredPurchase().length === 0">
+              <tr *ngIf="filteredPurchases().length === 0">
                 <td colspan="7" class="text-muted">No items found.</td>
               </tr>
             </tbody>
@@ -200,8 +200,8 @@
                     formControlName="vendor_name"
                     placeholder="Enter item name"
                   />
-                  <small *ngIf="isInvalid('item_name')" class="text-danger">
-                    Item Name is required and must be at least 3 letters
+                  <small *ngIf="isInvalid('vendor_name')" class="text-danger">
+                    Vendor Name is required and must be at least 3 letters
                   </small>
                 </div>
                 <div class="col-md-4">
@@ -212,8 +212,8 @@
                     formControlName="vendor_type"
                     placeholder="Enter item name"
                   />
-                  <small *ngIf="isInvalid('item_name')" class="text-danger">
-                    Item Name is required and must be at least 3 letters
+                  <small *ngIf="isInvalid('vendor_type')" class="text-danger">
+                    Vendor Type is required and must be at least 3 letters
                   </small>
                 </div>
                 <div class="col-md-4">
@@ -226,8 +226,8 @@
                     formControlName="business_category"
                     placeholder="Enter item name"
                   />
-                  <small *ngIf="isInvalid('item_name')" class="text-danger">
-                    Item Name is required and must be at least 3 letters
+                  <small *ngIf="isInvalid('business_category')" class="text-danger">
+                    Business Category is required and must be at least 3 letters
                   </small>
                 </div>
                 <div class="col-md-4">
@@ -240,8 +240,8 @@
                     formControlName="company_registration_number"
                     placeholder="Enter item name"
                   />
-                  <small *ngIf="isInvalid('item_name')" class="text-danger">
-                    Item Name is required and must be at least 3 letters
+                  <small *ngIf="isInvalid('company_registration_number')" class="text-danger">
+                    Registration Number is required and must be at least 3 letters
                   </small>
                 </div>
 
