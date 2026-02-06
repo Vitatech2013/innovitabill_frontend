@@ -52,7 +52,7 @@ export class SuperadminViewComponent implements OnInit {
   showToast(message: string, type: 'success' | 'error' | 'warning') {
     this.toastMessage = message;
     this.toastType = type;
-    setTimeout(() => (this.toastMessage = null), 2000);
+    setTimeout(() => (this.toastMessage = null), 3000);
   }
 
   logout() {
