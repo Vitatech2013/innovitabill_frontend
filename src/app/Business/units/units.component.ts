@@ -24,6 +24,7 @@ export class UnitsComponent implements OnInit {
   user_id: string = '';
   selectedId: string | null = null;
   title = 'Add Unit';
+  selectedFilter: string = 'status';
   statusFilter: 'active' | 'inactive' | 'all' = 'all';
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
@@ -163,6 +164,32 @@ export class UnitsComponent implements OnInit {
 
     if (this.statusFilter === 'all') return data;
     return data.filter((u) => u.status === this.statusFilter);
+  }
+
+    changeFilter(value: string) {
+    this.selectedFilter = value;
+
+    switch (value) {
+      case 'All':
+        this.showall();
+        break;
+      case 'Active':
+        this.showActive();
+        break;
+      case 'Inactive':
+        this.showInactive();
+        break;
+    }
+  }
+  showActive() {
+    this.statusFilter = 'active';
+  }
+
+  showInactive() {
+    this.statusFilter = 'inactive';
+  }
+  showall() {
+    this.statusFilter = 'all';
   }
 
   openDeleteModal(unit: any) {

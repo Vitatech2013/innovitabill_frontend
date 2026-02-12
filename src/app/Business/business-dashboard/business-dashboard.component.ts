@@ -19,6 +19,8 @@ export class BusinessDashboardComponent implements OnInit {
   timer: any;
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
+  // currentYear = new Date().getFullYear();
+
   constructor(private router: Router) {}
   ngOnInit(): void {
     const stored = localStorage.getItem('user');

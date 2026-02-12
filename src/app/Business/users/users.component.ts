@@ -25,6 +25,7 @@ export class UsersComponent implements OnInit {
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
   searchTerm: string = '';
+  selectedFilter: string = 'status';
   statusFilter: 'active' | 'inactive' | 'all' = 'all';
   users: any[] = [];
   showPassword = false;
@@ -115,6 +116,7 @@ openAddModal() {
     this.userForm.reset();
     this.selectedUserId = null;
   }
+
   filteredUser(): any[] {
     if (!Array.isArray(this.users)) return [];
 
@@ -135,6 +137,31 @@ openAddModal() {
     return this.filteredUser().filter(
       (u: any) => u?.status === this.statusFilter
     );
+  }
+    changeFilter(value: string) {
+    this.selectedFilter = value;
+
+    switch (value) {
+      case 'All':
+        this.showall();
+        break;
+      case 'Active':
+        this.showActive();
+        break;
+      case 'Inactive':
+        this.showInactive();
+        break;
+    }
+  }
+  showActive() {
+    this.statusFilter = 'active';
+  }
+
+  showInactive() {
+    this.statusFilter = 'inactive';
+  }
+  showall() {
+    this.statusFilter = 'all';
   }
 
 editUser(u: any) {

@@ -50,6 +50,7 @@
           </button>
 
           <ul class="dropdown-menu">
+            
             <li>
               <button class="dropdown-item" (click)="changeFilter('All')">
                 All
@@ -88,7 +89,7 @@
         <div class="table-wrapper">
           <div class="table-responsive bg-white p-3 rounded-4 p3">
             <table class="table table-hover table-bordered align-middle">
-              <thead class="table-success text-center custom-thead">
+              <thead class="table-success text-start custom-thead">
                 <tr>
                   <th class="width light-green">S. No</th>
                   <th class="width light-green">Business Name</th>
@@ -102,7 +103,7 @@
                 </tr>
               </thead>
 
-              <tbody class="text-center">
+              <tbody class="text-start">
                 <tr *ngFor="let b of filteredBusiness(); let i = index">
                   <td>{{ i + 1 }}</td>
                   <td>{{ b.business_name }}</td>

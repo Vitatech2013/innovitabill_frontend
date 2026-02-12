@@ -20,7 +20,7 @@
       <div class="table-wrapper">
         <div class="table-responsive">
           <table
-            class="table table-bordered table-hover align-middle text-center"
+            class="table table-bordered table-hover align-middle text-start"
           >
             <thead class="table-success">
               <tr>
@@ -42,7 +42,7 @@
                 <td>{{ purchase.item_id?.stock_quantity }}</td>
                 <td>{{ purchase.item_id?.status }}</td>
                 <td>
-                  <div class="d-flex justify-content-center gap-2">
+                  <div class="d-flex justify-content-start gap-2">
                     <button
                       class="btn btn-sm btn-success me-2"
                       (click)="openViewModal(purchase)"

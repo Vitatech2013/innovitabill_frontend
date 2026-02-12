@@ -31,6 +31,7 @@ export class SubCategoriesComponent implements OnInit {
   c: any;
   categories_id: any;
   searchTerm: string = '';
+  selectedFilter: string = 'status';
   statusFilter: 'active' | 'inactive' | 'all' = 'all';
   constructor(private fb: FormBuilder, private api: BillingService) {}
 
@@ -184,6 +185,32 @@ export class SubCategoriesComponent implements OnInit {
     return this.filteredUser().filter(
       (u: any) => u?.status === this.statusFilter
     );
+  }
+
+      changeFilter(value: string) {
+    this.selectedFilter = value;
+
+    switch (value) {
+      case 'All':
+        this.showall();
+        break;
+      case 'Active':
+        this.showActive();
+        break;
+      case 'Inactive':
+        this.showInactive();
+        break;
+    }
+  }
+  showActive() {
+    this.statusFilter = 'active';
+  }
+
+  showInactive() {
+    this.statusFilter = 'inactive';
+  }
+  showall() {
+    this.statusFilter = 'all';
   }
 
   openDeleteModal(cats: any) {

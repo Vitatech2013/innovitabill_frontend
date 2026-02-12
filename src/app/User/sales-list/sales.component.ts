@@ -34,6 +34,8 @@ export class SalesComponent implements OnInit {
   sid: any;
   toastMessage: string | null = null;
   toastType: string | undefined;
+  selectedFilter: string = 'status';
+  statusFilter: 'paid' | 'partial' | 'unpaid' = 'paid';
 
   constructor(
     private router: Router,
@@ -77,6 +79,7 @@ export class SalesComponent implements OnInit {
         (sale) => (sale.payment_status || 'pending').toLowerCase() === term
       );
     }
+    
 
     return this.saledata.filter((sale) => {
       return Object.values(sale).some((val) => {
@@ -100,6 +103,31 @@ export class SalesComponent implements OnInit {
         return val.toString().toLowerCase().includes(term);
       });
     });
+  }
+  changeFilter(value: string) {
+    this.selectedFilter = value;
+
+    switch (value) {
+      case 'All':
+        this.showall();
+        break;
+      case 'Active':
+        this.showActive();
+        break;
+      case 'Inactive':
+        this.showInactive();
+        break;
+    }
+  }
+  showActive() {
+    this.statusFilter = 'paid';
+  }
+
+  showInactive() {
+    this.statusFilter = 'partial';
+  }
+  showall() {
+    this.statusFilter = 'unpaid';
   }
 
   view(sale: any) {

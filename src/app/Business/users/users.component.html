@@ -1,12 +1,11 @@
-<div class="position-fixed  top-1 end-0 p-1 "
-      style="top: 60px; z-index: 1200">
+<div class="position-fixed top-1 end-0 p-1" style="top: 60px; z-index: 1200">
   <div
     *ngIf="toastMessage"
     class="toast align-items-center text-light border-0 fade show shadow-lg"
     [ngClass]="{
       'bg-success': toastType === 'success',
       'bg-danger': toastType === 'error',
-      'bg-warning text-dark': toastType === 'warning'
+      'bg-warning text-dark': toastType === 'warning',
     }"
     role="alert"
     aria-live="assertive"
@@ -41,37 +40,39 @@
           style="width: 100%; max-width: 300px"
         />
 
-        <button
-          class="btn"
-          [ngClass]="statusFilter === 'all' ? 'btn-light' : 'btn btn-light'"
-          (click)="statusFilter = 'all'"
-        >
-          <i class="bi bi-check-circle"></i>
-          All
-        </button>
-        <!-- Button -->
-        <button
-          class="btn"
-          [ngClass]="statusFilter === 'active' ? 'btn-light' : 'btn btn-light'"
-          (click)="statusFilter = 'active'"
-        >
-          <i class="bi bi-check-circle"></i>
-          Active
-        </button>
+       <div class="dropdown">
+          <button
+            class="btn btn-light text-dark fw-semibold dropdown-toggle bg"
+            type="button"
+            
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {{ selectedFilter }}
+          </button>
+
+          <ul class="dropdown-menu">
+            
+            <li>
+              <button class="dropdown-item" (click)="changeFilter('All')">
+                All
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item" (click)="changeFilter('Active')">
+                Active
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item" (click)="changeFilter('Inactive')">
+                Inactive
+              </button>
+            </li>
+          </ul>
+        </div>
 
         <button
-          class="btn"
-          [ngClass]="
-            statusFilter === 'inactive' ? 'btn-light' : 'btn btn-light'
-          "
-          (click)="statusFilter = 'inactive'"
-        >
-          <i class="bi bi-x-circle"></i>
-          Inactive
-        </button>
-
-        <button
-          class="btn btn-light"
+          class="btn btn-light text-dark fw-semibold"
           data-bs-toggle="modal"
           data-bs-target="#AddModal"
           (click)="openAddModal()"
@@ -82,7 +83,7 @@
       </div>
 
       <div class="row">
-        <div *ngIf="users.length === 0" class="text-center mt-4">
+        <div *ngIf="users.length === 0" class="text-start mt-4">
           <div class="alert alert-info shadow-sm py-3">
             <i class="bi bi-info-circle"></i> No data found.
           </div>
@@ -92,7 +93,7 @@
           <div class="table-wrapper">
             <div class="table-responsive bg-white p-3 rounded-4">
               <table class="table table-hover table-bordered align-middle">
-                <thead class="table-success text-center">
+                <thead class="table-success text-start">
                   <tr>
                     <th style="background: #d4f8d4; color: #0a5c0a">S.No</th>
                     <th style="background: #d4f8d4; color: #0a5c0a">
@@ -107,7 +108,7 @@
                 <tbody>
                   <tr
                     *ngFor="let u of filteredByStatus(); let i = index"
-                    class="align-middle text-center"
+                    class="align-middle text-start"
                   >
                     <td>{{ i + 1 }}</td>
                     <td>{{ u.user_name }}</td>
@@ -277,21 +278,27 @@
                     >
                       <small
                         class="text-danger"
-                        *ngIf="userForm.controls['user_name']?.errors?.['required']"
+                        *ngIf="
+                          userForm.controls['user_name']?.errors?.['required']
+                        "
                       >
                         User name is required.
                       </small>
 
                       <small
                         class="text-danger"
-                        *ngIf="userForm.controls['user_name']?.errors?.['minlength']"
+                        *ngIf="
+                          userForm.controls['user_name']?.errors?.['minlength']
+                        "
                       >
                         User name must be at least 3 characters long.
                       </small>
 
                       <small
                         class="text-danger"
-                        *ngIf="userForm.controls['user_name']?.errors?.['pattern']"
+                        *ngIf="
+                          userForm.controls['user_name']?.errors?.['pattern']
+                        "
                       >
                         Only letters are allowed. Spaces only between words.
                       </small>
@@ -315,12 +322,18 @@
                       "
                     >
                       <small
-                        *ngIf="userForm.controls['user_email']?.errors?.['required']"
+                        *ngIf="
+                          userForm.controls['user_email']?.errors?.['required']
+                        "
                         class="text-danger"
                         >Email is required</small
                       >
                       <small
-                        *ngIf="userForm.controls['user_email']?.errors?.['user_email']"
+                        *ngIf="
+                          userForm.controls['user_email']?.errors?.[
+                            'user_email'
+                          ]
+                        "
                         class="text-danger"
                         >Invalid email format</small
                       >
@@ -346,14 +359,20 @@
                       "
                     >
                       <small
-                        *ngIf="userForm.controls['phone_number']?.errors?.['required']"
+                        *ngIf="
+                          userForm.controls['phone_number']?.errors?.[
+                            'required'
+                          ]
+                        "
                         class="text-danger"
                       >
                         Phone Number is required
                       </small>
 
                       <small
-                        *ngIf="userForm.controls['phone_number']?.errors?.['pattern']"
+                        *ngIf="
+                          userForm.controls['phone_number']?.errors?.['pattern']
+                        "
                         class="text-danger"
                       >
                         Phone Number must be exactly 10 digits
@@ -376,11 +395,7 @@
                         (keypress)="blockSpace($event)"
                       />
 
-                      <button
-                        type="button"
-                        class="btn btn-outline-secondary"
-                        
-                      >
+                      <button type="button" class="btn btn-outline-secondary">
                         <i
                           class="bi"
                           [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"
@@ -396,21 +411,27 @@
                     >
                       <small
                         class="text-danger"
-                        *ngIf="userForm.controls['password']?.errors?.['required']"
+                        *ngIf="
+                          userForm.controls['password']?.errors?.['required']
+                        "
                       >
                         Password is required.
                       </small>
 
                       <small
                         class="text-danger"
-                        *ngIf="userForm.controls['password']?.errors?.['minlength']"
+                        *ngIf="
+                          userForm.controls['password']?.errors?.['minlength']
+                        "
                       >
                         Password must be at least 4 characters.
                       </small>
 
                       <small
                         class="text-danger"
-                        *ngIf="userForm.controls['password']?.errors?.['maxlength']"
+                        *ngIf="
+                          userForm.controls['password']?.errors?.['maxlength']
+                        "
                       >
                         Password must not exceed 12 characters.
                       </small>
@@ -436,7 +457,9 @@
                       "
                     >
                       <small
-                        *ngIf="userForm.controls['role_id']?.errors?.['required']"
+                        *ngIf="
+                          userForm.controls['role_id']?.errors?.['required']
+                        "
                         class="text-danger"
                       >
                         Role is required
@@ -681,21 +704,27 @@
                     >
                       <small
                         class="text-danger"
-                        *ngIf="userForm.controls['user_name']?.errors?.['required']"
+                        *ngIf="
+                          userForm.controls['user_name']?.errors?.['required']
+                        "
                       >
                         User name is required.
                       </small>
 
                       <small
                         class="text-danger"
-                        *ngIf="userForm.controls['user_name']?.errors?.['minlength']"
+                        *ngIf="
+                          userForm.controls['user_name']?.errors?.['minlength']
+                        "
                       >
                         User name must be at least 3 characters long.
                       </small>
 
                       <small
                         class="text-danger"
-                        *ngIf="userForm.controls['user_name']?.errors?.['pattern']"
+                        *ngIf="
+                          userForm.controls['user_name']?.errors?.['pattern']
+                        "
                       >
                         Only letters are allowed. Spaces only between words.
                       </small>
@@ -719,12 +748,18 @@
                       "
                     >
                       <small
-                        *ngIf="userForm.controls['user_email']?.errors?.['required']"
+                        *ngIf="
+                          userForm.controls['user_email']?.errors?.['required']
+                        "
                         class="text-danger"
                         >Email is required</small
                       >
                       <small
-                        *ngIf="userForm.controls['user_email']?.errors?.['user_email']"
+                        *ngIf="
+                          userForm.controls['user_email']?.errors?.[
+                            'user_email'
+                          ]
+                        "
                         class="text-danger"
                         >Invalid email format</small
                       >
@@ -750,14 +785,20 @@
                       "
                     >
                       <small
-                        *ngIf="userForm.controls['phone_number']?.errors?.['required']"
+                        *ngIf="
+                          userForm.controls['phone_number']?.errors?.[
+                            'required'
+                          ]
+                        "
                         class="text-danger"
                       >
                         Phone Number is required
                       </small>
 
                       <small
-                        *ngIf="userForm.controls['phone_number']?.errors?.['pattern']"
+                        *ngIf="
+                          userForm.controls['phone_number']?.errors?.['pattern']
+                        "
                         class="text-danger"
                       >
                         Phone Number must be exactly 10 digits
@@ -784,7 +825,9 @@
                       "
                     >
                       <small
-                        *ngIf="userForm.controls['role_id']?.errors?.['required']"
+                        *ngIf="
+                          userForm.controls['role_id']?.errors?.['required']
+                        "
                         class="text-danger"
                       >
                         Role is required
