@@ -27,7 +27,7 @@ export class SuperAdminLoginComponent implements OnInit {
   superAdminForm!: FormGroup;
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
-
+showPassword = false;
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -80,6 +80,10 @@ export class SuperAdminLoginComponent implements OnInit {
       },
     });
   }
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+
 
   showToast(
     message: string,

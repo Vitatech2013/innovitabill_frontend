@@ -52,8 +52,7 @@ export class BusinessListComponent implements OnInit {
   ];
   selectedFilter: string = 'status';
   filterMode: 'active' | 'inactive' | 'all' = 'all';
-
-
+  loadingAccountId: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -171,29 +170,91 @@ export class BusinessListComponent implements OnInit {
   //   });
   // }
   loadBusiness() {
-  this.api.getBusiness(this.businessID).subscribe({
-    next: (res: any) => {
-      this.business = (res.data || []).map((b: any) => {
-        const status = b.status?.toLowerCase();
+    this.api.getBusiness(this.businessID).subscribe({
+      next: (res: any) => {
+        this.business = (res.data || []).map((b: any) => {
+          return {
+            ...b,
 
-        return {
-          ...b,
-          enable: status !== 'active',
-          disable: status === 'active'
-        };
+            isAccountActive: b.status?.toLowerCase() === 'active',
+
+            isLoginEnabled: b.login_status?.toLowerCase() === 'enabled',
+          };
+        });
+
+        this.business.sort(
+          (a: any, b: any) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      },
+      error: (err) => {
+        console.error('Error loading business:', err);
+      },
+    });
+  }
+
+  //  loadBusiness() {
+  //   this.api.getBusiness(this.businessID).subscribe({
+  //     next: (res: any) => {
+  //       this.business = (res.data || []).map((b: any) => {
+  //         const status = b.status?.toLowerCase();
+
+  //         return {
+  //           ...b,
+  //           enable: status !== 'active',
+  //           disable: status === 'active'
+  //         };
+  //       });
+
+  //       this.business.sort(
+  //         (a: any, b: any) =>
+  //           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  //       );
+  //     },
+  //     error: (err) => {
+  //       console.error('Error loading business:', err);
+  //     },
+  //   });
+  // }
+
+  toggleAccountStatus(b: any) {
+    const newStatus =
+      b.status?.toLowerCase() === 'active' ? 'inactive' : 'active';
+
+    this.api.updateBusiness(b._id, { status: newStatus }).subscribe({
+      next: () => {
+        b.status = newStatus;
+        this.showToast(
+          newStatus === 'active' ? 'Account enabled' : 'Account disabled',
+          'success'
+        );
+      },
+      error: () => {
+        this.showToast('Failed to update account status', 'error');
+      },
+    });
+  }
+
+  toggleLoginStatus(b: any) {
+    const newLogin =
+      b.login_status?.toLowerCase() === 'active' ? 'inactive' : 'active';
+
+    this.api
+      .updateLoginStatus(b._id, {
+        login_status: newLogin,
+      })
+      .subscribe(() => {
+        b.login_status = newLogin;
       });
+  }
 
-      this.business.sort(
-        (a: any, b: any) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-    },
-    error: (err) => {
-      console.error('Error loading business:', err);
-    },
-  });
-}
+  // toggleLoginStatus(b: any) {
+  //   const newStatus = b.login_status === 'Active' ? 'Inactive' : 'Active';
 
+  //   this.api.updateLoginStatus(b._id, newStatus).subscribe(() => {
+  //     b.login_status = newStatus;
+  //   });
+  // }
 
   openImageModal(imageUrl: string) {
     this.selectedImage = imageUrl || 'assets/default-business.jpg';
@@ -517,24 +578,23 @@ export class BusinessListComponent implements OnInit {
       modal.show();
     }
   }
-changeStatus(id: string, status: string) {
-  this.api.updateBusiness(id, { status }).subscribe({
-    next: () => {
-      this.showToast(
-        status === 'active'
-          ? 'Business enabled successfully'
-          : 'Business disabled successfully',
-        'success'
-      );
-      this.loadBusiness(); // refresh list
-    },
-    error: (err) => {
-      console.error(err);
-      this.showToast('Status update failed', 'error');
-    }
-  });
-}
-
+  changeStatus(id: string, status: string) {
+    this.api.updateBusiness(id, { status }).subscribe({
+      next: () => {
+        this.showToast(
+          status === 'active'
+            ? 'Business enabled successfully'
+            : 'Business disabled successfully',
+          'success'
+        );
+        this.loadBusiness(); // refresh list
+      },
+      error: (err) => {
+        console.error(err);
+        this.showToast('Status update failed', 'error');
+      },
+    });
+  }
 
   deleteBusiness(id?: string | null) {
     if (!id) return;
@@ -547,8 +607,7 @@ changeStatus(id: string, status: string) {
 
         this.closeModal('deleteBusinessModal');
 
-        this.toastMessage = 'Business deleted successfully!';
-        this.toastType = 'bg-success text-white';
+        this.showToast('Business Type deleted successfully', 'success');
 
         setTimeout(() => {
           this.toastMessage = null;
@@ -558,8 +617,7 @@ changeStatus(id: string, status: string) {
       error: (err) => {
         console.error('Error deleting business:', err);
 
-        this.toastMessage = 'Failed to delete business!';
-        this.toastType = 'bg-danger text-white';
+        this.showToast('Failed to delete business type', 'error');
 
         setTimeout(() => {
           this.toastMessage = null;

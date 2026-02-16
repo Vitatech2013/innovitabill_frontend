@@ -34,8 +34,10 @@ export class SalesComponent implements OnInit {
   sid: any;
   toastMessage: string | null = null;
   toastType: string | undefined;
-  selectedFilter: string = 'status';
-  statusFilter: 'paid' | 'partial' | 'unpaid' = 'paid';
+  
+  statusFilter: string = '';
+selectedFilter: string = 'All';
+
 
   constructor(
     private router: Router,
@@ -68,63 +70,68 @@ export class SalesComponent implements OnInit {
     });
   }
 
-  filteredSales() {
-    if (!this.searchTerm) return this.saledata;
+filteredSales() {
+  let data = [...this.saledata];
 
-    const term = this.searchTerm.toLowerCase().trim();
-    const paymentStatuses = ['paid', 'partial paid', 'unpaid', 'pending'];
+  // ✅ Exact Status Filter
+  if (this.statusFilter) {
+    data = data.filter(sale =>
+      (sale.payment_status || 'pending')
+        .toLowerCase()
+        .trim() === this.statusFilter
+    );
+  }
 
-    if (paymentStatuses.includes(term)) {
-      return this.saledata.filter(
-        (sale) => (sale.payment_status || 'pending').toLowerCase() === term
-      );
-    }
-    
+  // ✅ Search Filter
+  if (!this.searchTerm) return data;
 
-    return this.saledata.filter((sale) => {
-      return Object.values(sale).some((val) => {
-        if (val === null || val === undefined) return false;
+  const term = this.searchTerm.toLowerCase().trim();
 
-        if (typeof val === 'object') {
-          if (val !== null) {
-            if ('name' in val && typeof (val as any).name === 'string') {
-              return (val as any).name.toLowerCase().includes(term);
-            }
+  return data.filter(sale =>
+    Object.values(sale).some(val => {
+      if (!val) return false;
 
-            if (Array.isArray(val)) {
-              return val.some((p: any) =>
-                (p.item_id?.item_name || '').toLowerCase().includes(term)
-              );
-            }
-          }
-          return false;
+      if (typeof val === 'object') {
+        if ('name' in val && typeof (val as any).name === 'string') {
+          return (val as any).name.toLowerCase().includes(term);
         }
 
-        return val.toString().toLowerCase().includes(term);
-      });
-    });
-  }
-  changeFilter(value: string) {
-    this.selectedFilter = value;
+        if (Array.isArray(val)) {
+          return val.some((p: any) =>
+            (p.item_id?.item_name || '')
+              .toLowerCase()
+              .includes(term)
+          );
+        }
 
-    switch (value) {
-      case 'All':
-        this.showall();
-        break;
-      case 'Active':
-        this.showActive();
-        break;
-      case 'Inactive':
-        this.showInactive();
-        break;
-    }
+        return false;
+      }
+
+      return val.toString().toLowerCase().includes(term);
+    })
+  );
+}
+
+
+
+changeFilter(value: string) {
+  this.selectedFilter = value;
+
+  if (value === 'All') {
+    this.statusFilter = '';
+  } else {
+    this.statusFilter = value.toLowerCase();
   }
+}
+
+
+
   showActive() {
     this.statusFilter = 'paid';
   }
 
   showInactive() {
-    this.statusFilter = 'partial';
+    this.statusFilter = 'partial paid';
   }
   showall() {
     this.statusFilter = 'unpaid';

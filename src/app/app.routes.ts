@@ -63,11 +63,15 @@ export const routes: Routes = [
     path: 'userview',
     component: UserViewComponent,
     children: [
+
       {
         path: '',
         component: SaleComponent,
       },
+      // { path: '', component: UserDashboardComponent },
+
       { path: 'userdashboard', component: UserDashboardComponent },
+       { path: '', component: SaleComponent },
       { path: 'createsale', component: SaleComponent },
       { path: 'userprofile', component: UserProfileComponent },
       {

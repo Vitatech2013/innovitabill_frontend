@@ -45,13 +45,13 @@ export class CreatePurchaseComponent implements OnInit {
       vendor_name: ['', Validators.required],
       vendor_type: ['', Validators.required],
       business_category: ['', Validators.required],
-      company_registration_number: [''],
-      gst_number: [''],
-      pan_number: [''],
+      company_registration_number: ['', Validators.required],
+      gst_number: ['', Validators.required],
+      pan_number: ['',  Validators.required],
 
       address: this.fb.group({
         address_line_1: ['', Validators.required],
-        address_line_2: ['', Validators.required],
+        address_line_2: ['',  Validators.required],
         city: ['', Validators.required],
         state: ['', Validators.required],
         country: ['', Validators.required],
@@ -60,30 +60,38 @@ export class CreatePurchaseComponent implements OnInit {
 
       contact: this.fb.group({
         contact_person_name: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
+        email: ['',[Validators.required, Validators.email]],
         mobile_number: ['', Validators.required],
-        alternate_mobile_number: ['', Validators.required],
+        alternate_mobile_number: ['',  Validators.required],
       }),
 
       item_name: ['', Validators.required],
       item_code: ['', Validators.required],
       category_id: ['', Validators.required],
-      sub_category_id: [''],
+      sub_category_id: ['',  Validators.required],
       unit_id: ['', Validators.required],
       purchase_price: ['', Validators.required],
       selling_price: ['', Validators.required],
-      tax_rate: [''],
+      tax_rate: ['', Validators.required],
       stock_quantity: ['', Validators.required],
-      brand_name: [''],
-      discount: [''],
-      min_stock_alert: [''],
-      description: [''],
+      brand_name: ['',  Validators.required],
+      discount: ['',  Validators.required],
+      min_stock_alert: ['',  Validators.required],
+      description: ['',  Validators.required],
+      // Removed image: [''] from form controls — file input handled separately
     });
 
     this.categoriesGet();
     this.subCategoriesGet();
     this.unitsGet();
   }
+
+onSubmit() {
+  if (this.addPurchaseForm.invalid) {
+    this.addPurchaseForm.markAllAsTouched();
+    return;
+  }
+}
 
   savePurchase() {
     if (this.addPurchaseForm.invalid) {
@@ -121,10 +129,45 @@ export class CreatePurchaseComponent implements OnInit {
     });
   }
 
-  isInvalid(controlName: string): boolean {
-    const control = this.addPurchaseForm.get(controlName);
-    return !!(control && control.touched && control.invalid);
+  // isInvalid(controlName: string): boolean {
+  //   const control = this.addPurchaseForm.get(controlName);
+  //   return !!(control && control.touched && control.invalid);
+  // }
+isInvalid(controlName: string): boolean {
+  const control = this.addPurchaseForm.get(controlName);
+  return !!(control && control.invalid && (control.touched || control.dirty));
+}
+singleSpace(event: Event) {
+  const input = event.target as HTMLInputElement | HTMLTextAreaElement;
+  const controlName = input.getAttribute('formControlName');
+
+  let value = input.value
+    .replace(/\s+/g, ' ')   
+    .replace(/^\s/, '');   
+
+  input.value = value;
+
+  if (controlName) {
+    this.addPurchaseForm.get(controlName)?.setValue(value, { emitEvent: false });
   }
+}
+
+alphaNumericSingleSpace(event: Event) {
+  const input = event.target as HTMLInputElement | HTMLTextAreaElement;
+  const controlName = input.getAttribute('formControlName');
+
+  let value = input.value
+    .replace(/[^a-zA-Z0-9\s]/g, '') 
+    .replace(/\s+/g, ' ')
+    .replace(/^\s/, '');
+
+  input.value = value;
+
+  if (controlName) {
+    this.addPurchaseForm.get(controlName)?.setValue(value, { emitEvent: false });
+  }
+}
+
 
   cancelAdd() {
     this.addPurchaseForm.reset();

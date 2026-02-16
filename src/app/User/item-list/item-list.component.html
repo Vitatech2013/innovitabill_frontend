@@ -16,6 +16,34 @@
           />
           <i class="bi bi-search search-icon"></i>
         </div>
+                <div class="dropdown">
+          <button
+            class="btn side-btn text-dark fw-semibold dropdown-toggle bg"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {{ selectedFilter }}
+          </button>
+
+          <ul class="dropdown-menu">
+            <li>
+              <button class="dropdown-item" (click)="changeFilter('All')">
+                All
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item" (click)="changeFilter('Active')">
+                Active
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item" (click)="changeFilter('Inactive')">
+                Inactive
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <div class="table-wrapper">

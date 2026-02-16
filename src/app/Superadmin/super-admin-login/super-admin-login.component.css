@@ -13,3 +13,12 @@
 .btn {
   width: 60px;
 }
+
+.input-group .btn {
+  border-left: 0;
+  
+}
+
+.btn1{
+  background-color: rgb(140, 133, 133);
+}

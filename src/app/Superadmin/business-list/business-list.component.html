@@ -97,8 +97,8 @@
                   <th class="light-green">Email</th>
                   <th class="light-green">Phone</th>
                   <th class="light-green">Business Type</th>
-                  <th class="light-green">Enable</th>
-                  <th class="light-green">Status</th>
+                  <th class="light-green">Account Status</th>
+                  <th class="light-green">Login Status</th>
                   <th class="actions-col light-green">Actions</th>
                 </tr>
               </thead>
@@ -111,27 +111,43 @@
                   <td>{{ b.email }}</td>
                   <td>{{ b.phone_number }}</td>
                   <td>{{ getBusinessTypeName(b.bt_id) }}</td>
-                  
-                  
-<td>
-  <!-- ENABLE -->
-  <button
-    *ngIf="b.enable"
-    class="btn btn-success btn-sm me-2"
-    (click)="changeStatus(b._id, 'active')"
-  >
-    Enable
-  </button>
 
-  <!-- DISABLE -->
-  <button
-    *ngIf="b.disable"
-    class="btn btn-danger btn-sm"
-    (click)="changeStatus(b._id, 'inactive')"
-  >
-    Disable
-  </button>
-</td>
+                  <td>
+                    <button
+                      class="btn"
+                      [ngClass]="{
+                        'btn-success': b.status?.toLowerCase() === 'inactive',
+                        'btn-danger': b.status?.toLowerCase() === 'active'
+                      }"
+                      (click)="toggleAccountStatus(b)"
+                    >
+                      {{
+                        b.status?.toLowerCase() === "active"
+                          ? "Disable"
+                          : "Enable"
+                      }}
+                    </button>
+                  </td>
+
+               
+                  <!-- <td>
+     
+      <button
+        *ngIf="b.login_status !== 'Enabled'"
+        class="btn btn-success btn-sm me-2"
+        (click)="changeLoginStatus(b._id, 'enabled')"
+      >
+        Enable
+      </button>
+
+      <button
+        *ngIf="b.login_status === 'Enabled'"
+        class="btn btn-danger btn-sm"
+        (click)="changeLoginStatus(b._id, 'disabled')"
+      >
+        Disable
+      </button>
+    </td> -->
 
                   <td>
                     <span
