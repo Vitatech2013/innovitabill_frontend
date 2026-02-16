@@ -70,6 +70,7 @@
               <button
                 class="btn btn-secondary"
                 type="button"
+                data-toggle="tooltip" data-placement="top" title="View"
                 (click)="togglePassword()"
               >
                 <i
@@ -117,6 +118,7 @@
             <a
               routerLink="/userforgotpassword"
               class="fw-bold text-primary text-decoration-none"
+              data-toggle="tooltip" data-placement="top" title="Forgot password"
             >
               Forgot password?
             </a>
@@ -126,12 +128,13 @@
             <button
               type="button"
               class="btn btn-success w-75 g-2"
+              data-toggle="tooltip" data-placement="top" title="Login"
               (click)="UserLogin()"
             >
               Login
             </button>
 
-            <button type="button" class="btn btn-success w-25" routerLink="/">
+            <button type="button" class="btn btn-success w-25" routerLink="/" data-toggle="tooltip" data-placement="top" title="Go Back">
               <i class="bi bi-box-arrow-in-left"></i>
             </button>
           </div>

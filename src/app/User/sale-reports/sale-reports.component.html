@@ -3,16 +3,16 @@
   <!-- Tabs -->
   <ul class="nav nav-tabs mb-3">
     <li class="nav-item">
-      <button class="nav-link" [class.active]="activeTab==='daily'" (click)="setTab('daily')">Daily</button>
+      <button class="nav-link" [class.active]="activeTab==='daily'" (click)="setTab('daily')"  data-toggle="tooltip" data-placement="top" title="Daily">Daily</button>
     </li>
     <li class="nav-item">
-      <button class="nav-link" [class.active]="activeTab==='weekly'" (click)="setTab('weekly')">Weekly</button>
+      <button class="nav-link" [class.active]="activeTab==='weekly'" (click)="setTab('weekly')"  data-toggle="tooltip" data-placement="top" title="Weekly">Weekly</button>
     </li>
     <li class="nav-item">
-      <button class="nav-link" [class.active]="activeTab==='monthly'" (click)="setTab('monthly')">Monthly</button>
+      <button class="nav-link" [class.active]="activeTab==='monthly'" (click)="setTab('monthly')"  data-toggle="tooltip" data-placement="top" title="Monthly">Monthly</button>
     </li>
     <li class="nav-item">
-      <button class="nav-link" [class.active]="activeTab==='yearly'" (click)="setTab('yearly')">Yearly</button>
+      <button class="nav-link" [class.active]="activeTab==='yearly'" (click)="setTab('yearly')"  data-toggle="tooltip" data-placement="top" title="Yearly">Yearly</button>
     </li>
   </ul>
 
@@ -31,8 +31,8 @@
     </apx-chart>
 
     <div class="text-end mt-3">
-      <button class="btn btn-danger me-2" (click)="downloadPDF()">Download PDF</button>
-      <button class="btn btn-success" (click)="downloadExcel()">Download Excel</button>
+      <button class="btn btn-danger me-2" (click)="downloadPDF()"  data-toggle="tooltip" data-placement="top" title="Download Pdf" >Download PDF</button>
+      <button class="btn btn-success" (click)="downloadExcel()" data-toggle="tooltip" data-placement="top" title="Download Excel">Download Excel</button>
     </div>
   </div>
 

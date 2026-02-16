@@ -222,7 +222,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <a class="navbar-brand fw-bold ms-2" routerLink="/home">
+  <a class="navbar-brand fw-bold ms-2" routerLink="/home" data-toggle="tooltip" data-placement="top" title="Home">
     InnoVITA Bill
   </a>
 
@@ -233,20 +233,20 @@
     </div>
 
     <div class="dropdown">
-      <a class="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown">
+      <a class="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown"data-toggle="tooltip" data-placement="top" title="Profile">
         <i class="bi bi-person-circle fs-3"></i>
       </a>
 
       <ul class="dropdown-menu dropdown-menu-end">
         <li>
           <a class="dropdown-item" routerLink="businessprofile">
-            <i class="bi bi-person me-2"></i> Profile
+            <i class="bi bi-person me-2" ></i> Profile
           </a>
         </li>
         <li><hr class="dropdown-divider" /></li>
         <li>
           <a class="dropdown-item" (click)="logout()">
-            <i class="bi bi-box-arrow-right me-2"></i> Logout
+            <i class="bi bi-box-arrow-right me-2 "></i> Logout
           </a>
         </li>
       </ul>

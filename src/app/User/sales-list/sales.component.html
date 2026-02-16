@@ -10,41 +10,50 @@
           type="text"
           class="form-control"
           placeholder="Search"
-          onchange="filteredSales()"
           [(ngModel)]="searchTerm"
         />
+
         <i class="bi bi-search search-icon"></i>
       </div>
-             <div class="dropdown">
-          <button
-            class="btn btn-light text-dark fw-semibold dropdown-toggle bg"
-            type="button"
-            
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            {{ selectedFilter }}
-          </button>
+      <div class="dropdown">
+        <button
+          class="btn btn-light text-dark fw-semibold dropdown-toggle bg"
+          type="button"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Status"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ selectedFilter }}
+        </button>
 
-          <ul class="dropdown-menu">
-            
-            <li>
-              <button class="dropdown-item" (click)="changeFilter('Paid')">
-                Paid
-              </button>
-            </li>
-            <li>
-              <button class="dropdown-item" (click)="changeFilter('Partial')">
-                Partial
-              </button>
-            </li>
-            <li>
-              <button class="dropdown-item" (click)="changeFilter('Unpaid')">
-                Unpaid
-              </button>
-            </li>
-          </ul>
-        </div>
+        <ul class="dropdown-menu">
+          <li>
+            <button class="dropdown-item" (click)="changeFilter('All')">
+              All
+            </button>
+          </li>
+          <li>
+            <button class="dropdown-item" (click)="changeFilter('Paid')">
+              Paid
+            </button>
+          </li>
+          <li>
+            <button
+              class="dropdown-item"
+              (click)="changeFilter('Partial Paid')"
+            >
+              Partial Paid
+            </button>
+          </li>
+          <li>
+            <button class="dropdown-item" (click)="changeFilter('Unpaid')">
+              Unpaid
+            </button>
+          </li>
+        </ul>
+      </div>
 
       <!-- <a
         class="btn btn-success text-white"
@@ -74,7 +83,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let sale of saledata; let i = index">
+            <tr *ngFor="let sale of filteredSales(); let i = index">
               <td>{{ i + 1 }}</td>
               <td>{{ sale.invoice_number }}</td>
 
@@ -108,6 +117,9 @@
                     data-bs-toggle="modal"
                     data-bs-target="#myEmptyModal"
                     (click)="view(sale)"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="View"
                   >
                     <b><i class="bi bi-eye"></i></b>
                   </button>
@@ -117,6 +129,9 @@
                     data-bs-toggle="modal"
                     data-bs-target="#myEditModal"
                     (click)="edit(sale)"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Edit"
                   >
                     <b><i class="bi bi-pencil"></i></b>
                   </button>
@@ -165,7 +180,7 @@
                       type="text"
                       class="form-control p-2"
                       formControlName="invoice_number"
-                       readonly
+                      readonly
                     />
                   </div>
                   <div class="col-md-4">
@@ -174,7 +189,7 @@
                       type="text"
                       class="form-control p-2"
                       formControlName="name"
-                       readonly
+                      readonly
                     />
                   </div>
                   <div class="col-md-4">
@@ -183,7 +198,7 @@
                       type="text"
                       class="form-control p-2"
                       formControlName="item_name"
-                       readonly
+                      readonly
                     />
                   </div>
 
@@ -193,7 +208,7 @@
                       type="text"
                       class="form-control p-2"
                       formControlName="quantity"
-                       readonly
+                      readonly
                     />
                   </div>
                   <div class="col-md-4">
@@ -202,7 +217,7 @@
                       type="text"
                       class="form-control p-2"
                       formControlName="selling_price"
-                       readonly
+                      readonly
                     />
                   </div>
 
@@ -212,7 +227,7 @@
                       type="text"
                       class="form-control p-2"
                       formControlName="grand_total"
-                       readonly
+                      readonly
                     />
                   </div>
                   <div class="col-md-4">
@@ -221,7 +236,7 @@
                       type="text"
                       class="form-control p-2"
                       formControlName="payment_status"
-                       readonly
+                      readonly
                     />
                   </div>
                 </div>
@@ -272,10 +287,19 @@
           <button
             class="btn btn-outline-secondary btn-sm"
             data-bs-dismiss="modal"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Cancel"
           >
             Cancel
           </button>
-          <button class="btn btn-success btn-sm px-3" (click)="update()">
+          <button
+            class="btn btn-success btn-sm px-3"
+            (click)="update()"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Update"
+          >
             <i class="bi bi-check-circle me-1"></i> Update
           </button>
         </div>

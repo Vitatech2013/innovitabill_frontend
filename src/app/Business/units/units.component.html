@@ -43,7 +43,7 @@
           <button
             class="btn btn-light text-dark fw-semibold dropdown-toggle bg"
             type="button"
-            
+            data-toggle="tooltip" data-placement="top" title="Status"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
@@ -71,8 +71,8 @@
         </div>
 
       <button class="btn btn-light text-dark fw-semibold" 
-      (click)="openAddModal()">
-        <i class="bi bi-plus-circle"></i>
+      (click)="openAddModal()" data-toggle="tooltip" data-placement="top" title="Add Unit">
+        <i class="bi bi-plus-circle" ></i>
         Add New
       </button>
     </div>

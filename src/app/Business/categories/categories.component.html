@@ -46,7 +46,7 @@
           <button
             class="btn btn-light text-dark fw-semibold dropdown-toggle bg shadow-sm"
             type="button"
-            
+            data-toggle="tooltip" data-placement="top" title="Status"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
@@ -78,6 +78,7 @@
         data-bs-toggle="modal"
         data-bs-target="#CategoryModal"
         (click)="openAddModal()"
+        data-toggle="tooltip" data-placement="top" title="status"
       >
         <i class="bi bi-plus-circle"></i>
         Add New
@@ -123,12 +124,14 @@
                       (click)="edit(c)"
                       data-bs-toggle="modal"
                       data-bs-target="#CategoryModal"
+                      data-toggle="tooltip" data-placement="top" title="Edit"
                     >
                       <i class="bi bi-pencil-square"></i>
                     </button>
                     <button
                       class="btn btn-sm btn-outline-danger"
                       (click)="openDeleteModal(c)"
+                      data-toggle="tooltip" data-placement="top" title="Delete"
                     >
                       <i class="bi bi-trash"></i>
                     </button>
@@ -161,6 +164,7 @@
                   data-bs-dismiss="modal"
                   aria-label="Close"
                   (click)="closeModal()"
+                  data-toggle="tooltip" data-placement="top" title="Close"
                 ></button>
               </div>
 
@@ -241,6 +245,7 @@
                   class="btn btn-secondary"
                   data-bs-dismiss="modal"
                   (click)="closeModal()"
+                  data-toggle="tooltip" data-placement="top" title="Close"
                 >
                   Close
                 </button>
@@ -274,6 +279,7 @@
                 type="button"
                 class="btn btn-secondary"
                 data-bs-dismiss="modal"
+                data-toggle="tooltip" data-placement="top" title="Cancel"
               >
                 Cancel
               </button>
@@ -281,6 +287,7 @@
                 type="button"
                 class="btn btn-danger"
                 (click)="confirmDelete()"
+                data-toggle="tooltip" data-placement="top" title="Delete"
               >
                 Delete
               </button>

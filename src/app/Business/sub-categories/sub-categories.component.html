@@ -46,7 +46,7 @@
           <button
             class="btn btn-light text-dark fw-semibold dropdown-toggle bg"
             type="button"
-            
+            data-toggle="tooltip" data-placement="top" title="Status"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
@@ -77,6 +77,7 @@
         class="btn btn-light text-dark fw-semibold"
         data-bs-toggle="modal"
         data-bs-target="#subcategoryModel"
+        data-toggle="tooltip" data-placement="top" title="Add Subcategory"
         (click)="openAddModal()"
       >
         <i class="bi bi-plus-circle"></i>
@@ -126,12 +127,14 @@
                       (click)="edit(c)"
                       data-bs-toggle="modal"
                       data-bs-target="#subcategoryModel"
+                      data-toggle="tooltip" data-placement="top" title="Edit"
                     >
                       <i class="bi bi-pencil-square"></i>
                     </button>
                     <button
                       class="btn btn-sm btn-outline-danger"
                       (click)="openDeleteModal(c)"
+                      data-toggle="tooltip" data-placement="top" title="Delete"
                     >
                       <i class="bi bi-trash"></i>
                     </button>
@@ -243,6 +246,7 @@
               class="btn btn-secondary"
               data-bs-dismiss="modal"
               (click)="closeModal()"
+              data-toggle="tooltip" data-placement="top" title="Cancel"
             >
               Cancel
             </button>
@@ -276,6 +280,7 @@
             type="button"
             class="btn btn-secondary"
             data-bs-dismiss="modal"
+            data-toggle="tooltip" data-placement="top" title="Cancel"
           >
             Cancel
           </button>
@@ -283,6 +288,7 @@
             type="button"
             class="btn btn-danger"
             (click)="confirmDelete()"
+            data-toggle="tooltip" data-placement="top" title="Delete"
           >
             Delete
           </button>

@@ -6,13 +6,37 @@
   background: white;
   font-family: Arial, sans-serif;
 }
-.selected-items-responsive {
-  overflow-x: auto;
+/* Make table full width */
+.selected-items-responsive table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.selected-items-responsive table {
-  min-width: 800px;
+/* Make tbody scrollable */
+.selected-items-responsive tbody {
+  display: block;
+  max-height: 220px;   /* adjust height */
+  overflow-y: auto;
 }
+
+/* Keep header fixed */
+.selected-items-responsive thead,
+.selected-items-responsive tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* Optional scrollbar styling */
+.selected-items-responsive tbody::-webkit-scrollbar {
+  width: 4px;
+}
+
+.selected-items-responsive tbody::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 10px;
+}
+
 
 .scroll-card-area {
   max-height: 250px;
@@ -157,29 +181,28 @@
 .customer-display {
   width: 100%;
   max-width: 420px;
-  margin: 0 auto;
+  margin: 0 auto 10px auto;   /* bottom space reduce */
 }
 
 .cust-row {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-bottom: 12px;
+  gap: 5px;              /* gap reduce */
+  margin-bottom: 6px;    /* vertical spacing reduce */
 }
 
 .cust-row label {
   font-weight: 600;
-  font-size: 14px;
-  color: #333;
+  font-size: 13px;       /* slightly smaller */
+  margin-bottom: 2px;
 }
 
 .cust-row input {
   width: 100%;
-  padding: 8px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 5px 8px;      /* reduce input height */
+  font-size: 13px;
 }
+
 
 .cust-row input:focus {
   border-color: #4caf50;

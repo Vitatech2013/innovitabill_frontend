@@ -46,7 +46,7 @@
           <button
             class="btn btn-light text-dark fw-semibold dropdown-toggle bg"
             type="button"
-            
+            data-toggle="tooltip" data-placement="top" title="Status"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
@@ -78,6 +78,7 @@
         data-bs-toggle="modal"
         data-bs-target="#roleModal"
         (click)="openAddModal()"
+        data-toggle="tooltip" data-placement="top" title="Add Role"
       >
         <i class="bi bi-plus-circle"></i>
         Add New
@@ -126,12 +127,14 @@
                       (click)="edit(r)"
                       data-bs-toggle="modal"
                       data-bs-target="#roleModal"
+                      data-toggle="tooltip" data-placement="top" title="Edit"
                     >
                       <i class="bi bi-pencil-square"></i>
                     </button>
                     <button
                       class="btn btn-sm btn-outline-danger"
                       (click)="openDeleteModal(r)"
+                      data-toggle="tooltip" data-placement="top" title="Delete"
                     >
                       <i class="bi bi-trash"></i>
                     </button>
@@ -164,6 +167,7 @@
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              data-toggle="tooltip" data-placement="top" title="Close"
             ></button>
           </div>
 
@@ -233,6 +237,7 @@
               type="button"
               class="btn btn-secondary"
               data-bs-dismiss="modal"
+              data-toggle="tooltip" data-placement="top" title="Close"
             >
               Close
             </button>
@@ -269,6 +274,7 @@
             type="button"
             class="btn btn-secondary"
             data-bs-dismiss="modal"
+            data-toggle="tooltip" data-placement="top" title="Cancel"
           >
             Cancel
           </button>
@@ -276,6 +282,7 @@
             type="button"
             class="btn btn-danger"
             (click)="confirmDelete()"
+            data-toggle="tooltip" data-placement="top" title="Delete"
           >
             Delete
           </button>
