@@ -27,7 +27,7 @@ export class ItemsComponent implements OnInit {
   categories: any[] = [];
   subCategories: any[] = [];
   users: any[] = [];
-  allSubCategories: any;
+  allSubCategories: any;            
   units: any;
   users_id: string = '';
 
@@ -170,10 +170,8 @@ export class ItemsComponent implements OnInit {
 
   saveItems() {
     if (this.addItemsForm.invalid) {
-      this.toastr.warning(
-        'Please fill all required fields correctly.',
-        'Warning',
-      );
+       this.addItemsForm.markAllAsTouched();
+      this.toastr.warning('Please fill all required fields correctly.', 'Warning');
       return;
     }
 
@@ -291,3 +289,4 @@ export class ItemsComponent implements OnInit {
       ?.setValue(value, { emitEvent: false });
   }
 }
+

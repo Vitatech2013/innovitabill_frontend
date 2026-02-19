@@ -17,11 +17,11 @@
           class="form-control"
           formControlName="vendor_name"
           placeholder="Enter Vendor Name"
-           (input)="singleSpace($event)"
+          (input)="singleSpace($event)"
         />
         <small *ngIf="isInvalid('vendor_name')" class="text-danger">
-                    Vendor Name is required and must be at least 3 letters
-                  </small>
+          Vendor Name is required.
+        </small>
       </div>
 
       <div class="col-md-3">
@@ -33,11 +33,11 @@
           class="form-control"
           formControlName="vendor_type"
           placeholder="Enter Vendor type"
-           (input)="singleSpace($event)"
+          (input)="singleSpace($event)"
         />
-          <small *ngIf="isInvalid('vendor_type')" class="text-danger">
-                    Vendor Type is required and must be at least 3 letters
-                  </small>
+        <small *ngIf="isInvalid('vendor_type')" class="text-danger">
+          Vendor Type is required.
+        </small>
       </div>
 
       <div class="col-md-3">
@@ -49,11 +49,11 @@
           class="form-control"
           formControlName="business_category"
           placeholder="Enter Business Category"
-           (input)="singleSpace($event)"
+          (input)="singleSpace($event)"
         />
-         <small *ngIf="isInvalid('business_category')" class="text-danger">
-                    Business Category is required and must be at least 3 letters
-                  </small>
+        <small *ngIf="isInvalid('business_category')" class="text-danger">
+          Business Category is required.
+        </small>
       </div>
 
       <div class="col-md-3">
@@ -65,11 +65,11 @@
           class="form-control"
           formControlName="gst_number"
           placeholder="Enter GST Number"
-           (input)="singleSpace($event)"
+          (input)="singleSpace($event)"
         />
-          <small *ngIf="isInvalid('gst_number')" class="text-danger">
-                    Gst Number is required and must be at least 3 letters
-                  </small>
+        <small *ngIf="isInvalid('gst_number')" class="text-danger">
+          Gst Number is required.
+        </small>
       </div>
 
       <div class="col-md-3">
@@ -81,12 +81,11 @@
           class="form-control"
           formControlName="pan_number"
           placeholder=" PAN Number"
-           (input)="singleSpace($event)"
-
+          (input)="singleSpace($event)"
         />
-          <small *ngIf="isInvalid('pan_number')" class="text-danger">
-                  Pan Number is required and must be at least 3 letters
-                  </small>
+        <small *ngIf="isInvalid('pan_number')" class="text-danger">
+          Pan Number is required.
+        </small>
       </div>
 
       <div class="col-md-3">
@@ -98,181 +97,194 @@
           class="form-control"
           formControlName="company_registration_number"
           placeholder="Enter Comapny Registration Number"
-           (input)="singleSpace($event)"
+          (input)="singleSpace($event)"
         />
-         <small *ngIf="isInvalid('company_registration_number')" class="text-danger">
-           Registration Number is required and must be at least 3 letters
-          </small>
+        <small
+          *ngIf="isInvalid('company_registration_number')"
+          class="text-danger"
+        >
+          Registration Number is required.
+        </small>
       </div>
     </div>
 
-  <div class="row g-2 mt-2" formGroupName="address">
-  <h6 class="fw-bold mb-1">Address</h6>
+    <div class="row g-2 mt-2" formGroupName="address">
+      <h5 class="fw-bold mb-1">Address</h5>
 
-  <div class="col-md-4">
-    <label class="form-label fw-bold">
-      Address Line 1 <span class="text-danger">*</span>
-    </label>
-    <input
-      type="text"
-      class="form-control"
-      formControlName="address_line_1"
-       (input)="singleSpace($event)"
-    />
-  <small *ngIf="isInvalid('address.address_line_1')" class="text-danger">
-    Address line 1 is required
-  </small>
-  </div>
+      <div class="col-md-3">
+        <label class="form-label fw-bold">
+          Address Line 1 <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="address_line_1"
+          (input)="singleSpace($event)"
+          placeholder="Address Line 1"
+        />
+        <small *ngIf="isInvalid('address.address_line_1')" class="text-danger">
+          Address line 1 is required
+        </small>
+      </div>
 
-  <div class="col-md-4">
-    <label class="form-label fw-bold">
-      Address Line 2 <span class="text-danger">*</span>
-    </label>
-    <input
-      type="text"
-      class="form-control"
-      formControlName="address_line_2"
-       (input)="singleSpace($event)"
-    />
-    <small *ngIf="isInvalid('address.address_line_2')" class="text-danger">
-      Address line 2 is required
-    </small>
-  </div>
+      <div class="col-md-3">
+        <label class="form-label fw-bold">
+          Address Line 2 <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="address_line_2"
+          (input)="singleSpace($event)"
+          placeholder="Address Line 2"
+        />
+        <small *ngIf="isInvalid('address.address_line_2')" class="text-danger">
+          Address line 2 is required
+        </small>
+      </div>
 
-  <div class="col-md-4">
-    <label class="form-label fw-bold">
-      City <span class="text-danger">*</span>
-    </label>
-    <input
-      type="text"
-      class="form-control"
-      formControlName="city"
-       (input)="singleSpace($event)"
-    />
-    <small *ngIf="isInvalid('address.city')" class="text-danger">
-      City is required
-    </small>
-  </div>
+      <div class="col-md-3">
+        <label class="form-label fw-bold">
+          City <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="city"
+          (input)="singleSpace($event)"
+          placeholder="City"
+        />
+        <small *ngIf="isInvalid('address.city')" class="text-danger">
+          City is required
+        </small>
+      </div>
 
-  <div class="col-md-4">
-    <label class="form-label fw-bold">
-      State <span class="text-danger">*</span>
-    </label>
-    <input
-      type="text"
-      class="form-control"
-      formControlName="state"
-       (input)="singleSpace($event)"
-    />
-    <small *ngIf="isInvalid('address.state')" class="text-danger">
-      State is required
-    </small>
-  </div>
+      <div class="col-md-3">
+        <label class="form-label fw-bold">
+          State <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="state"
+          (input)="singleSpace($event)"
+          placeholder="State"
+        />
+        <small *ngIf="isInvalid('address.state')" class="text-danger">
+          State is required
+        </small>
+      </div>
 
-  <div class="col-md-4">
-    <label class="form-label fw-bold">
-      Country <span class="text-danger">*</span>
-    </label>
-    <input
-      type="text"
-      class="form-control"
-      formControlName="country"
-       (input)="singleSpace($event)"
-    />
-    <small *ngIf="isInvalid('address.country')" class="text-danger">
-      Country is required
-    </small>
-  </div>
+      <div class="col-md-3">
+        <label class="form-label fw-bold">
+          Country <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="country"
+          (input)="singleSpace($event)"
+          placeholder="Country"
+        />
+        <small *ngIf="isInvalid('address.country')" class="text-danger">
+          Country is required
+        </small>
+      </div>
 
-  <div class="col-md-4">
-    <label class="form-label fw-bold">
-      Pincode <span class="text-danger">*</span>
-    </label>
-    <input
-      type="text"
-      class="form-control"
-      formControlName="pincode"
-       (input)="singleSpace($event)"
-    />
-    <small *ngIf="isInvalid('address.pincode')" class="text-danger">
-      Pincode is required
-    </small>
-  </div>
-</div>
+      <div class="col-md-3">
+        <label class="form-label fw-bold">
+          Pincode <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="pincode"
+          placeholder="Pincode"
+          (input)="singleSpace($event)"
+        />
+        <small *ngIf="isInvalid('address.pincode')" class="text-danger">
+          Pincode is required
+        </small>
+      </div>
+    </div>
 
+    <div class="row g-2 mt-2" formGroupName="contact">
+      <h5 class="fw-bold mb-1">Contact</h5>
 
- <div class="row g-2 mt-2" formGroupName="contact">
-  <h6 class="fw-bold mb-1">Contact</h6>
+      <!-- Contact Person -->
+      <div class="col-md-3">
+        <label class="form-label fw-bold">
+          Contact Person Name <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Contact Person"
+          formControlName="contact_person_name"
+          (input)="singleSpace($event)"
+        />
+        <small
+          *ngIf="isInvalid('contact.contact_person_name')"
+          class="text-danger"
+        >
+          Name is required
+        </small>
+      </div>
 
-  <!-- Contact Person -->
-  <div class="col-md-4">
-    <label class="form-label fw-bold">
-      Contact Person Name <span class="text-danger">*</span>
-    </label>
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Contact Person"
-      formControlName="contact_person_name"
-       (input)="singleSpace($event)"
-    />
-    <small *ngIf="isInvalid('contact.contact_person_name')" class="text-danger">
-      Name is required
-    </small>
-  </div>
+      <!-- Email -->
+      <div class="col-md-3">
+        <label class="form-label fw-bold">
+          Email <span class="text-danger">*</span>
+        </label>
+        <input
+          type="email"
+          class="form-control"
+          placeholder="Email"
+          formControlName="email"
+          (input)="singleSpace($event)"
+        />
+        <small *ngIf="isInvalid('contact.email')" class="text-danger">
+          Valid email is required
+        </small>
+      </div>
 
-  <!-- Email -->
-  <div class="col-md-4">
-    <label class="form-label fw-bold">
-      Email <span class="text-danger">*</span>
-    </label>
-    <input
-      type="email"
-      class="form-control"
-      placeholder="Email"
-      formControlName="email"
-       (input)="singleSpace($event)"
-    />
-    <small *ngIf="isInvalid('contact.email')" class="text-danger">
-      Valid email is required
-    </small>
-  </div>
+      <!-- Mobile -->
+      <div class="col-md-3">
+        <label class="form-label fw-bold">
+          Mobile Number <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Mobile"
+          formControlName="mobile_number"
+          (input)="alphaNumericSingleSpace($event)"
+        />
+        <small *ngIf="isInvalid('contact.mobile_number')" class="text-danger">
+          Mobile number is required
+        </small>
+      </div>
 
-  <!-- Mobile -->
-  <div class="col-md-4">
-    <label class="form-label fw-bold">
-      Mobile Number <span class="text-danger">*</span>
-    </label>
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Mobile"
-      formControlName="mobile_number"
-      (input)="alphaNumericSingleSpace($event)"
-    />
-    <small *ngIf="isInvalid('contact.mobile_number')" class="text-danger">
-      Mobile number is required
-    </small>
-  </div>
-
-  <!-- Alternate Mobile -->
-  <div class="col-md-4">
-    <label class="form-label fw-bold">
-      Alternate Mobile Number <span class="text-danger">*</span>
-    </label>
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Alternate Mobile"
-      formControlName="alternate_mobile_number"
-      (input)="alphaNumericSingleSpace($event)"
-    />
-    <small *ngIf="isInvalid('contact.alternate_mobile_number')" class="text-danger">
-      Alternate number is required
-    </small>
-  </div>
-</div>
-
+      <!-- Alternate Mobile -->
+      <div class="col-md-3">
+        <label class="form-label fw-bold">
+          Alternate Mobile Number <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Alternate Mobile"
+          formControlName="alternate_mobile_number"
+          (input)="alphaNumericSingleSpace($event)"
+        />
+        <small
+          *ngIf="isInvalid('contact.alternate_mobile_number')"
+          class="text-danger"
+        >
+          Alternate number is required
+        </small>
+      </div>
+    </div>
 
     <div class="row g-2 item-form mt-3">
       <h5 class="fw-bold">Item Details</h5>
@@ -286,10 +298,9 @@
           class="form-control"
           formControlName="item_name"
           placeholder="Enter item name"
-          
         />
         <small *ngIf="isInvalid('item_name')" class="text-danger">
-          Item Name is required and must be at least 3 letters
+          Item Name is required.
         </small>
       </div>
 
@@ -306,7 +317,7 @@
           (input)="onInputNoSpaces($event)"
         />
         <small *ngIf="isInvalid('item_code')" class="text-danger">
-          Item code is required and must be at least 3 letters
+          Item code is required.
         </small>
       </div>
 
@@ -370,9 +381,9 @@
           (input)="onInputNumbersAndSpecial($event)"
         />
 
-      <small *ngIf="isInvalid('tax_rate')" class="text-danger">
-  Tax rate is required
-</small>
+        <small *ngIf="isInvalid('tax_rate')" class="text-danger">
+          Tax rate is required
+        </small>
       </div>
 
       <div class="col-md-3">
@@ -476,10 +487,9 @@
         <input
           type="file"
           class="form-control"
-           accept="image/*"
+          accept="image/*"
           (change)="onFileSelect($event)"
         />
-        
       </div>
       <div class="col-md-3">
         <label class="form-label fw-bold"
@@ -507,7 +517,13 @@
       >
         Cancel
       </button>
+<<<<<<< HEAD
+      <button class="btn btn-success" type="submit " (click)="savePurchase()">
+        Save Purchase
+      </button>
+=======
       <button class="btn btn-success" type="submit"  data-toggle="tooltip" data-placement="top" title="Save">Save Purchase</button>
+>>>>>>> 9d89c26da9b37bad58486845f82b83eb3a00fd0b
     </div>
   </form>
 </div>

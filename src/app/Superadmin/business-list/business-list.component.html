@@ -114,20 +114,17 @@
                   <td>{{ getBusinessTypeName(b.bt_id) }}</td>
 
                   <td>
-                    <button
-                      class="btn"
-                      [ngClass]="{
-                        'btn-success': b.status?.toLowerCase() === 'inactive',
-                        'btn-danger': b.status?.toLowerCase() === 'active'
-                      }"
-                      (click)="toggleAccountStatus(b)"
-                    >
-                      {{
-                        b.status?.toLowerCase() === "active"
-                          ? "Disable"
-                          : "Enable"
-                      }}
-                    </button>
+                   <button
+  class="btn"
+  [ngClass]="{
+    'btn-success': b.status === 'disable',
+    'btn-danger': b.status === 'enable'
+  }"
+  (click)="toggleAccountStatus(b)"
+>
+  {{ b.status === 'enable' ? 'Disable' : 'Enable' }}
+</button>
+
                   </td>
 
                

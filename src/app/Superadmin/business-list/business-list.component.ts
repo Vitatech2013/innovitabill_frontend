@@ -217,36 +217,69 @@ export class BusinessListComponent implements OnInit {
   //   });
   // }
 
-  toggleAccountStatus(b: any) {
-    const newStatus =
-      b.status?.toLowerCase() === 'active' ? 'inactive' : 'active';
 
-    this.api.updateBusiness(b._id, { status: newStatus }).subscribe({
-      next: () => {
-        b.status = newStatus;
-        this.showToast(
-          newStatus === 'active' ? 'Account enabled' : 'Account disabled',
-          'success'
-        );
-      },
-      error: () => {
-        this.showToast('Failed to update account status', 'error');
-      },
+
+
+
+
+  // toggleAccountStatus(b: any) {
+  //   const newStatus =
+  //     b.status?.toLowerCase() === 'active' ? 'inactive' : 'active';
+
+  //   this.api.updateBusiness(b._id, { status: newStatus }).subscribe({
+  //     next: () => {
+  //       b.status = newStatus;
+  //       this.showToast(
+  //         newStatus === 'active' ? 'Account enabled' : 'Account disabled',
+  //         'success'
+  //       );
+  //     },
+  //     error: () => {
+  //       this.showToast('Failed to update account status', 'error');
+  //     },
+  //   });
+  // }
+
+  // toggleLoginStatus(b: any) {
+  //   const newLogin =
+  //     b.login_status?.toLowerCase() === 'active' ? 'inactive' : 'active';
+
+  //   this.api
+  //     .updateLoginStatus(b._id, {
+  //       login_status: newLogin,
+  //     })
+  //     .subscribe(() => {
+  //       b.login_status = newLogin;
+  //     });
+  // }
+
+
+
+toggleLoginStatus(b: any) {
+  const newLoginStatus =
+    b.login_status === 'active' ? 'inactive' : 'active';
+
+  this.api.updateLoginStatus(b._id, { login_status: newLoginStatus })
+    .subscribe(() => {
+      b.login_status = newLoginStatus; 
     });
-  }
+}
 
-  toggleLoginStatus(b: any) {
-    const newLogin =
-      b.login_status?.toLowerCase() === 'active' ? 'inactive' : 'active';
 
-    this.api
-      .updateLoginStatus(b._id, {
-        login_status: newLogin,
-      })
-      .subscribe(() => {
-        b.login_status = newLogin;
-      });
-  }
+
+toggleAccountStatus(b: any) {
+  const newStatus = b.status === 'enable' ? 'disable' : 'enable';
+
+  this.api.updateAccountStatus(b._id, { status: newStatus })
+    .subscribe(() => {
+      b.status = newStatus;   
+    });
+}
+
+
+
+
+
 
   // toggleLoginStatus(b: any) {
   //   const newStatus = b.login_status === 'Active' ? 'Inactive' : 'Active';
@@ -642,3 +675,5 @@ export class BusinessListComponent implements OnInit {
     }
   }
 }
+  
+

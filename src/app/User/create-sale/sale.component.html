@@ -52,6 +52,28 @@
                 </div>
               </td>
 
+<<<<<<< HEAD
+        <tbody>
+          <tr
+            *ngFor="let it of filteredItems()"
+            [ngClass]="{
+              'stock-low': it.stock_quantity <= 10,
+              'stock-medium': it.stock_quantity > 10 && it.stock_quantity <= 15,
+              'stock-high': it.stock_quantity > 15
+            }"
+            [class.disabled]="it.stock_quantity === 0"
+            class="item-row"
+          >
+            <td class="image-cell">
+              <div class="image-wrapper">
+                <img
+                  *ngIf="it.image"
+                  [src]="getImageUrl(it.image)"
+                  class="item-img-table"
+                />
+              </div>
+            </td>
+=======
               <td>{{ it.brand_name }}</td>
               <td>{{ it.item_name }}</td>
               <td>₹{{ it.selling_price }}</td>
@@ -61,6 +83,7 @@
                 {{ it.stock_quantity }} {{ it.unit }}
                 <span *ngIf="it.stock_quantity === 0" class="disabled"></span>
               </td>
+>>>>>>> 9d89c26da9b37bad58486845f82b83eb3a00fd0b
 
               <td class="sticky-action">
                 <button
