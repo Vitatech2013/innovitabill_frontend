@@ -387,23 +387,28 @@
                       Password<span class="text-danger">*</span>
                     </label>
 
-                    <div class="input-group">
-                      <input
-                        [type]="showPassword ? 'text' : 'password'"
-                        formControlName="password"
-                        placeholder="Enter password"
-                        class="form-control"
-                        autocomplete="current-password"
-                        (keypress)="blockSpace($event)"
-                      />
+                  <div class="input-group">
+  <input
+    [type]="showPassword ? 'text' : 'password'"
+    formControlName="password"
+    placeholder="Enter password"
+    class="form-control"
+    autocomplete="current-password"
+    (keypress)="blockSpace($event)"
+  />
 
-                      <button type="button" class="btn btn-outline-secondary">
-                        <i
-                          class="bi"
-                          [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"
-                        ></i>
-                      </button>
-                    </div>
+  <button
+    type="button"
+    class="btn btn-outline-secondary"
+    (click)="togglePassword()"
+  >
+    <i
+      class="bi"
+      [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"
+    ></i>
+  </button>
+</div>
+
 
                     <div
                       *ngIf="

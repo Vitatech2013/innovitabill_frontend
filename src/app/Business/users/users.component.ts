@@ -32,6 +32,8 @@ export class UsersComponent implements OnInit {
   business_id: string | null = null;
   userForm!: FormGroup;
   roles: any;
+
+
  
   imageFile: File | null = null;
   idProofFile: File | null = null;
@@ -163,6 +165,9 @@ openAddModal() {
   showall() {
     this.statusFilter = 'all';
   }
+  togglePassword() {
+  this.showPassword = !this.showPassword;
+}
 
 editUser(u: any) {
   this.selectedUser = u; // 🔥 needed for preview
