@@ -170,15 +170,8 @@ export class ItemsComponent implements OnInit {
 
   saveItems() {
     if (this.addItemsForm.invalid) {
-<<<<<<< HEAD
        this.addItemsForm.markAllAsTouched();
       this.toastr.warning('Please fill all required fields correctly.', 'Warning');
-=======
-      this.toastr.warning(
-        'Please fill all required fields correctly.',
-        'Warning',
-      );
->>>>>>> cfd8ae498b4156259278a438e3cac57034ff90b8
       return;
     }
 
