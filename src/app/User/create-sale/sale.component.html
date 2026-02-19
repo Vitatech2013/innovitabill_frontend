@@ -1,30 +1,58 @@
-<div class="row">
+<div class="row p-2">
   <div class="col-md-8 order-md-1">
-    <div class="search-box">
+   <div class="search-box text-center w-100">
+
+
       <input
         type="text"
         class="form-control"
         placeholder="Search"
         [(ngModel)]="searchTerm"
+        style="max-width: 300px"
       />
-      <i class="bi bi-search search-icon"></i>
     </div>
+    <div class="card-table">
+      <div class="table-responsive mt-2">
+        <table class="table table-hover align-middle item-table">
+          <thead class="table-light">
+            <tr>
+              <th>Image</th>
+              <th>Brand</th>
+              <th>Item</th>
+              <th>Price</th>
+              <th>Discount</th>
+              <th>Tax</th>
+              <th>Stock</th>
+              <th class="sticky-action">Action</th>
+            </tr>
+          </thead>
 
-    <div class="table-responsive mt-2">
-      <table class="table table-hover align-middle item-table">
-        <thead class="table-light">
-          <tr>
-            <th>Image</th>
-            <th>Brand</th>
-            <th>Item</th>
-            <th>Price</th>
-            <th>Discount</th>
-            <th>Tax</th>
-            <th>Stock</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+          <tbody>
+            <tr
+              *ngFor="let it of filteredItems()"
+              [ngClass]="{
+                'stock-low': it.stock_quantity <= 10,
+                'stock-medium':
+                  it.stock_quantity > 10 && it.stock_quantity <= 15,
+                'stock-high': it.stock_quantity > 15,
+              }"
+              [class.disabled]="it.stock_quantity === 0"
+              class="item-row"
+            >
+              <td class="image-cell">
+                <div class="image-wrapper">
+                  <img
+                    *ngIf="it.image"
+                    [src]="getImageUrl(it.image)"
+                    class="item-img-table"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Image"
+                  />
+                </div>
+              </td>
 
+<<<<<<< HEAD
         <tbody>
           <tr
             *ngFor="let it of filteredItems()"
@@ -45,29 +73,37 @@
                 />
               </div>
             </td>
+=======
+              <td>{{ it.brand_name }}</td>
+              <td>{{ it.item_name }}</td>
+              <td>₹{{ it.selling_price }}</td>
+              <td>₹{{ it.discount || 0 }}</td>
+              <td>{{ it.tax_rate }}%</td>
+              <td>
+                {{ it.stock_quantity }} {{ it.unit }}
+                <span *ngIf="it.stock_quantity === 0" class="disabled"></span>
+              </td>
+>>>>>>> 9d89c26da9b37bad58486845f82b83eb3a00fd0b
 
-            <td>{{ it.brand_name }}</td>
-            <td>{{ it.item_name }}</td>
-            <td>₹{{ it.selling_price }}</td>
-            <td>₹{{ it.discount || 0 }}</td>
-            <td>{{ it.tax_rate }}%</td>
-            <td>
-              {{ it.stock_quantity }} {{ it.unit }}
-              <span *ngIf="it.stock_quantity === 0" class="disabled"></span>
-            </td>
-
-            <td>
-              <button class="btn btn-sm btn-success" (click)="addToCart(it)">
-                +
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <td class="sticky-action">
+                <button
+                  class="btn btn-sm btn-success"
+                  (click)="addToCart(it)"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Add Item"
+                >
+                  +
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
-  <div class="col-md-4 order-md-2">
+  <div class="col-md-4 order-md-1">
     <div
       class="selected-items scrollable-cart"
       [ngClass]="{ 'empty-state': cartItems.length === 0 }"
@@ -92,6 +128,9 @@
                 *ngIf="item.image"
                 [src]="getImageUrl(item.image)"
                 alt="item"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Item Image"
               />
             </div>
           </div>
@@ -112,9 +151,25 @@
           </div>
 
           <div class="cart-buttons">
-            <button class="remove" (click)="removeFromCart(item)">−</button>
+            <button
+              class="remove"
+              (click)="removeFromCart(item)"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Remove Item"
+            >
+              −
+            </button>
             <span class="quantity">{{ item.cartQty }}</span>
-            <button class="add" (click)="addToCart(item)">+</button>
+            <button
+              class="add"
+              (click)="addToCart(item)"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Add Item"
+            >
+              +
+            </button>
           </div>
         </div>
 
@@ -124,6 +179,9 @@
           <button
             class="generate-btn btn-success"
             (click)="toggleCustomerForm()"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Generate Bill"
           >
             Generate Bill
           </button>
@@ -176,10 +234,24 @@
       </div>
 
       <div class="modal-actions">
-        <button type="button" class="btn-success" (click)="generateBill()">
+        <button
+          type="button"
+          class="btn-success"
+          (click)="generateBill()"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Print Bill"
+        >
           Print Bill
         </button>
-        <button type="button" class="btn-cancel" (click)="toggleCustomerForm()">
+        <button
+          type="button"
+          class="btn-cancel"
+          (click)="toggleCustomerForm()"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Cancel"
+        >
           Cancel
         </button>
       </div>

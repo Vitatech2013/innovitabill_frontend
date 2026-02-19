@@ -1,114 +1,130 @@
 <div class="container-fluid">
   <div *ngIf="!isCreatingInvoice()">
-    <div class="row">
-      <div
-        class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 mb-3"
-      >
-        <h4 class="mb-3">Available Items</h4>
+    <div class="card border rounded-4 p-4 bg-white shadow-sm">
+      <div class="row">
+        <div
+          class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 mb-3"
+        >
+          <h4 class="mb-3">Available Items</h4>
 
-        <div class="search-box">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Search"
-            onchange="filteredItems()"
-            [(ngModel)]="searchTerm"
-          />
-          <i class="bi bi-search search-icon"></i>
+          <div class="search-box">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search"
+              [(ngModel)]="searchTerm"
+            />
+          </div>
+          <div class="dropdown">
+            <button
+              class="btn btn-light text-dark fw-semibold dropdown-toggle bg"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Status"
+            >
+              {{ selectedFilter }}
+            </button>
+
+            <ul class="dropdown-menu">
+              <li>
+                <button class="dropdown-item" (click)="changeFilter('All')">
+                  All
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item" (click)="changeFilter('Active')">
+                  Active
+                </button>
+              </li>
+              <li>
+                <button
+                  class="dropdown-item"
+                  (click)="changeFilter('Inactive')"
+                >
+                  Inactive
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
-                <div class="dropdown">
-          <button
-            class="btn side-btn text-dark fw-semibold dropdown-toggle bg"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            {{ selectedFilter }}
-          </button>
 
-          <ul class="dropdown-menu">
-            <li>
-              <button class="dropdown-item" (click)="changeFilter('All')">
-                All
-              </button>
-            </li>
-            <li>
-              <button class="dropdown-item" (click)="changeFilter('Active')">
-                Active
-              </button>
-            </li>
-            <li>
-              <button class="dropdown-item" (click)="changeFilter('Inactive')">
-                Inactive
-              </button>
-            </li>
-          </ul>
-        </div>
-      </div>
+        <div class="table-wrapper">
+          <div class="table-responsive">
+            <table
+              class="table table-bordered table-hover align-middle text-start"
+            >
+              <thead class="table-success">
+                <tr>
+                  <th>Item Name</th>
+                  <th>Brand</th>
+                  <th>Price (₹)</th>
 
-      <div class="table-wrapper">
-        <div class="table-responsive">
-          <table
-            class="table table-bordered table-hover align-middle text-center"
-          >
-            <thead class="table-success">
-              <tr>
-                <th>Item Name</th>
-                <th>Brand</th>
-                <th>Price (₹)</th>
+                  <th>Available Quantity</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let it of filteredItems()"
+                  [ngClass]="{
+                    'low-stock': it.stock_quantity <= 5,
+                    'medium-stock':
+                      it.stock_quantity > 5 && it.stock_quantity <= 15,
+                    'high-stock': it.stock_quantity > 15,
+                  }"
+                >
+                  <td>{{ it.item_name }}</td>
+                  <td>{{ it.brand_name }}</td>
+                  <td>₹{{ it.selling_price }}</td>
 
-                <th>Available Quantity</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="let it of items"
-                [ngClass]="{
-                  'low-stock': it.stock_quantity <= 5,
-                  'medium-stock':
-                    it.stock_quantity > 5 && it.stock_quantity <= 15,
-                  'high-stock': it.stock_quantity > 15
-                }"
-              >
-                <td>{{ it.item_name }}</td>
-                <td>{{ it.brand_name }}</td>
-                <td>₹{{ it.selling_price }}</td>
-
-                <td>{{ it.stock_quantity }}</td>
-                <td>{{ it.status }}</td>
-                <td>
-                  <div class="d-flex justify-content-center gap-2">
-                    <button
-                      class="btn btn-sm btn-success me-2"
-                      (click)="openViewModal(it)"
-                    >
-                      <b><i class="bi bi-eye"></i></b>
-                    </button>
-                    <button
-                      class="btn btn-sm btn-warning me-2"
-                      (click)="editItem(it)"
-                    >
-                      <i class="bi bi-pencil"></i>
-                    </button>
-                    <button
-                      class="btn btn-sm btn-danger"
-                      (click)="deleteItem(it)"
-                    >
-                      <i class="bi bi-trash"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr *ngIf="filteredItems().length === 0">
-                <td colspan="6" class="text-muted">No items found.</td>
-              </tr>
-            </tbody>
-          </table>
+                  <td>{{ it.stock_quantity }}</td>
+                  <td>{{ it.status }}</td>
+                  <td>
+                    <div class="d-flex justify-content-start gap-2">
+                      <button
+                        class="btn btn-sm btn-success me-2"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="View"
+                        (click)="openViewModal(it)"
+                      >
+                        <b><i class="bi bi-eye"></i></b>
+                      </button>
+                      <button
+                        class="btn btn-sm btn-warning me-2"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Edit"
+                        (click)="editItem(it)"
+                      >
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button
+                        class="btn btn-sm btn-danger"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Delete"
+                        (click)="deleteItem(it)"
+                      >
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="filteredItems().length === 0">
+                  <td colspan="6" class="text-muted">No items found.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
+
     <router-outlet></router-outlet>
 
     <!--View modal-->
@@ -180,7 +196,7 @@
                         [ngClass]="{
                           'bg-success': selectedItems.status === 'Active',
                           'bg-warning': selectedItems.status === 'Pending',
-                          'bg-danger': selectedItems.status === 'Inactive'
+                          'bg-danger': selectedItems.status === 'Inactive',
                         }"
                       >
                         {{ selectedItems.status }}</span
@@ -436,6 +452,9 @@
                   type="button"
                   class="btn btn-success w-50 p-2"
                   (click)="updateItems()"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Update"
                 >
                   Update Item
                 </button>

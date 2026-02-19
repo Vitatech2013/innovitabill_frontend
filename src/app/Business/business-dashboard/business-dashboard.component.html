@@ -1,135 +1,296 @@
+<!-- <nav class="navbar navbar-expand-lg navbar-dark sticky-top bg-success px-3">
+  <a
+    class="navbar-brand text-white fw-bold"
+    routerLink="/home"
+  >
+    InnoVITA Bill
+  </a>
 
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top bg-success px-3">
+  <div class="ms-auto d-flex align-items-center">
+    <div class="me-3 text-white text-end">
+      <div class="fw-bold">{{ loggedInBusiness?.name }}</div>
+      <small class="fw-bold">Role : Business</small>
+    </div>
 
+    <div class="dropdown">
       <a
-        class="navbar-brand text-white fw-bold"
-        style="cursor: pointer"
-        routerLink="/home"
+        class="nav-link text-white dropdown-toggle"
+        data-bs-toggle="dropdown"
       >
-        InnoVITA Bill
+        <i class="bi bi-person-circle fs-3"></i>
       </a>
 
-      <div class="ms-auto d-flex align-items-center">
-        <div class="me-3 text-white text-end">
-          <div class="fw-bold">{{ loggedInBusiness?.name }}</div>
-          <small class="fw-bold">Role : Business</small>
-        </div>
-
-        <div class="dropdown">
-          <a
-            class="nav-link text-white d-flex align-items-center dropdown-toggle"
-            id="profileDropdown"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            style="cursor: pointer"
-          >
-            <i class="bi bi-person-circle" style="font-size: 28px"></i>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+          <a class="dropdown-item" routerLink="businessprofile">
+            <i class="bi bi-person me-2"></i> Profile
           </a>
-
-          <ul
-            class="dropdown-menu dropdown-menu-end"
-            aria-labelledby="profileDropdown"
-          >
-            <li>
-              <a class="dropdown-item" routerLink="businessprofile">
-                <i class="bi bi-person me-2 "></i> Profile
-              </a>
-            </li>
-            <li><hr class="dropdown-divider" /></li>
-            <li>
-              <a
-                class="dropdown-item"
-                style="cursor: pointer"
-                (click)="logout()"
-              >
-                <i class="bi bi-box-arrow-right me-2"></i> Logout
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-   
-    <div class="position-fixed  top-1 end-0 p-1 "
-      style="top: 60px; z-index: 1200"
-    >
-      <div
-        *ngIf="toastMessage"
-        class="toast show align-items-center text-white compact-toast"
-        [ngClass]="{
-          'bg-success': toastType === 'success',
-          'bg-warning': toastType === 'warning',
-          'bg-danger': toastType === 'error'
-        }"
-        role="alert"
-      >
-        <div class="d-flex align-items-center">
-          <div class="toast-body compact-body">
-            {{ toastMessage }}
-          </div>
-          <button
-            type="button"
-            class="btn-close btn-close-white me-2 m-auto"
-            (click)="toastMessage = null"
-          ></button>
-        </div>
-      </div>
+        </li>
+        <li><hr class="dropdown-divider" /></li>
+        <li>
+          <a class="dropdown-item" (click)="logout()">
+            <i class="bi bi-box-arrow-right me-2"></i> Logout
+          </a>
+        </li>
+      </ul>
     </div>
-  
- <div class="container-fluid  dashboard-wrapper">
- 
+  </div>
+</nav>
+
+ Toast -->
+<!-- <div class="position-fixed end-0 p-1" style="top: 60px; z-index: 1200">
+  <div
+    *ngIf="toastMessage"
+    class="toast show text-white compact-toast"
+    [ngClass]="{
+      'bg-success': toastType === 'success',
+      'bg-warning': toastType === 'warning',
+      'bg-danger': toastType === 'error'
+    }"
+  >
+    <div class="d-flex align-items-center">
+      <div class="toast-body compact-body">
+        {{ toastMessage }}
+      </div>
+      <button
+        class="btn-close btn-close-white me-2"
+        (click)="toastMessage = null"
+      ></button>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid dashboard-wrapper">
   <div class="row">
-    <div class="col-md-2 p-4 ">
-      <div class="d-flex flex-column gap-3 ">
+    
+    <div class="col-md-2 p-4">
+      <div class="d-flex flex-column gap-3">
         <button
-          class="btn side-btn text-dark"
+          class="btn side-btn"
           routerLink="/business-Dashboard/users"
           routerLinkActive="active-btn"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-          <b> <i class="bi bi-people-fill me-1"></i></b> Users
+          <i class="bi bi-people-fill me-1"></i> Users
         </button>
 
         <button
-          class="btn side-btn text-dark"
+          class="btn side-btn"
           routerLink="/business-Dashboard/roles"
           routerLinkActive="active-btn"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-          <b> <i class="bi bi-person-fill-gear me-1"></i></b> Roles
+          <i class="bi bi-person-fill-gear me-1"></i> Roles
         </button>
 
         <button
-          class="btn side-btn text-dark"
+          class="btn side-btn"
           routerLink="/business-Dashboard/categories"
           routerLinkActive="active-btn"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-          <b> <i class="bi bi-grid-fill me-1"></i></b> categories
+          <i class="bi bi-grid-fill me-1"></i> Categories
         </button>
 
         <button
-          class="btn side-btn text-dark"
+          class="btn side-btn"
           routerLink="/business-Dashboard/sub-categories"
           routerLinkActive="active-btn"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-          <b> <i class="bi bi-diagram-2-fill me-1"></i> </b> Sub Categories
+          <i class="bi bi-diagram-2-fill me-1"></i> Sub Categories
         </button>
 
         <button
-          class="btn side-btn text-dark"
+          class="btn side-btn"
           routerLink="/business-Dashboard/units"
           routerLinkActive="active-btn"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-          <b> <i class="bi bi-bounding-box me-1"></i></b>Units
+          <i class="bi bi-bounding-box me-1"></i> Units
         </button>
       </div>
     </div>
 
+    
     <div class="col-md-10 p-4 content-area">
       <router-outlet></router-outlet>
     </div>
   </div>
+</div> --> 
+
+<!-- <footer class="footer bg-success text-white text-center py-2">
+  <small>© {{ currentYear }} InnoVITA Bill. All Rights Reserved.</small>
+</footer> -->
+
+
+<!-- <nav class="navbar navbar-dark bg-success sticky-top px-3">
+  <button
+    class="navbar-toggler d-md-none"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#sidebar"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <a class="navbar-brand fw-bold ms-2" routerLink="/home">
+    InnoVITA Bill
+  </a>
+
+  <div class="ms-auto d-flex align-items-center">
+    <div class="me-3 text-white text-end d-none d-md-block">
+      <div class="fw-bold">{{ loggedInBusiness?.name }}</div>
+      <small class="fw-bold">Role : Business</small>
+    </div>
+
+    <div class="dropdown">
+      <a class="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown">
+        <i class="bi bi-person-circle fs-3"></i>
+      </a>
+
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+          <a class="dropdown-item" routerLink="businessprofile">
+            <i class="bi bi-person me-2"></i> Profile
+          </a>
+        </li>
+        <li><hr class="dropdown-divider" /></li>
+        <li>
+          <a class="dropdown-item" (click)="logout()">
+            <i class="bi bi-box-arrow-right me-2"></i> Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+
+  
+    <div
+      id="sidebar"
+      class="offcanvas offcanvas-start sidebar d-md-block"
+      tabindex="-1"
+      data-bs-dismiss="offcanvas"
+    >
+      <div class="offcanvas-header d-md-none">
+        <h5 class="offcanvas-title">Menu</h5>
+        <button class="btn-close" data-bs-dismiss="offcanvas"></button>
+      </div>
+
+      <div class="offcanvas-body p-3 d-flex flex-column gap-2">
+        <button class="btn side-btn" routerLink="/business-Dashboard/users"  routerLinkActive="active-btn">
+          <i class="bi bi-people-fill me-1"></i> Users
+        </button>
+
+        <button class="btn side-btn" routerLink="/business-Dashboard/roles" routerLinkActive="active-btn">
+          <i class="bi bi-person-fill-gear me-1"></i> Roles
+        </button>
+
+        <button class="btn side-btn" routerLink="/business-Dashboard/categories" routerLinkActive="active-btn">
+          <i class="bi bi-grid-fill me-1"></i> Categories
+        </button>
+
+        <button class="btn side-btn" routerLink="/business-Dashboard/sub-categories" routerLinkActive="active-btn">
+          <i class="bi bi-diagram-2-fill me-1"></i> Sub Categories
+        </button>
+
+        <button class="btn side-btn" routerLink="/business-Dashboard/units" routerLinkActive="active-btn">
+          <i class="bi bi-bounding-box me-1"></i> Units
+        </button>
+      </div>
+    </div>
+
+   
+    <div class="col-12 col-md-10 offset-md-2 p-4 content-area">
+      <router-outlet></router-outlet>
+    </div>
+
+  </div>
+</div> -->
+
+<nav class="navbar navbar-dark bg-success sticky-top px-3">
+  <button
+    class="navbar-toggler d-md-none"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#sidebar"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <a class="navbar-brand fw-bold ms-2" routerLink="/home" data-toggle="tooltip" data-placement="top" title="Home">
+    InnoVITA Bill
+  </a>
+
+  <div class="ms-auto d-flex align-items-center">
+    <div class="me-3 text-white text-end d-none d-md-block">
+      <div class="fw-bold">{{ loggedInBusiness?.name }}</div>
+      <small class="fw-bold">Role : Business</small>
+    </div>
+
+    <div class="dropdown">
+      <a class="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown"data-toggle="tooltip" data-placement="top" title="Profile">
+        <i class="bi bi-person-circle fs-3"></i>
+      </a>
+
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+          <a class="dropdown-item" routerLink="businessprofile">
+            <i class="bi bi-person me-2" ></i> Profile
+          </a>
+        </li>
+        <li><hr class="dropdown-divider" /></li>
+        <li>
+          <a class="dropdown-item" (click)="logout()">
+            <i class="bi bi-box-arrow-right me-2 "></i> Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- SIDEBAR (outside grid) -->
+<div
+  id="sidebar"
+  class="offcanvas offcanvas-start sidebar"
+  tabindex="-1"
+ 
+>
+  <div class="offcanvas-header d-md-none">
+    <h5 class="offcanvas-title">Menu</h5>
+    <button class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+
+  <div class="offcanvas-body p-3 d-flex flex-column gap-2">
+    <button class="btn side-btn" routerLink="/business-Dashboard/users" routerLinkActive="active-btn" data-toggle="tooltip" data-placement="top" title="Users">
+      <i class="bi bi-people-fill me-1"></i> Users
+    </button>
+
+    <button class="btn side-btn" routerLink="/business-Dashboard/roles" routerLinkActive="active-btn" data-toggle="tooltip" data-placement="top" title="Roles">
+      <i class="bi bi-person-fill-gear me-1"></i> Roles
+    </button>
+
+    <button class="btn side-btn" routerLink="/business-Dashboard/categories" routerLinkActive="active-btn" data-toggle="tooltip" data-placement="top" title="Categories">
+      <i class="bi bi-grid-fill me-1"></i> Categories
+    </button>
+
+    <button class="btn side-btn" routerLink="/business-Dashboard/sub-categories" routerLinkActive="active-btn" data-toggle="tooltip" data-placement="top" title="Sub-Categories">
+      <i class="bi bi-diagram-2-fill me-1"></i> Sub Categories
+    </button>
+
+    <button class="btn side-btn" routerLink="/business-Dashboard/units" routerLinkActive="active-btn"data-toggle="tooltip" data-placement="top" title="Units">
+      <i class="bi bi-bounding-box me-1"></i> Units
+    </button>
+  </div>
 </div>
+
+
+<div class="content-wrapper p-4">
+  <router-outlet></router-outlet>
+</div>
+

@@ -41,7 +41,7 @@ export class ItemListComponent implements OnInit {
   users: any;
   categories: any[] = [];
   units: any;
-  selectedFilter: string = 'All';
+  selectedFilter: string = 'Status';
   filterMode: 'active' | 'inactive' | 'all' = 'all';
 
   imagefile: any;
@@ -252,37 +252,38 @@ export class ItemListComponent implements OnInit {
     return this.router.url.includes('/itemlist/items');
   }
 
-  filteredItems() {
-    let data = [...this.items];
-    data.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
-     if (this.filterMode === 'active') {
+filteredItems() {
+  let data = [...this.items];
+
+  data.sort(
+    (a, b) =>
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+
+  if (this.filterMode === 'active') {
     data = data.filter(it => it.status?.toLowerCase() === 'active');
   }
 
   if (this.filterMode === 'inactive') {
     data = data.filter(it => it.status?.toLowerCase() === 'inactive');
   }
-    if (!this.searchTerm) {
-      return data;
-    }
-    const term = this.searchTerm.toLowerCase().trim();
-    // const statuses = ['active', 'inactive', 'pending'];
-    // if (statuses.includes(term)) {
-    //   return data.filter((it) => it.status?.toLowerCase() === term);
-    // }
-    return data.filter(
-      (it) =>
-        it.item_name?.toLowerCase().includes(term) ||
-        it.item_code?.toLowerCase().includes(term) ||
-        it.brand_name?.toLowerCase().includes(term) ||
-        it.status?.toLowerCase().includes(term) ||-it.selling_price?.toString().includes(term) ||
+
+  if (!this.searchTerm) {
+    return data;
+  }
+
+  const term = this.searchTerm.toLowerCase().trim();
+
+  return data.filter((it) =>
+    it.item_name?.toLowerCase().includes(term) ||
+    it.item_code?.toLowerCase().includes(term) ||
+    it.brand_name?.toLowerCase().includes(term) ||
+    it.status?.toLowerCase().includes(term) ||
+    it.selling_price?.toString().includes(term) ||
     it.purchase_price?.toString().includes(term) ||
     it.stock_quantity?.toString().includes(term)
-    );
-  }
+  );
+}
 
 
   

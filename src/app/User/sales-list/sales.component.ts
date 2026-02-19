@@ -34,6 +34,10 @@ export class SalesComponent implements OnInit {
   sid: any;
   toastMessage: string | null = null;
   toastType: string | undefined;
+  
+  statusFilter: string = '';
+selectedFilter: string = 'All';
+
 
   constructor(
     private router: Router,
@@ -66,6 +70,7 @@ export class SalesComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
   // filteredSales() {
   //   if (!this.searchTerm) return this.saledata;
 
@@ -146,10 +151,77 @@ export class SalesComponent implements OnInit {
 
 filteredSales() {
   return this.saledata.filter(s => !this.searchTerm || (JSON.stringify(s) + this.calculateGrandTotal(s)).toLowerCase().includes(this.searchTerm.toLowerCase()));
+=======
+filteredSales() {
+  let data = [...this.saledata];
+
+  // ✅ Exact Status Filter
+  if (this.statusFilter) {
+    data = data.filter(sale =>
+      (sale.payment_status || 'pending')
+        .toLowerCase()
+        .trim() === this.statusFilter
+    );
+  }
+
+  // ✅ Search Filter
+  if (!this.searchTerm) return data;
+
+  const term = this.searchTerm.toLowerCase().trim();
+
+  return data.filter(sale =>
+    Object.values(sale).some(val => {
+      if (!val) return false;
+
+      if (typeof val === 'object') {
+        if ('name' in val && typeof (val as any).name === 'string') {
+          return (val as any).name.toLowerCase().includes(term);
+        }
+
+        if (Array.isArray(val)) {
+          return val.some((p: any) =>
+            (p.item_id?.item_name || '')
+              .toLowerCase()
+              .includes(term)
+          );
+        }
+
+        return false;
+      }
+
+      return val.toString().toLowerCase().includes(term);
+    })
+  );
+>>>>>>> 9d89c26da9b37bad58486845f82b83eb3a00fd0b
 }
 
 
 
+<<<<<<< HEAD
+=======
+changeFilter(value: string) {
+  this.selectedFilter = value;
+
+  if (value === 'All') {
+    this.statusFilter = '';
+  } else {
+    this.statusFilter = value.toLowerCase();
+  }
+}
+
+
+
+  showActive() {
+    this.statusFilter = 'paid';
+  }
+
+  showInactive() {
+    this.statusFilter = 'partial paid';
+  }
+  showall() {
+    this.statusFilter = 'unpaid';
+  }
+>>>>>>> 9d89c26da9b37bad58486845f82b83eb3a00fd0b
 
   view(sale: any) {
     const firstProduct = sale.product_ids?.[0] || {};

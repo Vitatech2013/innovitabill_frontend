@@ -53,6 +53,7 @@
             type="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
+            data-toggle="tooltip" data-placement="top" title="Status"
           >
             {{ selectedFilter }}
           </button>
@@ -79,7 +80,7 @@
 
       <div class="row table-responsive table-scroll-container">
         <table class="table table-bordered table-hover shadow-sm">
-          <thead class="table-success text-center">
+          <thead class="table-success text-start">
             <tr>
               <th class="color">S.no</th>
               <th class="color">Business Type</th>
@@ -88,7 +89,7 @@
               <th class="color">Actions</th>
             </tr>
           </thead>
-          <tbody class="text-center">
+          <tbody class="text-start">
             <tr *ngFor="let b of filteredBusiness(); let i = index">
               <td>{{ i + 1 }}</td>
               <td>{{ b.business_type }}</td>
@@ -100,12 +101,14 @@
                   (click)="edit(b)"
                   data-bs-toggle="modal"
                   data-bs-target="#roleModal"
+                  data-toggle="tooltip" data-placement="top" title="Edit"
                 >
                   <i class="bi bi-pencil-square"></i>
                 </button>
                 <button
                   class="btn btn-sm btn-outline-danger"
                   (click)="DeleteModal(b)"
+                  data-toggle="tooltip" data-placement="top" title="Delete"
                 >
                   <i class="bi bi-trash"></i>
                 </button>
@@ -134,6 +137,7 @@
                 class="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
+                data-toggle="tooltip" data-placement="top" title="Close"
                 (click)="closeModal()"
               ></button>
             </div>
@@ -236,12 +240,14 @@
               type="button"
               class="btn btn-secondary"
               data-bs-dismiss="modal"
+              data-toggle="tooltip" data-placement="top" title="Cancel"
             >
               Cancel
             </button>
             <button
               type="button"
               class="btn btn-danger"
+              data-toggle="tooltip" data-placement="top" title="Delete"
               (click)="confirmDelete()"
             >
               Delete

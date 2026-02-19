@@ -8,7 +8,7 @@
   <div class="row w-100">
     <div class="col-md-6 d-flex justify-content-center">
       <div class="card login-card p-4 border-0" style="width: 345px">
-        <div class="d-flex justify-content-start">
+        <!-- <div class="d-flex justify-content-start">
           <img
             [src]="quotationForm.get('business.logo_image')?.value"
             alt="Business Logo"
@@ -28,7 +28,7 @@
           >
             {{ quotationForm.get("business.business_name")?.value }}
           </p>
-        </div>
+        </div> -->
         <h2 class="text-center fw-bold text-success mb-4">User Login</h2>
 
         <form [formGroup]="userForm">
@@ -70,6 +70,7 @@
               <button
                 class="btn btn-secondary"
                 type="button"
+                data-toggle="tooltip" data-placement="top" title="View"
                 (click)="togglePassword()"
               >
                 <i
@@ -117,6 +118,7 @@
             <a
               routerLink="/userforgotpassword"
               class="fw-bold text-primary text-decoration-none"
+              data-toggle="tooltip" data-placement="top" title="Forgot password"
             >
               Forgot password?
             </a>
@@ -126,12 +128,13 @@
             <button
               type="button"
               class="btn btn-success w-75 g-2"
+              data-toggle="tooltip" data-placement="top" title="Login"
               (click)="UserLogin()"
             >
               Login
             </button>
 
-            <button type="button" class="btn btn-success w-25" routerLink="/">
+            <button type="button" class="btn btn-success w-25" routerLink="/" data-toggle="tooltip" data-placement="top" title="Go Back">
               <i class="bi bi-box-arrow-in-left"></i>
             </button>
           </div>

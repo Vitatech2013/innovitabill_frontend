@@ -119,18 +119,8 @@
   }
 }
 
-.search-box input {
-  padding-left: 35px;
-}
 
-.search-icon {
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-  font-size: 18px;
-  color: #6c757d;
-}
+
 .table-responsive {
   width: 100%;
   overflow-x: auto;
