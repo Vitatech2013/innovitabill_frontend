@@ -34,6 +34,10 @@ export class SalesComponent implements OnInit {
   sid: any;
   toastMessage: string | null = null;
   toastType: string | undefined;
+  
+  statusFilter: string = '';
+selectedFilter: string = 'All';
+
 
   constructor(
     private router: Router,
@@ -66,82 +70,72 @@ export class SalesComponent implements OnInit {
     });
   }
 
-  // filteredSales() {
-  //   if (!this.searchTerm) return this.saledata;
-
-  //   const term = this.searchTerm.toLowerCase().trim();
-  //   const paymentStatuses = ['paid', 'partial paid', 'unpaid', 'pending'];
-
-  //   if (paymentStatuses.includes(term)) {
-  //     return this.saledata.filter(
-  //       (sale) => (sale.payment_status || 'pending').toLowerCase() === term
-  //     );
-  //   }
-
-  //   return this.saledata.filter((sale) => {
-  //     return Object.values(sale).some((val) => {
-  //       if (val === null || val === undefined) return false;
-
-  //       if (typeof val === 'object') {
-  //         if (val !== null) {
-  //           if ('name' in val && typeof (val as any).name === 'string') {
-  //             return (val as any).name.toLowerCase().includes(term);
-  //           }
-  //            if (sale.invoice_number?.toString().includes(term)) return true;
-
-  //   // 🔹 Customer name
-  //   if (sale.customer_id?.name?.toLowerCase().includes(term)) return true;
-
-  //   // 🔹 Payment status
-  //   if ((sale.payment_status || 'pending').toLowerCase().includes(term)) return true;
-
-  //   // 🔹 Grand total (number)
-  //   if (sale.grand_total?.toString().includes(term)) return true;
-
-  //           if (Array.isArray(val)) {
-  //             return val.some((p: any) => {
-  //       return (
-  //         p.item_id?.item_name?.toLowerCase().includes(term) ||
-  //         p.quantity?.toString().includes(term) ||
-  //         p.selling_price?.toString().includes(term) ||
-  //         p.tax_rate?.toString().includes(term) ||
-  //         p.discount?.toString().includes(term)
-  //       );
-  //           });
-  //           }
-  //         }
-  //         return false;
-  //       }
-
-  //       return val.toString().toLowerCase().includes(term);
-  //     });
-  //   });
-  // }
 filteredSales() {
-  if (!this.searchTerm) {
-    return this.saledata;
+  let data = [...this.saledata];
+
+  // ✅ Exact Status Filter
+  if (this.statusFilter) {
+    data = data.filter(sale =>
+      (sale.payment_status || 'pending')
+        .toLowerCase()
+        .trim() === this.statusFilter
+    );
   }
 
-  const term = this.searchTerm.toString();
+  // ✅ Search Filter
+  if (!this.searchTerm) return data;
 
-  return this.saledata.filter((sale) => {
-    const flatString = JSON.stringify({
-      invoice: sale.invoice_number,
-      customer: sale.customer_id?.name,
-      status: sale.payment_status,
-      total: sale.grand_total,
-      products: sale.product_ids?.map((p: any) => ({
-        name: p.item_id?.item_name,
-        qty: p.quantity,
-        price: p.selling_price,
-        tax: p.tax_rate,
-        discount: p.discount
-      }))
-    }).toLowerCase();
+  const term = this.searchTerm.toLowerCase().trim();
 
-    return flatString.includes(term.toLowerCase());
-  });
+  return data.filter(sale =>
+    Object.values(sale).some(val => {
+      if (!val) return false;
+
+      if (typeof val === 'object') {
+        if ('name' in val && typeof (val as any).name === 'string') {
+          return (val as any).name.toLowerCase().includes(term);
+        }
+
+        if (Array.isArray(val)) {
+          return val.some((p: any) =>
+            (p.item_id?.item_name || '')
+              .toLowerCase()
+              .includes(term)
+          );
+        }
+
+        return false;
+      }
+
+      return val.toString().toLowerCase().includes(term);
+    })
+  );
 }
+
+
+
+changeFilter(value: string) {
+  this.selectedFilter = value;
+
+  if (value === 'All') {
+    this.statusFilter = '';
+  } else {
+    this.statusFilter = value.toLowerCase();
+  }
+}
+
+
+
+  showActive() {
+    this.statusFilter = 'paid';
+  }
+
+  showInactive() {
+    this.statusFilter = 'partial paid';
+  }
+  showall() {
+    this.statusFilter = 'unpaid';
+  }
 
   view(sale: any) {
     const firstProduct = sale.product_ids?.[0] || {};

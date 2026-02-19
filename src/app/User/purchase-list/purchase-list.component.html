@@ -20,7 +20,7 @@
       <div class="table-wrapper">
         <div class="table-responsive">
           <table
-            class="table table-bordered table-hover align-middle text-center"
+            class="table table-bordered table-hover align-middle text-start"
           >
             <thead class="table-success">
               <tr>
@@ -42,16 +42,18 @@
                 <td>{{ purchase.item_id?.stock_quantity }}</td>
                 <td>{{ purchase.item_id?.status }}</td>
                 <td>
-                  <div class="d-flex justify-content-center gap-2">
+                  <div class="d-flex justify-content-start gap-2">
                     <button
                       class="btn btn-sm btn-success me-2"
                       (click)="openViewModal(purchase)"
+                       data-toggle="tooltip" data-placement="top" title="View"
                     >
                       <b><i class="bi bi-eye"></i></b>
                     </button>
                     <button
                       class="btn btn-sm btn-warning me-2"
                       (click)="editItem(purchase)"
+                       data-toggle="tooltip" data-placement="top" title="Edit"
                     >
                       <i class="bi bi-pencil"></i>
                     </button>
@@ -155,6 +157,7 @@
               type="button"
               class="btn btn-secondary btn-sm"
               data-bs-dismiss="modal"
+               data-toggle="tooltip" data-placement="top" title="Close"
             >
               Close
             </button>
@@ -454,6 +457,7 @@
                   type="submit"
                   class="btn btn-success w-50 p-2"
                   (click)="updatePurchase()"
+                   data-toggle="tooltip" data-placement="top" title="Update"
                 >
                   Update Item
                 </button>

@@ -45,11 +45,13 @@
             type="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
+            data-toggle="tooltip" data-placement="top" title="Status"
           >
             {{ selectedFilter }}
           </button>
 
           <ul class="dropdown-menu">
+            
             <li>
               <button class="dropdown-item" (click)="changeFilter('All')">
                 All
@@ -88,7 +90,7 @@
         <div class="table-wrapper">
           <div class="table-responsive bg-white p-3 rounded-4 p3">
             <table class="table table-hover table-bordered align-middle">
-              <thead class="table-success text-center custom-thead">
+              <thead class="table-success text-start custom-thead">
                 <tr>
                   <th class="width light-green">S. No</th>
                   <th class="width light-green">Business Name</th>
@@ -102,7 +104,7 @@
                 </tr>
               </thead>
 
-              <tbody class="text-center">
+              <tbody class="text-start">
                 <tr *ngFor="let b of filteredBusiness(); let i = index">
                   <td>{{ i + 1 }}</td>
                   <td>{{ b.business_name }}</td>
@@ -164,6 +166,7 @@
                     <button
                       class="btn btn-sm btn-outline-info me-1"
                       (click)="openViewModal(b)"
+                      data-toggle="tooltip" data-placement="top" title="View"
                     >
                       <i class="bi bi-eye"></i>
                     </button>
@@ -171,6 +174,7 @@
                     <button
                       class="btn btn-sm btn-outline-primary me-1"
                       (click)="editBusiness(b)"
+                      data-toggle="tooltip" data-placement="top" title="Edit"
                     >
                       <i class="bi bi-pencil-square"></i>
                     </button>
@@ -178,6 +182,7 @@
                     <button
                       class="btn btn-sm btn-outline-danger"
                       (click)="openDeleteModal(b._id)"
+                      data-toggle="tooltip" data-placement="top" title="Delete"
                     >
                       <i class="bi bi-trash"></i>
                     </button>
@@ -309,6 +314,7 @@
               type="button"
               class="btn btn-secondary btn-sm"
               data-bs-dismiss="modal"
+              data-toggle="tooltip" data-placement="top" title="Close"
             >
               Close
             </button>
@@ -565,6 +571,7 @@
               type="button"
               class="btn btn-secondary px-4"
               data-bs-dismiss="modal"
+              data-toggle="tooltip" data-placement="top" title="Cancel"
             >
               Cancel
             </button>
@@ -573,6 +580,7 @@
               type="button"
               class="btn btn-success px-4"
               (click)="updateBusiness()"
+              data-toggle="tooltip" data-placement="top" title="Save"
             >
               Save Changes
             </button>
@@ -598,6 +606,7 @@
               type="button"
               class="btn-close"
               data-bs-dismiss="modal"
+              data-toggle="tooltip" data-placement="top" title="Delete"
             ></button>
           </div>
           <div class="modal-body">
@@ -608,6 +617,7 @@
               type="button"
               class="btn btn-secondary"
               data-bs-dismiss="modal"
+              data-toggle="tooltip" data-placement="top" title="Cancel"
             >
               Cancel
             </button>

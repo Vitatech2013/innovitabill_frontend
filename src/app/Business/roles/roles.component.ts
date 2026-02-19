@@ -28,6 +28,7 @@ export class RolesComponent implements OnInit {
   toastType: any;
   selectedRole: any;
   searchTerm: string = '';
+  selectedFilter: string = 'status';
   statusFilter: 'active' | 'inactive' | 'all' = 'all';
 
   constructor(private api: BusinessService, private fb: FormBuilder) {}
@@ -148,6 +149,32 @@ export class RolesComponent implements OnInit {
     return this.filteredUser().filter(
       (u: any) => u?.status === this.statusFilter
     );
+  }
+
+      changeFilter(value: string) {
+    this.selectedFilter = value;
+
+    switch (value) {
+      case 'All':
+        this.showall();
+        break;
+      case 'Active':
+        this.showActive();
+        break;
+      case 'Inactive':
+        this.showInactive();
+        break;
+    }
+  }
+  showActive() {
+    this.statusFilter = 'active';
+  }
+
+  showInactive() {
+    this.statusFilter = 'inactive';
+  }
+  showall() {
+    this.statusFilter = 'all';
   }
 
   resetForm(): void {

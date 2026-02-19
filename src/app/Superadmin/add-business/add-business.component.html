@@ -516,11 +516,12 @@
         type="button"
         class="btn btn-secondary px-4"
         (click)="cancelAdd()"
+        data-toggle="tooltip" data-placement="top" title="Cancel"
       >
         <i class="bi bi-x-circle me-1"></i> Cancel
       </button>
 
-      <button type="submit" class="btn btn-success px-4">
+      <button type="submit" class="btn btn-success px-4" data-toggle="tooltip" data-placement="top" title="Save">
         <i class="bi bi-save me-1"></i>
         {{ selectedBusiness ? "Update" : "Save" }}
       </button>

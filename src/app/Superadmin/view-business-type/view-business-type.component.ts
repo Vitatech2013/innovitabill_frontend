@@ -37,7 +37,7 @@ export class ViewBusinessTypeComponent implements OnInit {
   selectedB_type: any;
   searchTerm: string = '';
   inactiveCount: number = 0;
-  selectedFilter: string = 'All';
+  selectedFilter: string = 'Status';
   filterMode: 'active' | 'inactive' | 'all' = 'all';
 
   constructor(private fb: FormBuilder, private api: BillingService) {}

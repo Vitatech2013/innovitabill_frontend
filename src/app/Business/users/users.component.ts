@@ -25,12 +25,15 @@ export class UsersComponent implements OnInit {
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
   searchTerm: string = '';
+  selectedFilter: string = 'status';
   statusFilter: 'active' | 'inactive' | 'all' = 'all';
   users: any[] = [];
   showPassword = false;
   business_id: string | null = null;
   userForm!: FormGroup;
   roles: any;
+
+
  
   imageFile: File | null = null;
   idProofFile: File | null = null;
@@ -115,6 +118,7 @@ openAddModal() {
     this.userForm.reset();
     this.selectedUserId = null;
   }
+
   filteredUser(): any[] {
     if (!Array.isArray(this.users)) return [];
 
@@ -136,6 +140,34 @@ openAddModal() {
       (u: any) => u?.status === this.statusFilter
     );
   }
+    changeFilter(value: string) {
+    this.selectedFilter = value;
+
+    switch (value) {
+      case 'All':
+        this.showall();
+        break;
+      case 'Active':
+        this.showActive();
+        break;
+      case 'Inactive':
+        this.showInactive();
+        break;
+    }
+  }
+  showActive() {
+    this.statusFilter = 'active';
+  }
+
+  showInactive() {
+    this.statusFilter = 'inactive';
+  }
+  showall() {
+    this.statusFilter = 'all';
+  }
+  togglePassword() {
+  this.showPassword = !this.showPassword;
+}
 
 editUser(u: any) {
   this.selectedUser = u; // 🔥 needed for preview
