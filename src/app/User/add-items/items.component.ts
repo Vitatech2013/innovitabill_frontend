@@ -37,7 +37,7 @@ export class ItemsComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private service: BillingService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -127,8 +127,6 @@ export class ItemsComponent implements OnInit {
     this.unitsGet();
   }
 
-  
-
   categoriesGet() {
     this.service.getCategories(this.business_id).subscribe({
       next: (res: any) => {
@@ -172,8 +170,15 @@ export class ItemsComponent implements OnInit {
 
   saveItems() {
     if (this.addItemsForm.invalid) {
+<<<<<<< HEAD
        this.addItemsForm.markAllAsTouched();
       this.toastr.warning('Please fill all required fields correctly.', 'Warning');
+=======
+      this.toastr.warning(
+        'Please fill all required fields correctly.',
+        'Warning',
+      );
+>>>>>>> cfd8ae498b4156259278a438e3cac57034ff90b8
       return;
     }
 
@@ -203,13 +208,15 @@ export class ItemsComponent implements OnInit {
 
     this.service.addItems(formData).subscribe({
       next: (res) => {
-        this.toastr.success('Item added successfully!','Success');
+        this.toastr.success('Item added successfully!', 'Success');
         this.addItemsForm.reset();
         this.selectedImageFile = null;
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       },
       error: (err) => {
-       this.toastr.error("Failed to add Items",'Error')
+        this.toastr.error('Failed to add Items', 'Error');
       },
     });
   }
@@ -240,7 +247,7 @@ export class ItemsComponent implements OnInit {
 
     value = value.replace(
       /[^A-Za-z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/? ]+/g,
-      ''
+      '',
     );
 
     input.value = value;

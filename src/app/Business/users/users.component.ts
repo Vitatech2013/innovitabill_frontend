@@ -8,7 +8,6 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { Router } from '@angular/router';
 import { BusinessService } from '../../Services/business.service';
 
 declare var bootstrap: any;
@@ -28,12 +27,11 @@ export class UsersComponent implements OnInit {
   searchTerm: string = '';
   statusFilter: 'active' | 'inactive' | 'all' = 'all';
   users: any[] = [];
-
-  
+  showPassword = false;
   business_id: string | null = null;
   userForm!: FormGroup;
   roles: any;
-  title = 'Add User';
+ 
   imageFile: File | null = null;
   idProofFile: File | null = null;
   selectedUser: any = null;
@@ -53,47 +51,21 @@ export class UsersComponent implements OnInit {
       console.log('businessID:', this.business_id);
     }
     this.userForm = this.fb.group({
-      user_name: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/),
-        ],
-      ],
-      user_email: ['', [Validators.required, Validators.email]],
-      phone_number: [
-        '',
-        [Validators.required, Validators.pattern(/^[0-9]{10}$/)],
-      ],
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(8),
-          Validators.pattern(/^[A-Za-z0-9]{4,8}$/),
-        ],
-      ],
-      role_id: ['', Validators.required],
-      status: ['active'],
+      user_name: ['', [Validators.required, Validators.minLength(3)]],
+    user_email: ['', [Validators.required, Validators.email]],
+    phone_number: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+    password: ['', Validators.required],
+    role_id: ['', Validators.required],
+    status: ['active'],
+    house_No: ['', Validators.required],
+    town_Name: ['', Validators.required],
+    mandal_Name: ['', Validators.required],
+    district_Name: ['', Validators.required],
+    state: ['', Validators.required],
+    pincode: ['', [Validators.required, Validators.pattern(/^[0-9]{6}$/)]],
+    image: [null, Validators.required],
+    id_proof: [null, Validators.required],
 
-      house_No: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(
-            /^(?!\s)(?!.*\(\s)(?!.*\s\))[a-zA-Z0-9!@#$%^&*(),.?":{}|<>_\-\/\\ ]+$/
-          ),
-        ],
-      ],
-      town_Name: ['', Validators.required],
-      mandal_Name: ['', Validators.required],
-      district_Name: ['', Validators.required],
-      state: ['', Validators.required],
-      pincode: ['', [Validators.required, Validators.pattern(/^[0-9]{6}$/)]],
-      image: [null, Validators.required],
-      id_proof: [null, Validators.required],
     });
 
     this.loadUsers();
@@ -108,27 +80,35 @@ export class UsersComponent implements OnInit {
   loadUsers() {
     this.service.getUser().subscribe({
       next: (res: any) => {
-        console.log('Users data:', res.data);
+        this.users = (res.data || res).sort(
+          (a: any, b: any) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        console.log('Categories Loaded (Latest First):', this.users);
         this.users = res.data || [];
       },
       error: (err) => console.error('Error loading users:', err),
     });
   }
 
-  openAddModal() {
-    this.title = 'Add User';
-    this.selectedUser = null;
-    this.selectedUserId = null;
-    this.userForm.reset();
-    this.imageFile = null;
-    this.idProofFile = null;
+openAddModal() {
+  this.selectedUserId = null;
+  this.userForm.reset({ status: 'active' });
 
-    const modalEl = document.getElementById('AddModal');
-    if (!modalEl) return;
+  // 🔥 ADD MODE VALIDATORS BACK
+  this.userForm.get('password')?.setValidators(Validators.required);
+  this.userForm.get('image')?.setValidators(Validators.required);
+  this.userForm.get('id_proof')?.setValidators(Validators.required);
 
-    const modal = new bootstrap.Modal(modalEl);
-    modal.show();
-  }
+  ['password', 'image', 'id_proof'].forEach(field =>
+    this.userForm.get(field)?.updateValueAndValidity()
+  );
+
+  new bootstrap.Modal(
+    document.getElementById('AddModal')
+  ).show();
+}
+
 
   closeModal() {
     (document.getElementById('AddModal') as any)?.classList.remove('show');
@@ -157,38 +137,38 @@ export class UsersComponent implements OnInit {
     );
   }
 
-  editUser(u: any) {
-    this.selectedUserId = u._id;
-    this.selectedUser = u;
+editUser(u: any) {
+  this.selectedUser = u; // 🔥 needed for preview
+  this.selectedUserId = u._id;
 
-    this.userForm.patchValue({
-      user_name: u.user_name,
-      user_email: u.user_email,
-      phone_number: u.phone_number,
-      role_id: u.role_id?._id || '',
-      status: u.status,
-      house_No: u.address?.house_No,
-      town_Name: u.address?.town_Name,
-      mandal_Name: u.address?.mandal_Name,
-      district_Name: u.address?.district_Name,
-      state: u.address?.state,
-      pincode: u.address?.pincode,
-    });
+  this.userForm.patchValue({
+    user_name: u.user_name,
+    user_email: u.user_email,
+    phone_number: u.phone_number,
+    role_id: u.role_id?._id,
+    status: u.status,
+    house_No: u.address?.house_No,
+    town_Name: u.address?.town_Name,
+    mandal_Name: u.address?.mandal_Name,
+    district_Name: u.address?.district_Name,
+    state: u.address?.state,
+    pincode: u.address?.pincode,
+  });
 
-    this.userForm.get('password')?.clearValidators();
-    this.userForm.get('password')?.updateValueAndValidity();
-    this.userForm.get('image')?.clearValidators();
-    this.userForm.get('image')?.updateValueAndValidity();
+  // Remove validators
+  ['password', 'image', 'id_proof'].forEach(f => {
+    this.userForm.get(f)?.clearValidators();
+    this.userForm.get(f)?.updateValueAndValidity();
+  });
 
-    this.userForm.get('id_proof')?.clearValidators();
-    this.userForm.get('id_proof')?.updateValueAndValidity();
+  this.imageFile = null;
+  this.idProofFile = null;
 
-    this.imageFile = null;
-    this.idProofFile = null;
+  new bootstrap.Modal(
+    document.getElementById('editModal')
+  ).show();
+}
 
-    const modal = new bootstrap.Modal(document.getElementById('editModal'));
-    modal.show();
-  }
 
   createUser(): void {
     if (this.userForm.invalid) {
@@ -201,10 +181,7 @@ export class UsersComponent implements OnInit {
       this.showToast('Image and ID Proof are required', 'warning');
       return;
     }
-    if (!this.imageFile || !this.idProofFile) {
-      alert('Image and ID Proof are required');
-      return;
-    }
+   
 
     const formData = new FormData();
     formData.append('user_name', this.userForm.value.user_name);
@@ -235,7 +212,7 @@ export class UsersComponent implements OnInit {
 
     this.service.addUser(formData).subscribe({
       next: (res: any) => {
-        console.log('User created successfully', res);
+        console.log('Usercreated successfully', res);
         this.showToast('User created successfully', 'success');
 
         this.userForm.reset();
@@ -268,65 +245,42 @@ export class UsersComponent implements OnInit {
     this.userForm.patchValue({ id_proof: this.idProofFile });
   }
 
-  saveUser(): void {
-    if (!this.selectedUserId) {
-      console.error('User ID missing');
-      return;
-    }
-
-    if (this.userForm.invalid) {
-      this.userForm.markAllAsTouched();
-      this.showToast('Please fill form fields correctly', 'warning');
-      return;
-    }
-
-    const formData = new FormData();
-
-    formData.append('user_name', this.userForm.value.user_name);
-    formData.append('user_email', this.userForm.value.user_email);
-    formData.append('phone_number', this.userForm.value.phone_number);
-    formData.append('role_id', this.userForm.value.role_id);
-    formData.append('status', this.userForm.value.status);
-
-    const address = {
-      house_No: this.userForm.value.house_No,
-      town_Name: this.userForm.value.town_Name,
-      mandal_Name: this.userForm.value.mandal_Name,
-      district_Name: this.userForm.value.district_Name,
-      state: this.userForm.value.state,
-      pincode: this.userForm.value.pincode,
-    };
-
-    formData.append('address', JSON.stringify(address));
-
-    if (this.imageFile) {
-      formData.append('image', this.imageFile);
-    }
-
-    if (this.idProofFile) {
-      formData.append('id_proof', this.idProofFile);
-    }
-
-    this.service.updateUser(this.selectedUserId, formData).subscribe({
-      next: (res) => {
-        console.log('User updated successfully', res);
-
-        this.showToast('User updated successfully', 'success');
-
-        this.userForm.reset();
-        this.selectedUserId = null;
-        this.loadUsers();
-
-        const modalEl = document.getElementById('editModal');
-        bootstrap.Modal.getInstance(modalEl)?.hide();
-      },
-      error: (err) => {
-        console.error('Update error', err);
-        alert(err.error?.message || 'Update failed');
-        this.showToast('Update failed', 'error');
-      },
-    });
+saveUser() {
+  if (this.userForm.invalid) {
+    this.userForm.markAllAsTouched();
+    this.showToast('Please fill details correctly', 'warning');
+    return;
   }
+
+  const formData = new FormData();
+
+  Object.entries(this.userForm.value).forEach(([k, v]) => {
+    if (v !== null && v !== '') {
+      formData.append(k, v as string);
+    }
+  });
+
+  // ✅ ONLY IF USER SELECTED NEW FILE
+  if (this.imageFile) {
+    formData.append('image', this.imageFile);
+  }
+
+  if (this.idProofFile) {
+    formData.append('id_proof', this.idProofFile);
+  }
+
+  this.service.updateUser(this.selectedUserId!, formData).subscribe({
+    next: () => {
+      console.log('User updated successfully');
+      this.showToast('User updated successfully', 'success');
+      this.loadUsers();
+      bootstrap.Modal.getInstance(
+        document.getElementById('editModal')
+      )?.hide();
+    },
+    error: () => this.showToast('Update failed', 'error'),
+  });
+}
 
 
 

@@ -8,16 +8,15 @@ body {
 
 /* Dashboard wrapper */
 .dashboard-wrapper {
-  padding-top: 70px; /* navbar height */
-  height: 100vh;
+  height: calc(100vh - 56px); /* bootstrap navbar height */
   overflow: hidden;
 }
 
-/* Remove bootstrap row overflow */
+/* Full height row */
 .dashboard-wrapper .row {
+  height: 100%;
   margin: 0;
 }
-
 /* Sidebar */
 .sidebar {
   height: 100%;
@@ -25,10 +24,20 @@ body {
 }
 
 /* Main content scrolls ONLY if needed */
+/* Right side content scroll */
 .content-area {
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+/* OPTIONAL: hide scrollbar visually but keep scroll */
+.content-area::-webkit-scrollbar {
+  width: 0px;
+}
+
+.content-area {
+  scrollbar-width: none; /* Firefox */
 }
 
 /* Sidebar buttons */

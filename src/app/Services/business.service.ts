@@ -1,11 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { constants } from '../../../constants';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BusinessService {
+  
+ loading$ = new Subject<boolean>();
+
+  showSpinner() {
+    setTimeout(() => {
+      this.loading$.next(true);
+    });
+  }
+
+  hideSpinner() {
+    setTimeout(() => {
+      this.loading$.next(false);
+    });
+  }
   private baseUrl = constants.baseUrl;
 
   constructor(private http: HttpClient) {}

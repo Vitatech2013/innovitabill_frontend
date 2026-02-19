@@ -1,3 +1,29 @@
+  <div class="position-fixed top-1 end-0 p-1" style="z-index: 1080">
+    <div
+      *ngIf="toastMessage"
+      class="toast align-items-center text-light border-0 fade show shadow-lg"
+      [ngClass]="{
+        'bg-success': toastType === 'success',
+        'bg-danger': toastType === 'error',
+        'bg-warning text-dark': toastType === 'warning'
+      }"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+    >
+      <div class="d-flex">
+        <div class="toast-body fw-semibold">
+          {{ toastMessage }}
+        </div>
+        <button
+          type="button"
+          class="btn-close btn-close-white me-2 m-auto"
+          (click)="toastMessage = null"
+          aria-label="Close"
+        ></button>
+      </div>
+    </div>
+  </div>
 <div class="container">
   <h4 class="text-center text-success mb-3">Business Profile</h4>
   <div class="card shadow-sm border-1 p-4">
@@ -122,7 +148,7 @@
                 />
               </div>
 
-              <div class="mb-3">
+              <!-- <div class="mb-3">
                 <label class="form-label fw-semibold">Password</label>
                 <input
                   type="password"
@@ -130,7 +156,7 @@
                   formControlName="password"
                   readonly
                 />
-              </div>
+              </div> -->
             </div>
           </div>
 
@@ -231,8 +257,8 @@
     aria-labelledby="editProfileModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content shadow-lg">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content shadow-lg ">
         <div class="modal-header bg-suctext-success text-dark">
           <h5 class="modal-title" id="editProfileModalLabel">
             Edit Business Profile
@@ -468,30 +494,6 @@
     </div>
   </div>
 
-  <div class="position-fixed top-1 end-0 p-1" style="z-index: 1080">
-    <div
-      *ngIf="toastMessage"
-      class="toast align-items-center text-light border-0 fade show shadow-lg"
-      [ngClass]="{
-        'bg-success': toastType === 'success',
-        'bg-danger': toastType === 'error',
-        'bg-warning text-dark': toastType === 'warning'
-      }"
-      role="alert"
-      aria-live="assertive"
-      aria-atomic="true"
-    >
-      <div class="d-flex">
-        <div class="toast-body fw-semibold">
-          {{ toastMessage }}
-        </div>
-        <button
-          type="button"
-          class="btn-close btn-close-white me-2 m-auto"
-          (click)="toastMessage = null"
-          aria-label="Close"
-        ></button>
-      </div>
-    </div>
-  </div>
+
 </div>
+
