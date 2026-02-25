@@ -34,7 +34,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let purchase of purchases">
+              <tr *ngFor="let purchase of filteredPurchase()">
                 <td>{{ purchase.vendor_id?.vendor_name }}</td>
                 <td>{{ purchase.vendor_id?.vendor_type }}</td>
                 <td>{{ purchase.item_id?.item_name }}</td>
@@ -60,7 +60,7 @@
                   </div>
                 </td>
               </tr>
-              <tr *ngIf="filteredPurchases().length === 0">
+              <tr *ngIf="filteredPurchase().length === 0">
                 <td colspan="7" class="text-muted">No items found.</td>
               </tr>
             </tbody>
@@ -128,6 +128,7 @@
                         [src]="getImageUrl(selectedPurchases.item_id?.image)"
                         alt="Item Image"
                         class="img-thumbnail item-image"
+                        style="width: 60px;"
                         (click)="
                           openImageModal(
                             getImageUrl(selectedPurchases.item_id?.image)
@@ -400,15 +401,12 @@
 
                 <div class="col-md-4">
                   <label class="form-label">Sub-Categories</label>
-                  <select class="form-select" formControlName="sub_category_id">
-                    <option value="">Select Sub categories</option>
-                    <option
-                      *ngFor="let subcat of subCategories"
-                      [value]="subcat._id"
-                    >
-                      {{ subcat.sub_category_name }}
-                    </option>
-                  </select>
+                 <select class="form-select" formControlName="sub_category_id">
+  <option value="">Select Sub categories</option>
+  <option *ngFor="let subcat of subCategories" [value]="subcat._id">
+    {{ subcat.sub_category_name }}
+  </option>
+</select>
                 </div>
 
                 <!-- <div class="col-md-4">
@@ -424,11 +422,11 @@
                 <div class="col-md-4">
                   <label class="form-label">Categories</label>
                   <select class="form-select" formControlName="category_id">
-                    <option value="">Select Categories</option>
-                    <option *ngFor="let cat of categories" [value]="cat._id">
-                      {{ cat.categories_name }}
-                    </option>
-                  </select>
+  <option value="">Select Categories</option>
+  <option *ngFor="let cat of categories" [value]="cat._id">
+    {{ cat.categories_name }}
+  </option>
+</select>
                 </div>
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">Image</label>

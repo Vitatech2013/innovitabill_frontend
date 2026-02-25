@@ -57,7 +57,7 @@ export class BusinessListComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private api: BillingService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -184,7 +184,7 @@ export class BusinessListComponent implements OnInit {
 
         this.business.sort(
           (a: any, b: any) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
         );
       },
       error: (err) => {
@@ -226,7 +226,7 @@ export class BusinessListComponent implements OnInit {
         b.status = newStatus;
         this.showToast(
           newStatus === 'active' ? 'Account enabled' : 'Account disabled',
-          'success'
+          'success',
         );
       },
       error: () => {
@@ -259,7 +259,7 @@ export class BusinessListComponent implements OnInit {
   openImageModal(imageUrl: string) {
     this.selectedImage = imageUrl || 'assets/default-business.jpg';
     const modal = new bootstrap.Modal(
-      document.getElementById('imagePreviewModal')
+      document.getElementById('imagePreviewModal'),
     );
     modal.show();
   }
@@ -303,14 +303,14 @@ export class BusinessListComponent implements OnInit {
       const term = this.searchTerm.toLowerCase();
       list = list.filter((b) =>
         Object.values(b).some((val) =>
-          val?.toString().toLowerCase().includes(term)
-        )
+          val?.toString().toLowerCase().includes(term),
+        ),
       );
     }
 
     list.sort(
       (a: any, b: any) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     );
 
     return list;
@@ -363,7 +363,7 @@ export class BusinessListComponent implements OnInit {
     }
 
     const modal = new bootstrap.Modal(
-      document.getElementById('editBusinessModal')
+      document.getElementById('editBusinessModal'),
     );
     modal.show();
   }
@@ -419,7 +419,7 @@ export class BusinessListComponent implements OnInit {
     const btValue = businessForm.bt_id;
     formData.append(
       'bt_id',
-      typeof btValue === 'object' ? btValue._id : btValue || ''
+      typeof btValue === 'object' ? btValue._id : btValue || '',
     );
 
     const addr = businessForm.address;
@@ -430,7 +430,7 @@ export class BusinessListComponent implements OnInit {
     }
     formData.append(
       'registration_number',
-      businessForm.registration_number || ''
+      businessForm.registration_number || '',
     );
     formData.append('gst_number', businessForm.gst_number || '');
     formData.append('status', businessForm.status || '');
@@ -585,7 +585,7 @@ export class BusinessListComponent implements OnInit {
           status === 'active'
             ? 'Business enabled successfully'
             : 'Business disabled successfully',
-          'success'
+          'success',
         );
         this.loadBusiness(); // refresh list
       },

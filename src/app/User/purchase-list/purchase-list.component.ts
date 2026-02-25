@@ -126,9 +126,17 @@ export class PurchaseListComponent implements OnInit {
 
 
   editItem(purchase: any) {
+    console.log("FULL PURCHASE:", purchase);
+  console.log("purchase.item_id:", purchase.item_id);
+  console.log("purchase.item_id.category_id:", purchase.item_id?.category_id);
+  console.log("CATEGORIES ARRAY:", this.categories);
+  console.log("Selected SubCategory:", purchase.item_id?.sub_category_id);
+console.log("SubCategories Array:", this.subCategories);
+console.log("UNIT DATA:", purchase.item_id?.unit_id);
     this.eid = purchase._id;
 
     this.editForm.patchValue({
+      
       _id: purchase._id,
       purchase_id: purchase._id,
       vendor_id: purchase.vendor_id?._id,
@@ -145,14 +153,14 @@ export class PurchaseListComponent implements OnInit {
       selling_price: purchase.item_id?.selling_price || '',
       status: purchase.status?.toLowerCase() || '',
       item_code: purchase.item_id?.item_code || '',
-      unit_id: purchase.item_id?.unit_id?._id || '',
+      unit_id: purchase.item_id?.unit_id || '',
       purchase_price: purchase.purchase_price || '',
       tax_rate: purchase.tax_rate || '',
       description: purchase.item_id?.description || '',
       discount: purchase.item_id?.discount || '',
       min_stock_alert: purchase.item_id?.min_stock_alert || '',
-      category_id: purchase.item_id?.category_id?._id || '',
-      sub_category_id: purchase.item_id?.sub_category_id?._id || '',
+     category_id: purchase.item_id?.category_id || '',
+sub_category_id: purchase.item_id?.sub_category_id || '',
     });
 
     this.selectedImage = purchase.item_id?.image
@@ -345,29 +353,33 @@ updatePurchase() {
     return this.router.url.includes('/itemlist/items');
   }
 
-  filteredPurchase() {
-    let data = [...this.purchases];
-    data.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
-    if (!this.searchTerm) {
-      return data;
-    }
-    const term = this.searchTerm.toLowerCase().trim();
-    const statuses = ['active', 'inactive', 'pending'];
-    if (statuses.includes(term)) {
-      return data.filter((it) => it.status?.toLowerCase() === term);
-    }
-    return data.filter(
-      (it) =>
-        it.item_id?.item_name?.toLowerCase().includes(term) ||
-        it.item_id?.item_code?.toLowerCase().includes(term) ||
-        it.item_id?.brand_name?.toLowerCase().includes(term) ||
-        it.status?.toLowerCase().includes(term) ||
-        it.vendor_id?.vendor_name?.toLowerCase().includes(term)
-    );
+filteredPurchase() {
+  let data = [...this.purchases];
+  data.sort(
+    (a, b) =>
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+
+  if (!this.searchTerm) {
+    return data;
   }
+
+  const term = this.searchTerm.toLowerCase().trim();
+  const statuses = ['active', 'inactive', 'pending'];
+
+  if (statuses.includes(term)) {
+    return data.filter((it) => it.status?.toLowerCase() === term);
+  }
+
+  return data.filter(
+    (it) =>
+      it.item_id?.item_name?.toLowerCase().includes(term) ||
+      it.item_id?.item_code?.toLowerCase().includes(term) ||
+      it.item_id?.brand_name?.toLowerCase().includes(term) ||
+      it.status?.toLowerCase().includes(term) ||
+      it.vendor_id?.vendor_name?.toLowerCase().includes(term)
+  );
+}
 
   onCustomFileSelect(event: any, key: string) {
     const file = event.target.files[0];

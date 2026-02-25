@@ -8,12 +8,7 @@ import { constants } from '../../../constants';
 })
 export class BillingService {
   changeLoginStatus: any;
-  triggerBusinessTypeRefresh() {
-    throw new Error('Method not implemented.');
-  }
-  getBusinessTypesFromServer() {
-    throw new Error('Method not implemented.');
-  }
+  
   // getQuotationData(demoId: string | null) {
   //   throw new Error('Method not implemented.');
   // }
@@ -21,16 +16,7 @@ export class BillingService {
   private baseUrl = constants.baseUrl;
   constructor(private http: HttpClient) {}
 
-  getSuperadminById(superadmin_id: string) {
-    throw new Error('Method not implemented.');
-  }
 
-  deleteBusiness(deleteBusinessId: string) {
-    throw new Error('Method not implemented.');
-  }
-  getAllBusiness() {
-    throw new Error('Method not implemented.');
-  }
 
   SuperAdminLogin(data: any) {
     return this.http.post(`${this.baseUrl}/superadmin/login`, data);
