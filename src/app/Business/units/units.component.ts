@@ -24,8 +24,8 @@ export class UnitsComponent implements OnInit {
   user_id: string = '';
   selectedId: string | null = null;
   title = 'Add Unit';
-  selectedFilter: string = 'status';
-  statusFilter: 'active' | 'inactive' | 'all' = 'all';
+  selectedFilter: string = 'Active';
+  statusFilter: 'active' | 'inactive' | 'all' = 'active';
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
   selectedUnit: any;
@@ -48,7 +48,8 @@ export class UnitsComponent implements OnInit {
         '',
         [Validators.required, Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/)],
       ],
-      unit: ['', Validators.required],
+      unit_description:['', Validators.required],
+      unit: [''],
       user_id: [''],
       business_id: [''],
       status: [''],
@@ -72,24 +73,32 @@ export class UnitsComponent implements OnInit {
       },
     });
   }
+generateUnitCode(): string {
+  const nextNumber = this.units.length + 1;
+  return 'UN' + nextNumber.toString().padStart(3, '0');
+}
 
 
+ openAddModal() {
+  this.title = 'Add Unit';
+  this.selectedId = null;
+  this.UnitForm.reset();
 
+  this.UnitForm.patchValue({
+    status: 'active'
+  });
 
-  openAddModal() {
-    this.title = 'Add Unit';
-    this.selectedId = null;
-    this.UnitForm.reset();
-    const modalEl = document.getElementById('unitModel');
-    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
-    modal.show();
-  }
+  const modalEl = document.getElementById('unitModel');
+  const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+  modal.show();
+}
 
   edit(unit: any) {
     this.selectedId = unit._id;
     this.title = 'Edit Unit';
     this.UnitForm.patchValue({
       units_name: unit.units_name,
+      unit_description: unit.unit_description,
       unit: unit.unit,
       status: unit.status || unit.business_status || unit.status?.status || '',
     });
@@ -109,6 +118,7 @@ export class UnitsComponent implements OnInit {
       user_id: this.user_id,
       business_id: this.business_id,
     });
+      console.log(this.UnitForm.value);
 
     if (this.selectedId) {
       this.api.updateUnit(this.selectedId, this.UnitForm.value).subscribe({
@@ -126,6 +136,9 @@ export class UnitsComponent implements OnInit {
         },
       });
     } else {
+        this.UnitForm.patchValue({
+      unit: this.generateUnitCode()
+    });
       this.api.addUnit(this.UnitForm.value).subscribe({
         next: () => {
           this.showToast('Unit added successfully', 'success');

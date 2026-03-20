@@ -94,12 +94,15 @@ onSubmit() {
 }
 
   savePurchase() {
+     this.addPurchaseForm.markAllAsTouched(); 
     if (this.addPurchaseForm.invalid) {
+      this.toastr.error('Please fill all required fields correctly', 'Validation Error');
       return;
     }
 
     const formData = new FormData();
     const data = this.addPurchaseForm.value;
+    
 
     Object.keys(data).forEach((key) => {
       if (key === 'address' || key === 'contact') {

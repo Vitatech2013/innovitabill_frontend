@@ -1,4 +1,4 @@
-<h4 class="mb-2 fw-bold">Purchase Creation</h4>
+<h4 class="mb-2 fw-bold mt-4 text-success">Purchase Creation</h4>
 <div class="card shadow-sm p-3 mb-2 small-card scrollable-card">
   <form
     [formGroup]="addPurchaseForm"
@@ -6,7 +6,7 @@
     enctype="multipart/form-data"
   >
     <div class="row g-2">
-      <h5 class="fw-bold">Vendor Details</h5>
+      <!-- <h5 class="fw-bold text-success">Vendor Details</h5> -->
 
       <div class="col-md-3">
         <label class="form-label fw-bold"
@@ -109,13 +109,14 @@
   <div class="row g-2 mt-2" formGroupName="address">
   <h6 class="fw-bold mb-1">Address</h6>
 
-  <div class="col-md-4">
+  <div class="col-md-3">
     <label class="form-label fw-bold">
       Address Line 1 <span class="text-danger">*</span>
     </label>
     <input
       type="text"
       class="form-control"
+      placeholder="Enter address line 1"
       formControlName="address_line_1"
        (input)="singleSpace($event)"
     />
@@ -124,13 +125,14 @@
   </small>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-3">
     <label class="form-label fw-bold">
       Address Line 2 <span class="text-danger">*</span>
     </label>
     <input
       type="text"
       class="form-control"
+       placeholder="Enter address line 2"
       formControlName="address_line_2"
        (input)="singleSpace($event)"
     />
@@ -139,13 +141,14 @@
     </small>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-3">
     <label class="form-label fw-bold">
       City <span class="text-danger">*</span>
     </label>
     <input
       type="text"
       class="form-control"
+       placeholder="Enter City"
       formControlName="city"
        (input)="singleSpace($event)"
     />
@@ -154,13 +157,14 @@
     </small>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-3">
     <label class="form-label fw-bold">
       State <span class="text-danger">*</span>
     </label>
     <input
       type="text"
       class="form-control"
+      placeholder="Enter Sate"
       formControlName="state"
        (input)="singleSpace($event)"
     />
@@ -169,12 +173,13 @@
     </small>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-3">
     <label class="form-label fw-bold">
       Country <span class="text-danger">*</span>
     </label>
     <input
       type="text"
+      placeholder="Enter Country"
       class="form-control"
       formControlName="country"
        (input)="singleSpace($event)"
@@ -184,13 +189,14 @@
     </small>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-3">
     <label class="form-label fw-bold">
       Pincode <span class="text-danger">*</span>
     </label>
     <input
       type="text"
       class="form-control"
+      placeholder="Enter Pincode"
       formControlName="pincode"
        (input)="singleSpace($event)"
     />
@@ -205,7 +211,7 @@
   <h6 class="fw-bold mb-1">Contact</h6>
 
   <!-- Contact Person -->
-  <div class="col-md-4">
+  <div class="col-md-3">
     <label class="form-label fw-bold">
       Contact Person Name <span class="text-danger">*</span>
     </label>
@@ -222,7 +228,7 @@
   </div>
 
   <!-- Email -->
-  <div class="col-md-4">
+  <div class="col-md-3">
     <label class="form-label fw-bold">
       Email <span class="text-danger">*</span>
     </label>
@@ -239,7 +245,7 @@
   </div>
 
   <!-- Mobile -->
-  <div class="col-md-4">
+  <div class="col-md-3">
     <label class="form-label fw-bold">
       Mobile Number <span class="text-danger">*</span>
     </label>
@@ -256,7 +262,7 @@
   </div>
 
   <!-- Alternate Mobile -->
-  <div class="col-md-4">
+  <div class="col-md-3">
     <label class="form-label fw-bold">
       Alternate Mobile Number <span class="text-danger">*</span>
     </label>
@@ -507,7 +513,7 @@
       >
         Cancel
       </button>
-      <button class="btn btn-success" type="submit"  data-toggle="tooltip" data-placement="top" title="Save">Save Purchase</button>
+      <button class="btn btn-success" type="submit"  data-toggle="tooltip" data-placement="top" title="Save"><i class="bi bi-save me-1"></i>Save</button>
     </div>
   </form>
 </div>

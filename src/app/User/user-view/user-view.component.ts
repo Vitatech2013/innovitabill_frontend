@@ -65,9 +65,16 @@ sidebarOpen: any;
      
       role: userRole,
     };
-
-   
     console.log('Parsed User:', parsed);
+      if (this.loggedInUser?.role === 'Admin' || this.loggedInUser?.role === 'Manager') {
+    this.router.navigate(['/userview/itemlist']);
+  } 
+  else if (this.loggedInUser?.role === 'Cashier') {
+    this.router.navigate(['/userview/createsale']);
+  } 
+  else if (this.loggedInUser?.role === 'Accountant') {
+    this.router.navigate(['/userview/expenses']);
+  }
   }
 
   logout() {

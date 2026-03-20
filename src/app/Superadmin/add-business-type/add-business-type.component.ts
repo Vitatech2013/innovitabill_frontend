@@ -51,24 +51,27 @@ export class AddBusinessTypeComponent implements OnInit {
         ],
       ],
       business_code: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.pattern(/^\S+$/),
-        ],
+        ''
       ],
     });
     this.getBusinessTypes();
   }
-  getBusinessTypes() {
-    this.api.getBusinessTypes().subscribe(
-      (res: any) => {
-        this.businessTypes = res.data; 
-      },
-      (err) => console.error(err)
-    );
-  }
+getBusinessTypes() {
+  this.api.getBusinessTypes().subscribe(
+    (res: any) => {
+
+      this.businessTypes = res.data || [];
+
+      const code = this.generateBusinessCode();
+
+      this.addBusinessTypeForm.patchValue({
+        business_code: code
+      });
+
+    },
+    (err) => console.error(err)
+  );
+}
   preventSpace(event: KeyboardEvent) {
     if (event.code === 'Space') {
       event.preventDefault();
@@ -86,6 +89,22 @@ export class AddBusinessTypeComponent implements OnInit {
       .get(controlName)
       ?.setValue(value, { emitEvent: false });
   }
+ generateBusinessCode(): string {
+
+  if (!this.businessTypes || this.businessTypes.length === 0) {
+    return 'BT001';
+  }
+
+  const codes = this.businessTypes
+    .map((x: any) => parseInt(x.business_code?.replace('BT', ''), 10))
+    .filter((x: number) => !isNaN(x));
+
+  const max = Math.max(...codes);
+
+  const next = max + 1;
+
+  return 'BT' + next.toString().padStart(3, '0');
+}
 
   saveBusiness() {
     if (this.addBusinessTypeForm.invalid) {
@@ -95,7 +114,7 @@ export class AddBusinessTypeComponent implements OnInit {
 
     const formData = {
       business_type: this.addBusinessTypeForm.value.business_type.trim(),
-      business_code: this.addBusinessTypeForm.value.business_code.trim(),
+      business_code: this.addBusinessTypeForm.value.business_code,
       superadmin_id: this.superadmin_id,
     };
 

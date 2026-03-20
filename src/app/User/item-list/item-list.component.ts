@@ -23,7 +23,7 @@ import { constants } from '../../../../constants';
 @Component({
   selector: 'app-item-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterOutlet],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterOutlet, RouterLink],
   templateUrl: './item-list.component.html',
   styleUrl: './item-list.component.css',
 })
@@ -41,12 +41,13 @@ export class ItemListComponent implements OnInit {
   users: any;
   categories: any[] = [];
   units: any;
-  selectedFilter: string = 'Status';
-  filterMode: 'active' | 'inactive' | 'all' = 'all';
+  selectedFilter: string = 'Active';
+  filterMode: 'active' | 'inactive' | 'all' = 'active';
 
   imagefile: any;
   imagePreviewUrl: string = '';
   private baseUrl = constants.baseUrl;
+i: any;
 
   constructor(
     private fb: FormBuilder,
@@ -82,6 +83,7 @@ export class ItemListComponent implements OnInit {
       discount: ['', [Validators.required]],
       status: ['', Validators.required],
       item_code: ['', Validators.required],
+       barcode: ['', Validators.required],
       purchase_price: ['', Validators.required],
       category_id: ['', Validators.required],
       sub_category_id: ['', Validators.required],
@@ -104,14 +106,39 @@ export class ItemListComponent implements OnInit {
       error: (err) => console.error('Error loading items:', err),
     });
   }
+  generateBrandCode(brandName: string): string {
+  if (!brandName) return '';
 
+  const prefix = brandName.substring(0, 3).toUpperCase();
+
+  const count = this.items.filter(
+    (item) => item.brand_name?.toLowerCase() === brandName.toLowerCase()
+  ).length;
+
+  const nextNumber = count + 1;
+
+  return prefix + nextNumber.toString().padStart(3, '0');
+}
+onBrandChange() {
+  const brandName = this.editForm.get('brand_name')?.value;
+  const code = this.generateBrandCode(brandName);
+
+  this.editForm.patchValue({
+    barcode: code   
+  });
+}
+generateItemCode(): string {
+  const nextNumber = this.items.length + 1;
+  return 'IT' + nextNumber.toString().padStart(3, '0');
+}
   editItem(it: any) {
     console.log('Edit data', it);
     this.eid = it._id;
-
+ const code = it.item_code ? it.item_code : this.generateItemCode();
     this.editForm.patchValue({
       item_name: it.item_name,
       brand_name: it.brand_name,
+      barcode: it.barcode,
       stock_quantity: it.stock_quantity,
       selling_price: it.selling_price,
       status: it.status?.toLowerCase(),
@@ -317,6 +344,8 @@ filteredItems() {
       return 'assets/default-business.jpg';
     }
     const cleanPath = path.replace(/\\/g, '/');
+    
+    
     if (cleanPath.startsWith('http')) {
       return cleanPath;
     }

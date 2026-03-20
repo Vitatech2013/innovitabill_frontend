@@ -1,0 +1,36 @@
+.table-wrapper {
+  max-height: 450px;
+  overflow-y: auto;
+}
+
+.table-wrapper {
+  scrollbar-width: thin;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+#viewModal .modal-dialog {
+  margin-top: 250px;
+}
+
+#viewModal .modal-dialog {
+  max-width: 95%;
+}
+
+#viewModal .modal-content {
+  width: 100%;
+}
+.modal-dialog {
+  margin-top: 200px;
+}
+.light-green {
+  color: #0a5c0a;
+}

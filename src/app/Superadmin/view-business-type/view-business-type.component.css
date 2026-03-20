@@ -1,5 +1,5 @@
 .scrollable-card {
-  max-height: 80vh;
+  max-height: 75vh;
   overflow-y: auto;
 }
 .scrollable-card::-webkit-scrollbar {
@@ -7,7 +7,7 @@
 }
 
 .table-scroll-container {
-  max-height: 400px; 
+  max-height: 470px; 
   overflow-y: auto;
   border-radius: 8px;
 }
@@ -17,8 +17,7 @@
   position: sticky;
   top: 0;
   z-index: 2;
-  background: #d4f8d4;
-  color: #0a5c0a;
+ 
 }
 
 /* toastr */
@@ -60,7 +59,7 @@
 .bg {
   background-color: #f3f4f6;
 }
-.color {
-  background: #d4f8d4;
+.light-green {
+ 
   color: #0a5c0a;
 }

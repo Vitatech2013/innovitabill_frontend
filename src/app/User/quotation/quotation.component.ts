@@ -16,6 +16,7 @@ import jsPDF from 'jspdf';
 
 import Modal from 'bootstrap/js/dist/modal';
 import { constants } from '../../../../constants';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-quotation',
@@ -36,11 +37,13 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   pdfPreviewSrc: string | null = null;
   private pdfPreviewModal: Modal | null = null;
    private baseUrl = constants.baseUrl;
+     toastMessage: string | null = null;
+  toastType: string | undefined;
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private route: ActivatedRoute
+    private route: ActivatedRoute, private toastr:ToastrService,
   ) {
     this.quotationForm = this.fb.group({
       customer: this.fb.group({
@@ -162,6 +165,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
         error: (err) => console.error('Demo customers load failed', err),
       });
   }
+  
 
   itemsGets() {
     this.http
@@ -261,17 +265,26 @@ decreaseQty(index: number) {
     this.calculateGrandTotal();
   }
 
-  saveQuotation() {
+ saveQuotation() {
     const payload = this.quotationForm.value;
-    this.http
-      .post(`${this.baseUrl}/quotation/saveQuotation`, payload)
-      .subscribe({
-        next: (res: any) => {
-          alert('Quotation saved successfully!');
-          window.location.reload();
-        },
-        error: (err) => console.error(err),
-      });
+
+
+    if (!payload.items || payload.items.length === 0) {
+      this.toastr.warning('Please add at least one item to the quotation.', 'Warning');
+      return;
+    }
+
+    console.log(payload);
+    this.http.post(`${this.baseUrl}/quotation/add`, payload).subscribe({
+      next: (res: any) => {
+        this.toastr.success('Quotation saved successfully!', 'Success');
+        window.location.reload();
+      },
+      error: (err) => {
+        console.error(err);
+        this.toastr.error('Something went wrong while saving the quotation.', 'Error');
+      },
+    });
   }
 
   filteredCustomers() {

@@ -137,3 +137,17 @@
 .table {
   min-width: 1100px; 
 }
+.table-scroll {
+  max-height: 500px;   
+  overflow-y: auto;
+}
+
+.sticky-header th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #d1e7dd; 
+}
+.light-green {
+  color: #0a5c0a;
+}

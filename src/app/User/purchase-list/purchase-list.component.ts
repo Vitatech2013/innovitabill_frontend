@@ -11,12 +11,12 @@ declare var bootstrap: any;
 import { BillingService } from '../../Services/billing.service';
 import { ToastrService } from 'ngx-toastr';
 import { constants } from '../../../../constants';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-purchase-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterOutlet],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterOutlet, RouterLink],
   templateUrl: './purchase-list.component.html',
   styleUrls: ['./purchase-list.component.css'],
 })

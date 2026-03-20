@@ -1,21 +1,23 @@
 .table-wrapper {
-  max-height: 400px;        /* Adjust height as needed */
-  overflow-y: auto;
+  max-height: 500px;      /* Table height */
+  overflow-y: auto;       /* Vertical scroll */
+  position: relative;
 }
 
-/* Optional: smooth scrolling */
-.table-wrapper {
-  scrollbar-width: thin;
-}
-
-/* Keep table header sticky */
-.table thead th {
+/* Sticky Header */
+.sticky-header th {
   position: sticky;
   top: 0;
-  z-index: 2;
-  background-color: #d4f8d4; /* same as your header color */
+  background-color: #d1e7dd;   /* Same as table-success */
+  z-index: 5;
 }
 
+/* Remove extra scroll conflicts */
 .table-responsive {
   overflow-x: auto;
+  overflow-y: visible;
+}
+
+.light-green {
+  color: #0a5c0a;
 }

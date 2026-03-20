@@ -50,8 +50,8 @@ export class BusinessListComponent implements OnInit {
     { name: 'state', label: 'State' },
     { name: 'pincode', label: 'Pincode' },
   ];
-  selectedFilter: string = 'status';
-  filterMode: 'active' | 'inactive' | 'all' = 'all';
+  selectedFilter: string = 'Active';
+  filterMode: 'active' | 'inactive' | 'all' = 'active';
   loadingAccountId: string | null = null;
 
   constructor(

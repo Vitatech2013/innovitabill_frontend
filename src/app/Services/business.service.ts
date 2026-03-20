@@ -7,7 +7,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class BusinessService {
-  
+
  loading$ = new Subject<boolean>();
 
   showSpinner() {
@@ -70,4 +70,21 @@ export class BusinessService {
   deleteUser(id: string) {
     return this.http.delete(`${this.baseUrl}/user/delete/${id}`);
   }
+
+  // bacnk details
+getBanksByUser(userId:any){
+  return this.http.get(`${this.baseUrl}/bankDetails/get?user_id=${userId}`);
+}
+
+addBank(data:any){
+  return this.http.post(`${this.baseUrl}/bankDetails/add`, data);
+}
+
+updateBank(id:any,data:any){
+  return this.http.put(`${this.baseUrl}/bankDetails/update/${id}`,data);
+}
+
+deleteBank(id:any){
+  return this.http.delete(`${this.baseUrl}/bankDetails/delete/${id}`);
+}
 }

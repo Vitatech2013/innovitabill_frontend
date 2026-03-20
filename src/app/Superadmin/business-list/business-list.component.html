@@ -8,7 +8,7 @@
           [ngClass]="{
             success: toastType === 'success',
             error: toastType === 'error',
-            warning: toastType === 'warning'
+            warning: toastType === 'warning',
           }"
         >
           <div class="d-flex align-items-center">
@@ -25,50 +25,58 @@
       </div>
     </div>
 
-    <div class="row mb-3">
+    <div class="row mb-3 mt-3">
       <div
-        class="col-12 d-flex flex-column flex-md-row align-items-md-center justify-content-between"
+        class="col-12 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2"
       >
-        <h4 class="fw-bold text-success mb-2 mb-md-0">
-          Available Business List
-        </h4>
+        <h4 class="fw-bold text-success mb-0">Available Business List</h4>
 
         <input
           type="text"
-          class="form-control shadow-sm mb-2 mb-md-0 mx-md-3 p1"
+          class="form-control shadow-sm mx-md-3"
           placeholder="Search.."
           [(ngModel)]="searchTerm"
+          style="max-width: 300px"
         />
-        <div class="dropdown">
-          <button
-            class="btn side-btn text-dark fw-semibold dropdown-toggle bg"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            data-toggle="tooltip" data-placement="top" title="Status"
-          >
-            {{ selectedFilter }}
-          </button>
 
-          <ul class="dropdown-menu">
-            
-            <li>
-              <button class="dropdown-item" (click)="changeFilter('All')">
-                All
-              </button>
-            </li>
-            <li>
-              <button class="dropdown-item" (click)="changeFilter('Active')">
-                Active
-              </button>
-            </li>
-            <li>
-              <button class="dropdown-item" (click)="changeFilter('Inactive')">
-                Inactive
-              </button>
-            </li>
-          </ul>
+        <div class="d-flex align-items-center justify-content-end mt-2 gap-2">
+          <label class="fw-bold text-success mb-0">STATUS:</label>
+
+          <div class="dropdown">
+            <button
+              class="btn side-btn text-dark fw-semibold dropdown-toggle bg"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              title="Status"
+               style="width: 100px"
+            >
+              {{ selectedFilter }}
+            </button>
+
+            <ul class="dropdown-menu">
+              <li>
+                <button class="dropdown-item" (click)="changeFilter('All')">
+                  All
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item" (click)="changeFilter('Active')">
+                  Active
+                </button>
+              </li>
+              <li>
+                <button
+                  class="dropdown-item"
+                  (click)="changeFilter('Inactive')"
+                >
+                  Inactive
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
+
         <a
           class="btn side-btn text-dark fw-semibold border-1 bg"
           routerLink="/SuperAdminView/add-business"
@@ -87,12 +95,12 @@
       </div>
 
       <div class="col-12" *ngIf="business.length > 0">
-        <div class="table-wrapper">
-          <div class="table-responsive bg-white p-3 rounded-4 p3">
-            <table class="table table-hover table-bordered align-middle">
-              <thead class="table-success text-start custom-thead">
+<div class="table-wrapper">
+  <div class="table-scroll">
+    <table class="table table-bordered table-hover align-middle">
+              <thead class="table-success text-start custom-thead sticky-header table-scroll">
                 <tr>
-                  <th class="width light-green">S. No</th>
+                  <th class="width light-green">S.No</th>
                   <th class="width light-green">Business Name</th>
                   <th class="width light-green">Owner</th>
                   <th class="light-green">Email</th>
@@ -115,10 +123,10 @@
 
                   <td>
                     <button
-                      class="btn"
+                      class="btn badge"
                       [ngClass]="{
                         'btn-success': b.status?.toLowerCase() === 'inactive',
-                        'btn-danger': b.status?.toLowerCase() === 'active'
+                        'btn-danger': b.status?.toLowerCase() === 'active',
                       }"
                       (click)="toggleAccountStatus(b)"
                     >
@@ -130,7 +138,6 @@
                     </button>
                   </td>
 
-               
                   <!-- <td>
      
       <button
@@ -150,23 +157,23 @@
       </button>
     </td> -->
 
-                  <td>
-                    <span
-                      class="badge px-3 py-2"
-                      [ngClass]="{
-                        'bg-success': b.status === 'Active',
-                        'bg-warning': b.status === 'Pending',
-                        'bg-danger': b.status === 'Inactive'
-                      }"
-                    >
-                      {{ b.status }}
-                    </span>
-                  </td>
+                      <td>
+                      <span
+                        class="badge"
+                        [ngClass]="
+                          b.status === 'active' ? 'bg-success' : 'bg-danger'
+                        "
+                      >
+                        {{ b.status }}
+                      </span>
+                    </td>
                   <td>
                     <button
                       class="btn btn-sm btn-outline-info me-1"
                       (click)="openViewModal(b)"
-                      data-toggle="tooltip" data-placement="top" title="View"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="View"
                     >
                       <i class="bi bi-eye"></i>
                     </button>
@@ -174,7 +181,9 @@
                     <button
                       class="btn btn-sm btn-outline-primary me-1"
                       (click)="editBusiness(b)"
-                      data-toggle="tooltip" data-placement="top" title="Edit"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Edit"
                     >
                       <i class="bi bi-pencil-square"></i>
                     </button>
@@ -182,7 +191,9 @@
                     <button
                       class="btn btn-sm btn-outline-danger"
                       (click)="openDeleteModal(b._id)"
-                      data-toggle="tooltip" data-placement="top" title="Delete"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Delete"
                     >
                       <i class="bi bi-trash"></i>
                     </button>
@@ -222,19 +233,19 @@
               <table class="table table-bordered align-middle text-center mb-0">
                 <thead class="table-success">
                   <tr>
-                    <th>Business_Name</th>
-                    <th>Owner</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Business_Type</th>
-                    <th>Address</th>
-                    <th>Reg_No</th>
-                    <th>Status</th>
-                    <th>GST</th>
-                    <th>Logo</th>
-                    <th>PAN</th>
-                    <th>Aadhar</th>
-                    <th>Certificate</th>
+                    <th class="light-green">Business_Name</th>
+                    <th class="light-green">Owner</th>
+                    <th class="light-green">Email</th>
+                    <th class="light-green">Phone</th>
+                    <th class="light-green">Business_Type</th>
+                    <th class="light-green">Address</th>
+                    <th class="light-green">Reg_No</th>
+                    <th class="light-green">Status</th>
+                    <th class="light-green">GST</th>
+                    <th class="light-green">Logo</th>
+                    <th class="light-green">PAN</th>
+                    <th class="light-green">Aadhar</th>
+                    <th class="light-green">Certificate</th>
                   </tr>
                 </thead>
 
@@ -262,7 +273,7 @@
                         [ngClass]="{
                           'bg-success': selectedBusiness.status === 'Active',
                           'bg-warning': selectedBusiness.status === 'Pending',
-                          'bg-danger': selectedBusiness.status === 'Inactive'
+                          'bg-danger': selectedBusiness.status === 'Inactive',
                         }"
                       >
                         {{ selectedBusiness.status }}
@@ -314,7 +325,9 @@
               type="button"
               class="btn btn-secondary btn-sm"
               data-bs-dismiss="modal"
-              data-toggle="tooltip" data-placement="top" title="Close"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Close"
             >
               Close
             </button>
@@ -380,7 +393,9 @@
                     "
                   >
                     <small
-                      *ngIf="BusinessForm.controls['bt_id']?.errors?.['required']"
+                      *ngIf="
+                        BusinessForm.controls['bt_id']?.errors?.['required']
+                      "
                       class="text-danger"
                     >
                       Business Type is required</small
@@ -416,7 +431,9 @@
                     maxlength="10"
                     inputmode="numeric"
                     pattern="[0-9]{10}"
-                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                    onkeypress="
+                      return event.charCode >= 48 && event.charCode <= 57;
+                    "
                   />
                 </div>
 
@@ -571,7 +588,9 @@
               type="button"
               class="btn btn-secondary px-4"
               data-bs-dismiss="modal"
-              data-toggle="tooltip" data-placement="top" title="Cancel"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Cancel"
             >
               Cancel
             </button>
@@ -580,9 +599,11 @@
               type="button"
               class="btn btn-success px-4"
               (click)="updateBusiness()"
-              data-toggle="tooltip" data-placement="top" title="Save"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Update"
             >
-              Save Changes
+              Update
             </button>
           </div>
         </div>
@@ -606,7 +627,9 @@
               type="button"
               class="btn-close"
               data-bs-dismiss="modal"
-              data-toggle="tooltip" data-placement="top" title="Delete"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Delete"
             ></button>
           </div>
           <div class="modal-body">
@@ -617,7 +640,9 @@
               type="button"
               class="btn btn-secondary"
               data-bs-dismiss="modal"
-              data-toggle="tooltip" data-placement="top" title="Cancel"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Cancel"
             >
               Cancel
             </button>

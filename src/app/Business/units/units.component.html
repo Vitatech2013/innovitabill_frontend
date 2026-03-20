@@ -24,12 +24,12 @@
     </div>
   </div>
 </div>
-<div class="card border rounded-4 p-4 bg-white shadow-sm">
+<div class="p-4">
   <div class="col-12">
-    <div
-      class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3"
-    >
-      <h4 class="fw-bold text-success mb-0">Manage Units</h4>
+    <div class="d-flex justify-content-between align-items-center">
+      <h4 class="fw-bold text-success" style="padding-left: 18px">
+        Manage Units
+      </h4>
 
       <!-- Search Bar -->
       <input
@@ -39,19 +39,23 @@
         [(ngModel)]="searchTerm"
         style="max-width: 300px"
       />
-       <div class="dropdown">
+      <div class="d-flex align-items-center gap-2">
+        <label class="fw-bold text-success mb-0">STATUS:</label>
+        <div class="dropdown">
           <button
             class="btn btn-light text-dark fw-semibold dropdown-toggle bg"
             type="button"
-            data-toggle="tooltip" data-placement="top" title="Status"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Status"
             data-bs-toggle="dropdown"
             aria-expanded="false"
+            style="width: 100px"
           >
             {{ selectedFilter }}
           </button>
 
           <ul class="dropdown-menu">
-            
             <li>
               <button class="dropdown-item" (click)="changeFilter('All')">
                 All
@@ -69,10 +73,16 @@
             </li>
           </ul>
         </div>
+      </div>
 
-      <button class="btn btn-light text-dark fw-semibold" 
-      (click)="openAddModal()" data-toggle="tooltip" data-placement="top" title="Add Unit">
-        <i class="bi bi-plus-circle" ></i>
+      <button
+        class="btn btn-light text-dark fw-semibold"
+        (click)="openAddModal()"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Add Unit"
+      >
+        <i class="bi bi-plus-circle"></i>
         Add New
       </button>
     </div>
@@ -91,13 +101,14 @@
             *ngIf="units.length > 0"
             class="table table-bordered table-hover shadow-sm small-table align-middle text-start"
           >
-            <thead class="table-success">
+            <thead class="table-success sticky-header">
               <tr>
-                <th style="background: #d4f8d4; color: #0a5c0a">SL.No</th>
-                <th style="background: #d4f8d4; color: #0a5c0a">Unit Name</th>
-                <th style="background: #d4f8d4; color: #0a5c0a">Unit Code</th>
-                <th style="background: #d4f8d4; color: #0a5c0a">Status</th>
-                <th style="background: #d4f8d4; color: #0a5c0a">Actions</th>
+                <th class="light-green">S.No</th>
+                <th class="light-green">Unit Name</th>
+                <th class="light-green">Unit Description</th>
+                <th class="light-green">Unit Code</th>
+                <th class="light-green">Status</th>
+                <th class="light-green">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -107,8 +118,18 @@
               >
                 <td>{{ i + 1 }}</td>
                 <td>{{ u.units_name }}</td>
+                <td>{{u.unit_description}}</td>
                 <td>{{ u.unit }}</td>
-                <td>{{ u.status }}</td>
+                <td>
+                  <span
+                    class="badge"
+                    [ngClass]="
+                      u.status === 'active' ? 'bg-success' : 'bg-danger'
+                    "
+                  >
+                    {{ u.status }}
+                  </span>
+                </td>
                 <td>
                   <button
                     class="btn btn-sm btn-outline-primary me-2"
@@ -138,7 +159,7 @@
     aria-labelledby="unitModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
       <div class="modal-content">
         <form [formGroup]="UnitForm" (ngSubmit)="createOrUpdateUnit()">
           <div class="modal-header">
@@ -154,7 +175,7 @@
 
           <div class="modal-body">
             <div class="row g-3">
-              <div class="col-md-6 mb-2">
+              <div class="col-md-12 mb-2">
                 <label class="form-label">Unit Name</label>
                 <input
                   type="text"
@@ -175,7 +196,31 @@
                   </small>
                 </div>
               </div>
-              <div class="col-md-6 mb-2">
+
+               <div class="col-md-12 mb-2">
+                <label class="form-label">Unit Description</label>
+                <input
+                  type="text"
+                  formControlName="unit_description"
+                  class="form-control"
+                  placeholder="Enter Description"
+                  (input)="removeFirstSpace()"
+                />
+
+                <div
+                  *ngIf="
+                    UnitForm.controls['unit_description']?.touched &&
+                    UnitForm.controls['unit_description']?.invalid
+                  "
+                >
+                  <small class="text-danger">
+                    Only letters allowed. Space only between words.
+                  </small>
+                </div>
+              </div>
+
+
+              <!-- <div class="col-md-4 mb-2">
                 <label class="form-label">Unit code</label>
                 <input
                   type="text"
@@ -183,6 +228,7 @@
                   class="form-control"
                   placeholder="Enter unit"
                   (keypress)="allowOnlyNumbers($event)"
+                  readonly
                 />
                 <div
                   *ngIf="
@@ -196,8 +242,8 @@
                     >unit is required
                   </small>
                 </div>
-              </div>
-              <div class="col-md-6 mb-2">
+              </div> -->
+              <div class="col-md-12 mb-2" *ngIf="selectedId">
                 <label class="form-label fw-semibold">Status</label>
                 <select class="form-select" formControlName="status">
                   <option value="">Select Status</option>
@@ -210,7 +256,8 @@
 
           <div class="modal-footer">
             <button type="submit" class="btn btn-success">
-              {{ selectedId ? "Update" : "Create" }}
+              <i *ngIf="!selectedId" class="bi bi-save me-1"></i>
+              {{ selectedId ? "Update" : "Save" }}
             </button>
             <button
               type="button"

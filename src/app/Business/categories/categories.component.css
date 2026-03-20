@@ -1,5 +1,5 @@
 .table-wrapper {
-  max-height: 400px;        /* Adjust height as needed */
+  max-height: 500px;        /* Adjust height as needed */
   overflow-y: auto;
 }
 
@@ -13,9 +13,12 @@
   position: sticky;
   top: 0;
   z-index: 2;
-  background-color: #d4f8d4; /* same as your header color */
 }
 
 .table-responsive {
   overflow-x: auto;
 }
+.light-green {
+  color: #0a5c0a;
+}
+

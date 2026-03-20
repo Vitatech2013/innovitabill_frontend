@@ -30,6 +30,7 @@ export class ItemsComponent implements OnInit {
   allSubCategories: any;
   units: any;
   users_id: string = '';
+items: any[] = [];
 
   selectedImageFile!: File | null;
 
@@ -51,12 +52,7 @@ export class ItemsComponent implements OnInit {
         ],
       ],
       item_code: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.pattern('^[a-zA-Z0-9]+$'),
-        ],
+        ''
       ],
       unit_id: ['', Validators.required],
       selling_price: [
@@ -125,7 +121,15 @@ export class ItemsComponent implements OnInit {
     this.categoriesGet();
     this.subCategoriesGet();
     this.unitsGet();
+    this.loadItems();
   }
+  loadItems() {
+  this.service.getItems(this.business_id).subscribe({
+    next: (res: any) => {
+      this.items = res.data || [];
+    }
+  });
+}
 
   categoriesGet() {
     this.service.getCategories(this.business_id).subscribe({
@@ -169,6 +173,19 @@ export class ItemsComponent implements OnInit {
   }
 
   saveItems() {
+      console.log(this.addItemsForm.value);
+  console.log(this.addItemsForm.valid);
+  
+
+  Object.keys(this.addItemsForm.controls).forEach(key => {
+    const control = this.addItemsForm.get(key);
+    if (control?.invalid) {
+      console.log(key, control.errors);
+    }
+  });
+
+
+     this.addItemsForm.markAllAsTouched(); 
     if (this.addItemsForm.invalid) {
       this.toastr.warning(
         'Please fill all required fields correctly.',
@@ -177,11 +194,33 @@ export class ItemsComponent implements OnInit {
       return;
     }
 
+    
     const f = this.addItemsForm.value;
-    const formData = new FormData();
+const formData = new FormData();
+
+let itemCode = f.item_code;
+
+if (!itemCode) {
+
+  let lastCode = localStorage.getItem('lastItemCode') || 'LP000';
+
+  const numberPart = parseInt(lastCode.replace('LP', '')) + 1;
+
+  itemCode = 'LP' + numberPart.toString().padStart(3, '0');
+
+  localStorage.setItem('lastItemCode', itemCode);
+} 
+// ✅ ADD THIS BLOCK
+let lastBarcode = localStorage.getItem('lastBarcode') || 'BC000';
+const barcodeNumber = parseInt(lastBarcode.replace('BC', '')) + 1;
+const barcode = 'BC' + barcodeNumber.toString().padStart(3, '0');
+localStorage.setItem('lastBarcode', barcode);
+
+console.log("Generated Barcode:", barcode);
+
 
     formData.append('item_name', f.item_name);
-    formData.append('item_code', f.item_code);
+    formData.append('item_code', itemCode);
     formData.append('purchase_price', f.purchase_price);
     formData.append('selling_price', f.selling_price);
     formData.append('tax_rate', f.tax_rate);
@@ -190,6 +229,7 @@ export class ItemsComponent implements OnInit {
     formData.append('min_stock_alert', f.min_stock_alert);
     formData.append('description', f.description);
     formData.append('brand_name', f.brand_name);
+    formData.append('barcode', f.barcode);
     formData.append('category_id', f.category_id);
     formData.append('sub_category_id', f.sub_category_id);
     formData.append('unit_id', f.unit_id);
@@ -219,6 +259,28 @@ export class ItemsComponent implements OnInit {
   onFileSelect(event: any) {
     this.selectedImageFile = event.target.files[0] || null;
   }
+ generateBrandCode(brandName: string): string {
+  if (!brandName) return '';
+
+  const prefix = brandName.substring(0, 3).toUpperCase();
+
+  const count = this.items.filter(
+    (item) =>
+      item.brand_name?.toLowerCase() === brandName.toLowerCase()
+  ).length;
+
+  const nextNumber = count + 1;
+
+  return prefix + nextNumber.toString().padStart(3, '0');
+}
+onBrandChange() {
+  const brandName = this.addItemsForm.get('brand_name')?.value;
+  const code = this.generateBrandCode(brandName);
+
+  this.addItemsForm.patchValue({
+    barcode: code   // or brand_code field unte adi use cheyandi
+  });
+}
 
   onInputAlphabetsOnly(event: Event) {
     const input = event.target as HTMLInputElement;

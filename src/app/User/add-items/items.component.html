@@ -1,16 +1,60 @@
-<div class="card shadow-sm p-3 mb-2 small-card scrollable-card">
-  <h4 class="mb-2 fw-bold">Add Items</h4>
+<div class="card shadow-sm p-3 mb-2 small-card scrollable-card mt-4">
+  <h4 class="mb-2 fw-bold text-success">Add Items</h4>
 
   <form
     [formGroup]="addItemsForm"
     (ngSubmit)="saveItems()"
     enctype="multipart/form-data"
   >
-    <div class="row g-2 item-form">
-      <div class="col-md-3">
-        <label class="form-label fw-bold">Item Name
+    <div class="row g-3 item-form">
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Categories
           <span class="text-danger">*</span>
-        </label> 
+        </label>
+        <select class="form-select" formControlName="category_id">
+          <option value="">Select Categories</option>
+          <option *ngFor="let cat of categories" [value]="cat._id">
+            {{ cat.categories_name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Sub-Categories
+          <span class="text-danger">*</span>
+        </label>
+        <select class="form-select" formControlName="sub_category_id">
+          <option value="">Select Sub categories</option>
+          <option *ngFor="let subcat of subCategories" [value]="subcat._id">
+            {{ subcat.sub_category_name }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Brand Name
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="brand_name"
+          placeholder="Enter Brand name"
+          (input)="onInputAlphabetsOnly($event)"
+           (input)="onBrandChange()"
+        />
+        <small *ngIf="isInvalid('brand_name')" class="text-danger">
+          Brand name is required
+        </small>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Item Name
+          <span class="text-danger">*</span>
+        </label>
         <input
           type="text"
           class="form-control"
@@ -23,8 +67,9 @@
         </small>
       </div>
 
-      <div class="col-md-3">
-        <label class="form-label fw-bold">Item Code
+      <!-- <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Item Code
           <span class="text-danger">*</span>
         </label>
         <input
@@ -37,10 +82,11 @@
         <small *ngIf="isInvalid('item_code')" class="text-danger">
           Item code is required and must be at least 3 letters
         </small>
-      </div>
+      </div> -->
 
-      <div class="col-md-3">
-        <label class="form-label fw-bold">Units
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Units
           <span class="text-danger">*</span>
         </label>
         <select class="form-select" formControlName="unit_id">
@@ -50,9 +96,24 @@
           </option>
         </select>
       </div>
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Image
+          <span class="text-danger">*</span>
+        </label>
+        <input
+          type="file"
+          class="form-control"
+          (change)="onFileSelect($event)"
+        />
+        <small *ngIf="isInvalid('image')" class="text-danger">
+          Image is required
+        </small>
+      </div>
 
-      <div class="col-md-3">
-        <label class="form-label fw-bold">Price
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Price
           <span class="text-danger">*</span>
         </label>
         <input
@@ -67,8 +128,9 @@
         </small>
       </div>
 
-      <div class="col-md-3">
-        <label class="form-label fw-bold">Purchase price
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Purchase price
           <span class="text-danger">*</span>
         </label>
         <input
@@ -83,8 +145,9 @@
         </small>
       </div>
 
-      <div class="col-md-3">
-        <label class="form-label fw-bold">Tax
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Tax
           <span class="text-danger">*</span>
         </label>
         <input
@@ -100,8 +163,9 @@
         </small>
       </div>
 
-      <div class="col-md-3">
-        <label class="form-label fw-bold">Stock
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Stock
           <span class="text-danger">*</span>
         </label>
         <input
@@ -115,41 +179,9 @@
           Stock is required
         </small>
       </div>
-
-      <div class="col-md-3">
-        <label class="form-label fw-bold">Brand Name
-          <span class="text-danger">*</span>
-        </label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="brand_name"
-          placeholder="Enter Brand name"
-          (input)="onInputAlphabetsOnly($event)"
-        />
-        <small *ngIf="isInvalid('brand_name')" class="text-danger">
-          Brand name is required
-        </small>
-      </div>
-
-      <div class="col-md-3">
-        <label class="form-label fw-bold">Discount
-          <span class="text-danger">*</span>
-        </label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="discount"
-          placeholder="Enter discount"
-          (input)="onInputNumbersAndSpecial($event)"
-        />
-        <small *ngIf="isInvalid('discount')" class="text-danger">
-          Discount is required
-        </small>
-      </div>
-
-      <div class="col-md-3">
-        <label class="form-label fw-bold">Stock Alert
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Stock Alert
           <span class="text-danger">*</span>
         </label>
         <input
@@ -164,44 +196,26 @@
         </small>
       </div>
 
-      <div class="col-md-3">
-        <label class="form-label fw-bold">Categories
-          <span class="text-danger">*</span>
-        </label>
-        <select class="form-select" formControlName="category_id">
-          <option value="">Select Categories</option>
-          <option *ngFor="let cat of categories" [value]="cat._id">
-            {{ cat.categories_name }}
-          </option>
-        </select>
-      </div>
-
-      <div class="col-md-3">
-        <label class="form-label fw-bold">Sub-Categories
-          <span class="text-danger">*</span>
-        </label>
-        <select class="form-select" formControlName="sub_category_id">
-          <option value="">Select Sub categories</option>
-          <option *ngFor="let subcat of subCategories" [value]="subcat._id">
-            {{ subcat.sub_category_name }}
-          </option>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <label class="form-label fw-bold">Image
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Discount
           <span class="text-danger">*</span>
         </label>
         <input
-          type="file"
+          type="text"
           class="form-control"
-          (change)="onFileSelect($event)"
+          formControlName="discount"
+          placeholder="Enter discount"
+          (input)="onInputNumbersAndSpecial($event)"
         />
-        <small *ngIf="isInvalid('image')" class="text-danger">
-          Image is required
+        <small *ngIf="isInvalid('discount')" class="text-danger">
+          Discount is required
         </small>
       </div>
-      <div class="col-md-3">
-        <label class="form-label fw-bold">Description
+
+      <div class="col-md-4">
+        <label class="form-label fw-bold"
+          >Description
           <span class="text-danger">*</span>
         </label>
         <textarea
@@ -220,13 +234,21 @@
       <button
         type="button"
         class="btn btn-secondary me-2 px-4"
-        data-toggle="tooltip" data-placement="top" title="Cancel"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Cancel"
         (click)="cancelAdd()"
       >
         <i class="bi bi-x-circle me-1"></i> Cancel
       </button>
 
-      <button type="submit" class="btn btn-success px-4" data-toggle="tooltip" data-placement="top" title="Save">
+      <button
+        type="submit"
+        class="btn btn-success px-4"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Save"
+      >
         <i class="bi bi-save me-1"></i>
         {{ selectedBusiness ? "Update" : "Save" }}
       </button>

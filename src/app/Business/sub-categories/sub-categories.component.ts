@@ -31,8 +31,8 @@ export class SubCategoriesComponent implements OnInit {
   c: any;
   categories_id: any;
   searchTerm: string = '';
-  selectedFilter: string = 'status';
-  statusFilter: 'active' | 'inactive' | 'all' = 'all';
+  selectedFilter: string = 'Active';
+  statusFilter: 'active' | 'inactive' | 'all' = 'active';
   constructor(private fb: FormBuilder, private api: BillingService) {}
 
   ngOnInit(): void {
@@ -81,13 +81,25 @@ export class SubCategoriesComponent implements OnInit {
       event.preventDefault();
     }
   }
+  generateSubCategoryCode(): string {
+  const nextNumber = this.subcategories.length + 1;
+  return 'SC' + nextNumber.toString().padStart(3, '0');
+}
 
-  openAddModal(): void {
-    this.title = 'Add subcategory';
-    this.selectedcategory = null;
-    this.subCategoryForm.reset();
-    (document.getElementById('subcategoryModel') as any)?.classList.add('show');
-  }
+ openAddModal(): void {
+  this.title = 'Add subcategory';
+  this.selectedcategory = null;
+  this.subCategoryForm.reset();
+
+  const code = this.generateSubCategoryCode();
+
+  this.subCategoryForm.patchValue({
+    sub_category_code: code,
+     status: 'active'
+  });
+
+  (document.getElementById('subcategoryModel') as any)?.classList.add('show');
+}
   resetForm() {
     this.subCategoryForm.reset();
     this.selectedcategory = null;
