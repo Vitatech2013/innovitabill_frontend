@@ -1,29 +1,32 @@
-<div class="row p-2">
-  <div class="col-md-8 order-md-1">
-   <div class="search-box text-center w-100">
+<div class="row p-2 align-items-stretch">
+  <div class="col-md-8 order-md-1 ">
+<div class="d-flex align-items-center gap-3 mb-3">
 
+  <h4 class="mb-0 fw-bold text-success">Create Sale</h4>
 
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Search"
-        [(ngModel)]="searchTerm"
-        style="max-width: 300px"
-      />
-    </div>
-    <div class="card-table">
+  <div class="search-box mt-2" style="width: 600px;">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search"
+      [(ngModel)]="searchTerm"
+    />
+  </div>
+
+</div>
+    <div class="card-table" style="width: 1000px;">
       <div class="table-responsive mt-2">
         <table class="table table-hover align-middle item-table">
-          <thead class="table-light">
+          <thead class="table-light sticky-header">
             <tr>
-              <th>Image</th>
-              <th>Brand</th>
-              <th>Item</th>
-              <th>Price</th>
-              <th>Discount</th>
-              <th>Tax</th>
-              <th>Stock</th>
-              <th class="sticky-action">Action</th>
+              <th class="light-green">Image</th>
+              <th class="light-green">Brand</th>
+              <th class="light-green">Item</th>
+              <th class="light-green">Price</th>
+              <th class="light-green">Discount</th>
+              <th class="light-green">Tax</th>
+              <th class="light-green">Stock</th>
+              <th class="sticky-action light-green">Action</th>
             </tr>
           </thead>
 
@@ -80,27 +83,22 @@
     </div>
   </div>
 
-  <div class="col-md-4 order-md-1">
+  <div class="col-md-4 order-md-1 mt-md-8" style="max-height:420px; margin-top:75px; width: 250px; margin-left: 170px; padding-top: 60px;">
     <div
       class="selected-items scrollable-cart"
       [ngClass]="{ 'empty-state': cartItems.length === 0 }"
     >
-      <div *ngIf="cartItems.length === 0" class="empty-wrapper">
-        <h4><i class="bi bi-cart4"></i> Cart</h4>
+      <div *ngIf="cartItems.length === 0" class="empty-wrapper light-green">
+        <h4 ><i class="bi bi-cart4"></i> Cart</h4>
         <div class="empty">No items added yet</div>
       </div>
 
       <div *ngIf="cartItems.length > 0">
-        <h4><i class="bi bi-cart4"></i> Cart</h4>
+        <h4 class="light-green"><i class="bi bi-cart4"></i> Cart</h4>
 
-        <div class="selected-card" *ngFor="let item of cartItems">
+        <div class="selected-card " *ngFor="let item of cartItems">
           <div class="cart-content">
-            <div class="cart-left">
-              <span class="cart-brand">{{ item.brand_name }}</span>
-              <div class="cart-item-name">{{ item.item_name }}</div>
-            </div>
-
-            <div class="cart-image">
+               <div class="cart-image">
               <img
                 *ngIf="item.image"
                 [src]="getImageUrl(item.image)"
@@ -108,20 +106,27 @@
                 data-toggle="tooltip"
                 data-placement="top"
                 title="Item Image"
+                style="width: 70px; height: 60px; padding-left: 30px;" 
               />
             </div>
+            <div class="cart-left me-2" style="margin-left: 20%;">
+              <span class="cart-brand">{{ item.brand_name }}</span>
+              <div class="cart-item-name">{{ item.item_name }}</div>
+            </div>
+
+         
           </div>
 
           <hr class="cart-divider" />
 
-          <div class="cart-body">
+          <div class="cart-body" style="padding-left: 50px;">
             <p><strong>Price:</strong> ₹{{ item.selling_price }}</p>
             <p><strong>Discount:</strong> ₹{{ item.discount || 0 }}</p>
             <p><strong>Tax:</strong> {{ item.tax_rate || 0 }}%</p>
-            <p>
+            <!-- <p>
               <strong>Available:</strong>
               {{ getAvailableStock(item._id) }}
-            </p>
+            </p> -->
             <p class="cart-total fs-4">
               <strong>Total:</strong> ₹{{ getItemTotal(item) }}
             </p>
@@ -159,6 +164,7 @@
             data-toggle="tooltip"
             data-placement="top"
             title="Generate Bill"
+            
           >
             Generate Bill
           </button>

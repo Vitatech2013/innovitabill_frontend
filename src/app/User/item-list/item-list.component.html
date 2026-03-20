@@ -1,75 +1,93 @@
-<div class="container-fluid">
+<div class="container-fluid mt-4">
   <div *ngIf="!isCreatingInvoice()">
-    <div class="card border rounded-4 p-4 bg-white shadow-sm">
+    <div class="shadow-sm">
       <div class="row">
         <div
           class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 mb-3"
         >
-          <h4 class="mb-3">Available Items</h4>
+          <h4 class="mb-3 fw-bold text-success">Available Items</h4>
 
           <div class="search-box">
             <input
               type="text"
               class="form-control"
+              style="width: 300px"
               placeholder="Search"
               [(ngModel)]="searchTerm"
             />
           </div>
-          <div class="dropdown">
-            <button
-              class="btn btn-light text-dark fw-semibold dropdown-toggle bg"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              data-toggle="tooltip"
-              data-placement="top"
-              title="Status"
-            >
-              {{ selectedFilter }}
-            </button>
+          <div class="d-flex align-items-center justify-content-end gap-2 mt-2">
+            <label class="fw-bold text-success mb-0">STATUS:</label>
 
-            <ul class="dropdown-menu">
-              <li>
-                <button class="dropdown-item" (click)="changeFilter('All')">
-                  All
-                </button>
-              </li>
-              <li>
-                <button class="dropdown-item" (click)="changeFilter('Active')">
-                  Active
-                </button>
-              </li>
-              <li>
-                <button
-                  class="dropdown-item"
-                  (click)="changeFilter('Inactive')"
-                >
-                  Inactive
-                </button>
-              </li>
-            </ul>
+            <div class="dropdown me-2">
+              <button
+                class="btn btn-light text-dark fw-semibold dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                title="Status"
+                style="width: 100px"
+              >
+                {{ selectedFilter }}
+              </button>
+
+              <ul class="dropdown-menu">
+                <li>
+                  <button class="dropdown-item" (click)="changeFilter('All')">
+                    All
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item"
+                    (click)="changeFilter('Active')"
+                  >
+                    Active
+                  </button>
+                </li>
+                <li>
+                  <button
+                    class="dropdown-item"
+                    (click)="changeFilter('Inactive')"
+                  >
+                    Inactive
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <a
+              class="btn btn-light text-dark fw-semibold me-2"
+              routerLink="/userview/items"
+              routerLinkActive="active-btn"
+            >
+              <b><i class="bi bi-plus-circle me-1"></i></b> Add Items
+            </a>
           </div>
         </div>
 
         <div class="table-wrapper">
-          <div class="table-responsive">
+          <div class="table-responsive table-scroll">
             <table
               class="table table-bordered table-hover align-middle text-start"
             >
-              <thead class="table-success">
+              <thead class="table-success sticky-header">
                 <tr>
-                  <th>Item Name</th>
-                  <th>Brand</th>
-                  <th>Price (₹)</th>
+                  <th class="light-green">S.No</th>
+                  <th class="light-green">Item Name</th>
+                  <th class="light-green">Item Code</th>
+                  <th class="light-green">Brand</th>
+                  <!-- <th class="light-green">BarCode</th> -->
+                  
+                  <th class="light-green">Price (₹)</th>
 
-                  <th>Available Quantity</th>
-                  <th>Status</th>
-                  <th>Actions</th>
+                  <th class="light-green">Available Quantity</th>
+                  <th class="light-green">Status</th>
+                  <th class="light-green">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr
-                  *ngFor="let it of filteredItems()"
+                  *ngFor="let it of filteredItems(); let i = index"
                   [ngClass]="{
                     'low-stock': it.stock_quantity <= 5,
                     'medium-stock':
@@ -77,16 +95,30 @@
                     'high-stock': it.stock_quantity > 15,
                   }"
                 >
+                  <td>{{ i + 1 }}</td>
                   <td>{{ it.item_name }}</td>
+                  <td>{{ it.item_code }}</td>
                   <td>{{ it.brand_name }}</td>
+                  <!-- <td>{{ it.barcode }}</td> -->
+                  
+
                   <td>₹{{ it.selling_price }}</td>
 
                   <td>{{ it.stock_quantity }}</td>
-                  <td>{{ it.status }}</td>
+                  <td>
+                    <span
+                      class="badge"
+                      [ngClass]="
+                        it.status === 'active' ? 'bg-success' : 'bg-danger'
+                      "
+                    >
+                      {{ it.status }}
+                    </span>
+                  </td>
                   <td>
                     <div class="d-flex justify-content-start gap-2">
                       <button
-                        class="btn btn-sm btn-success me-2"
+                        class="btn btn-sm btn-outline-info me-1"
                         data-toggle="tooltip"
                         data-placement="top"
                         title="View"
@@ -95,16 +127,16 @@
                         <b><i class="bi bi-eye"></i></b>
                       </button>
                       <button
-                        class="btn btn-sm btn-warning me-2"
+                        class="btn btn-sm btn-outline-primary me-1"
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Edit"
                         (click)="editItem(it)"
                       >
-                        <i class="bi bi-pencil"></i>
+                        <i class="bi bi-pencil-square"></i>
                       </button>
                       <button
-                        class="btn btn-sm btn-danger"
+                        class="btn btn-sm btn-outline-danger"
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Delete"
@@ -150,43 +182,43 @@
           <div class="modal-body p-3">
             <div class="table-responsive">
               <table
-                class="table1 table-bordered align-middle file-center mb-0"
+                class="table table-bordered table-hover table-striped align-middle text-start"
               >
                 <thead class="table-success">
                   <tr>
-                    <th>Item Name</th>
-                    <th>Item Code</th>
-
-                    <th>Purchase Price</th>
-                    <th>Selling Price</th>
-                    <th>Tax</th>
-                    <th>Qunatity</th>
-                    <th>Description</th>
-                    <th>Brand Name</th>
-                    <th>Discount</th>
-                    <th>Stock Alert</th>
-                    <th>Image</th>
-                    <th>Status</th>
+                    <th class="light-green">Item Name</th>
+                    <th class="light-green">Item Code</th>
+                    <th class="light-green">Brand Name</th>
+                    <!-- <th class="light-green">BarCode</th> -->
+                    <th class="light-green">Purchase Price</th>
+                    <th class="light-green">Selling Price</th>
+                    <th class="light-green">Tax</th>
+                    <th class="light-green">Qunatity</th>
+                    <th class="light-green">Description</th>              
+                    <th class="light-green">Discount</th>
+                    <th class="light-green">Stock Alert</th>
+                    <th class="light-green">Image</th>
+                    <th class="light-green">Status</th>
                   </tr>
                 </thead>
                 <tbody *ngIf="selectedItems">
                   <tr>
                     <td>{{ selectedItems.item_name }}</td>
                     <td>{{ selectedItems.item_code }}</td>
-
+                     <td>{{ selectedItems.brand_name }}</td>
+                    <!-- <td>{{ selectedItems.barcode }}</td> -->
                     <td>{{ selectedItems.purchase_price }}</td>
                     <td>{{ selectedItems.selling_price }}</td>
                     <td>{{ selectedItems.tax_rate }}</td>
                     <td>{{ selectedItems.stock_quantity }}</td>
                     <td>{{ selectedItems.description }}</td>
-                    <td>{{ selectedItems.brand_name }}</td>
                     <td>{{ selectedItems.discount }}</td>
                     <td>{{ selectedItems.min_stock_alert }}</td>
                     <td>
                       <img
                         [src]="selectedItems.imageUrl"
                         alt="Item Image"
-                        class="img-thumbnail item-image"
+                        class="img-thumbnail item-image w-10 h-10vh"
                         (click)="openImageModal(selectedItems.imageUrl)"
                       />
                     </td>
@@ -229,7 +261,7 @@
       aria-labelledby="editItemModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-dialog width modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg rounded-4">
           <div class="modal-header bg-success text-white">
             <h5 class="modal-title" id="editItemModalLabel">Edit Item</h5>
@@ -243,7 +275,54 @@
 
           <div class="modal-body">
             <form [formGroup]="editForm" enctype="multipart/form-data">
-              <div class="row g-3">
+              <div class="row g-2">
+                <div class="col-md-4">
+                  <label class="form-label">Categories</label>
+                  <select class="form-select" formControlName="category_id">
+                    <option value="">Select Categories</option>
+                    <option *ngFor="let cat of categories" [value]="cat._id">
+                      {{ cat.categories_name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Sub-Categories</label>
+                  <select class="form-select" formControlName="sub_category_id">
+                    <option value="">Select Sub categories</option>
+                    <option
+                      *ngFor="let subcat of subCategories"
+                      [value]="subcat._id"
+                    >
+                      {{ subcat.sub_category_name }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Brand Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="brand_name"
+                    placeholder="Enter Brand Name"
+                  />
+                  <small *ngIf="isInvalid('brand_name')" class="text-danger">
+                    Brand Name is required
+                  </small>
+                </div>
+                  <!-- <div class="col-md-4">
+                  <label class="form-label fw-semibold">Barcode</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="barcode"
+                    placeholder="Enter BarCode"
+                  />
+                  <small *ngIf="isInvalid('barcode')" class="text-danger">
+                    BarCode is required
+                  </small>
+                </div> -->
+
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">Item Name</label>
                   <input
@@ -257,7 +336,7 @@
                   </small>
                 </div>
 
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                   <label class="form-label fw-semibold">Item Code</label>
                   <input
                     type="text"
@@ -268,7 +347,7 @@
                   <small *ngIf="isInvalid('item_code')" class="text-danger">
                     Item code is required and must be at least 3 letters
                   </small>
-                </div>
+                </div> -->
 
                 <div class="col-md-4">
                   <label class="form-label">Units</label>
@@ -278,6 +357,26 @@
                       {{ unit.units_name }}
                     </option>
                   </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Image</label>
+
+                  <div class="input-group">
+                    <label class="input-group-text choose-btn text-dark">
+                      Choose File
+                      <input
+                        type="file"
+                        class="d-none"
+                        (change)="onCustomFileSelect($event, 'image')"
+                      />
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="selectedImage || 'No file chosen'"
+                      readonly
+                    />
+                  </div>
                 </div>
 
                 <div class="col-md-4">
@@ -352,19 +451,6 @@
                 </div>
 
                 <div class="col-md-4">
-                  <label class="form-label fw-semibold">Brand Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="brand_name"
-                    placeholder="Enter Brand name"
-                  />
-                  <small *ngIf="isInvalid('brand_name')" class="text-danger">
-                    Brand name is required
-                  </small>
-                </div>
-
-                <div class="col-md-4">
                   <label class="form-label fw-semibold">Discount</label>
                   <input
                     type="text"
@@ -393,19 +479,6 @@
                   </small>
                 </div>
 
-                <div class="col-md-4">
-                  <label class="form-label">Sub-Categories</label>
-                  <select class="form-select" formControlName="sub_category_id">
-                    <option value="">Select Sub categories</option>
-                    <option
-                      *ngFor="let subcat of subCategories"
-                      [value]="subcat._id"
-                    >
-                      {{ subcat.sub_category_name }}
-                    </option>
-                  </select>
-                </div>
-
                 <!-- <div class="col-md-4">
               <label class="form-label">Users</label>
               <select class="form-select" formControlName="user_id">
@@ -415,36 +488,6 @@
                 </option>
               </select>
             </div> -->
-
-                <div class="col-md-4">
-                  <label class="form-label">Categories</label>
-                  <select class="form-select" formControlName="category_id">
-                    <option value="">Select Categories</option>
-                    <option *ngFor="let cat of categories" [value]="cat._id">
-                      {{ cat.categories_name }}
-                    </option>
-                  </select>
-                </div>
-                <div class="col-md-4">
-                  <label class="form-label fw-semibold">Image</label>
-
-                  <div class="input-group">
-                    <label class="input-group-text choose-btn text-dark">
-                      Choose File
-                      <input
-                        type="file"
-                        class="d-none"
-                        (change)="onCustomFileSelect($event, 'image')"
-                      />
-                    </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      [value]="selectedImage || 'No file chosen'"
-                      readonly
-                    />
-                  </div>
-                </div>
               </div>
 
               <div class="text-center mt-4">
@@ -456,7 +499,7 @@
                   data-placement="top"
                   title="Update"
                 >
-                  Update Item
+                  Update
                 </button>
               </div>
             </form>

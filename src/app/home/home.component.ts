@@ -34,6 +34,7 @@ submitted = false;
 
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'info' | 'warning' | null = null;
+captchaText: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -48,6 +49,7 @@ submitted = false;
       email: ['', [Validators.required, Validators.email]],
       message: ['', Validators.required],
     });
+      this.generateCaptcha();
   }
 allowOnlyNumbers(event: KeyboardEvent) {
   const charCode = event.which ? event.which : event.keyCode;
@@ -86,6 +88,13 @@ onNameInput(event: Event, controlName: string) {
       this.demoModal.show();
     }
   }
+  generateCaptcha() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  this.captchaText = '';
+  for (let i = 0; i < 6; i++) {
+    this.captchaText += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+}
 
   sendEmail() {
     if (this.demoForm.invalid) {

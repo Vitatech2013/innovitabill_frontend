@@ -1,0 +1,70 @@
+.custom-card {
+  background: #fff;
+  padding: 40px 30px;
+  border: 1px solid #eee;
+  transition: 0.3s;
+  height: 100%;
+}
+
+.custom-card:hover {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+
+.icon i {
+  font-size: 40px;
+  color: #555;
+}
+
+
+.title {
+  font-size: 20px;
+  color: #1a73e8; 
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+
+.desc {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+
+.learn {
+  font-size: 15px;
+  color: #1a73e8;
+  text-decoration: underline;
+}
+
+.learn:hover {
+  color: #0b5ed7;
+}
+
+.custom_navbar {
+  background: #fff;
+}
+
+.logo {
+  height: 40px;
+}
+
+
+
+
+
+
+
+/* DESC */
+.desc {
+  font-size: 15px;
+  color: #444;
+}
+
+/* LINK */
+.learn {
+  color: #1a73e8;
+  text-decoration: underline;
+}

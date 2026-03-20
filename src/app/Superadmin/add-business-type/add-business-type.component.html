@@ -67,11 +67,12 @@
               Business Code <span class="text-danger">*</span>
             </label>
             <input
-              type="text"
+              type="hidden" 
               class="form-control w-100 p2"
               formControlName="business_code"
               placeholder="Enter business code"
               (keydown)="preventSpace($event)"
+              
             />
             <small
               *ngIf="addBusinessTypeForm.get('business_code')?.errors?.['required'] && addBusinessTypeForm.get('business_code')?.touched"

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!-- saved from url=(0579)https://www.zoho.ae/lp/mar-com.html?ZohoMarkRef=https%3A%2F%2Fwww.zoho.com%2Fin%2Fbilling%2F%3Fnetwork%3Dg%26device%3Dc%26keyword%3Dbilling%2520software%26campaignid%3D9707632548%26creative%3D683333400897%26matchtype%3De%26adposition%3D%26placement%3D%26adgroup%3D105420488531%26targetid%3Dkwd-10478951%26gad_source%3D1%26gad_campaignid%3D9707632548%26gbraid%3D0AAAAACg11cJVuOTIx1wKya89HuspowQFc%26gclid%3DCj0KCQjwve7NBhC-ARIsALZy9HUHu5P4YVnitxZsmew3MG4jBBSL2MfibqJx4yAhcagH4yyPpl9IvREaAh6HEALw_wcB&ZohoMarkSrc=google%3Ainvoice%7Cadwords%3Abilling%7Cadwords%3Abilling&cookie-uid= -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Global Information</title><link rel="canonical" href="https://www.zoho.com/lp/mar-com.html"></head><body><script>
+
+function global_getUrlParam(sParam) {
+	var sPageURL = window.location.href.split('?')[1];
+	var sURLVariables = sPageURL.split('&'),
+		sParameterName, i;
+	for (i = 0; i < sURLVariables.length; i++) {
+		sParameterName = sURLVariables[i].split('=');
+		if (sParameterName[0] === sParam) {
+			return sParameterName[1] === undefined ? true : sParameterName[1];
+		}
+	}
+	return '';
+}  
+if(global_getUrlParam('czgetuinfo') != ''){
+    var getDomain=document.domain,splitUrl=getDomain.split("."),domainOne=splitUrl.pop(),Zdomain=splitUrl.pop();
+    if(domainOne == 'au'){
+        domainOne = 'com.au';
+        Zdomain=splitUrl.pop()
+    }
+    if(domainOne == 'ca'){
+        Zdomain = 'zohocloud'; 
+    }
+	var infoElm = document.createElement('script');
+    infoElm.className = "infoload";
+    infoElm.src = "https://accounts."+Zdomain+"."+domainOne+"/u/info";
+    document.getElementsByTagName('head')[0].appendChild(infoElm);
+    infoElm.onload = function(){
+	  if(typeof zohouser != 'undefined'){
+	    if(typeof zohouser.DC_INFO != 'undefined'){
+          window.parent.postMessage(zohouser.DC_INFO, "*");
+        }
+      }
+    }
+}else{
+	function createCookie(name,value,days) {
+		var getDomain = document.domain;
+		var splitUrl = getDomain.split('.');
+		var domainOne = splitUrl.pop();
+		(domainOne == 'au') ? domainOne = 'com.au' : '';
+		  if (days) {
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = "; expires="+date.toGMTString();
+		  } else var expires = "";
+		  if(domainOne == 'ca'){
+			document.cookie = name+"="+value+expires+"; path=/; SameSite=None; Secure; domain=.zohocloud."+domainOne;
+		  }else{
+	  		document.cookie = name+"="+value+expires+"; path=/; SameSite=None; Secure; domain=.zoho."+domainOne;
+		  }
+	}
+	createCookie("ZohoMarkRef", '"'+decodeURIComponent(global_getUrlParam('ZohoMarkRef'))+'"');
+	createCookie("ZohoMarkSrc", '"'+decodeURIComponent(global_getUrlParam('ZohoMarkSrc'))+'"');
+	createCookie("cookie-uid", '"'+decodeURIComponent(global_getUrlParam('cookie-uid'))+'"');
+	if(global_getUrlParam('catalystZMR') != ''){
+		createCookie("catalystZMR", '"'+decodeURIComponent(global_getUrlParam('catalystZMR'))+'"');
+	}
+    /*if (global_getUrlParam('payRef') != ''){
+		createCookie("PaymentsReferral", decodeURIComponent(global_getUrlParam('payRef')));
+	}*/
+  }
+</script>
+</body></html>

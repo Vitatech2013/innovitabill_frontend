@@ -1,4 +1,4 @@
-<!-- <div class="container-fluid">
+<div class="container-fluid body">
   <div class="row">
     <nav
       class="navbar navbar-expand-lg navbar-dark fixed-top bg-success px-3 w-100"
@@ -14,13 +14,13 @@
       <div class="ms-auto d-flex align-items-center">
         <div class="me-3 text-white text-end">
           <div class="fw-bold">{{ loggedInUser?.name }}</div>
-          
+
           <small><b>Role</b> : {{ loggedInUser?.role }}</small>
         </div>
 
         <div class="dropdown">
           <a
-            class="nav-link text-white d-flex align-items-center  "
+            class="nav-link text-white d-flex align-items-center"
             id="profileDropdown"
             role="button"
             data-bs-toggle="dropdown"
@@ -42,8 +42,10 @@
             <li>
               <button
                 class="dropdown-item text-danger"
+                 data-bs-toggle="modal"
+                data-bs-target="#logoutModal"
                 type="button"
-                (click)="logout()"
+                
               >
                 <i class="bi bi-box-arrow-right me-2"></i> Logout
               </button>
@@ -57,75 +59,118 @@
   <div class="row mt-5 pt-4">
     <div class="col-md-2">
       <div class="d-flex flex-column gap-2 mt-4">
-        <button
-          class="btn side-btn text-dark"
-          routerLink="/userview/itemlist"
-          routerLinkActive="active-btn"
-          [routerLinkActiveOptions]="{ exact: true }"
+        <div
+          *ngIf="
+            loggedInUser?.role === 'Admin' || loggedInUser?.role === 'Manager'
+          "
+          class="d-flex flex-column gap-2"
         >
-          <b><i class="bi bi-list-check me-2"></i></b>Items
-        </button>
-        <button
-          class="btn side-btn text-dark"
-          routerLink="/userview/items"
-          routerLinkActive="active-btn"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          <b> <i class="bi bi-plus-circle me-1"></i></b> Create Item
-        </button>
+          <button
+            class="btn side-btn text-dark"
+            routerLink="/userview/userdashboard"
+            routerLinkActive="active-btn"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <b><i class="bi bi-building-fill-dash me-2"></i></b>Dashboard
+          </button>
+          <button class="btn side-btn" routerLink="/userview/categories">
+            <i class="bi bi-receipt-cutoff"></i> Categories
+          </button>
 
-        <button
-          class="btn side-btn text-dark"
-          routerLink="/userview/saleslist"
-          routerLinkActive="active-btn"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          <b><i class="bi bi-file-earmark-bar-graph me-2"></i></b> Sales
-        </button>
+          <button class="btn side-btn" routerLink="/userview/sub-categories">
+            <i class="bi bi-diagram-2-fill"></i> Sub Categories
+          </button>
 
-        <button
-          class="btn side-btn text-dark"
-          routerLink="/userview/sale"
-          routerLinkActive="active-btn"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          <b> <i class="bi bi-plus-circle me-1"></i></b> Create Sale
-        </button>
+          <button class="btn side-btn" routerLink="/userview/units">
+            <i class="bi bi-bounding-box"></i> Units
+          </button>
 
-        <button
-          class="btn side-btn text-dark"
-          routerLink="/userview/salereports"
-          routerLinkActive="active-btn"
-          [routerLinkActiveOptions]="{ exact: true }"
+          <button class="btn side-btn" routerLink="/userview/itemlist">
+            <i class="bi bi-list-check"></i> Items
+          </button>
+
+          <button class="btn side-btn" routerLink="/userview/items">
+            <i class="bi bi-plus-circle"></i> Create Item
+          </button>
+
+          <button class="btn side-btn" routerLink="/userview/salereports">
+            <i class="bi bi-bar-chart"></i> Sales Reports
+          </button>
+
+          <button class="btn side-btn" routerLink="/userview/purchase">
+            <i class="bi bi-plus-circle"></i> Create Purchase
+          </button>
+
+          <button class="btn side-btn" routerLink="/userview/purchaselist">
+            <i class="bi bi-bag"></i> Purchase List
+          </button>
+
+          <button class="btn side-btn" routerLink="/userview/quotation">
+            <i class="bi bi-receipt-cutoff"></i> Quotation
+          </button>
+        </div>
+
+        <div
+          *ngIf="loggedInUser?.role === 'Cashier'"
+          class="d-flex flex-column gap-2"
         >
-          <b> <i class="bi bi-bar-chart me-1"></i></b>Sale Reports
-        </button>
-         <button
-          class="btn side-btn text-dark"
-          routerLink="/userview/purchase"
-          routerLinkActive="active-btn"
-          [routerLinkActiveOptions]="{ exact: true }"
+          <button class="btn side-btn" routerLink="/userview/saleslist">
+            <i class="bi bi-file-earmark-bar-graph"></i> Sales
+          </button>
+
+          <button class="btn side-btn" routerLink="/userview/sale">
+            <i class="bi bi-plus-circle"></i> Create Sale
+          </button>
+        </div>
+
+        <div
+          *ngIf="loggedInUser?.role === 'Accountant'"
+          class="d-flex flex-column gap-2"
         >
-          <b> <i class="bi bi-bag"></i></b>  Sale Purchase
-        </button>
-         <button
-          class="btn side-btn text-dark"
-          routerLink="/userview/purchaselist"
-          routerLinkActive="active-btn"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          <b> <i class="bi bi-bag"></i></b>  Purchase List
-        </button>
+          <button class="btn side-btn" routerLink="/userview/expenses">
+            <i class="bi bi-currency-rupee"></i> Expenses
+          </button>
+        </div>
+      </div>
+      
+    </div>
+     <div class="modal fade" id="logoutModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <p class="mb-0 fs-5">Are you sure you want to logout?</p>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#logoutModal"
+            (click)="logout()"
+          >
+            Yes, Logout
+          </button>
+        </div>
       </div>
     </div>
+  </div>
 
-    <div class="col-md-10 ">
+    <div class="col-md-10">
       <router-outlet></router-outlet>
     </div>
   </div>
-</div> -->
+</div>
 
-<nav class="navbar navbar-expand-lg bg-success px-3 w-100">
+<!-- <nav class="navbar navbar-expand-lg bg-success px-3 w-100">
   <button
     class="btn btn-outline-light me-2"
     style="font-size: small"
@@ -174,7 +219,7 @@
         aria-labelledby="userMenuButton"
       >
         <li>
-          <a class="dropdown-item" [routerLink]="['/provider/profile']"
+          <a class="dropdown-item" routerLink="userprofile"
             >Profile</a
           >
         </li>
@@ -182,8 +227,8 @@
       </ul>
     </div>
   </div>
-</nav>
-<div class="container-fluid">
+</nav> -->
+<!-- <div class="container-fluid">
   <div class="d-flex flex-grow-1">
     <nav
       class="sidebar bg-white border-end p-3 d-flex flex-column"
@@ -288,4 +333,4 @@
       <router-outlet></router-outlet>
     </div>
   </div>
-</div>
+</div> -->

@@ -28,8 +28,8 @@ export class RolesComponent implements OnInit {
   toastType: any;
   selectedRole: any;
   searchTerm: string = '';
-  selectedFilter: string = 'status';
-  statusFilter: 'active' | 'inactive' | 'all' = 'all';
+  selectedFilter: string = 'Active';
+  statusFilter: 'active' | 'inactive' | 'all' = 'active';
 
   constructor(private api: BusinessService, private fb: FormBuilder) {}
 
@@ -45,7 +45,7 @@ export class RolesComponent implements OnInit {
         [Validators.required, Validators.pattern(/^[A-Za-z]+( [A-Za-z]+)*$/)],
       ],
       role_number: ['', Validators.required],
-      status: ['', Validators.required],
+      status: [''],
     });
 
     this.getAllRoles();
@@ -65,11 +65,25 @@ export class RolesComponent implements OnInit {
     });
   }
 
-  openAddModal(): void {
-    this.title = 'Add Role';
-    this.resetForm();
-    this.openModel = true;
-  }
+  generateRoleNumber(): string {
+  const nextNumber = this.roles.length + 1;
+  return 'RL' + nextNumber.toString().padStart(3, '0');
+}
+
+
+ openAddModal(): void {
+  this.title = 'Add Role';
+  this.resetForm();
+
+  const roleNo = this.generateRoleNumber();
+
+  this.roleForm.patchValue({
+    role_number: roleNo,
+     status: 'active'
+  });
+
+  this.openModel = true;
+}
 
   createOrUpdateRole(): void {
     if (this.roleForm.invalid) {

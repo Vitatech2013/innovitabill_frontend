@@ -1,5 +1,5 @@
 <div>
-  <h5 class="text-success fw-bold mb-3">
+  <h5 class="text-success fw-bold mb-3 mt-4">
     <i class="bi bi-building me-2"></i>
     {{ selectedBusiness ? "Update Business" : "Add Business" }}
   </h5>
@@ -14,7 +14,7 @@
   </div>
 </div>
 
-<div class="card shadow-sm p-3 mb-3 border-1 business-card">
+<div class="card shadow-sm p-3 mb-3 border-1 business-card mt-4 ">
   <form
     [formGroup]="addBusinessForm"
     (ngSubmit)="saveBusiness()"
@@ -278,12 +278,12 @@
       </div>
         <!--  Address -->
       <div class="col-12 mt-3">
-        <h6 class="text-success fw-semibold border-bottom pb-2 p1 p2">Address</h6>
+        <h6 class="text-success fw-semibold border-bottom pb-2 p1 ">Address</h6>
       </div>
 
       <div formGroupName="address" class="row">
         <div class="col-md-3 mb-4" *ngFor="let field of addressFields">
-          <label class="form-label fw-semibold p1" >
+          <label class="form-label fw-semibold " >
             {{ field.label }}<span class="text-danger">*</span>
           </label>
 

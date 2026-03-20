@@ -29,8 +29,8 @@ export class CategoriesComponent implements OnInit {
   toastType: any;
   selectedId: any;
   searchTerm: string = '';
-  selectedFilter: string = 'status';
-  statusFilter: 'active' | 'inactive' | 'all' = 'all';
+  selectedFilter: string = 'Active';
+  statusFilter: 'active' | 'inactive' | 'all' = 'active';
 
   constructor(private api: BillingService, private fb: FormBuilder) {}
 
@@ -55,6 +55,10 @@ export class CategoriesComponent implements OnInit {
 
     this.getAllCategories();
   }
+generateCategoryCode(): string {
+  const nextNumber = this.categories.length + 1;
+  return 'CT' + nextNumber.toString().padStart(3, '0');
+}
 
   getAllCategories() {
     this.api.getcategories().subscribe({
@@ -87,12 +91,19 @@ export class CategoriesComponent implements OnInit {
     }
   }
 
-  openAddModal() {
-    this.title = 'Add Category';
-    this.selectedCategoryId = null;
-    this.categoryForm.reset();
-    (document.getElementById('CategoryModal') as any)?.classList.add('show');
-  }
+ openAddModal() {
+  this.title = 'Add Category';
+  this.selectedCategoryId = null;
+  this.categoryForm.reset();
+
+  const code = this.generateCategoryCode();
+  this.categoryForm.patchValue({
+    categories_code: code,
+     status: 'active'
+  });
+
+  (document.getElementById('CategoryModal') as any)?.classList.add('show');
+}
   onNameInput(event: any, controlName: string) {
     const input = event.target as HTMLInputElement;
 

@@ -24,13 +24,13 @@
     </div>
   </div>
 </div>
-<div class="card border rounded-4 p-4 bg-white shadow-sm">
+<div class="p-4">
   <div class="col-12">
     <div
-      class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3"
+      class="d-flex justify-content-between align-items-center"
     >
       <!-- Heading -->
-      <h4 class="fw-bold text-success mb-0">Manage Categories</h4>
+      <h4 class="fw-bold text-success" style="padding-left: 18px;">Manage Categories</h4>
 
       <!-- Search Bar -->
       <input
@@ -41,7 +41,8 @@
         style="max-width: 300px"
       />
 
-      <!-- Add Button -->
+     <div class="d-flex align-items-center gap-2">
+          <label class="fw-bold text-success mb-0">STATUS:</label>
        <div class="dropdown">
           <button
             class="btn btn-light text-dark fw-semibold dropdown-toggle bg shadow-sm"
@@ -49,6 +50,7 @@
             data-toggle="tooltip" data-placement="top" title="Status"
             data-bs-toggle="dropdown"
             aria-expanded="false"
+            style="width: 100px"
           >
             {{ selectedFilter }}
           </button>
@@ -71,6 +73,7 @@
               </button>
             </li>
           </ul>
+        </div>
         </div>
 
       <button
@@ -98,15 +101,15 @@
             <table class="table table-bordered table-hover align-middle">
               <thead class="table-success text-start">
                 <tr>
-                  <th style="background: #d4f8d4; color: #0a5c0a">Sl.No</th>
-                  <th style="background: #d4f8d4; color: #0a5c0a">
+                  <th class="light-green">S.No</th>
+                  <th class="light-green">
                     Category Name
                   </th>
-                  <th style="background: #d4f8d4; color: #0a5c0a">
+                  <th class="light-green">
                     Category Code
                   </th>
-                  <th style="background: #d4f8d4; color: #0a5c0a">Status</th>
-                  <th style="background: #d4f8d4; color: #0a5c0a">Actions</th>
+                  <th class="light-green">Status</th>
+                  <th class="light-green">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -117,7 +120,16 @@
                   <td>{{ i + 1 }}</td>
                   <td>{{ c.categories_name }}</td>
                   <td>{{ c.categories_code }}</td>
-                  <td>{{ c.status }}</td>
+                    <td>
+                      <span
+                        class="badge"
+                        [ngClass]="
+                          c.status === 'active' ? 'bg-success' : 'bg-danger'
+                        "
+                      >
+                        {{ c.status }}
+                      </span>
+                    </td>
                   <td>
                     <button
                       class="btn btn-sm btn-outline-primary me-2"
@@ -150,7 +162,7 @@
         aria-labelledby="CategoryModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
           <div class="modal-content">
             <form
               [formGroup]="categoryForm"
@@ -170,7 +182,7 @@
 
               <div class="modal-body">
                 <div class="row g-3">
-                  <div class="col-md-6 mb-2">
+                  <div class="col-md-12 mb-2">
                     <label class="form-label">Category Name</label>
                     <input
                       type="text"
@@ -198,7 +210,7 @@
                     </div>
                   </div>
 
-                  <div class="col-md-6 mb-2">
+                  <!-- <div class="col-md-4 mb-2">
                     <label class="form-label">Category Code</label>
                     <input
                       type="text"
@@ -224,8 +236,8 @@
                         Code is required
                       </small>
                     </div>
-                  </div>
-                  <div class="col-md-6 mb-2">
+                  </div> -->
+                  <div class="col-md-12 mb-2" *ngIf="selectedCategoryId">
                     <label class="form-label fw-semibold">Status</label>
                     <select class="form-select" formControlName="status">
                       <option value="">Select Status</option>
@@ -237,9 +249,10 @@
               </div>
 
               <div class="modal-footer">
-                <button type="submit" class="btn btn-success">
-                  {{ selectedCategoryId ? "Update" : "Create" }}
-                </button>
+              <button type="submit" class="btn btn-success">
+  <i *ngIf="!selectedCategoryId" class="bi bi-save me-1"></i>
+  {{ selectedCategoryId ? "Update" : "Save" }}
+</button>
                 <button
                   type="button"
                   class="btn btn-secondary"

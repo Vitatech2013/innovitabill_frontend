@@ -35,6 +35,9 @@ import { SubCategoriesComponent } from './Business/sub-categories/sub-categories
 import { UserDashboardComponent } from './User/user-dashboard/user-dashboard.component';
 import { CreatePurchaseComponent } from './User/create-purchase/create-purchase.component';
 import { PurchaseListComponent } from './User/purchase-list/purchase-list.component';
+import { ExpensesComponent } from './expenses/expenses.component';
+import { ResourcesComponent } from './resources/resources.component';
+import { CustomerComponent } from './customer/customer.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -42,6 +45,8 @@ export const routes: Routes = [
   { path: 'SuperAdminLogin', component: SuperAdminLoginComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
+  {path: 'resources', component:ResourcesComponent},
+  {path: 'customer', component: CustomerComponent},
   {
     path: 'SuperAdminView',
     component: SuperadminViewComponent,
@@ -71,7 +76,7 @@ export const routes: Routes = [
       // { path: '', component: UserDashboardComponent },
 
       { path: 'userdashboard', component: UserDashboardComponent },
-       { path: '', component: SaleComponent },
+      //  { path: '', component: SaleComponent },
       { path: 'createsale', component: SaleComponent },
       { path: 'userprofile', component: UserProfileComponent },
       {
@@ -91,7 +96,11 @@ export const routes: Routes = [
         component: SaleComponent,
       },
       { path: 'quotation', component: QuotationComponent },
+      { path: 'categories', component: CategoriesComponent },
       { path: 'purchase', component: CreatePurchaseComponent },
+       { path: 'units', component: UnitsComponent },
+      { path: 'sub-categories', component: SubCategoriesComponent },
+      {path: 'expenses', component: ExpensesComponent}
     ],
   },
 
@@ -109,10 +118,9 @@ export const routes: Routes = [
       { path: '', component: UsersComponent },
       { path: 'businessprofile', component: BusinessprofileComponent },
       { path: 'users', component: UsersComponent },
-      { path: 'categories', component: CategoriesComponent },
+      
       { path: 'roles', component: RolesComponent },
-      { path: 'units', component: UnitsComponent },
-      { path: 'sub-categories', component: SubCategoriesComponent },
+     
     ],
   },
 ];

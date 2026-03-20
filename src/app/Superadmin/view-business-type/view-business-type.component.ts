@@ -37,8 +37,8 @@ export class ViewBusinessTypeComponent implements OnInit {
   selectedB_type: any;
   searchTerm: string = '';
   inactiveCount: number = 0;
-  selectedFilter: string = 'Status';
-  filterMode: 'active' | 'inactive' | 'all' = 'all';
+  selectedFilter: string = 'Active';
+  filterMode: 'active' | 'inactive' | 'all' = 'active';
 
   constructor(private fb: FormBuilder, private api: BillingService) {}
 
@@ -93,12 +93,36 @@ export class ViewBusinessTypeComponent implements OnInit {
       emitEvent: false,
     });
   }
+generateBusinessCode(): string {
 
-  openAddModal() {
-    this.title = 'Add Business Type';
-    this.resetForm();
-    this.openModal = true;
+  if (!this.b_types.length) {
+    return 'BT001';
   }
+
+  const lastCode = this.b_types[0]?.business_code || 'BT000';
+
+  const num = parseInt(lastCode.replace('BT', ''), 10) + 1;
+
+  return 'BT' + num.toString().padStart(3, '0');
+}
+
+openAddModal() {
+  this.title = 'Add Business Type';
+
+  this.b_typeForm.reset();
+
+  this.b_typeForm.get('business_code')?.enable();
+
+  const code = this.generateBusinessCode();
+  
+console.log("Generated Code:", code);
+
+  this.b_typeForm.patchValue({
+    business_code: code
+  });
+
+  this.openModal = true;
+}
 
   edit(b_type: any) {
     this.title = 'Edit Business Type';
@@ -108,6 +132,7 @@ export class ViewBusinessTypeComponent implements OnInit {
       business_code: b_type.business_code,
       status: b_type.status,
     });
+      this.b_typeForm.get('business_code')?.disable(); 
     this.openModal = true;
   }
 

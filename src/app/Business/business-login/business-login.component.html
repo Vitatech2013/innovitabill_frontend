@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-success px-3">
+<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-success px-3">
   <nav class="navbar-brand" routerLink="/home">InnoVita Bill</nav>
 </nav>
 <div
@@ -112,7 +112,7 @@
                 businessForm.controls['password']?.invalid
               "
             >
-              <!-- Required -->
+             
               <small
                 *ngIf="businessForm.controls['password']?.errors?.['required']"
                 class="text-danger"
@@ -120,7 +120,7 @@
                 Password is required
               </small>
 
-              <!-- Pattern -->
+             
               <small
                 *ngIf="businessForm.controls['password']?.errors?.['pattern']"
                 class="text-danger"
@@ -152,6 +152,186 @@
       </form>
     </div>
   </div>
+</div>-->
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-success px-3">
+  <nav class="navbar-brand" routerLink="/home">InnoVita Bill</nav>
+</nav>
+
+<div class="position-fixed top-1 end-0 p-1">
+  <div
+    *ngIf="toastMessage"
+    class="toast align-items-center text-white border-0 fade show shadow-lg"
+    [ngClass]="{
+      'bg-success': toastType === 'success',
+      'bg-danger': toastType === 'error',
+      'bg-warning text-dark': toastType === 'warning'
+    }"
+    role="alert"
+  >
+    <div class="d-flex">
+      <div class="toast-body fw-semibold">
+        {{ toastMessage }}
+      </div>
+      <button
+        type="button"
+        class="btn-close btn-close-white me-2 m-auto"
+        (click)="toastMessage = null"
+      ></button>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-5 pt-4 d-flex justify-content-center">
+
+  <div class="card shadow-lg" style="max-width:900px; width:100%; border-radius:15px;">
+
+    <div class="row g-0">
+
+      <!-- LEFT IMAGE -->
+      <div class="col-md-7">
+        <img
+          src="/assets/business_images/login3_img.png"
+          class="img-fluid h-100 w-100"
+          style="object-fit:cover;border-top-left-radius:15px;border-bottom-left-radius:15px;"
+        />
+      </div>
+
+      <!-- RIGHT FORM -->
+      <div class="col-md-5 p-4 p-md-5">
+
+        <h2 class="title mb-4 text-center fw-bold text-success">
+          Business Login
+        </h2>
+
+        <form [formGroup]="businessForm" (ngSubmit)="login()">
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="email" class="form-label fw-semibold">Email</label>
+
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              class="form-control"
+              placeholder="Enter your email"
+              (keypress)="blockSpaces($event)"
+            />
+
+            <div
+              *ngIf="
+                businessForm.controls['email']?.touched &&
+                businessForm.controls['email']?.invalid
+              "
+            >
+              <small
+                *ngIf="businessForm.controls['email']?.errors?.['required']"
+                class="text-danger"
+              >
+                Email is required
+              </small>
+
+              <small
+                *ngIf="businessForm.controls['email']?.errors?.['email']"
+                class="text-danger"
+              >
+                Invalid email format
+              </small>
+            </div>
+
+          </div>
+
+          <!-- Password -->
+          <div class="mb-3">
+            <label for="password" class="form-label fw-semibold">
+              Password
+            </label>
+
+            <div class="input-group">
+
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                id="password"
+                formControlName="password"
+                class="form-control"
+                placeholder="Enter your password"
+                (keypress)="blockSpaces($event)"
+              />
+
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                (click)="togglePassword()"
+              >
+                <i
+                  class="bi"
+                  [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"
+                ></i>
+              </button>
+
+            </div>
+
+            <div
+              *ngIf="
+                businessForm.controls['password']?.touched &&
+                businessForm.controls['password']?.invalid
+              "
+            >
+              <small
+                *ngIf="businessForm.controls['password']?.errors?.['required']"
+                class="text-danger"
+              >
+                Password is required
+              </small>
+
+              <small
+                *ngIf="businessForm.controls['password']?.errors?.['pattern']"
+                class="text-danger"
+              >
+                Password must be at least 6 characters and include letters,
+                numbers, and special characters
+              </small>
+            </div>
+
+          </div>
+
+          <!-- Forgot -->
+          <div class="text-start mb-4">
+            <a
+              routerLink="/business-Forgotpassword"
+              class="text-success text-decoration-none small"
+            >
+              Forgot password?
+            </a>
+          </div>
+
+          <!-- Buttons -->
+          <div class="d-flex gap-2">
+
+            <button
+              type="submit"
+              class="btn btn-success w-100 py-2 fw-semibold"
+              [disabled]="businessForm.invalid"
+            >
+              Login
+            </button>
+
+            <button class="btn btn-success">
+              <i class="bi bi-box-arrow-in-right"></i>
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </div>
 
 <router-outlet></router-outlet>

@@ -1,5 +1,9 @@
-.body {
-  cursor: pointer;
+body {
+  background-image: url("/assets/business_images/bg4.740.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 .card {
   width: 30rem;

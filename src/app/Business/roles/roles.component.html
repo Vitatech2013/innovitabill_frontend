@@ -24,13 +24,13 @@
     </div>
   </div>
 </div>
-<div class="card border rounded-4 p-4 bg-white shadow-sm">
+<div class=" p-4 ">
   <div class="col-12">
     <div
-      class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3"
+      class="d-flex justify-content-between align-items-center "
     >
       <!-- Heading -->
-      <h4 class="fw-bold text-success mb-0">Manage Roles</h4>
+      <h4 class="fw-bold text-success" style="padding-left: 18px;">Manage Roles</h4>
 
       <!-- Search Bar -->
       <input
@@ -41,7 +41,8 @@
         style="max-width: 300px"
       />
 
-      <!-- Add Button -->
+     <div class="d-flex align-items-center gap-2">
+          <label class="fw-bold text-success mb-0">STATUS:</label>
        <div class="dropdown">
           <button
             class="btn btn-light text-dark fw-semibold dropdown-toggle bg"
@@ -49,6 +50,7 @@
             data-toggle="tooltip" data-placement="top" title="Status"
             data-bs-toggle="dropdown"
             aria-expanded="false"
+            style="width: 100px"
           >
             {{ selectedFilter }}
           </button>
@@ -71,6 +73,7 @@
               </button>
             </li>
           </ul>
+        </div>
         </div>
 
       <button
@@ -101,15 +104,15 @@
               *ngIf="roles.length > 0"
               class="table table-bordered table-hover shadow-sm align-middle text-start"
             >
-              <thead class="table-success">
+              <thead class="table-success sticky-header">
                 <tr>
-                  <th style="background: #d4f8d4; color: #0a5c0a">Sl.no</th>
-                  <th style="background: #d4f8d4; color: #0a5c0a">Role Name</th>
-                  <th style="background: #d4f8d4; color: #0a5c0a">
+                  <th class="light-green">S.No</th>
+                  <th class="light-green">Role Name</th>
+                  <th class="light-green">
                     Role Number
                   </th>
-                  <th style="background: #d4f8d4; color: #0a5c0a">Status</th>
-                  <th style="background: #d4f8d4; color: #0a5c0a">Actions</th>
+                  <th class="light-green">Status</th>
+                  <th class="light-green">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -120,7 +123,16 @@
                   <td>{{ i + 1 }}</td>
                   <td>{{ r.role_name }}</td>
                   <td>{{ r.role_number }}</td>
-                  <td>{{ r.status }}</td>
+                   <td>
+                      <span
+                        class="badge"
+                        [ngClass]="
+                          r.status === 'active' ? 'bg-success' : 'bg-danger'
+                        "
+                      >
+                        {{ r.status }}
+                      </span>
+                    </td>
                   <td>
                     <button
                       class="btn btn-sm btn-outline-primary me-2"
@@ -157,7 +169,7 @@
     aria-labelledby="roleModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
       <div class="modal-content">
         <form [formGroup]="roleForm" (ngSubmit)="createOrUpdateRole()">
           <div class="modal-header">
@@ -173,7 +185,7 @@
 
           <div class="modal-body">
             <div class="row g-3">
-              <div class="col-md-6 mb-2">
+              <div class="col-md-12 mb-2">
                 <label class="form-label">Role Name</label>
                 <input
                   type="text"
@@ -197,7 +209,7 @@
                 </div>
               </div>
 
-              <div class="col-md-6 mb-2">
+              <!-- <div class="col-md-4 mb-2">
                 <label class="form-label">Role Number</label>
                 <input
                   type="text"
@@ -220,15 +232,15 @@
                     >Role Number is required</small
                   >
                 </div>
-              </div>
-              <div class="col-md-6 mb-2">
-                <label class="form-label fw-semibold">Status</label>
-                <select class="form-select" formControlName="status">
-                  <option value="">Select Status</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-              </div>
+              </div> -->
+           <div class="col-md-12 mb-2" *ngIf="selectedUserId">
+  <label class="form-label fw-semibold">Status</label>
+  <select class="form-select" formControlName="status">
+    <option value="">Select Status</option>
+    <option value="active">Active</option>
+    <option value="inactive">Inactive</option>
+  </select>
+</div>
             </div>
           </div>
 
@@ -241,9 +253,10 @@
             >
               Close
             </button>
-            <button type="submit" class="btn btn-success">
-              {{ selectedUserId ? "Update" : "Create" }}
-            </button>
+           <button type="submit" class="btn btn-success">
+  <i *ngIf="!selectedUserId" class="bi bi-save me-1"></i>
+  {{ selectedUserId ? "Update" : "Save" }}
+</button>
           </div>
         </form>
       </div>

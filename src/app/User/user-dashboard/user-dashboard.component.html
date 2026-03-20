@@ -1,13 +1,24 @@
-<!-- <div class="container-fluid">
-    <div class="row">
-         <div class="search-box">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Search"
-        [(ngModel)]="searchTerm"
-      />
-      <i class="bi bi-search search-icon"></i>
-    </div>
-    </div>
-</div> -->
+  <div class="container-fluid mt-3 ps-0">
+  <h4 class="fw-bold mb-0 text-center text-success" >Business Summary</h4>
+<div class="dashboard-cards">
+  <div class="card">
+    <h3>Total Items</h3>
+    <p>{{ totalItems }}</p>
+  </div>
+
+  <div class="card">
+    <h3>Total Sales</h3>
+    <p>{{ totalSales }}</p>
+  </div>
+
+  <div class="card">
+    <h3>Total Purchases</h3>
+    <p>{{ totalPurchases }}</p>
+  </div>
+
+  <div class="card">
+    <h3>Total Quotations</h3>
+    <p>{{ totalQuotations }}</p>
+  </div>
+</div>
+</div>

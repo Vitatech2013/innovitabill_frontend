@@ -7,13 +7,9 @@ import { constants } from '../../../constants';
   providedIn: 'root',
 })
 export class BillingService {
+
   changeLoginStatus: any;
-  triggerBusinessTypeRefresh() {
-    throw new Error('Method not implemented.');
-  }
-  getBusinessTypesFromServer() {
-    throw new Error('Method not implemented.');
-  }
+  
   // getQuotationData(demoId: string | null) {
   //   throw new Error('Method not implemented.');
   // }
@@ -21,16 +17,7 @@ export class BillingService {
   private baseUrl = constants.baseUrl;
   constructor(private http: HttpClient) {}
 
-  getSuperadminById(superadmin_id: string) {
-    throw new Error('Method not implemented.');
-  }
 
-  deleteBusiness(deleteBusinessId: string) {
-    throw new Error('Method not implemented.');
-  }
-  getAllBusiness() {
-    throw new Error('Method not implemented.');
-  }
 
   SuperAdminLogin(data: any) {
     return this.http.post(`${this.baseUrl}/superadmin/login`, data);
@@ -307,4 +294,40 @@ updateAccountStatus(id: string, data: any) {
   return this.http.patch(`/business/${id}/account-status`, data);
 }
 
+ getItem(Business_id: any): Observable<any> {
+    return this.http.get(`${this.baseUrl}/items/get`);
+  }
+   getSales(businessId: any): Observable<any> {
+    return this.http.get(`${this.baseUrl}/sales/get`);
+  }
+   
+ getPurchas(business_id: any): Observable<any> {
+  return this.http.get(`${this.baseUrl}/purchase/getPurchasesByBusinessid/${business_id}`);
 }
+getQuotations(businessId: string): Observable<any> {
+  return this.http.get(
+    `${this.baseUrl}/quotation/get/${businessId}`
+  );
+}
+  addExpenses(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/expenses/add`, data);
+  }
+
+  // GET EXPENSES
+  getExpenses(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/expenses/get`);
+  }
+
+  // UPDATE EXPENSE
+  updateExpenses(id: string, data: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/expenses/update/${id}`, data);
+  }
+
+  // DELETE EXPENSE
+  deleteExpenses(id: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/expenses/delete/${id}`);
+  }
+
+}
+
+

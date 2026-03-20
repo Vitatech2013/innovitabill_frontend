@@ -162,7 +162,7 @@
 
           <h6 class="fw-bold text-success mt-4">Address Details</h6>
           <div class="row" formGroupName="address">
-            <div class="col-md-6 mb-3" *ngFor="let field of addressFields">
+            <div class="col-md-4 mb-3" *ngFor="let field of addressFields">
               <label class="form-label fw-semibold">{{ field.label }}</label>
               <input
                 type="text"
@@ -176,7 +176,7 @@
           <h6 class="fw-bold text-success mb-3 mt-4">Documents</h6>
           <div class="row g-3">
             <!-- PAN PDF -->
-            <div class="col-md-6">
+            <div class="col-md-4">
               <label class="form-label fw-semibold">PAN</label>
               <div class="input-group">
                 <label class="input-group-text choose-btn text-dark">
@@ -199,7 +199,7 @@
             </div>
 
             <!-- Aadhar PDF -->
-            <div class="col-md-6">
+            <div class="col-md-4">
               <label class="form-label fw-semibold">Aadhar</label>
               <div class="input-group">
                 <label class="input-group-text choose-btn text-dark">
@@ -221,7 +221,7 @@
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-4">
               <label class="form-label fw-semibold">Certificate</label>
               <div class="input-group">
                 <label class="input-group-text choose-btn text-dark">

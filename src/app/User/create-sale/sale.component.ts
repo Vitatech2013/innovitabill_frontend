@@ -121,6 +121,7 @@ export class SaleComponent implements OnInit {
 
   updateTotals() {
     this.grandTotal = this.getTotalBill();
+    
   }
 
   toggleCustomerForm() {

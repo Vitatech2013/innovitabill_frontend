@@ -114,7 +114,7 @@
 }
 .video-box img {
   border-radius: 15px;
-  width: 80%;
+  width: 80%;  
 }
 .awards img {
   height: 90px;
@@ -270,4 +270,21 @@ footer a {
 
 footer a:hover {
   color: #0d6efd;
+}
+.left-panel {
+  background: linear-gradient(135deg, #0d8f4f, #0b5e3c);
+  min-height: 100%;
+}
+
+.testimonial {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.captcha-box {
+  background: #f1f1f1;
+  letter-spacing: 3px;
+  border-radius: 5px;
+}
+.custom-modal-width {
+  max-width: 60%;   
 }

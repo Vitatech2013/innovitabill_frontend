@@ -1,0 +1,419 @@
+<!-- TOAST NOTIFICATION -->
+<div class="position-fixed top-1 end-0 p-1" style="top: 60px; z-index: 1200">
+  <div
+    *ngIf="toastMessage"
+    class="toast align-items-center text-light border-0 fade show shadow-lg"
+    [ngClass]="{
+      'bg-success': toastType === 'success',
+      'bg-danger': toastType === 'error',
+      'bg-warning text-dark': toastType === 'warning',
+    }"
+  >
+    <div class="d-flex">
+      <div class="toast-body fw-semibold">{{ toastMessage }}</div>
+      <button
+        type="button"
+        class="btn-close btn-close-white me-2 m-auto"
+        (click)="toastMessage = null"
+      ></button>
+    </div>
+  </div>
+</div>
+
+<div class="p-4">
+  <!-- HEADER -->
+  <div class="row mb-3">
+    <div
+      class="col-12 d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3"
+    >
+      <h4 class="fw-bold text-success mb-2 mb-md-0" style="padding-left: 18px">
+        Manage Expenses
+      </h4>
+
+      <input
+        type="text"
+        class="form-control shadow-sm mb-2 mb-md-0 mx-md-3"
+        placeholder="Search..."
+        [(ngModel)]="searchTerm"
+        style="width: 100%; max-width: 400px"
+      />
+
+      <div class="d-flex" style="padding-right: 40px">
+        <button
+          class="btn btn-light text-dark fw-semibold"
+          data-bs-toggle="modal"
+          data-bs-target="#AddModal"
+        >
+          <i class="bi bi-plus-circle"></i> Add New
+        </button>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="col-12" *ngIf="expenses.length > 0">
+      <div class="table-responsive bg-white p-3 rounded-4">
+        <table class="table table-hover table-bordered align-middle">
+          <thead class="table-success text-start">
+            <tr>
+              <th class="light-green">S.No</th>
+              <th class="light-green">Bill Purpose</th>
+              <th class="light-green">Bill Amount</th>
+              <th class="light-green">Date</th>
+              <th class="light-green">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let e of filteredUser(); let i = index"
+              class="align-middle text-start"
+            >
+              <td>{{ i + 1 }}</td>
+              <td>{{ e.billPurpose }}</td>
+              <td>{{ e.billAmount }}</td>
+              <td>{{ e.date }}</td>
+              <!-- <td>
+  <span
+    class="badge"
+    [ngClass]="
+      e.paymentStatus === 'Paid'
+        ? 'bg-success'
+        : e.paymentStatus === 'Pending'
+        ? 'bg-warning text-dark'
+        : 'bg-danger'
+    "
+  >
+    {{ e.paymentStatus }}
+  </span>
+</td> -->
+              <td>
+                <!-- <button
+                  class="btn btn-sm btn-outline-primary me-1"
+                  data-bs-toggle="modal"
+                  data-bs-target="#viewModal"
+                  (click)="viewExpense(e)"
+                  title="View"
+                >
+                  <i class="bi bi-eye"></i>
+                </button> -->
+
+                <button
+                  class="btn btn-sm btn-outline-primary me-1"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editModal"
+                  (click)="editExpense(e)"
+                  title="Edit"
+                >
+                  <i class="bi bi-pencil"></i>
+                </button>
+
+                <button
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="openDeleteModal(e)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#deleteModal"
+                  title="Delete"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD MODAL -->
+  <div class="modal fade" id="AddModal">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+      <div class="modal-content border-0 shadow-lg rounded-4">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Add Expense</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="expensesForm" (ngSubmit)="createExpenses()">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label">Bill Purpose</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="billPurpose"
+                />
+
+                <small
+                  class="text-danger"
+                  *ngIf="
+                    expensesForm.get('billPurpose')?.touched &&
+                    expensesForm.get('billPurpose')?.errors?.['required']
+                  "
+                >
+                  Bill Purpose is required
+                </small>
+
+                <small
+                  class="text-danger"
+                  *ngIf="expensesForm.get('billPurpose')?.errors?.['minlength']"
+                >
+                  Minimum 3 characters required
+                </small>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Bill Amount</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="billAmount"
+                />
+
+                <small
+                  class="text-danger"
+                  *ngIf="
+                    expensesForm.get('billAmount')?.touched &&
+                    expensesForm.get('billAmount')?.errors?.['required']
+                  "
+                >
+                  Bill Amount is required
+                </small>
+
+                <small
+                  class="text-danger"
+                  *ngIf="expensesForm.get('billAmount')?.errors?.['pattern']"
+                >
+                  Enter valid amount
+                </small>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Date</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  formControlName="date"
+                />
+
+                <small
+                  class="text-danger"
+                  *ngIf="
+                    expensesForm.get('date')?.touched &&
+                    expensesForm.get('date')?.errors?.['required']
+                  "
+                >
+                  Date is required
+                </small>
+              </div>
+            </div>
+            <div class="modal-footer mt-3">
+              <button type="submit" class="btn btn-success">
+                Save Expense
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT MODAL -->
+  <div class="modal fade" id="editModal">
+    <div class="modal-dialog modal-lg mt-">
+      <div class="modal-content border-0 shadow-lg rounded-5">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Edit Expense</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="expensesForm" (ngSubmit)="updateExpense()">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label">Bill Purpose</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="billPurpose"
+                />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Bill Amount</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="billAmount"
+                />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Date</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  formControlName="date"
+                />
+              </div>
+              <!-- <div class="col-md-6">
+                <label class="form-label">Meter Number</label>
+                <input type="text" class="form-control" formControlName="meterNumber" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Units Consumed</label>
+                <input type="number" class="form-control" formControlName="unitsConsumed" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Rate Per Unit</label>
+                <input type="number" class="form-control" formControlName="ratePerUnit" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Total Bill Amount</label>
+                <input type="number" class="form-control" formControlName="totalBillAmount" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Billing From</label>
+                <input type="date" class="form-control" formControlName="billingFrom" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Billing To</label>
+                <input type="date" class="form-control" formControlName="billingTo" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Due Date</label>
+                <input type="date" class="form-control" formControlName="dueDate" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Payment Status</label>
+                <select class="form-select" formControlName="paymentStatus">
+                  <option value="Paid">Paid</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Unpaid">Unpaid</option>
+                </select>
+              </div> -->
+            </div>
+            <div class="modal-footer mt-3">
+              <button type="submit" class="btn btn-success">Update</button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW MODAL AS TABLE -->
+  <!-- <div class="modal fade" id="viewModal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Expense Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead class="table-success">
+              <tr>
+                <th>Consumer</th>
+                <th>Service No</th>
+                <th>Meter No</th>
+                <th>Units Consumed</th>
+                <th>Rate Per Unit</th>
+                <th>Total Bill Amount</th>
+                <th>Billing From</th>
+                <th>Billing To</th>
+                <th>Due Date</th>
+                <th>Payment Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ selectedExpense?.consumerName }}</td>
+                <td>{{ selectedExpense?.serviceNumber }}</td>
+                <td>{{ selectedExpense?.meterNumber }}</td>
+                <td>{{ selectedExpense?.unitsConsumed }}</td>
+                <td>{{ selectedExpense?.ratePerUnit }}</td>
+                <td>{{ selectedExpense?.totalBillAmount }}</td>
+                <td>{{ selectedExpense?.billingFrom | date }}</td>
+                <td>{{ selectedExpense?.billingTo | date }}</td>
+                <td>{{ selectedExpense?.dueDate | date }}</td>
+                <td>
+                  <span
+                    class="badge"
+                    [ngClass]="
+                      selectedExpense?.paymentStatus === 'Paid'
+                        ? 'bg-success'
+                        : selectedExpense?.paymentStatus === 'Pending'
+                        ? 'bg-warning text-dark'
+                        : 'bg-danger'
+                    "
+                  >
+                    {{ selectedExpense?.paymentStatus }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer mt-3">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+  <!-- DELETE MODAL -->
+  <div class="modal fade mb-2" id="deleteModal">
+    <div class="modal-dialog mt-6">
+      <div class="modal-content">
+        <div class="modal-header text-danger">
+          <h5 class="modal-title">Confirm Delete</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete
+          <strong>{{ selectedExpense?.consumerName }}</strong> ?
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="confirmDelete()"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
