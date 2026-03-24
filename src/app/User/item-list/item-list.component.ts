@@ -23,7 +23,13 @@ import { constants } from '../../../../constants';
 @Component({
   selector: 'app-item-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterOutlet, RouterLink],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterOutlet,
+    RouterLink,
+  ],
   templateUrl: './item-list.component.html',
   styleUrl: './item-list.component.css',
 })
@@ -47,13 +53,13 @@ export class ItemListComponent implements OnInit {
   imagefile: any;
   imagePreviewUrl: string = '';
   private baseUrl = constants.baseUrl;
-i: any;
+  i: any;
 
   constructor(
     private fb: FormBuilder,
     private service: BillingService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -74,6 +80,7 @@ i: any;
   private initForm() {
     this.editForm = this.fb.group({
       brand_name: ['', [Validators.required, Validators.minLength(3)]],
+
       item_name: ['', [Validators.required, Validators.minLength(3)]],
       unit_id: ['', [Validators.required]],
       selling_price: ['', [Validators.required]],
@@ -83,7 +90,7 @@ i: any;
       discount: ['', [Validators.required]],
       status: ['', Validators.required],
       item_code: ['', Validators.required],
-       barcode: ['', Validators.required],
+      barcode: ['', Validators.required],
       purchase_price: ['', Validators.required],
       category_id: ['', Validators.required],
       sub_category_id: ['', Validators.required],
@@ -107,34 +114,34 @@ i: any;
     });
   }
   generateBrandCode(brandName: string): string {
-  if (!brandName) return '';
+    if (!brandName) return '';
 
-  const prefix = brandName.substring(0, 3).toUpperCase();
+    const prefix = brandName.substring(0, 3).toUpperCase();
 
-  const count = this.items.filter(
-    (item) => item.brand_name?.toLowerCase() === brandName.toLowerCase()
-  ).length;
+    const count = this.items.filter(
+      (item) => item.brand_name?.toLowerCase() === brandName.toLowerCase(),
+    ).length;
 
-  const nextNumber = count + 1;
+    const nextNumber = count + 1;
 
-  return prefix + nextNumber.toString().padStart(3, '0');
-}
-onBrandChange() {
-  const brandName = this.editForm.get('brand_name')?.value;
-  const code = this.generateBrandCode(brandName);
+    return prefix + nextNumber.toString().padStart(3, '0');
+  }
+  onBrandChange() {
+    const brandName = this.editForm.get('brand_name')?.value;
+    const code = this.generateBrandCode(brandName);
 
-  this.editForm.patchValue({
-    barcode: code   
-  });
-}
-generateItemCode(): string {
-  const nextNumber = this.items.length + 1;
-  return 'IT' + nextNumber.toString().padStart(3, '0');
-}
+    this.editForm.patchValue({
+      barcode: code,
+    });
+  }
+  generateItemCode(): string {
+    const nextNumber = this.items.length + 1;
+    return 'IT' + nextNumber.toString().padStart(3, '0');
+  }
   editItem(it: any) {
     console.log('Edit data', it);
     this.eid = it._id;
- const code = it.item_code ? it.item_code : this.generateItemCode();
+    const code = it.item_code ? it.item_code : this.generateItemCode();
     this.editForm.patchValue({
       item_name: it.item_name,
       brand_name: it.brand_name,
@@ -202,7 +209,7 @@ generateItemCode(): string {
       error: (err: any) => console.error('Error loading users:', err),
     });
   }
-    changeFilter(value: string) {
+  changeFilter(value: string) {
     this.selectedFilter = value;
 
     switch (value) {
@@ -217,7 +224,7 @@ generateItemCode(): string {
         break;
     }
   }
-    showActive() {
+  showActive() {
     this.filterMode = 'active';
   }
 
@@ -229,38 +236,36 @@ generateItemCode(): string {
     this.filterMode = 'all';
   }
 
- updateItems() {
-  const formData = new FormData();
+  updateItems() {
+    const formData = new FormData();
 
-  Object.keys(this.editForm.value).forEach((key) => {
-    if (key !== 'image') {
-      formData.append(key, this.editForm.value[key]);
+    Object.keys(this.editForm.value).forEach((key) => {
+      if (key !== 'image') {
+        formData.append(key, this.editForm.value[key]);
+      }
+    });
+
+    if (this.selectedFiles['image']) {
+      formData.append('image', this.selectedFiles['image']);
     }
-  });
 
-  if (this.selectedFiles['image']) {
-    formData.append('image', this.selectedFiles['image']);
+    this.service.updateitems(this.eid, formData).subscribe({
+      next: () => {
+        this.toastr.success('Item Updated Successfully', 'Success');
+
+        const modalEl = document.getElementById('editItemModal');
+        const modal = bootstrap.Modal.getInstance(modalEl!);
+        modal?.hide();
+
+        this.router.navigate(['/userview/itemlist']);
+        this.loadItems();
+      },
+      error: (err) => {
+        console.log(err);
+        this.toastr.error('Update Failed');
+      },
+    });
   }
-
-  this.service.updateitems(this.eid, formData).subscribe({
-    next: () => {
-      this.toastr.success('Item Updated Successfully', 'Success');
-
-      
-      const modalEl = document.getElementById('editItemModal');
-      const modal = bootstrap.Modal.getInstance(modalEl!);
-      modal?.hide();
-
-      
-      this.router.navigate(['/userview/itemlist']);
-      this.loadItems();
-    },
-    error: (err) => {
-      console.log(err);
-      this.toastr.error('Update Failed');
-    },
-  });
-}
 
   deleteItem(it: any) {
     if (confirm(`Are you sure you want to delete ${it.item_name}?`)) {
@@ -279,41 +284,40 @@ generateItemCode(): string {
     return this.router.url.includes('/itemlist/items');
   }
 
-filteredItems() {
-  let data = [...this.items];
+  filteredItems() {
+    let data = [...this.items];
 
-  data.sort(
-    (a, b) =>
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+    data.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
 
-  if (this.filterMode === 'active') {
-    data = data.filter(it => it.status?.toLowerCase() === 'active');
+    if (this.filterMode === 'active') {
+      data = data.filter((it) => it.status?.toLowerCase() === 'active');
+    }
+
+    if (this.filterMode === 'inactive') {
+      data = data.filter((it) => it.status?.toLowerCase() === 'inactive');
+    }
+
+    if (!this.searchTerm) {
+      return data;
+    }
+
+    const term = this.searchTerm.toLowerCase().trim();
+
+    return data.filter(
+      (it) =>
+        it.item_name?.toLowerCase().includes(term) ||
+        it.item_code?.toLowerCase().includes(term) ||
+        it.brand_name?.toLowerCase().includes(term) ||
+        it.status?.toLowerCase().includes(term) ||
+        it.selling_price?.toString().includes(term) ||
+        it.purchase_price?.toString().includes(term) ||
+        it.stock_quantity?.toString().includes(term),
+    );
   }
 
-  if (this.filterMode === 'inactive') {
-    data = data.filter(it => it.status?.toLowerCase() === 'inactive');
-  }
-
-  if (!this.searchTerm) {
-    return data;
-  }
-
-  const term = this.searchTerm.toLowerCase().trim();
-
-  return data.filter((it) =>
-    it.item_name?.toLowerCase().includes(term) ||
-    it.item_code?.toLowerCase().includes(term) ||
-    it.brand_name?.toLowerCase().includes(term) ||
-    it.status?.toLowerCase().includes(term) ||
-    it.selling_price?.toString().includes(term) ||
-    it.purchase_price?.toString().includes(term) ||
-    it.stock_quantity?.toString().includes(term)
-  );
-}
-
-
-  
   onCustomFileSelect(event: any, key: string) {
     const file = event.target.files[0];
     if (file) {
@@ -344,8 +348,7 @@ filteredItems() {
       return 'assets/default-business.jpg';
     }
     const cleanPath = path.replace(/\\/g, '/');
-    
-    
+
     if (cleanPath.startsWith('http')) {
       return cleanPath;
     }

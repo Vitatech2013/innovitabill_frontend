@@ -38,7 +38,7 @@ export class SaleComponent implements OnInit {
     private service: BillingService,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -112,7 +112,7 @@ export class SaleComponent implements OnInit {
     const taxableAmount = baseAmount - discountAmount;
     const taxAmount = (taxableAmount * taxRate) / 100;
 
-    return Math.round(taxableAmount + taxAmount);
+    return taxableAmount + taxAmount;
   }
 
   getTotalBill() {
@@ -121,7 +121,6 @@ export class SaleComponent implements OnInit {
 
   updateTotals() {
     this.grandTotal = this.getTotalBill();
-    
   }
 
   toggleCustomerForm() {
@@ -225,7 +224,7 @@ export class SaleComponent implements OnInit {
 
     data.sort(
       (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     );
 
     if (!this.searchTerm) {
@@ -244,7 +243,7 @@ export class SaleComponent implements OnInit {
         it.item_name?.toLowerCase().includes(term) ||
         it.item_code?.toLowerCase().includes(term) ||
         it.brand_name?.toLowerCase().includes(term) ||
-        it.status?.toLowerCase().includes(term)
+        it.status?.toLowerCase().includes(term),
     );
   }
 
@@ -255,5 +254,55 @@ export class SaleComponent implements OnInit {
   onPhoneInput(e: any) {
     e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
     this.customerForm.controls['phone'].setValue(e.target.value);
+  }
+  //   getItemTotal(item: any) {
+  //   return item.total;
+  // }
+
+  // getItemTax(item: any) {
+  //   return item.tax_amount;
+  // }
+
+  // getItemDiscount(item: any) {
+  //   return item.discount * item.cartQty;
+  // }
+  decreaseQty(item: any) {
+    this.removeFromCart(item);
+  }
+
+  getItemDiscount(item: any) {
+    return item.discount ? item.discount * item.cartQty : 0;
+  }
+
+  getSubTotal() {
+    return this.cartItems.reduce(
+      (sum, it) => sum + it.selling_price * it.cartQty,
+      0,
+    );
+  }
+  getTotalDiscount() {
+    return this.cartItems.reduce(
+      (sum, it) => sum + (it.discount ? it.discount * it.cartQty : 0),
+      0,
+    );
+  }
+
+  getTotalTax() {
+    return this.cartItems.reduce(
+      (sum, it) =>
+        sum +
+        (it.tax_rate
+          ? ((it.selling_price * it.cartQty - (it.discount || 0) * it.cartQty) *
+              it.tax_rate) /
+            100
+          : 0),
+      0,
+    );
+  }
+  getItemTax(item: any) {
+    const base = item.selling_price * item.cartQty;
+    const discount = (item.discount || 0) * item.cartQty;
+    const taxable = base - discount;
+    return (taxable * (item.tax_rate || 0)) / 100;
   }
 }

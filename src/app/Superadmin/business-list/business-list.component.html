@@ -267,18 +267,18 @@
                     </td>
 
                     <td>{{ selectedBusiness.registration_number }}</td>
-                    <td>
-                      <span
-                        class="badge"
-                        [ngClass]="{
-                          'bg-success': selectedBusiness.status === 'Active',
-                          'bg-warning': selectedBusiness.status === 'Pending',
-                          'bg-danger': selectedBusiness.status === 'Inactive',
-                        }"
-                      >
-                        {{ selectedBusiness.status }}
-                      </span>
-                    </td>
+                   <td>
+  <span
+    class="badge"
+    [ngClass]="{
+      'bg-success': selectedBusiness?.status?.toLowerCase() === 'active',
+      'bg-warning': selectedBusiness?.status?.toLowerCase() === 'pending',
+      'bg-danger': selectedBusiness?.status?.toLowerCase() === 'inactive'
+    }"
+  >
+    {{ selectedBusiness?.status || 'No Status' }}
+  </span>
+</td>
                     <td>{{ selectedBusiness.gst_number }}</td>
                     <td>
                       <img

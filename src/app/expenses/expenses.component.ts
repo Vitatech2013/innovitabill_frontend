@@ -94,7 +94,7 @@ export class ExpensesComponent implements OnInit {
   viewExpense(expense: any) {
     this.selectedExpense = expense;
   }
- 
+
   createExpenses() {
     if (this.expensesForm.invalid) {
       this.expensesForm.markAllAsTouched();
@@ -135,7 +135,6 @@ export class ExpensesComponent implements OnInit {
     });
   }
 
-
   editExpense(expense: any) {
     this.selectedExpense = expense;
     const formatDate = (date: string) => {
@@ -151,7 +150,6 @@ export class ExpensesComponent implements OnInit {
     });
   }
 
-  
   updateExpense() {
     if (!this.selectedExpense) return;
 
@@ -192,11 +190,9 @@ export class ExpensesComponent implements OnInit {
     });
   }
 
-
   openDeleteModal(expense: any) {
     this.selectedExpense = expense;
   }
-
 
   confirmDelete() {
     if (!this.selectedExpense) return;
@@ -223,7 +219,6 @@ export class ExpensesComponent implements OnInit {
     });
   }
 
-  
   filteredUser(): any[] {
     if (!Array.isArray(this.expenses)) return [];
 

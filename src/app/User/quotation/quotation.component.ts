@@ -13,7 +13,6 @@ import { CommonModule } from '@angular/common';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
-
 import Modal from 'bootstrap/js/dist/modal';
 import { constants } from '../../../../constants';
 import { ToastrService } from 'ngx-toastr';
@@ -36,14 +35,15 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   private pdfDoc: jsPDF | null = null;
   pdfPreviewSrc: string | null = null;
   private pdfPreviewModal: Modal | null = null;
-   private baseUrl = constants.baseUrl;
-     toastMessage: string | null = null;
+  private baseUrl = constants.baseUrl;
+  toastMessage: string | null = null;
   toastType: string | undefined;
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private route: ActivatedRoute, private toastr:ToastrService,
+    private route: ActivatedRoute,
+    private toastr: ToastrService,
   ) {
     this.quotationForm = this.fb.group({
       customer: this.fb.group({
@@ -93,48 +93,51 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     }
   }
 
- getBusinessDetails() {
-  this.http.get<any>(`${this.baseUrl}/business/get`).subscribe({
-    next: (b) => {
-      if (!b || !b.data || b.data.length === 0) {
-        console.warn('No business data found');
-        return;
-      }
+  getBusinessDetails() {
+    this.http.get<any>(`${this.baseUrl}/business/get`).subscribe({
+      next: (b) => {
+        if (!b || !b.data || b.data.length === 0) {
+          console.warn('No business data found');
+          return;
+        }
 
-      const business = b.data[0]; 
+        const business = b.data[0];
 
-      const businessGroup = this.quotationForm.get('business') as FormGroup;
+        const businessGroup = this.quotationForm.get('business') as FormGroup;
 
-      let logoUrl = business.logo_image || '';
-      if (logoUrl && !logoUrl.startsWith('http')) {
-        logoUrl = `${this.baseUrl}/business_images/${logoUrl}`;
-      }
-      businessGroup.get('logo_image')?.setValue(logoUrl);
-      businessGroup.get('business_name')?.setValue(business.business_name || '');
-      businessGroup.get('owner_name')?.setValue(business.owner_name || '');
-      businessGroup.get('email')?.setValue(business.email || '');
-      businessGroup.get('phone_number')?.setValue(business.phone_number || '');
+        let logoUrl = business.logo_image || '';
+        if (logoUrl && !logoUrl.startsWith('http')) {
+          logoUrl = `${this.baseUrl}/business_images/${logoUrl}`;
+        }
+        businessGroup.get('logo_image')?.setValue(logoUrl);
+        businessGroup
+          .get('business_name')
+          ?.setValue(business.business_name || '');
+        businessGroup.get('owner_name')?.setValue(business.owner_name || '');
+        businessGroup.get('email')?.setValue(business.email || '');
+        businessGroup
+          .get('phone_number')
+          ?.setValue(business.phone_number || '');
 
-      if (business.address) {
-        const addressGroup = businessGroup.get('address') as FormGroup;
-        addressGroup.patchValue({
-          house_No: business.address.house_No || '',
-          town_Name: business.address.town_Name || '',
-          mandal_Name: business.address.mandal_Name || '',
-          district_Name: business.address.district_Name || '',
-          state: business.address.state || '',
-          pincode: business.address.pincode || '',
-        });
-      } else {
-        console.warn('Business address missing');
-      }
-    },
-    error: (err) => {
-      console.error('Failed to load business details', err);
-    },
-  });
-}
-
+        if (business.address) {
+          const addressGroup = businessGroup.get('address') as FormGroup;
+          addressGroup.patchValue({
+            house_No: business.address.house_No || '',
+            town_Name: business.address.town_Name || '',
+            mandal_Name: business.address.mandal_Name || '',
+            district_Name: business.address.district_Name || '',
+            state: business.address.state || '',
+            pincode: business.address.pincode || '',
+          });
+        } else {
+          console.warn('Business address missing');
+        }
+      },
+      error: (err) => {
+        console.error('Failed to load business details', err);
+      },
+    });
+  }
 
   get items(): FormArray {
     return this.quotationForm.get('items') as FormArray;
@@ -156,23 +159,18 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   }
 
   getDemoCustomers() {
-    this.http
-      .get<any[]>(`${this.baseUrl}/demo/getDemoCustomers`)
-      .subscribe({
-        next: (res) => {
-          this.demoCustomers = res;
-        },
-        error: (err) => console.error('Demo customers load failed', err),
-      });
+    this.http.get<any[]>(`${this.baseUrl}/demo/getDemoCustomers`).subscribe({
+      next: (res) => {
+        this.demoCustomers = res;
+      },
+      error: (err) => console.error('Demo customers load failed', err),
+    });
   }
-  
 
   itemsGets() {
-    this.http
-      .get(`${this.baseUrl}/items/get`)
-      .subscribe((res: any) => {
-        this.itemsList = res.data;
-      });
+    this.http.get(`${this.baseUrl}/items/get`).subscribe((res: any) => {
+      this.itemsList = res.data;
+    });
   }
 
   quotationGet(id: string) {
@@ -218,7 +216,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
 
   addItem(item: any) {
     const existing = this.items.controls.find(
-      (x) => (x as FormGroup).value.item_id === item._id
+      (x) => (x as FormGroup).value.item_id === item._id,
     ) as FormGroup | undefined;
 
     if (existing) {
@@ -246,31 +244,33 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     });
     this.grandTotal = total;
   }
-increaseQty(index: number) {
-  const control = this.items.at(index).get('quantity');
-  control?.setValue((control.value || 1) + 1);
-  this.calculateGrandTotal();
-}
-
-decreaseQty(index: number) {
-  const control = this.items.at(index).get('quantity');
-  if (control && control.value > 1) {
-    control.setValue(control.value - 1);
+  increaseQty(index: number) {
+    const control = this.items.at(index).get('quantity');
+    control?.setValue((control.value || 1) + 1);
     this.calculateGrandTotal();
   }
-}
+
+  decreaseQty(index: number) {
+    const control = this.items.at(index).get('quantity');
+    if (control && control.value > 1) {
+      control.setValue(control.value - 1);
+      this.calculateGrandTotal();
+    }
+  }
 
   removeItem(index: number) {
     this.items.removeAt(index);
     this.calculateGrandTotal();
   }
 
- saveQuotation() {
+  saveQuotation() {
     const payload = this.quotationForm.value;
 
-
     if (!payload.items || payload.items.length === 0) {
-      this.toastr.warning('Please add at least one item to the quotation.', 'Warning');
+      this.toastr.warning(
+        'Please add at least one item to the quotation.',
+        'Warning',
+      );
       return;
     }
 
@@ -282,7 +282,10 @@ decreaseQty(index: number) {
       },
       error: (err) => {
         console.error(err);
-        this.toastr.error('Something went wrong while saving the quotation.', 'Error');
+        this.toastr.error(
+          'Something went wrong while saving the quotation.',
+          'Error',
+        );
       },
     });
   }
@@ -294,7 +297,7 @@ decreaseQty(index: number) {
       (c) =>
         c.name?.toLowerCase().includes(term) ||
         c.email?.toLowerCase().includes(term) ||
-        c.phone?.toString().includes(term)
+        c.phone?.toString().includes(term),
     );
   }
 
@@ -305,7 +308,7 @@ decreaseQty(index: number) {
       (i) =>
         i.item_name?.toLowerCase().includes(term) ||
         i.item_code?.toLowerCase().includes(term) ||
-        i.selling_price?.toString().includes(term)
+        i.selling_price?.toString().includes(term),
     );
   }
 

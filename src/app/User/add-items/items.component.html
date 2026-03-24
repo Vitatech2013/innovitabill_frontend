@@ -43,7 +43,7 @@
           formControlName="brand_name"
           placeholder="Enter Brand name"
           (input)="onInputAlphabetsOnly($event)"
-           (input)="onBrandChange()"
+          (input)="onBrandChange()"
         />
         <small *ngIf="isInvalid('brand_name')" class="text-danger">
           Brand name is required

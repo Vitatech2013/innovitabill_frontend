@@ -1,29 +1,25 @@
-/* NAVBAR */
 .custom_navbar {
   background: #fff;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .logo {
   height: 40px;
 }
 
-/* SECTION */
 .success-section {
   background: #0b3d2e;
 }
 
-/* BOX CENTER */
 .story-box {
   position: relative;
-  max-width: 700px;   /* 👈 card width control */
+  max-width: 700px;
   width: 70%;
-  height: 260px; 
-  margin-top: 100px;   
-  margin-left: 100px;   
+  height: 200px;
+  margin-top: 100px;
+  margin-left: 100px;
 }
 
-/* STORIES OVERLAP */
 .story {
   position: absolute;
   width: 80%;
@@ -32,23 +28,21 @@
   border-radius: 15px;
   padding: 25px;
   opacity: 0;
+  height: 100%;
 }
 
-/* TEXT */
 .review-text {
   font-size: 16px;
   line-height: 1.6;
 }
 
-/* IMAGE */
 .story img {
   width: 70%;
-  height: 100px;
+  height: 130px;
   object-fit: cover;
   border-radius: 10px;
 }
 
-/* FADE ANIMATION */
 .story:nth-child(1) {
   animation: fade 6s infinite;
 }
@@ -59,16 +53,23 @@
   animation: fade 6s infinite 4s;
 }
 
-/* KEYFRAMES */
 @keyframes fade {
-  0% { opacity: 0; }
-  10% { opacity: 1; }
-  30% { opacity: 1; }
-  40% { opacity: 0; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
 }
-
-
 
 /*  */
 .success-wrapper {
@@ -100,7 +101,6 @@
   box-shadow: none !important;
 }
 
-/* Masonry layout */
 .masonry-layout {
   column-count: 3;
   column-gap: 28px;
@@ -205,7 +205,6 @@
   font-size: 18px;
 }
 
-/* Responsive */
 @media (max-width: 991px) {
   .masonry-layout {
     column-count: 2;

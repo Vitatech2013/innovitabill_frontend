@@ -1,33 +1,33 @@
 <div class="container-fluid body">
   <div class="row">
     <nav
-      class="navbar bdy navbar-expand-lg navbar-dark bg-success px-3 fixed-top"
+      class="navbar bdy navbar-expand-lg navbar-dark px-3 fixed-top custom_navbar"
     >
-      <a class="navbar-brand text-white fw-bold" routerLink="/home"
-        >InnoVITA Bill</a
-      >
+      <a class="navbar-brand d-flex align-items-center ms-5" routerLink="/home">
+        <img src="assets/images/logo@@1.png" alt="Logo" class="logo me-1" />
+        <span class="fw-bold text-dark">InnoVITA Bill</span>
+      </a>
 
       <div class="ms-auto d-flex align-items-center">
-        <div class="me-3 text-white text-end">
+        <div class="me-3 text-dark text-end">
           <div class="fw-bold">{{ superadminName }}</div>
-          <small><b>Role</b>  : Superadmin</small>
+          <small>Role : <b>Superadmin</b></small>
         </div>
 
         <div class="dropdown">
           <a
-            class="nav-link text-white me-3 d-flex align-items-center dropdown-toggle nav p1"
+            class="nav-link text-white me-3 d-flex align-items-center dropdown-toggle profile-icon"
             id="profileDropdown"
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
             title="Profile"
-            data-toggle="tooltip" data-placement="top" title="Profile"
           >
             <i class="bi bi-person-circle"></i>
           </a>
 
           <ul
-            class="dropdown-menu dropdown-menu-end"
+            class="dropdown-menu dropdown-menu-end custom-dropdown"
             aria-labelledby="profileDropdown"
           >
             <li>
@@ -49,15 +49,17 @@
         </div>
       </div>
     </nav>
-    <div class="toast-container position-fixed  top-1 end-0 p-1 "
-      style="top: 60px; z-index: 1200">
+    <div
+      class="toast-container position-fixed top-1 end-0 p-1"
+      style="top: 60px; z-index: 1200"
+    >
       <div
         *ngIf="toastMessage"
         class="toast align-items-center text-light border-0 fade show shadow-lg"
         [ngClass]="{
           'bg-success': toastType === 'success',
           'bg-warning': toastType === 'warning',
-          'bg-danger': toastType === 'error'
+          'bg-danger': toastType === 'error',
         }"
         role="alert"
       >
@@ -67,7 +69,7 @@
           </div>
           <button
             type="button"
-           class="btn-close btn-close-white me-2 m-auto"
+            class="btn-close btn-close-white me-2 m-auto"
             (click)="toastMessage = null"
           ></button>
         </div>
@@ -113,7 +115,9 @@
           routerLink="/SuperAdminView/add-business"
           routerLinkActive="active-btn"
           [routerLinkActiveOptions]="{ exact: true }"
-          data-toggle="tooltip" data-placement="top" title="Add Business"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Add Business"
         >
           <b> <i class="bi bi-plus-circle me-1"></i></b> Add Business
         </button>
@@ -122,7 +126,9 @@
           routerLink="/SuperAdminView/view-business"
           routerLinkActive="active-btn"
           [routerLinkActiveOptions]="{ exact: true }"
-          data-toggle="tooltip" data-placement="top" title="View Business"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="View Business"
         >
           <b><i class="bi bi-list-check me-2"></i></b> View Business
         </button>
@@ -132,7 +138,9 @@
           routerLink="/SuperAdminView/view_business_type"
           routerLinkActive="active-btn"
           [routerLinkActiveOptions]="{ exact: true }"
-          data-toggle="tooltip" data-placement="top" title="Business Types"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Business Types"
         >
           <b><i class="bi bi-file-earmark-bar-graph me-2"></i></b> Business
           Types

@@ -9,7 +9,6 @@ import {
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { BusinessService } from '../../Services/business.service';
 
-
 @Component({
   selector: 'app-business-login',
   standalone: true,
@@ -27,21 +26,20 @@ export class BusinessLoginComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private service: BusinessService,
-    
   ) {}
 
   ngOnInit(): void {
     this.businessForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password:  [
-    '',
-    [
-      Validators.required,
-      Validators.pattern(
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/
-      )
-    ]
-  ]
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(
+            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/,
+          ),
+        ],
+      ],
     });
   }
 
@@ -73,7 +71,7 @@ export class BusinessLoginComponent implements OnInit {
         if (err.status === 403) {
           this.showToast(
             'Your account is inactive. Please contact admin.',
-            'warning'
+            'warning',
           );
         } else if (err.status === 401) {
           this.showToast('Invalid email or password.', 'warning');
