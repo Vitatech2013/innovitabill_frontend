@@ -1,6 +1,7 @@
 .table-wrapper {
   max-height: 490px;        
   overflow-y: auto;
+  width: 1200px;
 }
 
 .table-wrapper {

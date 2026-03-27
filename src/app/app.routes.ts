@@ -38,6 +38,7 @@ import { PurchaseListComponent } from './User/purchase-list/purchase-list.compon
 import { ExpensesComponent } from './expenses/expenses.component';
 import { ResourcesComponent } from './resources/resources.component';
 import { CustomerComponent } from './customer/customer.component';
+import { ContactComponent } from './contact/contact.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -47,6 +48,7 @@ export const routes: Routes = [
   { path: 'reset-password/:token', component: ResetPasswordComponent },
   {path: 'resources', component:ResourcesComponent},
   {path: 'customer', component: CustomerComponent},
+  {path: 'contact', component: ContactComponent},
   {
     path: 'SuperAdminView',
     component: SuperadminViewComponent,

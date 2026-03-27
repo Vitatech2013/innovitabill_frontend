@@ -123,7 +123,10 @@ export class BillingService {
   sendDemoMail(data: any) {
     return this.http.post(`${this.baseUrl}/demo/registration`, data);
   }
-
+// contact
+  sendForm(data: any) {
+    return this.http.post(`${this.baseUrl}/demo/registration`, data);
+  }
   //Admins
   deleteAdmin(id: string) {
     return this.http.delete(`${this.baseUrl}/admindelete/${id}`);

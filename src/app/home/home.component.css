@@ -288,3 +288,18 @@ footer a:hover {
 .custom-modal-width {
   max-width: 60%;
 }
+
+@media (max-width: 768px) {
+  .demo-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .left-section,
+  .right-section {
+    width: 100%;
+  }
+  .custom-modal-width {
+  max-width: 100%;
+}
+}

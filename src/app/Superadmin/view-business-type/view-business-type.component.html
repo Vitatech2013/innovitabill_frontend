@@ -44,7 +44,7 @@
         <input
           type="text"
           class="form-control shadow-sm width"
-          placeholder="Search..."
+          placeholder="Search"
           [(ngModel)]="searchTerm"
         />
         <div class="d-flex align-items-center gap-2">
@@ -142,7 +142,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <form [formGroup]="b_typeForm" (ngSubmit)="Updatebtype()">
-            <div class="modal-header">
+            <div class="modal-header bg-success text-white">
               <h5 class="modal-title" id="roleModalLabel">{{ title }}</h5>
               <button
                 type="button"
