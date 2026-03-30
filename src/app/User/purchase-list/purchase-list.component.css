@@ -13,8 +13,9 @@
 }
 
 .modal-header {
-  background-color: #127829;
+  /* background-color: #127829; */
   color: #fff;
+  background-color: green;
   text-align: center;
   border-bottom: none;
   border-top-left-radius: 0.5rem;

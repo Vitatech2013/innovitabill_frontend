@@ -30,7 +30,7 @@ export class ItemsComponent implements OnInit {
   allSubCategories: any;
   units: any;
   users_id: string = '';
-items: any[] = [];
+  items: any[] = [];
 
   selectedImageFile!: File | null;
 
@@ -51,9 +51,7 @@ items: any[] = [];
           Validators.pattern('^[a-zA-Z0-9]+$'),
         ],
       ],
-      item_code: [
-        ''
-      ],
+      item_code: [''],
       unit_id: ['', Validators.required],
       selling_price: [
         '',
@@ -124,12 +122,12 @@ items: any[] = [];
     this.loadItems();
   }
   loadItems() {
-  this.service.getItems(this.business_id).subscribe({
-    next: (res: any) => {
-      this.items = res.data || [];
-    }
-  });
-}
+    this.service.getItems(this.business_id).subscribe({
+      next: (res: any) => {
+        this.items = res.data || [];
+      },
+    });
+  }
 
   categoriesGet() {
     this.service.getCategories(this.business_id).subscribe({
@@ -173,19 +171,17 @@ items: any[] = [];
   }
 
   saveItems() {
-      console.log(this.addItemsForm.value);
-  console.log(this.addItemsForm.valid);
-  
+    console.log(this.addItemsForm.value);
+    console.log(this.addItemsForm.valid);
 
-  Object.keys(this.addItemsForm.controls).forEach(key => {
-    const control = this.addItemsForm.get(key);
-    if (control?.invalid) {
-      console.log(key, control.errors);
-    }
-  });
+    Object.keys(this.addItemsForm.controls).forEach((key) => {
+      const control = this.addItemsForm.get(key);
+      if (control?.invalid) {
+        console.log(key, control.errors);
+      }
+    });
 
-
-     this.addItemsForm.markAllAsTouched(); 
+    this.addItemsForm.markAllAsTouched();
     if (this.addItemsForm.invalid) {
       this.toastr.warning(
         'Please fill all required fields correctly.',
@@ -194,30 +190,27 @@ items: any[] = [];
       return;
     }
 
-    
     const f = this.addItemsForm.value;
-const formData = new FormData();
+    const formData = new FormData();
 
-let itemCode = f.item_code;
+    let itemCode = f.item_code;
 
-if (!itemCode) {
+    if (!itemCode) {
+      let lastCode = localStorage.getItem('lastItemCode') || 'LP000';
 
-  let lastCode = localStorage.getItem('lastItemCode') || 'LP000';
+      const numberPart = parseInt(lastCode.replace('LP', '')) + 1;
 
-  const numberPart = parseInt(lastCode.replace('LP', '')) + 1;
+      itemCode = 'LP' + numberPart.toString().padStart(3, '0');
 
-  itemCode = 'LP' + numberPart.toString().padStart(3, '0');
+      localStorage.setItem('lastItemCode', itemCode);
+    }
 
-  localStorage.setItem('lastItemCode', itemCode);
-} 
-// ✅ ADD THIS BLOCK
-let lastBarcode = localStorage.getItem('lastBarcode') || 'BC000';
-const barcodeNumber = parseInt(lastBarcode.replace('BC', '')) + 1;
-const barcode = 'BC' + barcodeNumber.toString().padStart(3, '0');
-localStorage.setItem('lastBarcode', barcode);
+    let lastBarcode = localStorage.getItem('lastBarcode') || 'BC000';
+    const barcodeNumber = parseInt(lastBarcode.replace('BC', '')) + 1;
+    const barcode = 'BC' + barcodeNumber.toString().padStart(3, '0');
+    localStorage.setItem('lastBarcode', barcode);
 
-console.log("Generated Barcode:", barcode);
-
+    console.log('Generated Barcode:', barcode);
 
     formData.append('item_name', f.item_name);
     formData.append('item_code', itemCode);
@@ -259,28 +252,27 @@ console.log("Generated Barcode:", barcode);
   onFileSelect(event: any) {
     this.selectedImageFile = event.target.files[0] || null;
   }
- generateBrandCode(brandName: string): string {
-  if (!brandName) return '';
+  generateBrandCode(brandName: string): string {
+    if (!brandName) return '';
 
-  const prefix = brandName.substring(0, 3).toUpperCase();
+    const prefix = brandName.substring(0, 3).toUpperCase();
 
-  const count = this.items.filter(
-    (item) =>
-      item.brand_name?.toLowerCase() === brandName.toLowerCase()
-  ).length;
+    const count = this.items.filter(
+      (item) => item.brand_name?.toLowerCase() === brandName.toLowerCase(),
+    ).length;
 
-  const nextNumber = count + 1;
+    const nextNumber = count + 1;
 
-  return prefix + nextNumber.toString().padStart(3, '0');
-}
-onBrandChange() {
-  const brandName = this.addItemsForm.get('brand_name')?.value;
-  const code = this.generateBrandCode(brandName);
+    return prefix + nextNumber.toString().padStart(3, '0');
+  }
+  onBrandChange() {
+    const brandName = this.addItemsForm.get('brand_name')?.value;
+    const code = this.generateBrandCode(brandName);
 
-  this.addItemsForm.patchValue({
-    barcode: code   // or brand_code field unte adi use cheyandi
-  });
-}
+    this.addItemsForm.patchValue({
+      barcode: code,
+    });
+  }
 
   onInputAlphabetsOnly(event: Event) {
     const input = event.target as HTMLInputElement;

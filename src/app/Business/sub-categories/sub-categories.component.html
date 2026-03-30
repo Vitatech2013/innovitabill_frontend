@@ -170,8 +170,8 @@
     <div class="modal-dialog modal-dialog-centered modal-sm">
       <div class="modal-content">
         <form [formGroup]="subCategoryForm" (ngSubmit)="createOrUpdateSc()">
-          <div class="modal-header">
-            <h5 class="modal-title" id="subcategoryModel">{{ title }}</h5>
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title text-white" id="subcategoryModel">{{ title }}</h5>
             <button
               type="button"
               class="btn-close"
@@ -238,7 +238,7 @@
                 </div>
               </div> -->
               <div class="col-md-12 mb-2" *ngIf="selectedcategory">
-                <label class="form-label fw-semibold">Status</label>
+                <label class="form-label ">Status</label>
                 <select class="form-select" formControlName="status">
                   <option value="">Select Status</option>
                   <option value="active">Active</option>

@@ -15,7 +15,7 @@
 /* Make tbody scrollable */
 .selected-items-responsive tbody {
   display: block;
-  max-height: 220px;   /* adjust height */
+  max-height: 220px; /* adjust height */
   overflow-y: auto;
 }
 
@@ -36,7 +36,6 @@
   background: #bbb;
   border-radius: 10px;
 }
-
 
 .scroll-card-area {
   max-height: 260px;
@@ -181,28 +180,27 @@
 .customer-display {
   width: 100%;
   max-width: 420px;
-  margin: 0 auto 10px auto;   /* bottom space reduce */
+  margin: 0 auto 10px auto;
 }
 
 .cust-row {
   display: flex;
   flex-direction: column;
-  gap: 5px;              /* gap reduce */
-  margin-bottom: 6px;    /* vertical spacing reduce */
+  gap: 5px;
+  margin-bottom: 6px;
 }
 
 .cust-row label {
   font-weight: 600;
-  font-size: 13px;       /* slightly smaller */
+  font-size: 13px;
   margin-bottom: 2px;
 }
 
 .cust-row input {
   width: 100%;
-  padding: 5px 8px;      /* reduce input height */
+  padding: 5px 8px;
   font-size: 13px;
 }
-
 
 .cust-row input:focus {
   border-color: #4caf50;
@@ -234,7 +232,7 @@
   min-width: 700px;
 }
 
-#pdfPreviewModal .modal-dialog{
+#pdfPreviewModal .modal-dialog {
   max-width: 650px;
   margin: auto;
 }

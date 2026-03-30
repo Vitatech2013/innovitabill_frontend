@@ -1,18 +1,19 @@
 .table-wrapper {
-  max-height: 500px;      /* Table height */
-  overflow-y: auto;       /* Vertical scroll */
+  max-height: 500px;      
+  overflow-y: auto;       
   position: relative;
+  width: 1200px;
 }
 
-/* Sticky Header */
+
 .sticky-header th {
   position: sticky;
   top: 0;
-  background-color: #d1e7dd;   /* Same as table-success */
+  background-color: #d1e7dd;   
   z-index: 5;
 }
 
-/* Remove extra scroll conflicts */
+
 .table-responsive {
   overflow-x: auto;
   overflow-y: visible;

@@ -1,32 +1,31 @@
 <div class="container-fluid mt-4">
   <div *ngIf="!isCreatingInvoice()">
     <div class="row">
-<div class="d-flex align-items-center mb-3">
+      <div class="d-flex align-items-center mb-3">
+        <!-- Title -->
+        <h4 class="mb-0 text-success fw-bold me-3">Purchase List</h4>
 
-  <!-- Title -->
-  <h4 class="mb-0 text-success fw-bold me-3">Purchase List</h4>
+        <!-- Search -->
+        <div class="search-box me-auto" style="width: 500px; margin-left: 20%">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search"
+            (input)="filteredPurchase()"
+            [(ngModel)]="searchTerm"
+          />
+        </div>
 
-  <!-- Search -->
-  <div class="search-box me-auto " style="width:500px; margin-left: 20%;">
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Search"
-      (input)="filteredPurchase()"
-      [(ngModel)]="searchTerm"
-    />
-  </div>
-
-  <!-- Button -->
-  <a
-    class="btn btn-light text-dark fw-semibold ms-3" style="margin-right: 10%;"
-    routerLink="/userview/purchase"
-    routerLinkActive="active-btn"
-  >
-    <i class="bi bi-plus-circle me-1"></i> Add Purchase
-  </a>
-
-</div>
+        <!-- Button -->
+        <a
+          class="btn btn-light text-dark fw-semibold ms-3"
+          style="margin-right: 10%"
+          routerLink="/userview/purchase"
+          routerLinkActive="active-btn"
+        >
+          <i class="bi bi-plus-circle me-1"></i> Add Purchase
+        </a>
+      </div>
       <div class="table-wrapper">
         <div class="table-responsive table-scroll">
           <table
@@ -50,26 +49,35 @@
                 <td>{{ purchase.item_id?.item_name }}</td>
                 <td>{{ purchase.item_id?.brand_name }}</td>
                 <td>{{ purchase.item_id?.stock_quantity }}</td>
-               <td>
-  <span 
-    class="badge"
-    [ngClass]="purchase.item_id?.status === 'active' ? 'bg-success' : 'bg-danger'">
-    {{ purchase.item_id?.status }}
-  </span>
-</td>
+                <td>
+                  <span
+                    class="badge"
+                    [ngClass]="
+                      purchase.item_id?.status === 'active'
+                        ? 'bg-success'
+                        : 'bg-danger'
+                    "
+                  >
+                    {{ purchase.item_id?.status }}
+                  </span>
+                </td>
                 <td>
                   <div class="d-flex justify-content-start gap-2">
                     <button
                       class="btn btn-sm btn-outline-info me-2"
                       (click)="openViewModal(purchase)"
-                       data-toggle="tooltip" data-placement="top" title="View"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="View"
                     >
                       <b><i class="bi bi-eye"></i></b>
                     </button>
                     <button
                       class="btn btn-sm btn-outline-primary me-2"
                       (click)="editItem(purchase)"
-                       data-toggle="tooltip" data-placement="top" title="Edit"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Edit"
                     >
                       <i class="bi bi-pencil-square"></i>
                     </button>
@@ -111,19 +119,19 @@
               <table class="table table-bordered align-middle text-center mb-0">
                 <thead class="table-success">
                   <tr>
-                    <th style="color: #0a5c0a;">S.No</th>
-                    <th style="color: #0a5c0a;">Vendor Name</th>
-                    <th style="color: #0a5c0a;">Vendor Type</th>
-                    <th style="color: #0a5c0a;">Business Category</th>
-                    <th style="color: #0a5c0a;">Item Name</th>
-                    <th style="color: #0a5c0a;">Item Code</th>
-                    <th style="color: #0a5c0a;">Purchase Price</th>
-                    <th style="color: #0a5c0a;">Tax</th>
-                    <th style="color: #0a5c0a;">Quantity</th>
-                    <th style="color: #0a5c0a;">Brand Name</th>
-                    <th style="color: #0a5c0a;">Discount</th>
-                    <th style="color: #0a5c0a;">Image</th>
-                    <th style="color: #0a5c0a;">Status</th>
+                    <th style="color: #0a5c0a">S.No</th>
+                    <th style="color: #0a5c0a">Vendor Name</th>
+                    <th style="color: #0a5c0a">Vendor Type</th>
+                    <th style="color: #0a5c0a">Business Category</th>
+                    <th style="color: #0a5c0a">Item Name</th>
+                    <th style="color: #0a5c0a">Item Code</th>
+                    <th style="color: #0a5c0a">Purchase Price</th>
+                    <th style="color: #0a5c0a">Tax</th>
+                    <th style="color: #0a5c0a">Quantity</th>
+                    <th style="color: #0a5c0a">Brand Name</th>
+                    <th style="color: #0a5c0a">Discount</th>
+                    <th style="color: #0a5c0a">Image</th>
+                    <th style="color: #0a5c0a">Status</th>
                   </tr>
                 </thead>
                 <tbody *ngIf="selectedPurchases">
@@ -146,7 +154,7 @@
                         [src]="getImageUrl(selectedPurchases.item_id?.image)"
                         alt="Item Image"
                         class="img-thumbnail item-image"
-                        style="width: 60px;"
+                        style="width: 60px"
                         (click)="
                           openImageModal(
                             getImageUrl(selectedPurchases.item_id?.image)
@@ -156,14 +164,20 @@
                     </td>
                     <td>
                       <span
-                        class="badge file-dark"
+                        class="badge"
                         [ngClass]="{
-                          'bg-success': selectedPurchases.status === 'Active',
-                          'bg-warning': selectedPurchases.status === 'Pending',
-                          'bg-danger': selectedPurchases.status === 'Inactive'
+                          'bg-success':
+                            selectedPurchases?.item_id?.status?.toLowerCase() ===
+                            'active',
+                          'bg-warning':
+                            selectedPurchases?.item_id?.status?.toLowerCase() ===
+                            'pending',
+                          'bg-danger':
+                            selectedPurchases?.item_id?.status?.toLowerCase() ===
+                            'inactive',
                         }"
                       >
-                        {{ selectedPurchases.item_id?.status }}
+                        {{ selectedPurchases?.item_id?.status | titlecase }}
                       </span>
                     </td>
                   </tr>
@@ -176,7 +190,9 @@
               type="button"
               class="btn btn-secondary btn-sm"
               data-bs-dismiss="modal"
-               data-toggle="tooltip" data-placement="top" title="Close"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Close"
             >
               Close
             </button>
@@ -187,300 +203,307 @@
 
     <!--Edit Modal-->
 
-<div
-  class="modal fade"
-  id="editItemModal"
-  tabindex="-1"
-  aria-labelledby="editItemModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered custom-modal">
-    <div class="modal-content border-0 shadow-lg rounded-4">
-      <div class="modal-header bg-success text-white">
-        <h5 class="modal-title" id="editItemModalLabel">Edit Purchase</h5>
-        <button
-          type="button"
-          class="btn-close btn-close-white"
-          data-bs-dismiss="modal"
-        ></button>
-      </div>
-
-      <div class="modal-body">
-        <form
-          [formGroup]="editForm"
-          (ngSubmit)="updatePurchase()"
-          enctype="multipart/form-data"
-        >
-          <div class="row g-3">
-
-            <h5 class="fw-bold mt-2">Vendor Details</h5>
-
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Vendor Name</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="vendor_name"
-                placeholder="Enter vendor name"
-              />
-              <small *ngIf="isInvalid('vendor_name')" class="text-danger">
-                Vendor Name is required and must be at least 3 letters
-              </small>
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Vendor Type</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="vendor_type"
-                placeholder="Enter vendor type"
-              />
-              <small *ngIf="isInvalid('vendor_type')" class="text-danger">
-                Vendor Type is required and must be at least 3 letters
-              </small>
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Business Category</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="business_category"
-                placeholder="Enter business category"
-              />
-              <small *ngIf="isInvalid('business_category')" class="text-danger">
-                Business Category is required and must be at least 3 letters
-              </small>
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label fw-semibold"
-                >Registration Number</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                formControlName="company_registration_number"
-                placeholder="Enter registration number"
-              />
-              <small
-                *ngIf="isInvalid('company_registration_number')"
-                class="text-danger"
-              >
-                Registration Number is required and must be at least 3 letters
-              </small>
-            </div>
-
-            <h5 class="fw-bold mt-3">Item Details</h5>
-
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Item Name</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="item_name"
-                placeholder="Enter item name"
-              />
-              <small *ngIf="isInvalid('item_name')" class="text-danger">
-                Item Name is required and must be at least 3 letters
-              </small>
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Item Code</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="item_code"
-                placeholder="Enter item code"
-              />
-              <small *ngIf="isInvalid('item_code')" class="text-danger">
-                Item code is required and must be at least 3 letters
-              </small>
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label">Units</label>
-              <select class="form-select" formControlName="unit_id">
-                <option value="">Select Units</option>
-                <option *ngFor="let unit of units" [value]="unit._id">
-                  {{ unit.units_name }}
-                </option>
-              </select>
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Brand Name</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="brand_name"
-                placeholder="Enter Brand name"
-              />
-              <small *ngIf="isInvalid('brand_name')" class="text-danger">
-                Brand name is required
-              </small>
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Price</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="selling_price"
-                placeholder="Enter selling price"
-              />
-              <small *ngIf="isInvalid('selling_price')" class="text-danger">
-                Selling price is required
-              </small>
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Purchase price</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="purchase_price"
-                placeholder="Purchase price"
-              />
-              <small
-                *ngIf="isInvalid('purchase_price')"
-                class="text-danger"
-              >
-                Purchase price is required
-              </small>
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Tax</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="tax_rate"
-                placeholder="Tax rate"
-              />
-              <small *ngIf="isInvalid('tax_rate')" class="text-danger">
-                Tax rate is required
-              </small>
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Discount</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="discount"
-                placeholder="Enter discount"
-              />
-              <small *ngIf="isInvalid('discount')" class="text-danger">
-                Discount is required
-              </small>
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Stock</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="stock_quantity"
-                placeholder="No.of Quantitys"
-              />
-              <small
-                *ngIf="isInvalid('stock_quantity')"
-                class="text-danger"
-              >
-                Stock is required
-              </small>
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label fw-semibold">Stock Alert</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="min_stock_alert"
-                placeholder="Enter alert stock"
-              />
-              <small
-                *ngIf="isInvalid('min_stock_alert')"
-                class="text-danger"
-              >
-                Alert stock is required
-              </small>
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label">Sub-Categories</label>
-              <select class="form-select" formControlName="sub_category_id">
-                <option value="">Select Sub categories</option>
-                <option *ngFor="let subcat of subCategories" [value]="subcat._id">
-                  {{ subcat.sub_category_name }}
-                </option>
-              </select>
-            </div>
-
-            <div class="col-md-3">
-              <label class="form-label">Categories</label>
-              <select class="form-select" formControlName="category_id">
-                <option value="">Select Categories</option>
-                <option *ngFor="let cat of categories" [value]="cat._id">
-                  {{ cat.categories_name }}
-                </option>
-              </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Description</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="description"
-                placeholder="Enter description"
-              />
-              <small *ngIf="isInvalid('description')" class="text-danger">
-                Description is required
-              </small>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label fw-semibold">Image</label>
-              <div class="input-group">
-                <label class="input-group-text choose-btn text-dark">
-                  Choose File
-                  <input
-                    type="file"
-                    class="d-none"
-                    (change)="onCustomFileSelect($event, 'image')"
-                  />
-                </label>
-                <input
-                  type="text"
-                  class="form-control"
-                  [value]="selectedImage || 'No file chosen'"
-                  readonly
-                />
-              </div>
-            </div>
-
-          </div>
-
-          <div class="text-center mt-4">
+    <div
+      class="modal fade"
+      id="editItemModal"
+      tabindex="-1"
+      aria-labelledby="editItemModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered custom-modal">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+          <div class="modal-header  text-white bg-success">
+            <h5 class="modal-title" id="editItemModalLabel">Edit Purchase</h5>
             <button
-              type="submit"
-              class="btn btn-success w-50 p-2"
-              (click)="updatePurchase()"
-              data-toggle="tooltip"
-              data-placement="top"
-              title="Update"
-            >
-              Update
-            </button>
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
           </div>
-        </form>
+
+          <div class="modal-body">
+            <form
+              [formGroup]="editForm"
+              (ngSubmit)="updatePurchase()"
+              enctype="multipart/form-data"
+            >
+              <div class="row g-3">
+                <h5 class="fw-bold mt-2">Vendor Details</h5>
+
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Vendor Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="vendor_name"
+                    placeholder="Enter vendor name"
+                  />
+                  <small *ngIf="isInvalid('vendor_name')" class="text-danger">
+                    Vendor Name is required and must be at least 3 letters
+                  </small>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Vendor Type</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="vendor_type"
+                    placeholder="Enter vendor type"
+                  />
+                  <small *ngIf="isInvalid('vendor_type')" class="text-danger">
+                    Vendor Type is required and must be at least 3 letters
+                  </small>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold"
+                    >Business Category</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="business_category"
+                    placeholder="Enter business category"
+                  />
+                  <small
+                    *ngIf="isInvalid('business_category')"
+                    class="text-danger"
+                  >
+                    Business Category is required and must be at least 3 letters
+                  </small>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold"
+                    >Registration Number</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="company_registration_number"
+                    placeholder="Enter registration number"
+                  />
+                  <small
+                    *ngIf="isInvalid('company_registration_number')"
+                    class="text-danger"
+                  >
+                    Registration Number is required and must be at least 3
+                    letters
+                  </small>
+                </div>
+
+                <h5 class="fw-bold mt-3">Item Details</h5>
+
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Item Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="item_name"
+                    placeholder="Enter item name"
+                  />
+                  <small *ngIf="isInvalid('item_name')" class="text-danger">
+                    Item Name is required and must be at least 3 letters
+                  </small>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Item Code</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="item_code"
+                    placeholder="Enter item code"
+                  />
+                  <small *ngIf="isInvalid('item_code')" class="text-danger">
+                    Item code is required and must be at least 3 letters
+                  </small>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label">Units</label>
+                  <select class="form-select" formControlName="unit_id">
+                    <option value="">Select Units</option>
+                    <option *ngFor="let unit of units" [value]="unit._id">
+                      {{ unit.units_name }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Brand Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="brand_name"
+                    placeholder="Enter Brand name"
+                  />
+                  <small *ngIf="isInvalid('brand_name')" class="text-danger">
+                    Brand name is required
+                  </small>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Price</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="selling_price"
+                    placeholder="Enter selling price"
+                  />
+                  <small *ngIf="isInvalid('selling_price')" class="text-danger">
+                    Selling price is required
+                  </small>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Purchase price</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="purchase_price"
+                    placeholder="Purchase price"
+                  />
+                  <small
+                    *ngIf="isInvalid('purchase_price')"
+                    class="text-danger"
+                  >
+                    Purchase price is required
+                  </small>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Tax</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="tax_rate"
+                    placeholder="Tax rate"
+                  />
+                  <small *ngIf="isInvalid('tax_rate')" class="text-danger">
+                    Tax rate is required
+                  </small>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Discount</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="discount"
+                    placeholder="Enter discount"
+                  />
+                  <small *ngIf="isInvalid('discount')" class="text-danger">
+                    Discount is required
+                  </small>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Stock</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="stock_quantity"
+                    placeholder="No.of Quantitys"
+                  />
+                  <small
+                    *ngIf="isInvalid('stock_quantity')"
+                    class="text-danger"
+                  >
+                    Stock is required
+                  </small>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label fw-semibold">Stock Alert</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="min_stock_alert"
+                    placeholder="Enter alert stock"
+                  />
+                  <small
+                    *ngIf="isInvalid('min_stock_alert')"
+                    class="text-danger"
+                  >
+                    Alert stock is required
+                  </small>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label">Sub-Categories</label>
+                  <select class="form-select" formControlName="sub_category_id">
+                    <option value="">Select Sub categories</option>
+                    <option
+                      *ngFor="let subcat of subCategories"
+                      [value]="subcat._id"
+                    >
+                      {{ subcat.sub_category_name }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label">Categories</label>
+                  <select class="form-select" formControlName="category_id">
+                    <option value="">Select Categories</option>
+                    <option *ngFor="let cat of categories" [value]="cat._id">
+                      {{ cat.categories_name }}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Description</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="description"
+                    placeholder="Enter description"
+                  />
+                  <small *ngIf="isInvalid('description')" class="text-danger">
+                    Description is required
+                  </small>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Image</label>
+                  <div class="input-group">
+                    <label class="input-group-text choose-btn text-dark">
+                      Choose File
+                      <input
+                        type="file"
+                        class="d-none"
+                        (change)="onCustomFileSelect($event, 'image')"
+                      />
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [value]="selectedImage || 'No file chosen'"
+                      readonly
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center mt-4">
+                <button
+                  type="submit"
+                  class="btn btn-success w-50 p-2"
+                  (click)="updatePurchase()"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Update"
+                >
+                  Update
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
   </div>
 </div>

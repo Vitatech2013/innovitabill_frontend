@@ -1,0 +1,181 @@
+  body {
+      background: #f5f7fa;
+      font-family: Arial, sans-serif;
+    }
+
+    .contact-section {
+      padding: 50px 0;
+    }
+
+    .left-panel {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+    }
+
+    .right-panel {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+    }
+
+    .title {
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .sub-text {
+      color: #6c757d;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+        .contact-item {
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .email-links a {
+      display: block;
+      color: #0d6efd;
+      text-decoration: none;
+      margin-bottom: 8px;
+    }
+
+    .social-icons i {
+      font-size: 20px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .form-control, .form-select {
+      border: none;
+      border-bottom: 1px solid #ccc;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .form-control:focus {
+      border-color: #0d6efd;
+      box-shadow: none;
+    }
+      .submit-btn {
+      background: #22c55e;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    @media(max-width:768px) {
+      .left-panel, .right-panel {
+        margin-bottom: 20px;
+      }
+    }
+    .form-control, .form-select {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #22c55e;
+  box-shadow: none;
+}
+
+.card {
+  border-radius: 16px;
+}
+.locations-section {
+  background: #f5f5f5;
+  padding: 60px 0;
+}
+
+.location-card {
+  padding: 20px;
+}
+
+/* COUNTRY TITLE */
+.location-card h3 {
+  color: #0f3d3e; /* dark green */
+  font-size: 26px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+/* CITY */
+.location-card .city {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+  margin-bottom: 8px;
+}
+
+/* TEXT */
+.location-card p {
+  font-size: 14px;
+  color: #555;
+  margin: 2px 0;
+}
+.custom-card {
+  background: #fff;
+  padding: 40px 30px;
+  border: 1px solid #eee;
+  transition: 0.3s;
+  height: 100%;
+}
+
+.custom-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.icon i {
+  font-size: 40px;
+  color: #555;
+}
+
+.title {
+  font-size: 20px;
+  color: #1a73e8;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.desc {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+.learn {
+  font-size: 15px;
+  color: #1a73e8;
+  text-decoration: underline;
+}
+
+.learn:hover {
+  color: #0b5ed7;
+}
+
+.custom_navbar {
+  background: #fff;
+}
+
+.logo {
+  height: 40px;
+}
+
+.desc {
+  font-size: 15px;
+  color: #444;
+}
+
+.learn {
+  color: #1a73e8;
+  text-decoration: underline;
+}

@@ -154,9 +154,17 @@
   </div>
 </div>-->
 
-
+<!-- 
 <nav class="navbar navbar-expand-lg navbar-dark bg-success px-3">
   <nav class="navbar-brand" routerLink="/home">InnoVita Bill</nav>
+</nav> -->
+<nav
+  class="navbar navbar-expand-md navbar-light custom_navbar px-4 sticky-top shadow-sm"
+>
+  <a class="navbar-brand d-flex align-items-center ms-5" routerLink="/home">
+    <img src="assets/images/logo@@1.png" alt="Logo" class="logo me-1" />
+    <span class="fw-bold mt-2" style="font-size: 18px">InnoVITA Bill</span>
+  </a>
 </nav>
 
 <div class="position-fixed top-1 end-0 p-1">
@@ -166,7 +174,7 @@
     [ngClass]="{
       'bg-success': toastType === 'success',
       'bg-danger': toastType === 'error',
-      'bg-warning text-dark': toastType === 'warning'
+      'bg-warning text-dark': toastType === 'warning',
     }"
     role="alert"
   >
@@ -184,30 +192,29 @@
 </div>
 
 <div class="container mt-5 pt-4 d-flex justify-content-center">
-
-  <div class="card shadow-lg" style="max-width:900px; width:100%; border-radius:15px;">
-
+  <div
+    class="card shadow-lg"
+    style="max-width: 900px; width: 100%; border-radius: 15px"
+  >
     <div class="row g-0">
-
-      <!-- LEFT IMAGE -->
       <div class="col-md-7">
         <img
           src="/assets/business_images/login3_img.png"
           class="img-fluid h-100 w-100"
-          style="object-fit:cover;border-top-left-radius:15px;border-bottom-left-radius:15px;"
+          style="
+            object-fit: cover;
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+          "
         />
       </div>
 
-      <!-- RIGHT FORM -->
       <div class="col-md-5 p-4 p-md-5">
-
         <h2 class="title mb-4 text-center fw-bold text-success">
           Business Login
         </h2>
 
         <form [formGroup]="businessForm" (ngSubmit)="login()">
-
-          <!-- Email -->
           <div class="mb-3">
             <label for="email" class="form-label fw-semibold">Email</label>
 
@@ -240,17 +247,14 @@
                 Invalid email format
               </small>
             </div>
-
           </div>
 
-          <!-- Password -->
           <div class="mb-3">
             <label for="password" class="form-label fw-semibold">
               Password
             </label>
 
             <div class="input-group">
-
               <input
                 [type]="showPassword ? 'text' : 'password'"
                 id="password"
@@ -270,7 +274,6 @@
                   [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"
                 ></i>
               </button>
-
             </div>
 
             <div
@@ -294,10 +297,8 @@
                 numbers, and special characters
               </small>
             </div>
-
           </div>
 
-          <!-- Forgot -->
           <div class="text-start mb-4">
             <a
               routerLink="/business-Forgotpassword"
@@ -307,9 +308,7 @@
             </a>
           </div>
 
-          <!-- Buttons -->
           <div class="d-flex gap-2">
-
             <button
               type="submit"
               class="btn btn-success w-100 py-2 fw-semibold"
@@ -321,17 +320,11 @@
             <button class="btn btn-success">
               <i class="bi bi-box-arrow-in-right"></i>
             </button>
-
           </div>
-
         </form>
-
       </div>
-
     </div>
-
   </div>
-
 </div>
 
 <router-outlet></router-outlet>

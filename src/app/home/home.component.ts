@@ -10,7 +10,6 @@ import {
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { BillingService } from '../Services/billing.service';
 
-
 declare var bootstrap: any;
 
 @Component({
@@ -27,54 +26,52 @@ declare var bootstrap: any;
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit, AfterViewInit {
-submitted = false;
+  submitted = false;
 
   demoForm!: FormGroup;
   demoModal: any;
 
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'info' | 'warning' | null = null;
-captchaText: string = '';
+  captchaText: string = '';
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private api: BillingService
+    private api: BillingService,
   ) {}
 
   ngOnInit(): void {
     this.demoForm = this.fb.group({
       name: ['', Validators.required],
-      phone: ['', [Validators.required,   Validators.pattern('^[0-9]{10}$')]],
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       email: ['', [Validators.required, Validators.email]],
       message: ['', Validators.required],
     });
-      this.generateCaptcha();
+    this.generateCaptcha();
   }
-allowOnlyNumbers(event: KeyboardEvent) {
-  const charCode = event.which ? event.which : event.keyCode;
+  allowOnlyNumbers(event: KeyboardEvent) {
+    const charCode = event.which ? event.which : event.keyCode;
 
-  if (charCode < 48 || charCode > 57) {
-    event.preventDefault();
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+    }
   }
-}
- preventSpace(event: KeyboardEvent) {
-  if (event.code === 'Space') {
-    event.preventDefault();
+  preventSpace(event: KeyboardEvent) {
+    if (event.code === 'Space') {
+      event.preventDefault();
+    }
   }
-}
-onNameInput(event: Event, controlName: string) {
-  const input = event.target as HTMLInputElement;
+  onNameInput(event: Event, controlName: string) {
+    const input = event.target as HTMLInputElement;
 
-  const value = input.value
-    .replace(/[^A-Za-z ]/g, '') 
-    .replace(/\s+/g, ' ')       
-    .trimStart();                
+    const value = input.value
+      .replace(/[^A-Za-z ]/g, '')
+      .replace(/\s+/g, ' ')
+      .trimStart();
 
-  this.demoForm
-    .get(controlName)
-    ?.setValue(value, { emitEvent: false });
-}
+    this.demoForm.get(controlName)?.setValue(value, { emitEvent: false });
+  }
 
   ngAfterViewInit(): void {
     const modalElement = document.getElementById('demoModal');
@@ -89,29 +86,42 @@ onNameInput(event: Event, controlName: string) {
     }
   }
   generateCaptcha() {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  this.captchaText = '';
-  for (let i = 0; i < 6; i++) {
-    this.captchaText += chars.charAt(Math.floor(Math.random() * chars.length));
+    const chars =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    this.captchaText = '';
+    for (let i = 0; i < 6; i++) {
+      this.captchaText += chars.charAt(
+        Math.floor(Math.random() * chars.length),
+      );
+    }
   }
-}
 
   sendEmail() {
     if (this.demoForm.invalid) {
-      this.showToast("Please fill all required fields", "error");
+      this.showToast('Please fill all required fields', 'error');
       return;
     }
 
-    this.api.sendDemoMail(this.demoForm.value).subscribe({
+    const payload = {
+      name: this.demoForm.value.name,
+      email: this.demoForm.value.email,
+      phone: this.demoForm.value.phone,
+      message: this.demoForm.value.message,
+    };
+
+    console.log('Sending payload:', payload);
+
+    this.api.sendDemoMail(payload).subscribe({
       next: (res: any) => {
-        this.showToast("Message Registered Successfully!", "success");
+        this.showToast('Message Registered Successfully!', 'success');
         this.demoForm.reset();
         this.demoModal?.hide();
       },
       error: (err: any) => {
-        console.error(err);
-        this.showToast("Failed to send ", "error");
-      }
+        console.error('Full error:', err);
+        console.error('Backend error:', err.error);
+        this.showToast('Failed to send', 'error');
+      },
     });
   }
 

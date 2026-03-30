@@ -22,13 +22,13 @@ import {
   styleUrl: './user-view.component.css',
 })
 export class UserViewComponent implements OnInit {
-  loggedInUser: { name: string; role:string } | null = null;
+  loggedInUser: { name: string; role: string } | null = null;
   timer: any;
   items: any;
   isCollapsed = false;
   isMobileMenu = false;
   darkMode = false;
-sidebarOpen: any;
+  sidebarOpen: any;
   constructor(private router: Router) {}
   ngOnInit(): void {
     const stored = localStorage.getItem('users');
@@ -62,19 +62,20 @@ sidebarOpen: any;
 
     this.loggedInUser = {
       name: userName,
-     
+
       role: userRole,
     };
     console.log('Parsed User:', parsed);
-      if (this.loggedInUser?.role === 'Admin' || this.loggedInUser?.role === 'Manager') {
-    this.router.navigate(['/userview/itemlist']);
-  } 
-  else if (this.loggedInUser?.role === 'Cashier') {
-    this.router.navigate(['/userview/createsale']);
-  } 
-  else if (this.loggedInUser?.role === 'Accountant') {
-    this.router.navigate(['/userview/expenses']);
-  }
+    if (
+      this.loggedInUser?.role === 'Admin' ||
+      this.loggedInUser?.role === 'Manager'
+    ) {
+      this.router.navigate(['/userview/itemlist']);
+    } else if (this.loggedInUser?.role === 'Cashier') {
+      this.router.navigate(['/userview/createsale']);
+    } else if (this.loggedInUser?.role === 'Accountant') {
+      this.router.navigate(['/userview/expenses']);
+    }
   }
 
   logout() {
@@ -82,7 +83,7 @@ sidebarOpen: any;
     localStorage.removeItem('us_token');
     this.router.navigateByUrl('userlogin');
   }
- toggleSidebar() {
+  toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
   }
   closeSidebarOnMobile() {
@@ -90,7 +91,4 @@ sidebarOpen: any;
       this.sidebarOpen = false;
     }
   }
-
-  
-  
 }

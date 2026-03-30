@@ -125,38 +125,44 @@
 </div>
 <router-outlet></router-outlet> -->
 
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-success px-3">
+<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-success px-3">
   <nav class="navbar-brand" style="cursor: pointer" routerLink="/home">
     InnoVITA Bill
   </nav>
+</nav> -->
+<nav
+  class="navbar navbar-expand-md navbar-light custom_navbar px-4 sticky-top shadow-sm"
+>
+  <a class="navbar-brand d-flex align-items-center ms-5" routerLink="/home">
+    <img src="assets/images/logo@@1.png" alt="Logo" class="logo me-1" />
+    <span class="fw-bold mt-2" style="font-size: 18px">InnoVITA Bill</span>
+  </a>
 </nav>
 
 <div class="container mt-5 pt-4 d-flex justify-content-center">
-
-  <div class="card shadow-lg" style="max-width:900px; width:100%; border-radius:15px;">
-
-
+  <div
+    class="card shadow-lg"
+    style="max-width: 900px; width: 100%; border-radius: 15px"
+  >
     <div class="row g-0">
-
-      <!-- LEFT IMAGE -->
-         <div class="col-md-7">
+      <div class="col-md-7">
         <img
           src="/assets/business_images/login3_img.png"
           class="img-fluid h-100 w-100"
-          style="object-fit:cover;border-top-left-radius:15px;border-bottom-left-radius:15px;"
+          style="
+            object-fit: cover;
+            border-top-left-radius: 15px;
+            border-bottom-left-radius: 15px;
+          "
         />
       </div>
 
-      <!-- RIGHT USER LOGIN FORM -->
-      <div class="col-md-5 bg-white p-5 d-flex flex-column justify-content-center">
-
-        <h2 class="text-center fw-bold text-success mb-4">
-          User Login
-        </h2>
+      <div
+        class="col-md-5 bg-white p-5 d-flex flex-column justify-content-center"
+      >
+        <h2 class="text-center fw-bold text-success mb-4">User Login</h2>
 
         <form [formGroup]="userForm">
-
           <!-- EMAIL -->
           <div class="mb-2">
             <label class="text-dark fw-bold">Email</label>
@@ -187,7 +193,6 @@
                 Invalid email format
               </small>
             </div>
-
           </div>
 
           <!-- PASSWORD -->
@@ -195,7 +200,6 @@
             <label class="text-dark fw-bold">Password</label>
 
             <div class="input-group">
-
               <input
                 [type]="showPassword ? 'text' : 'password'"
                 class="form-control"
@@ -212,7 +216,6 @@
                   [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"
                 ></i>
               </button>
-
             </div>
 
             <div
@@ -235,12 +238,9 @@
                 Minimum 6 characters
               </small>
             </div>
-
           </div>
 
-          <!-- REMEMBER + FORGOT -->
           <div class="d-flex justify-content-between align-items-center mb-3">
-
             <div class="form-check">
               <input
                 class="form-check-input"
@@ -259,12 +259,10 @@
             >
               Forgot password?
             </a>
-
           </div>
 
           <!-- BUTTONS -->
           <div class="d-flex gap-3 mt-3">
-
             <button
               type="button"
               class="btn btn-success w-75"
@@ -273,24 +271,14 @@
               Login
             </button>
 
-            <button
-              type="button"
-              class="btn btn-success w-25"
-              routerLink="/"
-            >
+            <button type="button" class="btn btn-success w-25" routerLink="/">
               <i class="bi bi-box-arrow-in-left"></i>
             </button>
-
           </div>
-
         </form>
-
       </div>
-
     </div>
-
   </div>
-
 </div>
 
 <router-outlet></router-outlet>

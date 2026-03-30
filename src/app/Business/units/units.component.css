@@ -1,14 +1,15 @@
 .table-wrapper {
-  max-height: 500px;        /* Adjust height as needed */
+  max-height: 500px;        
   overflow-y: auto;
+  width: 1250px;
 }
 
-/* Optional: smooth scrolling */
+
 .table-wrapper {
   scrollbar-width: thin;
 }
 
-/* Keep table header sticky */
+
 .table thead th {
   position: sticky;
   top: 0;

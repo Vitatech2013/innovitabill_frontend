@@ -34,7 +34,7 @@ import { constants } from '../../../../constants';
 })
 export class UserLoginComponent implements OnInit {
   userForm!: FormGroup;
-  
+
   showPassword: boolean = false;
   quotationForm!: FormGroup;
   private baseUrl = constants.baseUrl;
@@ -45,7 +45,7 @@ export class UserLoginComponent implements OnInit {
     private api: BillingService,
     private toastr: ToastrService,
     private http: HttpClient,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     this.quotationForm = this.fb.group({
       business: this.fb.group({
@@ -92,7 +92,7 @@ export class UserLoginComponent implements OnInit {
   }
   UserLogin() {
     if (this.userForm.invalid) {
-     this.toastr.warning("Please Enter Valid Credentials",'Warning')
+      this.toastr.warning('Please Enter Valid Credentials', 'Warning');
       this.userForm.markAllAsTouched();
       return;
     }
@@ -114,8 +114,7 @@ export class UserLoginComponent implements OnInit {
           console.warn(' Warning: business_id not found in login response');
         }
 
-     this.toastr.success('User Login Success');
-
+        this.toastr.success('User Login Success');
 
         this.router.navigate(['/userview'], {
           state: { toast: 'User login success' },
@@ -130,7 +129,7 @@ export class UserLoginComponent implements OnInit {
         } else if (err.status === 403) {
           this.toastr.error(
             'Your account is inactive. Please contact admin.',
-            'Access Denied'
+            'Access Denied',
           );
         } else if (err.status === 500) {
           this.toastr.error('Server error! Please try again later.', 'Error');
@@ -141,7 +140,6 @@ export class UserLoginComponent implements OnInit {
     });
   }
 
- 
   togglePassword() {
     this.showPassword = !this.showPassword;
   }

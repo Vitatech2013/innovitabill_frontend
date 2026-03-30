@@ -117,12 +117,11 @@
       <router-outlet></router-outlet>
     </div>
   </div>
-</div> --> 
+</div> -->
 
 <!-- <footer class="footer bg-success text-white text-center py-2">
   <small>© {{ currentYear }} InnoVITA Bill. All Rights Reserved.</small>
 </footer> -->
-
 
 <!-- <nav class="navbar navbar-dark bg-success sticky-top px-3">
   <button
@@ -213,75 +212,99 @@
 </div> -->
 <div class="container-fluid body">
   <div class="row">
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top px-3">
+      <button
+        class="navbar-toggler d-md-none"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#sidebar"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-<nav class="navbar navbar-dark bg-success sticky-top px-3 ">
-  <button
-    class="navbar-toggler d-md-none"
-    type="button"
-    data-bs-toggle="offcanvas"
-    data-bs-target="#sidebar"
-  >
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <a class="navbar-brand fw-bold ms-2" routerLink="/home" data-toggle="tooltip" data-placement="top" title="Home">
-    InnoVITA Bill
-  </a>
-
-  <div class="ms-auto d-flex align-items-center">
-    <div class="me-3 text-white text-end d-none d-md-block">
-      <div class="fw-bold">{{ loggedInBusiness?.name }}</div>
-      <small ><b>Role</b>  : Business</small>
-    </div>
-
-    <div class="dropdown">
-      <a class="nav-link text-white dropdown-toggle" data-bs-toggle="dropdown"data-toggle="tooltip" data-placement="top" title="Profile">
-        <i class="bi bi-person-circle fs-3"></i>
+      <a class="navbar-brand d-flex align-items-center ms-5" routerLink="/home">
+        <img src="assets/images/logo@@1.png" alt="Logo" class="logo me-1" />
+        <span class="fw-bold text-dark">InnoVITA Bill</span>
       </a>
 
-      <ul class="dropdown-menu dropdown-menu-end">
-        <li>
-          <a class="dropdown-item" routerLink="businessprofile">
-            <i class="bi bi-person me-2" ></i> Profile
+      <div class="ms-auto d-flex align-items-center">
+        <div class="me-3 text-dark text-end d-none d-md-block">
+          <div class="fw-bold">{{ loggedInBusiness?.name }}</div>
+          <small>Role :<b> Business</b></small>
+        </div>
+
+        <div class="dropdown">
+          <a
+            class="nav-link text-dark d-flex align-items-center"
+            id="businessProfileDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            title="Profile"
+          >
+            <i class="bi bi-person-circle fs-3"></i>
           </a>
-        </li>
-        <li><hr class="dropdown-divider" /></li>
-        <li>
-          <a class="dropdown-item"
-           data-bs-toggle="modal"
+
+          <ul
+            class="dropdown-menu dropdown-menu-end shadow"
+            aria-labelledby="businessProfileDropdown"
+          >
+            <li>
+              <a class="dropdown-item" routerLink="businessprofile">
+                <i class="bi bi-person me-2"></i> Profile
+              </a>
+            </li>
+
+            <li><hr class="dropdown-divider" /></li>
+
+            <li>
+              <button
+                class="dropdown-item text-danger"
+                data-bs-toggle="modal"
                 data-bs-target="#logoutModal"
-                >
-            <i class="bi bi-box-arrow-right me-2 "></i> Logout
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+                type="button"
+              >
+                <i class="bi bi-box-arrow-right me-2"></i> Logout
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
-<!-- SIDEBAR (outside grid) -->
-<div
-  id="sidebar"
-  class="offcanvas offcanvas-start sidebar mt-3"
-  tabindex="-1"
+    <div
+      id="sidebar"
+      class="offcanvas offcanvas-start sidebar mt-3"
+      tabindex="-1"
+    >
+      <div class="offcanvas-header d-md-none">
+        <h5 class="offcanvas-title">Menu</h5>
+        <button class="btn-close" data-bs-dismiss="offcanvas"></button>
+      </div>
 
->
-  <div class="offcanvas-header d-md-none">
-    <h5 class="offcanvas-title">Menu</h5>
-    <button class="btn-close" data-bs-dismiss="offcanvas"></button>
-  </div>
+      <div class="offcanvas-body p-3 d-flex flex-column gap-2">
+        <button
+          class="btn side-btn"
+          routerLink="/business-Dashboard/roles"
+          routerLinkActive="active-btn"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Roles"
+        >
+          <i class="bi bi-person-fill-gear me-1"></i> Roles
+        </button>
+        <button
+          class="btn side-btn"
+          routerLink="/business-Dashboard/users"
+          routerLinkActive="active-btn"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="Users"
+        >
+          <i class="bi bi-people-fill me-1"></i> Users
+        </button>
 
-  <div class="offcanvas-body p-3 d-flex flex-column gap-2">
-     <button class="btn side-btn" routerLink="/business-Dashboard/roles" routerLinkActive="active-btn" data-toggle="tooltip" data-placement="top" title="Roles">
-      <i class="bi bi-person-fill-gear me-1"></i> Roles
-    </button>
-    <button class="btn side-btn" routerLink="/business-Dashboard/users" routerLinkActive="active-btn" data-toggle="tooltip" data-placement="top" title="Users">
-      <i class="bi bi-people-fill me-1"></i> Users
-    </button>
-
-   
-
-    <!-- <button class="btn side-btn" routerLink="/business-Dashboard/categories" routerLinkActive="active-btn" data-toggle="tooltip" data-placement="top" title="Categories">
+        <!-- <button class="btn side-btn" routerLink="/business-Dashboard/categories" routerLinkActive="active-btn" data-toggle="tooltip" data-placement="top" title="Categories">
       <i class="bi bi-grid-fill me-1"></i> Categories
     </button>
 
@@ -295,42 +318,35 @@
     <button class="btn side-btn" routerLink="/business-Dashboard/expenses" routerLinkActive="active-btn"data-toggle="tooltip" data-placement="top" title="Expenses">
       <i class="bi bi-currency-rupee me-1"></i> Expenses
     </button> -->
-
-  </div>
-</div>
-
-</div>
-</div>
- <div class="modal fade" id="logoutModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-body">
-          <p class="mb-0 fs-5">Are you sure you want to logout?</p>
-        </div>
-
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Cancel
-          </button>
-
-          <button
-            type="button"
-            class="btn btn-danger"
-            data-bs-toggle="modal"
-            data-bs-target="#logoutModal"
-            (click)="logout()"
-          >
-            Yes, Logout
-          </button>
-        </div>
       </div>
     </div>
   </div>
+</div>
+<div class="modal fade" id="logoutModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p class="mb-0 fs-5">Are you sure you want to logout?</p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#logoutModal"
+          (click)="logout()"
+        >
+          Yes, Logout
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="content-wrapper p-4">
   <router-outlet></router-outlet>
 </div>
-

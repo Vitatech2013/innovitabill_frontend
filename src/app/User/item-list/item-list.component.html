@@ -1,6 +1,6 @@
 <div class="container-fluid mt-4">
   <div *ngIf="!isCreatingInvoice()">
-    <div class="shadow-sm">
+    <div class="">
       <div class="row">
         <div
           class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 mb-3"
@@ -77,7 +77,7 @@
                   <th class="light-green">Item Code</th>
                   <th class="light-green">Brand</th>
                   <!-- <th class="light-green">BarCode</th> -->
-                  
+
                   <th class="light-green">Price (₹)</th>
 
                   <th class="light-green">Available Quantity</th>
@@ -100,10 +100,7 @@
                   <td>{{ it.item_code }}</td>
                   <td>{{ it.brand_name }}</td>
                   <!-- <td>{{ it.barcode }}</td> -->
-                  
-
                   <td>₹{{ it.selling_price }}</td>
-
                   <td>{{ it.stock_quantity }}</td>
                   <td>
                     <span
@@ -169,7 +166,7 @@
     >
       <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content border-0 shadow-sm rounded-3">
-          <div class="modal-header">
+          <div class="modal-header bg-success">
             <h5 class="modal-title" id="ViewModalLabel">Item Details</h5>
             <button
               type="button"
@@ -194,7 +191,7 @@
                     <th class="light-green">Selling Price</th>
                     <th class="light-green">Tax</th>
                     <th class="light-green">Qunatity</th>
-                    <th class="light-green">Description</th>              
+                    <th class="light-green">Description</th>
                     <th class="light-green">Discount</th>
                     <th class="light-green">Stock Alert</th>
                     <th class="light-green">Image</th>
@@ -205,7 +202,7 @@
                   <tr>
                     <td>{{ selectedItems.item_name }}</td>
                     <td>{{ selectedItems.item_code }}</td>
-                     <td>{{ selectedItems.brand_name }}</td>
+                    <td>{{ selectedItems.brand_name }}</td>
                     <!-- <td>{{ selectedItems.barcode }}</td> -->
                     <td>{{ selectedItems.purchase_price }}</td>
                     <td>{{ selectedItems.selling_price }}</td>
@@ -214,25 +211,28 @@
                     <td>{{ selectedItems.description }}</td>
                     <td>{{ selectedItems.discount }}</td>
                     <td>{{ selectedItems.min_stock_alert }}</td>
-                    <td>
+                    <td class="text-center image-cell">
                       <img
                         [src]="selectedItems.imageUrl"
                         alt="Item Image"
-                        class="img-thumbnail item-image w-10 h-10vh"
+                        class="img-thumbnail item-preview"
                         (click)="openImageModal(selectedItems.imageUrl)"
                       />
                     </td>
                     <td>
                       <span
-                        class="badge file-dark"
+                        class="badge"
                         [ngClass]="{
-                          'bg-success': selectedItems.status === 'Active',
-                          'bg-warning': selectedItems.status === 'Pending',
-                          'bg-danger': selectedItems.status === 'Inactive',
+                          'bg-success':
+                            selectedItems?.status?.toLowerCase() === 'active',
+                          'bg-warning':
+                            selectedItems?.status?.toLowerCase() === 'pending',
+                          'bg-danger':
+                            selectedItems?.status?.toLowerCase() === 'inactive',
                         }"
                       >
-                        {{ selectedItems.status }}</span
-                      >
+                        {{ selectedItems?.status | titlecase }}
+                      </span>
                     </td>
                   </tr>
                 </tbody>
@@ -310,7 +310,7 @@
                     Brand Name is required
                   </small>
                 </div>
-                  <!-- <div class="col-md-4">
+                <!-- <div class="col-md-4">
                   <label class="form-label fw-semibold">Barcode</label>
                   <input
                     type="text"
@@ -461,6 +461,16 @@
                   <small *ngIf="isInvalid('discount')" class="text-danger">
                     Discount is required
                   </small>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Status</label>
+                  <select class="form-select" formControlName="status">
+                    <option value="">Select Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="pending">Pending</option>
+                  </select>
                 </div>
 
                 <div class="col-md-4">

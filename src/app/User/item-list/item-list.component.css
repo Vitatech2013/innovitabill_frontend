@@ -12,9 +12,8 @@
   margin: 2rem auto;
 }
 
-
 .modal-header {
-  background-color: #127829;
+  /* background-color: #127829; */
   color: #fff;
   text-align: center;
   border-bottom: none;
@@ -59,7 +58,7 @@
   max-width: 95%;
   margin: 1rem auto;
 }
-.width{
+.width {
   max-width: 700px;
   margin: 1rem auto;
 }
@@ -100,7 +99,7 @@
 
 .table1 th {
   font-weight: 600;
- 
+
   color: #333;
 }
 
@@ -114,7 +113,7 @@
 }
 
 .table-wrapper::-webkit-scrollbar {
-  width: 2  px;
+  width: 2 px;
 }
 
 .table-wrapper::-webkit-scrollbar-thumb {
@@ -126,11 +125,9 @@
   .search-box {
     width: 100%;
     max-width: 100%;
-     position: relative;
+    position: relative;
   }
 }
-
-
 
 .table-responsive {
   width: 100%;
@@ -138,9 +135,8 @@
   -webkit-overflow-scrolling: touch;
 }
 
-
 .table-scroll {
-  max-height: 500px;   
+  max-height: 500px;
   overflow-y: auto;
 }
 
@@ -148,8 +144,22 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  
 }
 .light-green {
   color: #0a5c0a;
+}
+
+.image-cell {
+  width: 90px;
+  min-width: 90px;
+  max-width: 90px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.item-preview {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  cursor: pointer;
 }

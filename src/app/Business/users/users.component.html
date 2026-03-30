@@ -29,7 +29,7 @@
   <div class="dashboard">
     <div class="row mb-3">
   
-  <div class="col-12 d-flex align-items-center justify-content-between">
+  <div class="col-12 d-flex align-items-center justify-content-between w-100">
 
     <!-- Title -->
     <h4 class="fw-bold text-success mb-0" style="padding-left: 18px;">Manage Users</h4>
@@ -68,7 +68,7 @@
     <!-- Add Button -->
     <button
       class="btn btn-light text-dark fw-semibold ms-4"
-      style="margin-left: 40px;"
+      style="margin-left: 1000px;"
       data-bs-toggle="modal"
       data-bs-target="#AddModal"
       (click)="openAddModal()"
@@ -86,10 +86,10 @@
           </div>
         </div>
 
-        <div class="col-12" *ngIf="users.length > 0">
+        <div class="col-12 w-100 mt-2" *ngIf="users.length > 0">
           <div class="table-wrapper">
-            <div class="table-responsive bg-white p-3 rounded-4">
-              <table class="table table-hover table-bordered align-middle">
+            <div class="table-responsive bg-white p-1 rounded-4">
+              <table class="table table-hover table-bordered align-middle w-200vh">
                 <thead class="table-success text-start sticky-header">
                   <tr >
                     <th class="light-green">S.No</th>
@@ -998,7 +998,7 @@
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
           <div class="modal-content border-0 shadow-lg rounded-4">
             <!-- Header -->
-            <div class="modal-header text-dark">
+            <div class="modal-header text-white bg-success">
               <h5 class="modal-title fw-bold" id="editModalLabel">Edit User</h5>
               <button
                 type="button"
