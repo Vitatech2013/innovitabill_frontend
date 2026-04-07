@@ -47,7 +47,7 @@ export class AddBusinessTypeComponent implements OnInit {
         [
           Validators.required,
           Validators.minLength(3),
-          Validators.pattern(/^[A-Za-z0-9]+( [A-Za-z0-9]+)*$/),
+          Validators.pattern(/^[A-Z][A-Za-z0-9]*( [A-Za-z0-9]+)*$/)
         ],
       ],
       business_code: [
@@ -77,18 +77,26 @@ getBusinessTypes() {
       event.preventDefault();
     }
   }
-  onNameInput(event: Event, controlName: string) {
-    const input = event.target as HTMLInputElement;
+onNameInput(event: Event, controlName: string) {
+  const input = event.target as HTMLInputElement;
 
-    const value = input.value
-      .replace(/[^A-Za-z0-9 ]/g, '')
-      .replace(/\s+/g, ' ')
-      .trimStart();
+  let value = input.value
+    .replace(/[^A-Za-z0-9 ]/g, '') // remove special chars
+    .replace(/\s+/g, ' ') // single space
+    .trimStart();
 
-    this.addBusinessTypeForm
-      .get(controlName)
-      ?.setValue(value, { emitEvent: false });
-  }
+  // ✅ Capitalize each word
+  value = value
+    .split(' ')
+    .map(word =>
+      word ? word.charAt(0).toUpperCase() + word.slice(1) : ''
+    )
+    .join(' ');
+
+  this.addBusinessTypeForm
+    .get(controlName)
+    ?.setValue(value, { emitEvent: false });
+}
  generateBusinessCode(): string {
 
   if (!this.businessTypes || this.businessTypes.length === 0) {

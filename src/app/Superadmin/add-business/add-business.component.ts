@@ -178,18 +178,38 @@ export class AddBusinessComponent implements OnInit {
       event.preventDefault();
     }
   }
+  // onNameInput(event: Event, controlName: string) {
+  //   const input = event.target as HTMLInputElement;
+
+  //   const value = input.value
+  //     .replace(/[^A-Za-z ]/g, '')
+  //     .replace(/\s+/g, ' ')
+  //     .trimStart();
+
+  //   this.addBusinessForm
+  //     .get(controlName)
+  //     ?.setValue(value, { emitEvent: false });
+  // }
   onNameInput(event: Event, controlName: string) {
-    const input = event.target as HTMLInputElement;
+  const input = event.target as HTMLInputElement;
 
-    const value = input.value
-      .replace(/[^A-Za-z ]/g, '')
-      .replace(/\s+/g, ' ')
-      .trimStart();
+  let value = input.value
+    .replace(/[^A-Za-z ]/g, '')   // only alphabets + space
+    .replace(/\s+/g, ' ')         // single space
+    .trimStart();
 
-    this.addBusinessForm
-      .get(controlName)
-      ?.setValue(value, { emitEvent: false });
-  }
+  // ✅ Capitalize first letter of each word
+  value = value
+    .split(' ')
+    .map(word =>
+      word ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() : ''
+    )
+    .join(' ');
+
+  this.addBusinessForm
+    .get(controlName)
+    ?.setValue(value, { emitEvent: false });
+}
   allowOnlyDigits(event: KeyboardEvent) {
   const key = event.key;
 
@@ -320,6 +340,8 @@ export class AddBusinessComponent implements OnInit {
          if (err.error?.message === 'Email already exists') {
       this.addBusinessForm.get('email')?.setErrors({ emailExists: true });
     }
+    formData.append('action', 'active'); 
+    
         console.error('Add failed:', err);
         if (err?.error?.missing_fields) {
           this.showToast('Missing fields: ' + err.error.missing_fields.join(', '));

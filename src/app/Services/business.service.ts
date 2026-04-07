@@ -72,8 +72,13 @@ export class BusinessService {
   }
 
   // bacnk details
-getBanksByUser(userId:any){
-  return this.http.get(`${this.baseUrl}/bankDetails/get?user_id=${userId}`);
+// getBanksByUser(userId:any){
+//   return this.http.get(`${this.baseUrl}/bankDetails/get?user_id=${userId}`);
+// }
+getBanksByUser(userId: any) {
+  return this.http.get(
+    `${this.baseUrl}/bankDetails/getBanksByUser/${userId}`
+  );
 }
 
 addBank(data:any){
