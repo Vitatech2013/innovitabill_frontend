@@ -25,59 +25,74 @@
   </div>
 </div>
 
-<div class=" p-4 ">
+<div class="p-4">
   <div class="dashboard">
     <div class="row mb-3">
-  
-  <div class="col-12 d-flex align-items-center justify-content-between w-100">
+      <div
+        class="col-12 d-flex align-items-center justify-content-between w-100"
+      >
+        <!-- Title -->
+        <h4 class="fw-bold text-success mb-0" style="padding-left: 18px">
+          Manage Users
+        </h4>
 
-    <!-- Title -->
-    <h4 class="fw-bold text-success mb-0" style="padding-left: 18px;">Manage Users</h4>
+        <!-- Search -->
+        <input
+          type="text"
+          class="form-control shadow-sm mx-3"
+          placeholder="Search..."
+          [(ngModel)]="searchTerm"
+          style="max-width: 250px"
+        />
 
-    <!-- Search -->
-    <input
-      type="text"
-      class="form-control shadow-sm mx-3"
-      placeholder="Search..."
-      [(ngModel)]="searchTerm"
-      style="max-width: 250px"
-    />
+        <!-- Status Filter -->
+        <div class="d-flex align-items-center gap-2">
+          <label class="fw-bold text-success mb-0">STATUS:</label>
 
-    <!-- Status Filter -->
-    <div class="d-flex align-items-center gap-2">
-      <label class="fw-bold text-success mb-0">STATUS:</label>
+          <div class="dropdown">
+            <button
+              class="btn btn-light text-dark fw-semibold dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              style="width: 100px"
+            >
+              {{ selectedFilter }}
+            </button>
 
-      <div class="dropdown">
+            <ul class="dropdown-menu">
+              <li>
+                <button class="dropdown-item" (click)="changeFilter('All')">
+                  All
+                </button>
+              </li>
+              <li>
+                <button class="dropdown-item" (click)="changeFilter('Active')">
+                  Active
+                </button>
+              </li>
+              <li>
+                <button
+                  class="dropdown-item"
+                  (click)="changeFilter('Inactive')"
+                >
+                  Inactive
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Add Button -->
         <button
-          class="btn btn-light text-dark fw-semibold dropdown-toggle"
-          type="button"
-          data-bs-toggle="dropdown"
-          style="width: 100px"
+          class="btn btn-light text-dark fw-semibold ms-4"
+          style="margin-left: 1000px"
+          data-bs-toggle="modal"
+          data-bs-target="#AddModal"
+          (click)="openAddModal()"
         >
-          {{ selectedFilter }}
+          <i class="bi bi-plus-circle"></i> Add New
         </button>
-
-        <ul class="dropdown-menu">
-          <li><button class="dropdown-item" (click)="changeFilter('All')">All</button></li>
-          <li><button class="dropdown-item" (click)="changeFilter('Active')">Active</button></li>
-          <li><button class="dropdown-item" (click)="changeFilter('Inactive')">Inactive</button></li>
-        </ul>
       </div>
-    </div>
-
-    <!-- Add Button -->
-    <button
-      class="btn btn-light text-dark fw-semibold ms-4"
-      style="margin-left: 1000px;"
-      data-bs-toggle="modal"
-      data-bs-target="#AddModal"
-      (click)="openAddModal()"
-    >
-      <i class="bi bi-plus-circle"></i> Add New
-    </button>
-
-  </div>
-
 
       <div class="row">
         <div *ngIf="users.length === 0" class="text-start mt-4">
@@ -89,14 +104,14 @@
         <div class="col-12 w-100 mt-2" *ngIf="users.length > 0">
           <div class="table-wrapper">
             <div class="table-responsive bg-white p-1 rounded-4">
-              <table class="table table-hover table-bordered align-middle w-200vh">
+              <table
+                class="table table-hover table-bordered align-middle w-200vh"
+              >
                 <thead class="table-success text-start sticky-header">
-                  <tr >
+                  <tr>
                     <th class="light-green">S.No</th>
-                    <th class="light-green">
-                      Full Name
-                    </th>
-                    <th  class="light-green">Role</th>
+                    <th class="light-green">Full Name</th>
+                    <th class="light-green">Role</th>
                     <th class="light-green">Email</th>
                     <th class="light-green">Phone Number</th>
                     <th class="light-green">Status</th>
@@ -105,12 +120,16 @@
                 </thead>
                 <tbody>
                   <tr
-                    *ngFor="let u of filteredByStatus(); let i = index"
+                    *ngFor="
+                      let u of filteredByStatus();
+                      let i = index;
+                      trackBy: trackById
+                    "
                     class="align-middle text-start"
                   >
                     <td>{{ i + 1 }}</td>
                     <td>{{ u.user_name }}</td>
-                     <td>{{ u.role_id?.role_name }}</td>
+                    <td>{{ u.role_id?.role_name }}</td>
                     <td>{{ u.user_email }}</td>
                     <td>{{ u.phone_number }}</td>
                     <td>
@@ -149,7 +168,7 @@
                         class="btn btn-sm btn-outline-secondary"
                         (click)="openAccount(u)"
                       >
-                        <i class="bi bi-person-circle"></i>
+                        <i class="bi bi-bank2"></i>
                       </button>
                     </td>
                   </tr>
@@ -182,18 +201,16 @@
 
             <div class="modal-body p-3">
               <div class="table-responsive table-scroll">
-                <table
-                  class="table  table-bordered align-middle mb-0"
-                >
+                <table class="table table-bordered align-middle mb-0">
                   <thead class="table-success sticky-header">
                     <tr>
                       <th class="light-green">User Name</th>
-                       <th class="light-green">Role</th>
+                      <th class="light-green">Role</th>
                       <th class="light-green">Email</th>
                       <th class="light-green">Phone Number</th>
                       <th class="light-green">Address</th>
                       <th class="light-green">Status</th>
-                     
+
                       <th class="light-green">Images</th>
                       <th class="light-green">Id Proof</th>
                     </tr>
@@ -201,6 +218,7 @@
                   <tbody *ngIf="selectedUserData">
                     <tr>
                       <td>{{ selectedUserData.user_name }}</td>
+                      <td>{{ selectedUserData.role_id?.role_name }}</td>
                       <td>{{ selectedUserData.user_email }}</td>
                       <td>{{ selectedUserData.phone_number }}</td>
 
@@ -215,7 +233,6 @@
 
                       <td>{{ selectedUserData.status }}</td>
 
-                      <td>{{ selectedUserData.role_id?.role_name }}</td>
                       <td>
                         <img
                           *ngIf="selectedUserData?.image"
@@ -805,7 +822,6 @@
                       class="form-control"
                       formControlName="accountNumber"
                       placeholder="Enter Account Number"
-                     
                       (input)="removeExtraSpaces()"
                     />
                     <div
@@ -857,7 +873,6 @@
                       class="form-control"
                       formControlName="ifscCode"
                       placeholder="Enter Ifsc Code"
-                     
                       (input)="removeExtraSpaces()"
                     />
                     <div
@@ -970,7 +985,9 @@
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="submit" class="btn btn-success"><i class="bi bi-save me-1"></i>Save</button>
+                  <button type="submit" class="btn btn-success">
+                    <i class="bi bi-save me-1"></i>Save
+                  </button>
 
                   <button
                     type="button"
@@ -1418,9 +1435,9 @@ data-bs-target="#editBankModal">
 Add Bank
 </button> -->
 
-        <table class="table table-bordered ">
+        <table class="table table-bordered">
           <thead>
-            <tr >
+            <tr>
               <th>S.NO</th>
               <th>Bank</th>
               <th>Account No</th>
@@ -1432,7 +1449,9 @@ Add Bank
           </thead>
 
           <tbody>
-            <tr *ngFor="let bank of bankList; let i = index">
+            <tr
+              *ngFor="let bank of bankList; let i = index; trackBy: trackById"
+            >
               <td>{{ i + 1 }}</td>
               <td>{{ bank.bankName }}</td>
               <td>{{ bank.accountNumber }}</td>
@@ -1440,15 +1459,15 @@ Add Bank
               <td>{{ bank.branchName }}</td>
               <td>{{ bank.accountType }}</td>
               <td>
-                <button class="btn btn-success btn-sm me-1" (click)="editBank(bank)">
-                  Save
-                </button>
                 <button
-                  class="btn btn-danger btn-sm"
-                  (click)="deleteBank(bank._id)"
+                  class="btn btn-success btn-sm me-1"
+                  (click)="editBank(bank)"
                 >
-                  Delete
+                  Edit
                 </button>
+                <!-- <button class="btn btn-danger btn-sm" (click)="deleteBank(bank)">
+  Delete
+</button> -->
               </td>
             </tr>
 
@@ -1457,6 +1476,80 @@ Add Bank
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editBankModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Bank Details</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="mb-2">
+          <label>Account Holder Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="bankForm.accountHolderName"
+          />
+        </div>
+
+        <div class="mb-2">
+          <label>Bank Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="bankForm.bankName"
+          />
+        </div>
+
+        <div class="mb-2">
+          <label>Account Number</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="bankForm.accountNumber"
+          />
+        </div>
+
+        <div class="mb-2">
+          <label>IFSC Code</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="bankForm.ifscCode"
+          />
+        </div>
+
+        <div class="mb-2">
+          <label>Branch Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="bankForm.branchName"
+          />
+        </div>
+
+        <div class="mb-2">
+          <label>Account Type</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="bankForm.accountType"
+          />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button class="btn btn-primary" (click)="saveBank()">Save</button>
       </div>
     </div>
   </div>

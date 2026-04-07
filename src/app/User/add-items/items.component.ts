@@ -100,7 +100,8 @@ export class ItemsComponent implements OnInit {
       category_id: ['', Validators.required],
       sub_category_id: ['', Validators.required],
       image: [''],
-    });
+    }
+  );
 
     const storedBusiness = localStorage.getItem('business');
     if (storedBusiness) {
@@ -222,7 +223,7 @@ export class ItemsComponent implements OnInit {
     formData.append('min_stock_alert', f.min_stock_alert);
     formData.append('description', f.description);
     formData.append('brand_name', f.brand_name);
-    formData.append('barcode', f.barcode);
+    formData.append('barcode', barcode);
     formData.append('category_id', f.category_id);
     formData.append('sub_category_id', f.sub_category_id);
     formData.append('unit_id', f.unit_id);

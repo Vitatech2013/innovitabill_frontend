@@ -36,7 +36,7 @@ export class UsersComponent implements OnInit {
   bankForm: any = {};
   isEdit = false;
   editId: any = null;
-
+  selectedBank: any = {};
   imageFile: File | null = null;
   idProofFile: File | null = null;
   selectedUser: any = null;
@@ -81,9 +81,8 @@ export class UsersComponent implements OnInit {
       accountType: ['', Validators.required],
     });
 
-    this.loadUsers();
+    this.getUsers();
     this.LoadRoles();
-  
   }
   LoadRoles() {
     this.service.getRoles().subscribe({
@@ -91,25 +90,41 @@ export class UsersComponent implements OnInit {
       error: (err) => console.error('Error loading roles:', err),
     });
   }
-  loadUsers() {
+  // loadUsers() {
+  //   this.service.getUser().subscribe({
+  //     next: (res: any) => {
+  //       this.users = (res.data || res).sort(
+  //         (a: any, b: any) =>
+  //           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  //       );
+  //       console.log('Categories Loaded (Latest First):', this.users);
+  //       this.users = res.data || [];
+  //     },
+  //     error: (err) => console.error('Error loading users:', err),
+  //   });
+  // }
+  getUsers() {
     this.service.getUser().subscribe({
       next: (res: any) => {
-        this.users = (res.data || res).sort(
+        this.users = (res.data || []).sort(
           (a: any, b: any) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
         );
-        console.log('Categories Loaded (Latest First):', this.users);
-        this.users = res.data || [];
+        console.log(this.users, 'uerlist');
       },
-      error: (err) => console.error('Error loading users:', err),
+      error: (err) => {
+        console.error(err);
+      },
     });
+  }
+  trackById(index: number, item: any) {
+    return item._id;
   }
 
   openAddModal() {
     this.selectedUserId = null;
     this.userForm.reset({ status: 'active' });
 
-   
     this.userForm.get('password')?.setValidators(Validators.required);
     this.userForm.get('image')?.setValidators(Validators.required);
     this.userForm.get('id_proof')?.setValidators(Validators.required);
@@ -122,7 +137,12 @@ export class UsersComponent implements OnInit {
   }
 
   closeModal() {
-    (document.getElementById('AddModal') as any)?.classList.remove('show');
+    const modalEl = document.getElementById('editModal');
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    modal?.hide();
+
+    (document.activeElement as HTMLElement)?.blur();
+
     this.userForm.reset();
     this.selectedUserId = null;
   }
@@ -145,7 +165,7 @@ export class UsersComponent implements OnInit {
       return this.filteredUser();
     }
     return this.filteredUser().filter(
-      (u: any) => u?.status === this.statusFilter,
+      (u: any) => (u?.status || '').toLowerCase() === this.statusFilter,
     );
   }
   changeFilter(value: string) {
@@ -177,182 +197,106 @@ export class UsersComponent implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
-editUser(u: any) {
+  editUser(user: any) {
+    this.isEdit = true;
+    this.selectedUserId = user._id;
+    this.selectedUser = user;
 
-  this.selectedUser = u;
-  this.selectedUserId = u._id;
+    this.userForm.patchValue({
+      user_name: user.user_name,
+      user_email: user.user_email,
+      phone_number: user.phone_number,
+      role_id: user.role_id?._id,
+      status: user.status,
 
-  // ✅ Patch User Details
-  this.userForm.patchValue({
-    user_name: u.user_name,
-    user_email: u.user_email,
-    phone_number: u.phone_number,
-    role_id: u.role_id?._id,
-    status: u.status,
-    house_No: u.address?.house_No,
-    town_Name: u.address?.town_Name,
-    mandal_Name: u.address?.mandal_Name,
-    district_Name: u.address?.district_Name,
-    state: u.address?.state,
-    pincode: u.address?.pincode
-  });
+      house_No: user.address?.house_No,
+      town_Name: user.address?.town_Name,
+      mandal_Name: user.address?.mandal_Name,
+      district_Name: user.address?.district_Name,
+      state: user.address?.state,
+      pincode: user.address?.pincode,
+    });
 
-  // ✅ Fetch Bank Details
-  this.service.getBanksByUser(this.selectedUserId).subscribe({
+    this.userForm.get('password')?.clearValidators();
+    this.userForm.get('image')?.clearValidators();
+    this.userForm.get('id_proof')?.clearValidators();
 
-    next: (res: any) => {
+    ['password', 'image', 'id_proof'].forEach((field) => {
+      this.userForm.get(field)?.updateValueAndValidity();
+    });
 
-      const allBanks = res.data || [];
-
-      // 🔥 Filter only selected user bank
-      const userBank = allBanks.find(
-        (bank: any) => bank.user_id === this.selectedUserId
-      );
-
-      if (userBank) {
-
-        this.userForm.patchValue({
-          accountHolderName: userBank.accountHolderName,
-          bankName: userBank.bankName,
-          accountNumber: userBank.accountNumber,
-          ifscCode: userBank.ifscCode,
-          branchName: userBank.branchName,
-          accountType: userBank.accountType
-        });
-
-      } else {
-
-        // If no bank data
-        this.userForm.patchValue({
-          accountHolderName: '',
-          bankName: '',
-          accountNumber: '',
-          ifscCode: '',
-          branchName: '',
-          accountType: ''
-        });
-
-      }
-
-    },
-
-    error: (err) => {
-      console.log("Bank Fetch Error", err);
-    }
-
-  });
-
-  // ✅ Remove validators for edit
-  ['password','image','id_proof'].forEach(field => {
-    this.userForm.get(field)?.clearValidators();
-    this.userForm.get(field)?.updateValueAndValidity();
-  });
-
-  this.imageFile = null;
-  this.idProofFile = null;
-
-  const modal = new bootstrap.Modal(document.getElementById('editModal'));
-  modal.show();
-}
-
-createUser(): void {
-
-  if (this.userForm.invalid) {
-    this.userForm.markAllAsTouched();
-    this.showToast('Please fill form fields correctly', 'warning');
-    return;
-  }
-
-  if (!this.imageFile || !this.idProofFile) {
-    this.showToast('Image and ID Proof are required', 'warning');
-    return;
-  }
-
-  const formData = new FormData();
-
-  formData.append('user_name', this.userForm.value.user_name);
-  formData.append('user_email', this.userForm.value.user_email);
-  formData.append('phone_number', this.userForm.value.phone_number);
-  formData.append('password', this.userForm.value.password);
-  formData.append('role_id', this.userForm.value.role_id);
-  formData.append('status', this.userForm.value.status);
-
-  if (this.business_id) {
-    formData.append('business_id', this.business_id);
-  }
-
-  const address = {
-    house_No: this.userForm.value.house_No,
-    town_Name: this.userForm.value.town_Name,
-    mandal_Name: this.userForm.value.mandal_Name,
-    district_Name: this.userForm.value.district_Name,
-    state: this.userForm.value.state,
-    pincode: this.userForm.value.pincode
-  };
-
-  formData.append('address', JSON.stringify(address));
-
-  formData.append('image', this.imageFile);
-  formData.append('id_proof', this.idProofFile);
-
-  this.service.addUser(formData).subscribe({
-
-    next: (res: any) => {
-
-      console.log('User created successfully', res);
-
-      const newUser = res.data;
-
-      // ✅ set user id
-      this.selectedUserId = newUser._id;
-
-      // ✅ bank payload
-      const bankData = {
-        business_id: this.business_id,
-        user_id: this.selectedUserId,
-        accountHolderName: this.userForm.value.accountHolderName,
-        bankName: this.userForm.value.bankName,
-        accountNumber: this.userForm.value.accountNumber,
-        ifscCode: this.userForm.value.ifscCode,
-        branchName: this.userForm.value.branchName,
-        accountType: this.userForm.value.accountType
-      };
-
-      // ✅ save bank
-      this.service.addBank(bankData).subscribe({
-        next: () => {
-          console.log('Bank saved successfully');
-        },
-        error: (err) => {
-          console.log('Bank save error', err);
-        }
+    if (user.bankDetails) {
+      this.userForm.patchValue({
+        accountHolderName: user.bankDetails.accountHolderName,
+        bankName: user.bankDetails.bankName,
+        accountNumber: user.bankDetails.accountNumber,
+        ifscCode: user.bankDetails.ifscCode,
+        branchName: user.bankDetails.branchName,
+        accountType: user.bankDetails.accountType,
       });
-
-      this.showToast('User created successfully', 'success');
-
-      this.userForm.reset();
-      this.imageFile = null;
-      this.idProofFile = null;
-
-      this.loadUsers();
-
-      const modalEl = document.getElementById('AddModal');
-      if (modalEl) {
-        const modalInstance =
-          bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
-        modalInstance.hide();
-      }
-
-    },
-
-    error: (err) => {
-      console.log('User create error', err);
-      this.showToast('Failed to create user', 'error');
     }
 
-  });
+    this.openModal();
+  }
 
-}
+  createUser() {
+    if (this.userForm.invalid) {
+      this.userForm.markAllAsTouched();
+      return;
+    }
+
+    const formData = new FormData();
+
+    formData.append('user_name', this.userForm.value.user_name);
+    formData.append('user_email', this.userForm.value.user_email);
+    formData.append('phone_number', this.userForm.value.phone_number);
+    formData.append('password', this.userForm.value.password);
+    formData.append('role_id', this.userForm.value.role_id);
+    formData.append('business_id', this.business_id || '');
+
+    formData.append(
+      'address',
+      JSON.stringify({
+        house_No: this.userForm.value.house_No,
+        town_Name: this.userForm.value.town_Name,
+        mandal_Name: this.userForm.value.mandal_Name,
+        district_Name: this.userForm.value.district_Name,
+        state: this.userForm.value.state,
+        pincode: this.userForm.value.pincode,
+      }),
+    );
+
+    formData.append('accountHolderName', this.userForm.value.accountHolderName);
+    formData.append('bankName', this.userForm.value.bankName);
+    formData.append('accountNumber', this.userForm.value.accountNumber);
+    formData.append('ifscCode', this.userForm.value.ifscCode);
+    formData.append('branchName', this.userForm.value.branchName);
+    formData.append(
+      'accountType',
+      this.userForm.value.accountType || 'Savings',
+    );
+
+    if (this.imageFile) {
+      formData.append('image', this.imageFile);
+    }
+
+    if (this.idProofFile) {
+      formData.append('id_proof', this.idProofFile);
+    }
+
+    this.service.addUser(formData).subscribe({
+      next: () => {
+        this.showToast('User & Bank created successfully', 'success');
+        this.getUsers();
+        this.closeModal();
+        this.userForm.reset();
+      },
+      error: (err) => {
+        console.error(err);
+        this.showToast('Error creating user', 'error');
+      },
+    });
+  }
 
   onImageSelect(event: any) {
     this.imageFile = event.target.files[0];
@@ -365,21 +309,28 @@ createUser(): void {
   }
 
   saveUser() {
-    if (this.userForm.invalid) {
-      this.userForm.markAllAsTouched();
-      this.showToast('Please fill details correctly', 'warning');
-      return;
-    }
+    if (this.userForm.invalid) return;
 
     const formData = new FormData();
 
-    Object.entries(this.userForm.value).forEach(([k, v]) => {
-      if (v !== null && v !== '') {
-        formData.append(k, v as string);
-      }
-    });
+    formData.append('user_name', this.userForm.value.user_name);
+    formData.append('user_email', this.userForm.value.user_email);
+    formData.append('phone_number', this.userForm.value.phone_number);
+    formData.append('role_id', this.userForm.value.role_id);
+    formData.append('status', this.userForm.value.status);
 
-    // ✅ ONLY IF USER SELECTED NEW FILE
+    formData.append(
+      'address',
+      JSON.stringify({
+        house_No: this.userForm.value.house_No,
+        town_Name: this.userForm.value.town_Name,
+        mandal_Name: this.userForm.value.mandal_Name,
+        district_Name: this.userForm.value.district_Name,
+        state: this.userForm.value.state,
+        pincode: this.userForm.value.pincode,
+      }),
+    );
+
     if (this.imageFile) {
       formData.append('image', this.imageFile);
     }
@@ -388,18 +339,49 @@ createUser(): void {
       formData.append('id_proof', this.idProofFile);
     }
 
-    this.service.updateUser(this.selectedUserId!, formData).subscribe({
-      next: () => {
-        console.log('User updated successfully');
-        this.showToast('User updated successfully', 'success');
-        this.loadUsers();
-        bootstrap.Modal.getInstance(
-          document.getElementById('editModal'),
-        )?.hide();
-      },
-      error: () => this.showToast('Update failed', 'error'),
-    });
+    if (this.isEdit && this.selectedUserId) {
+      this.service.updateUser(this.selectedUserId, formData).subscribe(() => {
+        console.log('UPDATED');
+        this.getUsers();
+        this.closeModal();
+      });
+    } else {
+      this.service.addUser(formData).subscribe(() => {
+        console.log(' ADDED');
+        this.getUsers();
+        this.closeModal();
+      });
+    }
   }
+
+  // saveUser() { this.bankForm.business_id = this.business_id;
+  //    this.bankForm.user_id = this.selectedUserId;
+  //    console.log('Saving Bank Data:', this.bankForm);
+  //   if (this.isEdit) {
+  //      console.log('Edit Mode - Bank ID:', this.editId);
+  //      this.service.updateUser(this.editId, this.bankForm).subscribe({ next: (res: any) =>
+  //       { console.log('Bank Update API Response:', res);
+  //         this.showToast('Bank updated successfully', 'success');
+  //          this.getUsers();
+  //          this.bankForm = {};
+  //           this.isEdit = false; }, error: (err) => { console.log('Bank Update API Error:', err);
+
+  //               },
+  //              });
+  //              }
+  //              else { console.log('Add Mode - Sending Data:', this.bankForm);
+  //               this.service.addUser(this.bankForm).subscribe({ next: (res: any) => {
+  //                  console.log('Bank Add API Response:', res);
+  //                   this.showToast('Bank added successfully', 'success');
+  //                   this.getUsers();
+  //                    this.bankForm = {};
+  //                 },
+  //                 error: (err) => { console.log('Bank Add API Error:', err);
+
+  //                  },
+  //                  });
+  //                  }
+  //                  }
 
   openViewModal(u: any) {
     console.log('VIEW USER DATA', u);
@@ -424,10 +406,14 @@ createUser(): void {
 
     this.service.deleteUser(this.selectedUserData._id).subscribe({
       next: () => {
-        this.loadUsers();
-        console.log('User deleted successfully');
+        this.users = this.users.map((user) => {
+          if (user._id === this.selectedUserData._id) {
+            return { ...user, status: 'inactive' };
+          }
+          return user;
+        });
 
-        this.showToast('User deleted successfully', 'success');
+        this.showToast('User deactivated successfully', 'success');
 
         const modalEl = document.getElementById('deleteModal');
         if (modalEl) {
@@ -438,12 +424,11 @@ createUser(): void {
         this.selectedUserData = null;
       },
       error: (err) => {
-        console.error('Delete error', err);
-        this.showToast('Failed to delete', 'error');
+        console.error('Deactivate error', err);
+        this.showToast('Failed to deactivate user', 'error');
       },
     });
   }
-
   allowOnlyLetters(event: KeyboardEvent) {
     if (!/^[A-Za-z]$/.test(event.key)) event.preventDefault();
   }
@@ -502,23 +487,22 @@ createUser(): void {
   }
 
   openModal() {
-    this.isEdit = false;
-    this.bankForm = {};
+    const modal = new bootstrap.Modal(document.getElementById('editModal'));
+    modal.show();
   }
   openAccount(user: any) {
     this.selectedUserId = user._id;
+    console.log('Selected User Changed:', this.selectedUserId);
 
-    console.log('Opening bank modal for user:', this.selectedUserId);
-
-    this.getBanks(); 
+    this.getBanks(this.selectedUserId!);
 
     const modal = new bootstrap.Modal(document.getElementById('bankModal'));
 
     modal.show();
   }
   openAddBank() {
-    this.isEdit = false; // Add mode
-    this.editId = null; // reset edit id
+    this.isEdit = false;
+    this.editId = null;
 
     this.bankForm = {
       accountHolderName: '',
@@ -528,77 +512,67 @@ createUser(): void {
       branchName: '',
     };
 
-    this.showBankForm = true; // modal open
+    this.showBankForm = true;
   }
-getBanks() {
-  if (!this.selectedUserId) {
-    console.log('No user selected for bank fetch');
-    return;
+  getBanks(userId: string) {
+    console.log('Fetching Banks for User:', userId);
+
+    this.service.getBanksByUser(userId).subscribe({
+      next: (res: any) => {
+        console.log('API BANK RESPONSE:', res);
+
+        this.bankList = res.data || [];
+
+        console.log('FINAL BANK LIST:', this.bankList);
+      },
+      error: (err) => {
+        console.error('Error fetching banks:', err);
+      },
+    });
   }
-
-  console.log('Fetching Banks for User:', this.selectedUserId);
-
-  this.service.getBanksByUser(this.selectedUserId).subscribe({
-    next: (res: any) => {
-
-      const allBanks = res.data || [];
-
-      this.bankList = allBanks.filter(
-        (bank: any) => bank.user_id === this.selectedUserId
-      );
-
-      console.log("Filtered Bank List:", this.bankList);
-
-      if (this.bankList.length > 0) {
-        const bank = this.bankList[0];
-
-        // ✅ patch to bankForm for edit
-        this.bankForm = {
-          accountHolderName: bank.accountHolderName,
-          bankName: bank.bankName,
-          accountNumber: bank.accountNumber,
-          ifscCode: bank.ifscCode,
-          branchName: bank.branchName,
-          accountType: bank.accountType,
-        };
-      }
-    },
-    error: (err) => {
-      console.log('Bank API Error', err);
-      this.bankList = [];
-    },
-  });
-}
   editBank(data: any) {
     this.isEdit = true;
-
     this.editId = data._id;
 
-    this.bankForm = { ...data };
+    this.bankForm = {
+      accountHolderName: data.accountHolderName,
+      bankName: data.bankName,
+      accountNumber: data.accountNumber,
+      ifscCode: data.ifscCode,
+      branchName: data.branchName,
+      accountType: data.accountType,
+    };
+
+    const modal = new bootstrap.Modal(document.getElementById('editBankModal'));
+    modal.show();
   }
 
   saveBank() {
+    console.log('Saving for User:', this.selectedUserId);
     this.bankForm.business_id = this.business_id;
     this.bankForm.user_id = this.selectedUserId;
 
-    console.log('Saving Bank Data:', this.bankForm); // ✅ Check data sending
+    console.log('Saving Bank Data:', this.bankForm);
 
     if (this.isEdit) {
       console.log('Edit Mode - Bank ID:', this.editId);
 
       this.service.updateBank(this.editId, this.bankForm).subscribe({
         next: (res: any) => {
-          console.log('Bank Update API Response:', res); // ✅ API success
+          console.log('Bank Update API Response:', res);
 
           this.showToast('Bank updated successfully', 'success');
 
-          this.getBanks();
+          this.getBanks(this.selectedUserId!);
 
           this.bankForm = {};
           this.isEdit = false;
+          const modalEl = document.getElementById('editBankModal');
+          const modal = bootstrap.Modal.getInstance(modalEl);
+          modal?.hide();
         },
         error: (err) => {
-          console.log('Bank Update API Error:', err); // ❌ API error
+          console.log('Bank Update API Error:', err);
         },
       });
     } else {
@@ -606,25 +580,41 @@ getBanks() {
 
       this.service.addBank(this.bankForm).subscribe({
         next: (res: any) => {
-          console.log('Bank Add API Response:', res); // ✅ API success
+          console.log('Bank Add API Response:', res);
 
           this.showToast('Bank added successfully', 'success');
-          
-          this.getBanks();
+
+          this.getBanks(this.selectedUserId!);
 
           this.bankForm = {};
         },
         error: (err) => {
-          console.log('Bank Add API Error:', err); // ❌ API error
+          console.log('Bank Add API Error:', err);
         },
       });
     }
   }
 
-  deleteBank(id: any) {
-    this.service.deleteBank(id).subscribe(() => {
-      this.showToast('Bank deleted', 'success');
-      this.getBanks();
+  deleteBank(bank: any) {
+    this.service.updateBank(bank._id, { status: 'inactive' }).subscribe(() => {
+      this.showToast('Bank deactivated', 'success');
+
+      bank.status = 'inactive';
+
+      this.getBanks(this.selectedUserId!);
+    });
+  }
+  updateStatus(user: any) {
+    const newStatus = user.status === 'active' ? 'inactive' : 'active';
+
+    this.service.updateUser(user._id, { status: newStatus }).subscribe({
+      next: () => {
+        user.status = newStatus;
+
+        this.showToast('Status updated', 'success');
+
+        this.getUsers();
+      },
     });
   }
 }

@@ -1,5 +1,5 @@
 .table-wrapper {
-  max-height: 490px;        
+  max-height: 490px;
   overflow-y: auto;
   width: 1200px;
 }
@@ -7,7 +7,6 @@
 .table-wrapper {
   scrollbar-width: thin;
 }
-
 
 .table thead th {
   position: sticky;
