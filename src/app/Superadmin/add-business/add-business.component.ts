@@ -154,7 +154,7 @@ export class AddBusinessComponent implements OnInit {
             Validators.required,
             Validators.minLength(3),
             Validators.pattern(/^\S+$/),
-            Validators.pattern(/^[A-Za-z ]+$/),
+            Validators.pattern('^[A-Za-z ]+$')
           ],
         ],
         pincode: [
@@ -162,7 +162,7 @@ export class AddBusinessComponent implements OnInit {
           [
             Validators.required,
             Validators.minLength(3),
-            Validators.pattern(/^[0-9]{6}$/),
+       Validators.pattern('^[0-9]+$'),
           ],
         ],
       }),
@@ -194,11 +194,11 @@ export class AddBusinessComponent implements OnInit {
   const input = event.target as HTMLInputElement;
 
   let value = input.value
-    .replace(/[^A-Za-z ]/g, '')   // only alphabets + space
-    .replace(/\s+/g, ' ')         // single space
+    .replace(/[^A-Za-z ]/g, '')   
+    .replace(/\s+/g, ' ')        
     .trimStart();
 
-  // ✅ Capitalize first letter of each word
+
   value = value
     .split(' ')
     .map(word =>
@@ -319,6 +319,7 @@ export class AddBusinessComponent implements OnInit {
     });
 
     formData.append('superadmin_id', this.superadmin_id);
+    formData.append('login_status', 'active');
 
     for (const key in this.selectedFiles) {
       formData.append(key, this.selectedFiles[key]);
@@ -330,6 +331,7 @@ export class AddBusinessComponent implements OnInit {
 
     this.api.addBusiness(formData).subscribe({
       next: (res) => {
+        
         this.showToast('Business registered successfully!', 'success');
 
         setTimeout(() => {
@@ -340,7 +342,7 @@ export class AddBusinessComponent implements OnInit {
          if (err.error?.message === 'Email already exists') {
       this.addBusinessForm.get('email')?.setErrors({ emailExists: true });
     }
-    formData.append('action', 'active'); 
+   formData.append('status', 'active');
     
         console.error('Add failed:', err);
         if (err?.error?.missing_fields) {

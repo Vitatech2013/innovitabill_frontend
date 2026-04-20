@@ -24,7 +24,7 @@
 
         <div class="title">Email Us</div>
         <div class="email-links">
-          <a href="#">salesyourbilling.com</a>
+          <a href="#">vitabillingsoftware.com</a>
           <a href="#">supportyourbilling.com</a>
         </div>
 
@@ -52,52 +52,129 @@
    
     <div class="card-body px-4">
 
-     <form [formGroup]="demoForm" (ngSubmit)="submitForm()">
-        <div class="mb-3">
-          <input type="text" class="form-control" formControlName="name" placeholder="Company Name">
-        </div>
+<form [formGroup]="demoForm" (ngSubmit)="submitForm()">
 
-        <div class="mb-3">
-          <input type="email" class="form-control" formControlName="email" placeholder="Work Email">
-        </div>
+  <!-- Company Name -->
+  <div class="mb-3">
+    <input type="text" class="form-control" formControlName="name" placeholder="Company Name">
 
-        <div class="mb-3">
-          <input type="text" class="form-control" formControlName="phone" placeholder="Phone Number">
-        </div>
+    <small class="text-danger" *ngIf="demoForm.get('name')?.touched && demoForm.get('name')?.errors?.['required']">
+      Company Name is required
+    </small>
 
-        <!-- <div class="mb-3">
-          <input type="datetime-local" class="form-control">
-        </div> -->
+    <small class="text-danger" *ngIf="demoForm.get('name')?.errors?.['minlength']">
+      Minimum 3 characters required
+    </small>
+  </div>
 
-        <!-- <div class="mb-3">
-          <select class="form-select">
-            <option>Select Industry</option>
-            <option>Retail</option>
-            <option>IT</option>
-            <option>Finance</option>
-          </select>
-        </div> -->
+  <!-- Email -->
+  <div class="mb-3">
+    <input type="email" class="form-control" formControlName="email" placeholder="Work Email">
 
-        <div class="mb-3">
-          <textarea class="form-control" formControlName="message" rows="3" placeholder="Your message"></textarea>
-        </div>
-         <div class="card-footer bg-white border-0 px-4 pb-4">
-      <button type="submit" class="btn btn-success w-100" (click)="testClick()" >
-        Submit
-      </button>
+    <small class="text-danger" *ngIf="demoForm.get('email')?.touched && demoForm.get('email')?.errors?.['required']">
+      Email is required
+    </small>
+
+    <small class="text-danger" *ngIf="demoForm.get('email')?.errors?.['email']">
+      Enter valid email
+    </small>
+  </div>
+
+  <!-- Phone -->
+  <div class="mb-3">
+    <input type="text" class="form-control" formControlName="phone" placeholder="Phone Number">
+
+    <small class="text-danger" *ngIf="demoForm.get('phone')?.touched && demoForm.get('phone')?.errors?.['required']">
+      Phone Number is required
+    </small>
+
+    <small class="text-danger" *ngIf="demoForm.get('phone')?.errors?.['pattern']">
+      Enter valid 10 digit phone number
+    </small>
+  </div>
+
+  <!-- Message -->
+ <div class="mb-3">
+  <textarea class="form-control"
+            formControlName="message"
+            rows="3"
+            placeholder="Your message"></textarea>
+
+  <small class="text-danger"
+    *ngIf="demoForm.get('message')?.touched &&
+           demoForm.get('message')?.errors?.['required']">
+    Message is required
+  </small>
+</div>
+
+  <div class="card-footer bg-white border-0 px-4 pb-4">
+    <button type="submit" class="btn btn-success w-100">
+      Submit
+    </button>
+  </div>
+
+</form>
     </div>
-      </form>
+  </div>
+</div>
+</div>
+</div>
 
+
+
+<div class="faq-container">
+  <div class="faq-wrapper">
+
+    <!-- LEFT COLUMN -->
+    <div class="faq-column">
+      <div class="faq-item">
+        <h3>Why do I need an online invoicing software?</h3>
+        <p>
+          If you have a business that sells anything, then you need to invoice your clients,
+          check your stock and keep an eye on your sales to know how much money you've
+          made last month. Doing this in one secure app that you can easily access from any
+          device at any time you want, makes you more in charge of your business and look
+          more professional to your clients.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <h3>How do I buy Sleek Bill?</h3>
+        <p>
+          Just go to our <a href="#">pricing page</a>, select the premium plan, put your data in
+          and you're all set! You'll receive a confirmation email and next time you access your
+          account you will be automatically upgraded to your new plan. If your premium license
+          expires, don't worry, you'll still be able to access your data and still have a free plan
+          until you decide to upgrade again.
+        </p>
+      </div>
     </div>
 
-    
-   
+    <!-- RIGHT COLUMN -->
+    <div class="faq-column">
+      <div class="faq-item">
+        <h3>Does it have GST support?</h3>
+        <p>
+          Yes! Sleek Bill Online is fully compliant now with GST now. Among the features we
+          have: GSTIN support, HSN/SAC CODE, GST tax slabs and calculation for CGST, SGST
+          and IGST and many more features.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Is it safe to use Sleek Bill?</h3>
+        <p>
+          Absolutely! We've been around since 2013 and already have more than 40,000
+          customers that use the desktop version of Sleek Bill. We do our best to give you the
+          most useful financial software and Sleek Bill online is our newest release.
+        </p>
+      </div>
+    </div>
 
   </div>
 </div>
 
-  </div>
-</div>
+
 
 
 <div class="locations-section">
@@ -126,7 +203,9 @@
         <p>BillingSoft Pvt Ltd</p>
         <p>Hitech City, Madhapur</p>
         <p>Plot No 45, Phase 2</p>
-        <p>Telangana - 500081</p>
+        <p>Telangana - 505001</p>
+         <p>Phone: +91 98765 43210</p>
+         <p>Email: vitabillingsoft.com</p>
       </div>
 
       <!-- CHINA -->

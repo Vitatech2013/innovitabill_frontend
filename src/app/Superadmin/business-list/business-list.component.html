@@ -106,7 +106,7 @@
                   <th class="light-green">Email</th>
                   <th class="light-green">Phone</th>
                   <th class="light-green">Business Type</th>
-                  <th class="light-green">Account Status</th>
+                  <!-- <th class="light-green">Account Status</th> -->
                   <th class="light-green">Login Status</th>
                   <th class="actions-col light-green">Actions</th>
                 </tr>
@@ -121,7 +121,7 @@
                   <td>{{ b.phone_number }}</td>
                   <td>{{ getBusinessTypeName(b.bt_id) }}</td>
 
-                  <td>
+                  <!-- <td>
                     <button
                       class="btn badge"
                       [ngClass]="{
@@ -136,7 +136,7 @@
                           : "Enable"
                       }}
                     </button>
-                  </td>
+                  </td> -->
 
                   <!-- <td>
      
@@ -156,48 +156,57 @@
         Disable
       </button>
     </td> -->
-
-                      <td>
-                      <span
-                        class="badge"
-                        [ngClass]="
-                          b.status === 'active' ? 'bg-success' : 'bg-danger'
-                        "
-                      >
-                        {{ b.status }}
-                      </span>
+<!-- <td>
+  <span
+    class="badge"
+    [ngClass]="{
+      'bg-success': b.login_status?.toLowerCase() === 'active',
+      'bg-danger': b.login_status?.toLowerCase() === 'inactive',
+      'bg-warning': b.login_status?.toLowerCase() === 'pending'
+    }"
+  >
+    {{ b.login_status }}
+  </span>
+</td> -->
+  <td>
+                    <span
+  class="badge"
+  [ngClass]="
+    b.status?.toLowerCase() === 'active'
+      ? 'bg-success'
+      : 'bg-danger'
+  "
+>
+  {{ b.status }}
+</span>
                     </td>
                   <td>
-                    <button
-                      class="btn btn-sm btn-outline-info me-1"
-                      (click)="openViewModal(b)"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="View"
-                    >
-                      <i class="bi bi-eye"></i>
-                    </button>
+  <div class="action-btns">
+    <button
+      class="btn btn-sm btn-outline-info"
+      (click)="openViewModal(b)"
+      title="View"
+    >
+      <i class="bi bi-eye"></i>
+    </button>
 
-                    <button
-                      class="btn btn-sm btn-outline-primary me-1"
-                      (click)="editBusiness(b)"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Edit"
-                    >
-                      <i class="bi bi-pencil-square"></i>
-                    </button>
+    <button
+      class="btn btn-sm btn-outline-primary"
+      (click)="editBusiness(b)"
+      title="Edit"
+    >
+      <i class="bi bi-pencil-square"></i>
+    </button>
 
-                    <button
-                      class="btn btn-sm btn-outline-danger"
-                      (click)="openDeleteModal(b._id)"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Delete"
-                    >
-                      <i class="bi bi-trash"></i>
-                    </button>
-                  </td>
+    <button
+      class="btn btn-sm btn-outline-danger"
+      (click)="openDeleteModal(b._id)"
+      title="Delete"
+    >
+      <i class="bi bi-trash"></i>
+    </button>
+  </div>
+</td>
                 </tr>
               </tbody>
             </table>
@@ -267,6 +276,7 @@
                     </td>
 
                     <td>{{ selectedBusiness.registration_number }}</td>
+                    <td>{{ selectedBusiness.gst_number }}</td>
                    <td>
   <span
     class="badge"
@@ -279,7 +289,7 @@
     {{ selectedBusiness?.status || 'No Status' }}
   </span>
 </td>
-                    <td>{{ selectedBusiness.gst_number }}</td>
+                    
                     <td>
                       <img
                         [src]="getImageUrl(selectedBusiness?.logo_image)"
@@ -413,14 +423,34 @@
                   />
                 </div>
                 <!--  Email -->
-                <div class="col-md-4">
-                  <label class="form-label fw-semibold">Email</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    formControlName="email"
-                  />
-                </div>
+               <div class="col-md-4">
+  <label class="form-label fw-semibold">Email</label>
+  <input
+    type="email"
+    class="form-control"
+    formControlName="email"
+  />
+
+  <small
+    *ngIf="
+      BusinessForm.controls['email']?.touched &&
+      BusinessForm.controls['email']?.errors?.['required']
+    "
+    class="text-danger"
+  >
+    Email is required
+  </small>
+
+  <small
+    *ngIf="
+      BusinessForm.controls['email']?.touched &&
+      BusinessForm.controls['email']?.errors?.['email']
+    "
+    class="text-danger"
+  >
+    Enter valid email address
+  </small>
+</div>
                 <!-- Phone number -->
                 <div class="col-md-4">
                   <label class="form-label fw-semibold">Phone Number</label>

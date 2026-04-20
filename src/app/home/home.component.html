@@ -79,7 +79,7 @@
             >Customer</a
           >
         </li>
-         <li class="nav-item">
+        <li class="nav-item">
           <a
             class="nav-link text-dark fw-semibold"
             routerLink="/contact"
@@ -243,9 +243,18 @@
                 <input
                   type="text"
                   class="form-control"
+                  [ngClass]="{
+                    'is-invalid': submitted && demoForm.get('name')?.invalid,
+                  }"
                   placeholder="Company Name *"
                   formControlName="name"
                 />
+                <div
+                  class="invalid-feedback"
+                  *ngIf="submitted && demoForm.get('name')?.errors"
+                >
+                  Company Name is required
+                </div>
               </div>
 
               <div class="mb-3">
@@ -254,7 +263,17 @@
                   class="form-control"
                   placeholder="Work Email *"
                   formControlName="email"
+                  [ngClass]="{
+                    'is-invalid': submitted && demoForm.get('email')?.invalid,
+                  }"
                 />
+
+                <div
+                  class="invalid-feedback"
+                  *ngIf="submitted && demoForm.get('email')?.errors"
+                >
+                  Valid Email is required
+                </div>
               </div>
 
               <div class="mb-3">
@@ -263,7 +282,17 @@
                   class="form-control"
                   placeholder="+91 Phone Number *"
                   formControlName="phone"
+                  [ngClass]="{
+                    'is-invalid': submitted && demoForm.get('phone')?.invalid,
+                  }"
                 />
+
+                <div
+                  class="invalid-feedback"
+                  *ngIf="submitted && demoForm.get('phone')?.errors"
+                >
+                  Enter valid 10-digit phone number
+                </div>
               </div>
 
               <!-- <div class="mb-3">
@@ -281,7 +310,17 @@
                   rows="3"
                   formControlName="message"
                   placeholder="Describe your requirement"
+                  [ngClass]="{
+                    'is-invalid': submitted && demoForm.get('message')?.invalid,
+                  }"
                 ></textarea>
+
+                <div
+                  class="invalid-feedback"
+                  *ngIf="submitted && demoForm.get('message')?.errors"
+                >
+                  Message is required
+                </div>
               </div>
 
               <div class="d-flex align-items-center gap-2 mb-3">
