@@ -96,35 +96,64 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // sendEmail() {
+  //   if (this.demoForm.invalid) {
+  //     this.showToast('Please fill all required fields', 'error');
+  //     return;
+  //   }
+
+  //   const payload = {
+  //     name: this.demoForm.value.name,
+  //     email: this.demoForm.value.email,
+  //     phone: this.demoForm.value.phone,
+  //     message: this.demoForm.value.message,
+  //   };
+
+  //   console.log('Sending payload:', payload);
+
+  //   this.api.sendDemoMail(payload).subscribe({
+  //     next: (res: any) => {
+  //       this.showToast('Message Registered Successfully!', 'success');
+  //       this.demoForm.reset();
+  //       this.demoModal?.hide();
+  //     },
+  //     error: (err: any) => {
+  //       console.error('Full error:', err);
+  //       console.error('Backend error:', err.error);
+  //       this.showToast('Failed to send', 'error');
+  //     },
+  //   });
+  // }
+
+
   sendEmail() {
-    if (this.demoForm.invalid) {
-      this.showToast('Please fill all required fields', 'error');
-      return;
-    }
+  this.submitted = true;
 
-    const payload = {
-      name: this.demoForm.value.name,
-      email: this.demoForm.value.email,
-      phone: this.demoForm.value.phone,
-      message: this.demoForm.value.message,
-    };
-
-    console.log('Sending payload:', payload);
-
-    this.api.sendDemoMail(payload).subscribe({
-      next: (res: any) => {
-        this.showToast('Message Registered Successfully!', 'success');
-        this.demoForm.reset();
-        this.demoModal?.hide();
-      },
-      error: (err: any) => {
-        console.error('Full error:', err);
-        console.error('Backend error:', err.error);
-        this.showToast('Failed to send', 'error');
-      },
-    });
+  if (this.demoForm.invalid) {
+    this.demoForm.markAllAsTouched(); // highlight all invalid fields
+    this.showToast('Please fill all required fields', 'error');
+    return;
   }
 
+  const payload = {
+    name: this.demoForm.value.name,
+    email: this.demoForm.value.email,
+    phone: this.demoForm.value.phone,
+    message: this.demoForm.value.message,
+  };
+
+  this.api.sendDemoMail(payload).subscribe({
+    next: (res: any) => {
+      this.showToast('Message Registered Successfully!', 'success');
+      this.demoForm.reset();
+      this.submitted = false;
+      this.demoModal?.hide();
+    },
+    error: (err: any) => {
+      this.showToast('Failed to send', 'error');
+    },
+  });
+}
   showToast(message: string, type: 'success' | 'error' | 'info' | 'warning') {
     this.toastMessage = message;
     this.toastType = type;

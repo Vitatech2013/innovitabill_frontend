@@ -304,3 +304,15 @@ input:checked + .slider:before {
 .table-wrapper {
   width: 100%;
 }
+.action-btns {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+}
+
+.action-btns button {
+  padding: 4px 8px;
+  white-space: nowrap;
+}

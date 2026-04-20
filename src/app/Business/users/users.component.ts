@@ -25,7 +25,7 @@ export class UsersComponent implements OnInit {
   toastMessage: string | null = null;
   toastType: 'success' | 'error' | 'warning' = 'success';
   searchTerm: string = '';
-  selectedFilter: string = 'Active';
+  selectedFilter: string = 'active';
   statusFilter: 'active' | 'inactive' | 'all' = 'active';
   users: any[] = [];
   showPassword = false;
@@ -62,7 +62,17 @@ export class UsersComponent implements OnInit {
         '',
         [Validators.required, Validators.pattern(/^[0-9]{10}$/)],
       ],
-      password: ['', Validators.required],
+password: [
+  '',
+  [
+    Validators.required,
+    Validators.minLength(6),
+    Validators.maxLength(12),
+    Validators.pattern(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,12}$/
+    ),
+  ],
+],
       role_id: ['', Validators.required],
       status: ['active'],
       house_No: ['', Validators.required],
@@ -103,20 +113,53 @@ export class UsersComponent implements OnInit {
   //     error: (err) => console.error('Error loading users:', err),
   //   });
   // }
-  getUsers() {
-    this.service.getUser().subscribe({
-      next: (res: any) => {
-        this.users = (res.data || []).sort(
+  // getUsers() {
+  //   this.service.getUser().subscribe({
+  //     next: (res: any) => {
+  //        this.users = (res.data || []).map((u: any) => {
+  //       u.status = (u.status || '').toLowerCase(); 
+  //       return u;
+  //     })
+        
+  //       .sort(
+  //         (a: any, b: any) =>
+  //           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  //       );
+        
+  //       console.log(this.users, 'uerlist');
+  //     },
+  //     error: (err) => {
+  //       console.error(err);
+  //     },
+  //   });
+  // }
+getUsers() {
+  this.service.getUser().subscribe({
+    next: (res: any) => {
+      this.users = (res.data || [])
+        .map((u: any) => ({
+          ...u,
+          status: (u.status || '').toLowerCase(),
+          createdAt: new Date(u.createdAt || 0)
+        }))
+        .sort(
           (a: any, b: any) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+            new Date(b.createdAt).getTime() -
+            new Date(a.createdAt).getTime()
         );
-        console.log(this.users, 'uerlist');
-      },
-      error: (err) => {
-        console.error(err);
-      },
-    });
-  }
+
+     
+      const activeUsers = this.users.filter(
+        (u: any) => u.status === 'active'
+      );
+
+      console.log(activeUsers, 'Active Users Only');
+    },
+    error: (err) => {
+      console.error(err);
+    },
+  });
+}
   trackById(index: number, item: any) {
     return item._id;
   }
@@ -125,7 +168,14 @@ export class UsersComponent implements OnInit {
     this.selectedUserId = null;
     this.userForm.reset({ status: 'active' });
 
-    this.userForm.get('password')?.setValidators(Validators.required);
+    this.userForm.get('password')?.setValidators([
+  Validators.required,
+  Validators.minLength(6),
+  Validators.maxLength(12),
+  Validators.pattern(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,12}$/
+  )
+]);
     this.userForm.get('image')?.setValidators(Validators.required);
     this.userForm.get('id_proof')?.setValidators(Validators.required);
 
@@ -135,17 +185,25 @@ export class UsersComponent implements OnInit {
 
     new bootstrap.Modal(document.getElementById('AddModal')).show();
   }
+closeModal() {
+  const addModalEl = document.getElementById('AddModal');
+  const editModalEl = document.getElementById('editModal');
 
-  closeModal() {
-    const modalEl = document.getElementById('editModal');
-    const modal = bootstrap.Modal.getInstance(modalEl);
-    modal?.hide();
+  const addModal = bootstrap.Modal.getInstance(addModalEl);
+  const editModal = bootstrap.Modal.getInstance(editModalEl);
 
-    (document.activeElement as HTMLElement)?.blur();
+  addModal?.hide();
+  editModal?.hide();
 
-    this.userForm.reset();
-    this.selectedUserId = null;
-  }
+  document.body.classList.remove('modal-open');
+  document.body.style.overflow = '';
+
+  const backdrops = document.querySelectorAll('.modal-backdrop');
+  backdrops.forEach(b => b.remove());
+
+  this.userForm.reset();
+  this.selectedUserId = null;
+}
 
   filteredUser(): any[] {
     if (!Array.isArray(this.users)) return [];
@@ -233,6 +291,7 @@ export class UsersComponent implements OnInit {
         ifscCode: user.bankDetails.ifscCode,
         branchName: user.bankDetails.branchName,
         accountType: user.bankDetails.accountType,
+        
       });
     }
 
@@ -253,6 +312,7 @@ export class UsersComponent implements OnInit {
     formData.append('password', this.userForm.value.password);
     formData.append('role_id', this.userForm.value.role_id);
     formData.append('business_id', this.business_id || '');
+    formData.append('status', this.userForm.value.status);
 
     formData.append(
       'address',
@@ -284,18 +344,29 @@ export class UsersComponent implements OnInit {
       formData.append('id_proof', this.idProofFile);
     }
 
-    this.service.addUser(formData).subscribe({
-      next: () => {
-        this.showToast('User & Bank created successfully', 'success');
-        this.getUsers();
-        this.closeModal();
-        this.userForm.reset();
-      },
-      error: (err) => {
-        console.error(err);
-        this.showToast('Error creating user', 'error');
-      },
-    });
+this.service.addUser(formData).subscribe({
+next: (res: any) => {
+  const newUser = res.data;
+
+  const selectedRole = this.roles.find(
+    (r: any) => r._id === newUser.role_id
+  );
+
+  this.users.unshift({
+    ...newUser,
+    role_id: selectedRole, 
+    status: (newUser.status || '').toLowerCase(),
+    createdAt: new Date()
+  });
+
+  this.closeModal();
+  this.userForm.reset();
+},
+  error: (err) => {
+    console.error(err);
+    this.showToast('Error creating user', 'error');
+  },
+});
   }
 
   onImageSelect(event: any) {
@@ -595,6 +666,8 @@ export class UsersComponent implements OnInit {
     }
   }
 
+  
+
   deleteBank(bank: any) {
     this.service.updateBank(bank._id, { status: 'inactive' }).subscribe(() => {
       this.showToast('Bank deactivated', 'success');
@@ -604,17 +677,38 @@ export class UsersComponent implements OnInit {
       this.getBanks(this.selectedUserId!);
     });
   }
+  // updateStatus(user: any) {
+  //   const newStatus = user.status === 'active' ? 'inactive' : 'active';
+
+  //   this.service.updateUser(user._id, { status: newStatus }).subscribe({
+  //     next: () => {
+  //       user.status = newStatus;
+
+  //       this.showToast('Status updated', 'success');
+
+  //       this.getUsers();
+  //     },
+  //   });
+  // }
   updateStatus(user: any) {
-    const newStatus = user.status === 'active' ? 'inactive' : 'active';
+     console.log("BUTTON CLICKED", user); 
+  const newStatus = user.status === 'active' ? 'inactive' : 'active';
 
-    this.service.updateUser(user._id, { status: newStatus }).subscribe({
-      next: () => {
-        user.status = newStatus;
+  const formData = new FormData();
+  formData.append('status', newStatus);
 
-        this.showToast('Status updated', 'success');
+  this.service.updateUser(user._id, formData).subscribe({
+    next: () => {
+      user.status = newStatus; // UI update
 
-        this.getUsers();
-      },
-    });
-  }
+      this.showToast('Status updated', 'success');
+
+      this.getUsers(); // refresh list
+    },
+    error: (err) => {
+      console.error(err);
+      this.showToast('Failed to update status', 'error');
+    }
+  });
+}
 }

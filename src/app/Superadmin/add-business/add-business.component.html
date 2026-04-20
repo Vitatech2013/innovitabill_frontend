@@ -325,32 +325,27 @@
               {{ field.label }} must be at least 6 characters.
             </div>
 
-         
-            <div
-              *ngIf="
-                (field.name === 'town_Name' ||
-                  field.name === 'mandal_Name' ||
-                  field.name === 'district_Name' ||
-                  field.name === 'state') &&
-                addBusinessForm
-                  .get('address.' + field.name)
-                  ?.hasError('pattern')
-              "
-            >
-              Only alphabets are allowed.
-            </div>
+         <div
+  *ngIf="
+    (field.name === 'town_Name' ||
+      field.name === 'mandal_Name' ||
+      field.name === 'district_Name' ||
+      field.name === 'state') &&
+    addBusinessForm.get('address.' + field.name)?.hasError('pattern')
+  "
+>
+  The {{ field.label || field.name }} field should accept only alphabetic characters.
+</div>
 
             <!-- Pincode only number error -->
-            <div
-              *ngIf="
-                field.name === 'pincode' &&
-                addBusinessForm
-                  .get('address.' + field.name)
-                  ?.hasError('pattern')
-              "
-            >
-              Only numbers are allowed.
-            </div>
+           <div
+  *ngIf="
+    field.name === 'pincode' &&
+    addBusinessForm.get('address.' + field.name)?.hasError('pattern')
+  "
+>
+  Only numeric values are allowed.
+</div>
           </div>
         </div>
       </div>

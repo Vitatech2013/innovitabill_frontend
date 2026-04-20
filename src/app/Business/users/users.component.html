@@ -136,7 +136,9 @@
                       <span
                         class="badge"
                         [ngClass]="
-                          u.status === 'active' ? 'bg-success' : 'bg-danger'
+                          u.status?.toLowerCase() === 'active'
+                            ? 'bg-success'
+                            : 'bg-danger'
                         "
                       >
                         {{ u.status }}
@@ -488,7 +490,7 @@
                           userForm.controls['password']?.errors?.['minlength']
                         "
                       >
-                        Password must be at least 4 characters.
+                        Password must be at least 6 characters.
                       </small>
 
                       <small
@@ -499,6 +501,12 @@
                       >
                         Password must not exceed 12 characters.
                       </small>
+                      <small
+  class="text-danger"
+  *ngIf="userForm.controls['password']?.errors?.['pattern']"
+>
+  Password must contain uppercase, lowercase, number & special character.
+</small>
                     </div>
                   </div>
 
@@ -1222,7 +1230,7 @@
                   </div>
 
                   <!-- Account Details -->
-                  <div class="col-12">
+                  <!-- <div class="col-12">
                     <h6 class="fw-bold mt-3 border-bottom pb-1">
                       Account Details
                     </h6>
@@ -1280,7 +1288,7 @@
                       <option value="Savings">Savings</option>
                       <option value="Current">Current</option>
                     </select>
-                  </div>
+                  </div> -->
                 </div>
 
                 <!-- Footer -->
@@ -1444,6 +1452,7 @@ Add Bank
               <th>IFSC</th>
               <th>Branch</th>
               <th>Type</th>
+              <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -1458,6 +1467,7 @@ Add Bank
               <td>{{ bank.ifscCode }}</td>
               <td>{{ bank.branchName }}</td>
               <td>{{ bank.accountType }}</td>
+              <td>{{ bank.status }}</td>
               <td>
                 <button
                   class="btn btn-success btn-sm me-1"
@@ -1542,6 +1552,18 @@ Add Bank
             class="form-control"
             [(ngModel)]="bankForm.accountType"
           />
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Status</label>
+          <select
+            class="form-select"
+            [(ngModel)]="bankForm.status"
+            name="status"
+          >
+            <option value="">Select Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
         </div>
       </div>
 

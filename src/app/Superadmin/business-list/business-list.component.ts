@@ -81,7 +81,7 @@ export class BusinessListComponent implements OnInit {
       gst_number: ['', [Validators.required, Validators.minLength(3)]],
       bt_id: [''],
       password: [''],
-      status: ['', [Validators.required]],
+     status: ['', [Validators.required]],
       logo_image: [''],
       pan_pdf: [''],
       aadhar_pdf: [''],
@@ -169,29 +169,20 @@ export class BusinessListComponent implements OnInit {
   //     },
   //   });
   // }
-  loadBusiness() {
-    this.api.getBusiness(this.businessID).subscribe({
-      next: (res: any) => {
-        this.business = (res.data || []).map((b: any) => {
-          return {
-            ...b,
-
-            isAccountActive: b.status?.toLowerCase() === 'active',
-
-            isLoginEnabled: b.login_status?.toLowerCase() === 'enabled',
-          };
-        });
-
-        this.business.sort(
-          (a: any, b: any) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-        );
-      },
-      error: (err) => {
-        console.error('Error loading business:', err);
-      },
-    });
-  }
+loadBusiness() {
+  this.api.getBusiness(this.businessID).subscribe({
+    next: (res: any) => {
+      this.business = (res.data || []).sort(
+        (a: any, b: any) =>
+          new Date(b.createdAt || 0).getTime() -
+          new Date(a.createdAt || 0).getTime()
+      );
+    },
+    error: (err) => {
+      console.error('Error loading business:', err);
+    },
+  });
+}
 
   //  loadBusiness() {
   //   this.api.getBusiness(this.businessID).subscribe({
@@ -255,6 +246,7 @@ export class BusinessListComponent implements OnInit {
   //     b.login_status = newStatus;
   //   });
   // }
+  
 
   openImageModal(imageUrl: string) {
     this.selectedImage = imageUrl || 'assets/default-business.jpg';
@@ -290,31 +282,53 @@ export class BusinessListComponent implements OnInit {
     this.filterMode = 'all';
   }
 
-  filteredBusiness() {
-    let list = this.business;
+filteredBusiness() {
+  let list = this.business;
 
-    if (this.filterMode === 'active') {
-      list = list.filter((b) => b.status?.toLowerCase().trim() === 'active');
-    } else if (this.filterMode === 'inactive') {
-      list = list.filter((b) => b.status?.toLowerCase().trim() === 'inactive');
-    }
-
-    if (this.searchTerm?.trim()) {
-      const term = this.searchTerm.toLowerCase();
-      list = list.filter((b) =>
-        Object.values(b).some((val) =>
-          val?.toString().toLowerCase().includes(term),
-        ),
-      );
-    }
-
-    list.sort(
-      (a: any, b: any) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  if (this.filterMode === 'active') {
+    list = list.filter(
+      (b) => b.status?.toLowerCase().trim() === 'active'
     );
-
-    return list;
+  } else if (this.filterMode === 'inactive') {
+    list = list.filter(
+      (b) => b.status?.toLowerCase().trim() === 'inactive'
+    );
   }
+
+  if (this.searchTerm?.trim()) {
+    const term = this.searchTerm.toLowerCase();
+    list = list.filter((b) =>
+      Object.values(b).some((val) =>
+        val?.toString().toLowerCase().includes(term)
+      )
+    );
+  }
+
+  return list;
+}
+
+  // filteredBusiness() {
+  //   let list = this.business;
+
+  //   if (this.filterMode === 'active') {
+  //     list = list.filter((b) => b.login_status?.toLowerCase().trim() === 'active');
+  //   } else if (this.filterMode === 'inactive') {
+  //     list = list.filter((b) => b.login_status?.toLowerCase().trim() === 'inactive');
+  //   }
+
+  //   if (this.searchTerm?.trim()) {
+  //     const term = this.searchTerm.toLowerCase();
+  //     list = list.filter((b) =>
+  //       Object.values(b).some((val) =>
+  //         val?.toString().toLowerCase().includes(term)
+  //       )
+  //     );
+  //   }
+
+  //   return list;
+  // }
+
+
   openViewModal(b: any) {
     this.selectedBusiness = { ...b };
 
@@ -583,8 +597,8 @@ export class BusinessListComponent implements OnInit {
       next: () => {
         this.showToast(
           status === 'active'
-            ? 'Business enabled successfully'
-            : 'Business disabled successfully',
+            ? 'Business Active successfully'
+            : 'Business Inactive successfully',
           'success',
         );
         this.loadBusiness(); // refresh list
